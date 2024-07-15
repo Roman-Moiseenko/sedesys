@@ -1,30 +1,52 @@
 <template>
-    <el-row>
-        <el-col :span="24">
-            <div class="grid-content ep-bg-purple-dark">
-                <h1>
-                    How To Install Vue 3 in Laravel 10 : ZWebCourses :)
-                </h1>
-                <el-button>default button</el-button>
-                <el-button type="primary">Main button</el-button>
-                <el-button type="success">success button</el-button>
-                <el-button type="info">Info button</el-button>
+    <div class="app">
+        <div
+
+            name="fade"
+            mode="out-in"
+        >
+            <router-view :key="$route.fullPath" />
+        </div>
+        <div
+
+            class="loading-screen"
+        >
+            <div class="loading-text">
+                <p>Loading ...</p>
             </div>
-        </el-col>
-    </el-row>
+        </div>
+    </div>
 </template>
 
 <script>
-import {ElButton} from 'element-plus'
-
+//import notificationMixin from '../modules/notification/components/notificationMixin'
 export default {
-    name: "App",
-    components: {ElButton},
+    name: 'App',
+//    mixins: [notificationMixin]
 }
-
-
 </script>
 
-<style scoped>
+<style lang="scss">
+.app {
+    > div.loading-screen {
+        height: 100vh;
 
+        > .loading-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            > p {
+                text-shadow: 1px 1px 3px #000000;
+                font-size: calc(3vh + 2vw);
+                color: #ffffff;
+            }
+        }
+    }
+}
 </style>
