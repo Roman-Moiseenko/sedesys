@@ -2,10 +2,10 @@
 
 namespace DummyRootNamespaceModules\DummySingular\Requests;
 
-use DummyRootNamespaceModules\DummySingular\Entity\DummySingular;
+use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DummySingularRequest extends FormRequest
+class DummyEntitySingularRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class DummySingularRequest extends FormRequest
     public function rules()
     {
         return [
-            DummySingular::COLUMN_NAME => 'required|string',
+            DummyEntitySingular::COLUMN_NAME => 'required|string',
         ];
     }
 }

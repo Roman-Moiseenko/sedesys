@@ -4,17 +4,27 @@ namespace DummyRootNamespaceModules\DummySingular\Service;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
 
-class DummySingularService extends Model
+class DummyEntitySingularService
 {
     //TODO Внести методы и объект
-    public function create()
+    public function create(Request $request): DummyEntitySingular
+    {
+        $dummyVariableEntitySingular = DummyEntitySingular::register();
+
+
+        return  $dummyVariableEntitySingular;
+    }
+
+    public function update(DummyEntitySingular $dummyVariableEntitySingular, Request $request)
     {
 
     }
 
-    public function update()
+    public function delete(DummyEntitySingular $dummyVariableEntitySingular)
     {
-
+        $dummyVariableEntitySingular->delete();
     }
 }

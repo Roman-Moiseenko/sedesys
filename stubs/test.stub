@@ -1,35 +1,38 @@
 <?php
 
 namespace Tests\Feature;
-//TODO Исправить Модель
 use App\Http\Controllers\Controller;
-use App\Models\DummySingular;
-use App\Models\User;
+use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
 use Tests\TestCase;
+use App\Modules\Admin\Entity\Admin;
+use App\Modules\User\Entity\User;
 
-class DummySingularTest extends TestCase
+
+class DummyEntitySingularTest extends TestCase
 {
-    /** @var User */
-    protected $user;
+
+    protected User $user;
+    protected Admin $admin;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->user = User::factory()->create();
+        $this->admin = Admin::factory()->create();
     }
 
     /** @test */
     public function create_dummyVariableSingular()
     {
         $this->actingAs($this->user)
-            ->postJson(route('dummyVariablePlural.store'), [
+            ->postJson(route('api.dummyVariableEntityPlural.store'), [
                 'name' => 'Lorem',
             ])
             ->assertSuccessful()
             ->assertJson(['type' => Controller::RESPONSE_TYPE_SUCCESS]);
 
-        $this->assertDatabaseHas('dummyVariablePlural', [
+        $this->assertDatabaseHas('dummyVariableEntityPlural', [
             'name' => 'Lorem',
         ]);
     }
@@ -37,32 +40,32 @@ class DummySingularTest extends TestCase
     /** @test */
     public function update_dummyVariableSingular()
     {
-        $dummyVariableSingular = DummySingular::factory()->create();
+        $dummyVariableEntitySingular = DummyEntitySingular::factory()->create();
 
         $this->actingAs($this->user)
-            ->putJson(route('dummyVariablePlural.update', $dummyVariableSingular->id), [
-                'name' => 'Updated dummyVariableSingular',
+            ->putJson(route('api.dummyVariableEntityPlural.update', $dummyVariableEntitySingular->id), [
+                'name' => 'Updated dummyVariableEntitySingular',
             ])
             ->assertSuccessful()
             ->assertJson(['type' => Controller::RESPONSE_TYPE_SUCCESS]);
 
-        $this->assertDatabaseHas('dummyVariablePlural', [
-            'id' => $dummyVariableSingular->id,
-            'name' => 'Updated dummyVariableSingular',
+        $this->assertDatabaseHas('dummyVariableEntityPlural', [
+            'id' => $dummyVariableEntitySingular->id,
+            'name' => 'Updated dummyVariableEntitySingular',
         ]);
     }
 
     /** @test */
     public function show_dummyVariableSingular()
     {
-        $dummyVariableSingular = DummySingular::factory()->create();
+        $dummyVariableEntitySingular = DummyEntitySingular::factory()->create();
 
         $this->actingAs($this->user)
-            ->getJson(route('dummyVariablePlural.show', $dummyVariableSingular->id))
+            ->getJson(route('api.dummyVariableEntityPlural.show', $dummyVariableEntitySingular->id))
             ->assertSuccessful()
             ->assertJson([
                 'data' => [
-                    'name' => $dummyVariableSingular->name,
+                    'name' => $dummyVariableEntitySingular->name,
                 ],
             ]);
     }
@@ -70,15 +73,15 @@ class DummySingularTest extends TestCase
     /** @test */
     public function list_dummyVariableSingular()
     {
-        $dummyVariablePlural = DummySingular::factory()->count(2)->create()->map(function ($dummyVariableSingular) {
-            return $dummyVariableSingular->only(['id', 'name']);
+        $dummyVariableEntityPlural = DummyEntitySingular::factory()->count(2)->create()->map(function ($dummyVariableEntitySingular) {
+            return $dummyVariableEntitySingular->only(['id', 'name']);
         });
 
         $this->actingAs($this->user)
-            ->getJson(route('dummyVariablePlural.index'))
+            ->getJson(route('api.dummyVariableEntityPlural.index'))
             ->assertSuccessful()
             ->assertJson([
-                'data' => $dummyVariablePlural->toArray(),
+                'data' => $dummyVariableEntityPlural->toArray(),
             ])
             ->assertJsonStructure([
                 'data' => [
@@ -92,18 +95,18 @@ class DummySingularTest extends TestCase
     /** @test */
     public function delete_dummyVariableSingular()
     {
-        $dummyVariableSingular = DummySingular::factory()->create([
-            'name' => 'DummySingular for delete',
+        $dummyVariableEntitySingular = DummyEntitySingular::factory()->create([
+            'name' => 'DummyEntitySingular for delete',
         ]);
 
         $this->actingAs($this->user)
-            ->deleteJson(route('dummyVariablePlural.update', $dummyVariableSingular->id))
+            ->deleteJson(route('api.dummyVariableEntityPlural.update', $dummyVariableEntitySingular->id))
             ->assertSuccessful()
             ->assertJson(['type' => Controller::RESPONSE_TYPE_SUCCESS]);
 
-        $this->assertDatabaseMissing('dummyVariablePlural', [
-            'id' => $dummyVariableSingular->id,
-            'name' => 'DummySingular for delete',
+        $this->assertDatabaseMissing('dummyVariableEntityPlural', [
+            'id' => $dummyVariableEntitySingular->id,
+            'name' => 'DummyEntitySingular for delete',
         ]);
     }
 }

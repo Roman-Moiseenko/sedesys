@@ -78,7 +78,7 @@ class RouteServiceProvider extends ServiceProvider
             if (file_exists($routesPath)) {
                 Route::prefix('api')
                     ->middleware(['api'])
-                    ->as('api')
+                    ->as('api.')
                     ->namespace("\\App\\Modules\\$module\Controllers")
                     ->group($routesPath);
             }
