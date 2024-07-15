@@ -1,0 +1,20 @@
+<?php
+
+namespace DummyRootNamespaceModules\DummySingular\Service;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DummySingularService extends Model
+{
+    //TODO Внести методы и объект
+    public function create()
+    {
+
+    }
+
+    public function update()
+    {
+
+    }
+}
