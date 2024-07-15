@@ -7,27 +7,15 @@ import Welcome      from './components/Welcome.vue'
 import Home         from './components/Home.vue'
 import auth         from '../modules/admin/routes_auth'
 
-// Load modules routes dynamically.
-/*const requireContext = require.context('../modules', true, /routes\.js$/)
-
-const modules = requireContext.keys()
-    .map(file =>
-        [file.replace(/(^.\/)|(\.js$)/g, ''), requireContext(file)]
-    )
-*/
 const requireContext = import.meta.glob('/resources/js/modules/*/routes.js', { eager: true })
 let modules = Object.fromEntries(
-    Object.entries(requireContext).map(([key, value]) => [key.match(/\/modules\/(.+)\/store\/store.js$/)[1], value.routes])
+    Object.entries(requireContext).map(([key, value]) => [key.match(/\/modules\/(.+)\/routes.js$/)[1], value.routes])
 )
-
-
 let moduleRoutes = []
-console.log(modules);
-/*
 for(let i in modules) {
-    moduleRoutes = moduleRoutes.concat(modules[i][1].routes)
+    moduleRoutes = moduleRoutes.concat(modules[i])
 }
-*/
+
 const  routes = [
     {
         path: '/admin',

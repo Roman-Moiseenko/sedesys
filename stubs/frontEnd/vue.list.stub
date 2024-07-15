@@ -146,6 +146,7 @@
     import {DUMMY_VARIABLE_SINGULAR_FETCH, DUMMY_VARIABLE_SINGULAR_OBTAIN} from '../store/types'
     import dummyVariableSingularApi from '../api'
     import DummySingularForm from './DummySingularForm.vue'
+    import _ from 'lodash';
 
     export default {
         name:'DummySingularList',
