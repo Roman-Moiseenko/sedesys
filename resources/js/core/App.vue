@@ -1,52 +1,30 @@
 <template>
-    <div class="app">
-        <div
-
-            name="fade"
-            mode="out-in"
-        >
-            <router-view :key="$route.fullPath" />
-        </div>
-        <div
-
-            class="loading-screen"
-        >
-            <div class="loading-text">
-                <p>Loading ...</p>
-            </div>
-        </div>
+    <div id="app">
+        <example></example>
+        <el-button @click="visible = true">Click to open me</el-button>
+        <el-dialog :visible.sync="visible" title="Hello world">
+            <p>You Should Try Element (This is in /resources/js/App.vue)</p>
+        </el-dialog>
     </div>
 </template>
-
 <script>
-//import notificationMixin from '../modules/notification/components/notificationMixin'
+import Example from './components/Example.vue';
+
 export default {
-    name: 'App',
-//    mixins: [notificationMixin]
-}
-</script>
-
-<style lang="scss">
-.app {
-    > div.loading-screen {
-        height: 100vh;
-
-        > .loading-text {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            -webkit-transform: translate(-50%, -50%);
-            -moz-transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            -o-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-
-            > p {
-                text-shadow: 1px 1px 3px #000000;
-                font-size: calc(3vh + 2vw);
-                color: #ffffff;
-            }
+    name: 'app',
+    data () {
+        return {
+            visible: false,
         }
+    },
+    components: {
+        Example
     }
+};
+</script>
+<style scoped>
+/* Add scoped styles */
+#app {
+    padding: 20px;
 }
 </style>

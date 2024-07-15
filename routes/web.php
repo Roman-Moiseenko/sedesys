@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-})
-    ->name('application');
+Route::get('/admin', function () {
+    return view('layouts.app');
+})->name('application');
+
+Route::get('/', 'App\Modules\Web\Controllers\WebController@index')->name('web.home');
