@@ -89,7 +89,7 @@ class MakeBackEndModule extends MakeModuleCommand
 
             $this->error('Routes already exists!');
         } else {
-            $stub = $this->files->get(base_path('stubs/backEnd/routes.api.stub'));
+            $stub = $this->files->get(base_path('stubs/backEnd/routes.admin.stub'));
             $this->createFileWithStub($stub, $path);
             $this->info('Routes created successfully.');
         }

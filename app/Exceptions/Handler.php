@@ -45,4 +45,39 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+        if ($request->is('admin') || $request->is('admin/*')) {
+            return redirect()->guest('/admin/login');
+        }
+
+        return redirect()->guest(route('login'));
+    }
+
+
+    public function render($request, Throwable $e)
+    {
+
+        if ($this->isHttpException($e)) {
+
+            if (request()->is('admin/*')) {
+                if ($e->getStatusCode() == 404) {
+                    return response()->view('errors.' . 'admin_404', [], 404);
+                }
+            }
+            else
+            {
+                if ($e->getStatusCode() == 404) {
+                    return response()->view('errors.' . '404', [], 404);
+                }
+            }
+
+
+        }
+        return parent::render($request, $e);
+    }
 }

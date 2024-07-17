@@ -31,13 +31,14 @@ class MakeFrontEndModule extends MakeModuleCommand
         $this->createVueList();
         $this->createVueView();
         $this->createVueForm();
-
+/*
         $this->createStore();
         $this->createStoreTypes();
         $this->createStoreActions();
 
         $this->createRoutes();
         $this->createApi();
+        */
     }
 
     /**

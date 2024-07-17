@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import path from "path";
 
 
 
@@ -20,13 +21,26 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': '/resources/ts',
+            '@': '/resources/js',
+            "tailwind-config.js": path.resolve(__dirname, "./tailwind.config.js"),
         },
     },
     plugins: [
-        vue(),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/sass/web.scss',
+                //'resources/sass/admin.scss',
+            ],
             refresh: true,
         }),
 
@@ -37,4 +51,5 @@ export default defineConfig({
             resolvers: [ElementPlusResolver()],
         }),
     ],
+    publicDir: 'public',
 });

@@ -1,12 +1,13 @@
-
+import * as types from './types'
 
 export const store = {
     state: {
-        data_s: []
-    },
-    getters: {
-        notificationMessages: state => state.data_s
+        isAuth: false,
+        isTest: true,
     },
     mutations: {
+        SET_AUTH: (state, isAuth) => {
+            state.isAuth = isAuth
+        },
     }
 }

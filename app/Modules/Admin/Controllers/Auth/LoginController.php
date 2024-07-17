@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
@@ -51,9 +52,9 @@ class LoginController extends Controller
         return view('auth.login');
     } */
 
-    public function showLoginForm(): View
+    public function showLoginForm(): \Inertia\Response
     {
-        return view('admin.login');
+        return Inertia::render('Admin/Login');
     }
     /**
      * Handle a login request to the application.
@@ -94,27 +95,38 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-
+/*
         $this->validate($request, [
             'name'   => 'required',
             'password' => 'required|min:6'
         ]);
-
-        if (Auth::guard('admin')->attempt(['name' => $request['name'], 'password' => $request['password']], $request->get('remember'))) {
+*/
+        if (Auth::guard('admin')->attempt(['name' => $request['login'], 'password' => $request['password']], $request->get('remember'))) {
 
             /** @var Admin $admin */
             $admin = $this->guard()->user();
             if ($admin->isBlocked()) {
                 Auth::logout();
-                flash('Ваш аккаунт заблокирован', 'danger');
-                return back();
+                $message= 'Ваш аккаунт заблокирован';
+                $success = false;
+            } else {
+                $success = true;
+                $message = 'Добро пожаловать ' . $admin->fullname->getFullName();
             }
 
-            flash('Добро пожаловать ' . $admin->fullname->getFullName(), 'success');
-            return redirect()->intended('/admin');
+        } else {
+            $message= 'Неверные данные';
+            $success = false;
         }
-
-        return back()->withInput($request->only('name', 'remember'));
+        // response
+        $response = [
+            'success' => $success,
+            'message' => $message,
+        ];
+        //dd([$request['login'], $request['password']]);
+        return redirect()->intended('/admin');
+        //return response()->json($response);
+        //return back()->withInput($request->only('name', 'remember'));
 
     }
 

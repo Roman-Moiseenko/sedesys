@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        $this->mapModulesRoutesAPI();
+        $this->mapModulesRoutesAdmin();
         $this->mapModulesRoutesWeb();
     }
 
@@ -67,19 +67,21 @@ class RouteServiceProvider extends ServiceProvider
     }
 
 
-    protected function mapModulesRoutesAPI()
+    protected function mapModulesRoutesAdmin()
     {
         $modules_folder = app_path('Modules');
         $modules = $this->getModulesList($modules_folder);
 
+
         foreach ($modules as $module) {
-            $routesPath = $modules_folder . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'routes_api.php';
+            $routesPath = $modules_folder . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'routes_admin.php';
 
             if (file_exists($routesPath)) {
-                Route::prefix('api')
-                    ->middleware(['api'])
-                    ->as('api.')
-                    ->namespace("\\App\\Modules\\$module\Controllers")
+
+                Route::prefix('admin')
+                    ->middleware(['web', 'auth:admin'])
+                    ->as('admin.')
+                    ->namespace("\\App\\Modules\\$module\\Controllers")
                     ->group($routesPath);
             }
         }

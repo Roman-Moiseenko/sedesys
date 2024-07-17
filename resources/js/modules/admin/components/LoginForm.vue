@@ -7,21 +7,21 @@
         @keyup.enter.native="onSubmit"
     >
         <el-form-item
-            prop="email"
-            :label="$t('auth.login.email_label')"
-            :error="$t(formErrors.get('email'))"
+            prop="login"
+            :label="login"
+            :error="formErrors.get('login')"
             class="form-group"
         >
             <el-input
-                v-model="form.email"
-                name="email"
+                v-model="form.login"
+                name="login"
                 type="text"
             />
         </el-form-item>
         <el-form-item
             prop="password"
-            :label="$t('auth.login.password_label')"
-            :error="$t(formErrors.get('password'))"
+            :label="Password"
+            :error="formErrors.get('password')"
             class="form-group"
         >
             <el-input
@@ -37,7 +37,7 @@
                 class="w-100"
                 @click.native="onSubmit"
             >
-                {{ $t('auth.login.submit_button') }}
+                Отправить
             </el-button>
         </el-form-item>
     </el-form>
@@ -61,13 +61,13 @@ export default {
     data() {
         return {
             form: {
-                email: '',
+                login: '',
                 password: '',
-                device_name: this.config.deviceName
+               // device_name: this.config.deviceName
             },
             rules: {
-                email:      [{required:true, message: this.$t('global.form.rules.required', { 'fieldName': this.$t('auth.login.email_label')}), trigger: 'blur'}],
-                password:   [{required:true, message: this.$t('global.form.rules.required', { 'fieldName': this.$t('auth.login.password_label')}), trigger: 'blur'}],
+                login:      [{required:true, message: 'Обязательное поле', trigger: 'blur'}],
+                password:   [{required:true, message: 'Обязательное поле', trigger: 'blur'}],
             },
             formErrors: new Errors()
         }
