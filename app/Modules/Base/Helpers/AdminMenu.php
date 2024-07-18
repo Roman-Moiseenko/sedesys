@@ -7,32 +7,16 @@ class AdminMenu
 {
     public static function menu(): array
     {
-        $modules_folder = app_path('Modules');
-        $modules = self::getModulesList($modules_folder);
-
         $menus = [];
-        foreach ($modules as $module) {
-            $menusPath = $modules_folder . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'menus.php';
 
-            if (file_exists($menusPath)) {
-                $menus = array_merge($menus, include $menusPath);
-            }
-        }
+        modules_callback('menus.php', function ($filePath) use (&$menus) {
+            $menus = array_merge($menus, include $filePath);
+        });
+
+        uasort($menus, function ($a, $b) {
+            return $a['sort'] > $b['sort'];
+        });
         return $menus;
     }
 
-
-
-    private static function getModulesList(string $modules_folder): array
-    {
-        return
-            array_values(
-                array_filter(
-                    scandir($modules_folder),
-                    function ($item) use ($modules_folder) {
-                        return is_dir($modules_folder . DIRECTORY_SEPARATOR . $item) && !in_array($item, ['.', '..']);
-                    }
-                )
-            );
-    }
 }

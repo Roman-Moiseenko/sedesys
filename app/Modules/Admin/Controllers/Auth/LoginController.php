@@ -54,7 +54,7 @@ class LoginController extends Controller
 
     public function showLoginForm(): \Inertia\Response
     {
-        return Inertia::render('Admin/Login');
+        return Inertia::render('Admin/Auth/Login');
     }
     /**
      * Handle a login request to the application.

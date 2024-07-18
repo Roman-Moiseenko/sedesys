@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Inertia\Inertia;
 
 class DummyEntitySingularController extends Controller
 {
@@ -23,12 +24,10 @@ class DummyEntitySingularController extends Controller
         $this->service = $service;
     }
 
-    /**
-     * @param Request $request
-     * @return AnonymousResourceCollection
-     */
+
     public function index(Request $request)
     {
+        /*
         [$column, $order] = explode(',', $request->input('sortBy', 'id,asc'));
         $pageSize = (int) $request->input('pageSize', 10);
 
@@ -37,71 +36,57 @@ class DummyEntitySingularController extends Controller
                 $q->where(DummyEntitySingular::COLUMN_NAME, 'like', '%'.$request->search.'%');
             })
             ->orderBy($column, $order)->paginate($pageSize);
+        */
 
-        return DummyEntitySingularResource::collection($resource);
+        return Inertia::render('DummySingular/DummyEntitySingular/Index', [
+
+            ]
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param DummyEntitySingularRequest $request
-     * @return JsonResponse
-     */
+    public function create(Request $request)
+    {
+
+        return Inertia::render('DummySingular/DummyEntitySingular/Create', []);
+    }
+
+
+
     public function store(DummyEntitySingularRequest $request)
     {
         $data = $request->validated();
-        $dummyVariableEntitySingular = new DummyEntitySingular($data);
-        $dummyVariableEntitySingular->save();
-
-        return response()->json([
-            'type' => self::RESPONSE_TYPE_SUCCESS,
-            'message' => 'Successfully created',
-        ]);
+        $dummyVariableEntitySingular = $this->service->create($request->all()->except('_token'));
+        return redirect()->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param DummyEntitySingular $dummyVariableEntitySingular
-     * @return DummyEntitySingularResource
-     */
     public function show(DummyEntitySingular $dummyVariableEntitySingular)
     {
-        return new DummyEntitySingularResource($dummyVariableEntitySingular);
+
+        return Inertia::render('DummySingular/DummyEntitySingular/Show', [
+                'dummyVariableEntitySingular' => $dummyVariableEntitySingular
+            ]
+        );
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param DummyEntitySingularRequest $request
-     * @param DummyEntitySingular $dummyVariableEntitySingular
-     * @return JsonResponse
-     */
-    public function update(DummyEntitySingularRequest $request, DummyEntitySingular $dummyVariableEntitySingular)
+    public function edit(DummyEntitySingular $dummyVariableEntitySingular)
     {
 
-
-        $data = $request->validated();
-
-        $this->service->update($dummyVariableEntitySingular, $request);
-
-        return response()->json([
-            'type' => self::RESPONSE_TYPE_SUCCESS,
-            'message' => 'Successfully updated',
+        return Inertia::render('DummySingular/DummyEntitySingular/Edit', [
+            'dummyVariableEntitySingular' => $dummyVariableEntitySingular
         ]);
     }
 
-    /**
-     * @param DummyEntitySingular $dummyVariableEntitySingular
-     * @return JsonResponse
-     * @throws Exception
-     */
+    public function update(DummyEntitySingularRequest $request, DummyEntitySingular $dummyVariableEntitySingular)
+    {
+        $data = $request->validated();
+        $dummyVariableEntitySingular = $this->service->update($dummyVariableEntitySingular, $request->all()->except('_token'));
+        return redirect()->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular);
+    }
+
     public function destroy(DummyEntitySingular $dummyVariableEntitySingular)
     {
         $this->service->delete($dummyVariableEntitySingular);
 
-        return response()->json([
-            'type' => self::RESPONSE_TYPE_SUCCESS,
-            'message' => 'Successfully deleted',
-        ]);
+        return redirect()->back();
     }
 }

@@ -2,4 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::resource('employee', 'EmployeeController');
+Route::group(
+    [
+        'prefix' => 'employee',
+        'as' => 'employee.'
+    ],
+    function() {
+        Route::resource('employee', 'EmployeeController');
+        Route::Resource('operating', 'OperatingController');
+        Route::Resource('message', 'MessageController');
+    }
+);
+
+

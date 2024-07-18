@@ -28,9 +28,12 @@ class MakeFrontEndModule extends MakeModuleCommand
         $this->entity = $entity;
         $this->module_path = base_path('resources/js/modules/'.lcfirst((string)$this->module));
 
-        $this->createVueList();
+      /*  $this->createVueList();
         $this->createVueView();
-        $this->createVueForm();
+        $this->createVueForm();*/
+
+        $this->createVueIndex();
+
 /*
         $this->createStore();
         $this->createStoreTypes();
@@ -39,6 +42,20 @@ class MakeFrontEndModule extends MakeModuleCommand
         $this->createRoutes();
         $this->createApi();
         */
+    }
+
+    private function createVueIndex()
+    {
+        $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Index.vue';
+
+
+        if ($this->alreadyExists($path)) {
+            $this->error('VueList Component already exists!');
+        } else {
+            $stub = $this->files->get(base_path('stubs/frontEnd/vue.index.stub'));
+            $this->createFileWithStub($stub, $path);
+            $this->info('VueList Component created successfully.');
+        }
     }
 
     /**

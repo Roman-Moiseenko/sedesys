@@ -4,10 +4,13 @@
         <div class="md:flex md:flex-col">
             <div class="md:flex md:flex-col md:h-screen">
                 <div class="md:flex md:shrink-0">
+                    <!-- Logo -->
                     <div class="flex items-center justify-between px-6 py-4 bg-indigo-900 md:shrink-0 md:justify-center md:w-56">
-                        <Link class="mt-1" href="/admin">
-                            <logo class="fill-white" width="120" height="28" />
+                        <Link class="mt-1 flex" href="/admin">
+                            <logo class="fill-white" width="28" height="28" />
+                            <span class="text-white text-lg ml-3 font-medium">SEDESYS</span>
                         </Link>
+
                         <dropdown class="md:hidden" placement="bottom-end">
                             <template #default>
                                 <svg class="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
@@ -19,8 +22,11 @@
                             </template>
                         </dropdown>
                     </div>
+                    <!-- BreadCrumbs -->
                     <div class="md:text-md flex items-center justify-between p-4 w-full text-sm bg-white border-b md:px-12 md:py-0">
-                        <div class="mr-4 mt-1">{{ auth.user.account.name }}</div>
+                        <div class="mr-4 mt-1">
+                            <bread-crumbs />
+                        </div>
                         <dropdown class="mt-1" placement="bottom-end">
                             <template #default>
                                 <div class="group flex items-center cursor-pointer select-none">
@@ -55,14 +61,18 @@
 
 <script>
 import { Link } from '@inertiajs/vue3'
+
 import Icon from '@/Components/Icon.vue'
 import Logo from '@/Components/Logo.vue'
 import Dropdown from '@/Components/Dropdown.vue'
 import MainMenu from '@/Components/MainMenu.vue'
 import FlashMessages from '@/Components/FlashMessages.vue'
+import BreadCrumbs from "@/Components/BreadCrumbs.vue";
+
 
 export default {
     components: {
+        BreadCrumbs,
         Dropdown,
         FlashMessages,
         Icon,
@@ -72,6 +82,7 @@ export default {
     },
     props: {
         auth: Object,
+        breadcrumbs: Object,
     },
 }
 </script>

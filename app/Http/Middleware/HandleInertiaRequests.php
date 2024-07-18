@@ -36,7 +36,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        //dd(AdminMenu::menu());
+       // $data = \Diglactic\Breadcrumbs\Breadcrumbs::view('breadcrumbs::json-ld')->getData()['breadcrumbs'];
+
         return array_merge(parent::share($request), [
             'auth' => function () use ($request) {
                 return [
@@ -61,6 +62,9 @@ class HandleInertiaRequests extends Middleware
             },
             'menus' => function () use ($request) {
                 return AdminMenu::menu();
+            },
+            'breadcrumbs' => function () use($request) {
+                return \Diglactic\Breadcrumbs\Breadcrumbs::view('breadcrumbs::json-ld')->getData()['breadcrumbs'];
             },
         ]);
     }

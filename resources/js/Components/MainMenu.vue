@@ -1,6 +1,4 @@
 <template>
-
-
     <el-menu default-active="1" class=""
              active-text-color="#ffd04b" text-color="#fff"
              background-color="#545c64" @open="handleOpen" @close="handleClose">
@@ -13,16 +11,20 @@
                     </template>
                     <template v-for="(subitem, subindex) in item.submenu">
                         <el-menu-item :index="subindex">
+                            <Link :href="subitem.route" class="flex items-center">
                             <icon :name="subitem.icon" class="mr-2 w-4 h-4" />
                             <span>{{ subitem.title }}</span>
+                            </Link>
                         </el-menu-item>
                     </template>
                 </el-sub-menu>
             </template >
             <template v-else >
                     <el-menu-item :index="index">
+                        <Link :href="item.route" class="flex items-center">
                         <icon :name="item.icon" class="mr-2 w-4 h-4" />
                         <span>{{ item.title }}</span>
+                        </Link>
                     </el-menu-item>
             </template>
         </template>
@@ -32,8 +34,6 @@
 <script>
 import { Link } from '@inertiajs/vue3'
 import Icon from '@/Components/Icon.vue'
-
-
 
 export default {
     components: {

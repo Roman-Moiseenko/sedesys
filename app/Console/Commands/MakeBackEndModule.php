@@ -32,6 +32,8 @@ class MakeBackEndModule extends MakeModuleCommand
         $this->createRequest();
         $this->createResource();
         $this->createService();
+        $this->createMenus();
+        $this->createBreadCrumbs();
     }
 
     protected function createModel()
@@ -82,7 +84,7 @@ class MakeBackEndModule extends MakeModuleCommand
      * @throws FileNotFoundException
      */
     private function createRoutes() {
-        $path = $this->module_path.'/routes_api.php';
+        $path = $this->module_path.'/routes_admin.php';
 
         if ($this->alreadyExists($path)) {
             //TODO Продумать добавление в файл
@@ -92,6 +94,34 @@ class MakeBackEndModule extends MakeModuleCommand
             $stub = $this->files->get(base_path('stubs/backEnd/routes.admin.stub'));
             $this->createFileWithStub($stub, $path);
             $this->info('Routes created successfully.');
+        }
+    }
+
+    private function createMenus() {
+        $path = $this->module_path.'/menus.php';
+
+        if ($this->alreadyExists($path)) {
+            //TODO Продумать добавление в файл
+
+            $this->error('Menus already exists!');
+        } else {
+            $stub = $this->files->get(base_path('stubs/backEnd/menus.stub'));
+            $this->createFileWithStub($stub, $path);
+            $this->info('Menus created successfully.');
+        }
+    }
+
+    private function createBreadCrumbs() {
+        $path = $this->module_path.'/breadcrumbs.php';
+
+        if ($this->alreadyExists($path)) {
+            //TODO Продумать добавление в файл
+
+            $this->error('BreadCrumbs already exists!');
+        } else {
+            $stub = $this->files->get(base_path('stubs/backEnd/breadcrumbs.stub'));
+            $this->createFileWithStub($stub, $path);
+            $this->info('BreadCrumbs created successfully.');
         }
     }
 

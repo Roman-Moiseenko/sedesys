@@ -2,9 +2,10 @@
 
 return [
     'admins' => [
+        'sort' => 1,
         'icon' => 'office',
         'title' => 'Сотрудники',
-        'route_name' => 'admin.staff.index',
+        'route' => route('admin.staff.index'),
         'can' => 'staff',
     ],
 ];

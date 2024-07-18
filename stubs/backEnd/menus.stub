@@ -1,0 +1,11 @@
+<?php
+
+return [
+    'dummyVariablePlural' => [
+        'sort' => 1,
+        'icon' => 'office',
+        'title' => '',
+        'route' => 'dummyVariablePlural.index',
+        'can' => '',
+    ],
+];
