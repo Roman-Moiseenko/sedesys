@@ -1,7 +1,7 @@
 <template>
-    <el-menu default-active="1" class=""
-             active-text-color="#ffd04b" text-color="#fff"
-             background-color="#545c64" @open="handleOpen" @close="handleClose">
+    <el-menu :default-active="getUrl($page.url)" class="bg-indigo-800"
+             active-text-color="rgb(253 186 116)" text-color="rgb(204 251 241)"
+             background-color="rgb(15 118 110)">
         <template v-for="(item, index)  in $page.props.menus">
             <template v-if="item.submenu">
                 <el-sub-menu :index="index">
@@ -9,8 +9,8 @@
                         <icon :name="item.icon" class="mr-2 w-4 h-4" />
                         <span>{{ item.title }}</span>
                     </template>
-                    <template v-for="(subitem, subindex) in item.submenu">
-                        <el-menu-item :index="subindex">
+                    <template v-for="subitem in item.submenu">
+                        <el-menu-item :index="subitem.route">
                             <Link :href="subitem.route" class="flex items-center">
                             <icon :name="subitem.icon" class="mr-2 w-4 h-4" />
                             <span>{{ subitem.title }}</span>
@@ -20,7 +20,7 @@
                 </el-sub-menu>
             </template >
             <template v-else >
-                    <el-menu-item :index="index">
+                    <el-menu-item :index="item.route">
                         <Link :href="item.route" class="flex items-center">
                         <icon :name="item.icon" class="mr-2 w-4 h-4" />
                         <span>{{ item.title }}</span>
@@ -29,11 +29,13 @@
             </template>
         </template>
     </el-menu>
+
 </template>
 
 <script>
 import { Link } from '@inertiajs/vue3'
 import Icon from '@/Components/Icon.vue'
+
 
 export default {
     components: {
@@ -43,22 +45,13 @@ export default {
     props: {
         menus: Object,
     },
-    methods: {
-        isUrl(...urls) {
-            let currentUrl = this.$page.url.substr(1)
-            if (urls[0] === '') {
-                return currentUrl === ''
-            }
-            return urls.filter((url) => currentUrl.startsWith(url)).length
-        },
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
 
-            console.log(this.$page.props.menus);
+    methods: {
+        getUrl(url) {
+            let tt = url.match(/^(.+?)\/[0-9]/,'gm');
+            if (tt === null) return url;
+            return tt[1];
         },
-        handleClose(key, keyPath) {
-            console.log(key, keyPath)
-        }
     },
 }
 </script>

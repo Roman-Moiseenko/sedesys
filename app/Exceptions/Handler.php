@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Inertia\Inertia;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -66,7 +67,8 @@ class Handler extends ExceptionHandler
 
             if (request()->is('admin/*')) {
                 if ($e->getStatusCode() == 404) {
-                    return response()->view('errors.' . 'admin_404', [], 404);
+                    return Inertia::render('Base/404');
+                    //return response()->view('errors.' . 'admin_404', [], 404);
                 }
             }
             else

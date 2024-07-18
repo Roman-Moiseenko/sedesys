@@ -7,6 +7,7 @@ namespace App\Modules\Admin\Entity;
 use App\Modules\Base\Casts\FullNameCast;
 use App\Modules\Base\Entity\FullName;
 use App\Modules\Base\Entity\Photo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,6 +26,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property bool $active //Не заблокирован
  * @property string $post //Должность
  * @property int $telegram_user_id
+ * @property string $attr_full_name
  * @property FullName $fullname
  * @property Responsibility[] $responsibilities
  * @property Photo $photo
@@ -213,4 +215,12 @@ class Admin extends Authenticatable
     {
         return self::ROLES[$this->role];
     }
+
+    protected function attrFullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->fullname->getFullName(),
+        );
+    }
+
 }
