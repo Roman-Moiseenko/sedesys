@@ -14,6 +14,8 @@
     </div>
 </template>
 
+
+
 <script>
 import { router } from '@inertiajs/vue3'
 
@@ -23,6 +25,7 @@ export default {
         per_page: Number,
         total: Number,
     },
+    emits: [],
     data() {
         return {
             CurrentPage: this.current_page,
@@ -32,11 +35,15 @@ export default {
     },
     methods: {
         handleSizeChange(val) {
+
+           // this.$emit('toggle-loading', 'begiiiin');
             this.pageSize = val;
             router.get(this.$page.url, {page: this.$data.CurrentPage, size: val});
         },
         handleCurrentChange(val) {
-            this.$data.currentPage = val;
+
+           // this.$emit('toggle-loading', 'begiiiineeer');
+            this.$data.CurrentPage = val;
             router.get(this.$page.url, {page: val, size: this.$data.PageSize});
         },
     }

@@ -27,15 +27,23 @@ class StaffController extends Controller
 
         return Inertia::render('Admin/Staff/Index', [
             'staffs' => $staffs,
+
         ]);
     }
     public function create()
     {
-        return Inertia::render('Admin/Staff/Create', []);
+        return Inertia::render('Admin/Staff/Create', [
+            'roles' => $this->repository->roles(),
+            'route' => route('admin.staff.store'),
+            ]);
     }
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'max:20']
+        ]);
+
         $staff = $this->service->create($request);
         return redirect()->route('admin.staff.show', $staff)->with('success', 'Новый сотрудник добавлен');
     }

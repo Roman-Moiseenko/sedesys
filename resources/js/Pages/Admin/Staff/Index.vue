@@ -5,16 +5,17 @@
         <h2 class="font-medium text-xl">Сотрудники</h2>
     </div>
 
-    <el-button type="primary" class="p-4 my-3" @click="createStaff">Добавить сотрудника</el-button>
+    <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить сотрудника</el-button>
 
     <div class="mt-2 p-5 bg-white rounded-md">
         <el-table
             :data="tableData"
-            :height="tableHeight"
+            :height="$data.tableHeight"
             style="width: 100%; cursor: pointer;"
             :row-class-name="tableRowClassName"
             @row-click="routeClick"
-            v-loading="loading"
+            v-loading="$data.Loading"
+            v-on:toggle-loading="tLoading"
         >
             <el-table-column sortable prop="name" label="Логин" width="100" />
             <el-table-column prop="phone" label="Телефон" width="120" />
@@ -43,7 +44,8 @@
         <pagination
             :current_page="$page.props.staffs.current_page"
             :per_page="$page.props.staffs.per_page"
-            :total="$page.props.staffs.total"/>
+            :total="$page.props.staffs.total"
+        />
     </el-config-provider>
 
 </template>
@@ -79,6 +81,7 @@ export default {
     props: {
         staffs: Object
     },
+    emits: ['toggle-loading'],
     data() {
         return {
             tableData: [...this.staffs.data],
@@ -87,7 +90,7 @@ export default {
         }
     },
     methods: {
-        createStaff() {
+        createButton() {
             router.get('/admin/staff/create')
         },
         routeClick(row) {
@@ -99,6 +102,9 @@ export default {
         handleDelete(index, row) {
             router.delete(row.destroy);
         },
+        tLoading(val) {
+            console.log('toggle-', val);
+        }
     }
 }
 </script>

@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        /*Validator::extend('cyrillic', function ($attribute, $value, $parameters, $validator) {
+            return preg_match('/[А-Яа-яЁё]/u', $value);
+        });*/
     }
 }
