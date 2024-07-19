@@ -4,6 +4,8 @@
         <h2 class="font-medium text-xl">Сотрудники</h2>
     </div>
 
+    <el-button type="primary" class="p-4 my-3" @click="createStaff">Добавить сотрудника</el-button>
+
     <div class="mt-2 p-5 bg-white rounded-md">
         <el-table
             :data="tableData"
@@ -67,6 +69,9 @@ export default {
         }
     },
     methods: {
+        createStaff() {
+            router.get('/admin/staff/create')
+        },
         routeClick(row) {
             router.get(row.url)
         },

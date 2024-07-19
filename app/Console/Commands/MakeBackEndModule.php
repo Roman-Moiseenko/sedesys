@@ -30,7 +30,7 @@ class MakeBackEndModule extends MakeModuleCommand
         $this->createController();
         $this->createRoutes();
         $this->createRequest();
-        $this->createResource();
+        $this->createRepository();
         $this->createService();
         $this->createMenus();
         $this->createBreadCrumbs();
@@ -144,16 +144,16 @@ class MakeBackEndModule extends MakeModuleCommand
     /**
      * @throws FileNotFoundException
      */
-    private function createResource()
+    private function createRepository()
     {
-        $path = $this->module_path."/Resources/{$this->entity}Resource.php";
+        $path = $this->module_path."/Repository/{$this->entity}Repository.php";
 
         if ($this->alreadyExists($path)) {
-            $this->error('Resource already exists!');
+            $this->error('Repository already exists!');
         } else {
-            $stub = $this->files->get(base_path('stubs/backEnd/resource.stub'));
+            $stub = $this->files->get(base_path('stubs/backEnd/repository.stub'));
             $this->createFileWithStub($stub, $path);
-            $this->info('Resource created successfully.');
+            $this->info('Repository created successfully.');
         }
     }
 }

@@ -5,7 +5,7 @@
             <div class="md:flex md:flex-col md:h-screen">
                 <div class="md:flex md:shrink-0">
                     <!-- Logo -->
-                    <div class="flex items-center justify-between px-6 py-4 bg-teal-900 md:shrink-0 md:justify-center md:w-56">
+                    <div class="flex items-center justify-between px-6 py-4 bg-zinc-900 md:shrink-0 md:justify-center md:w-56">
                         <Link class="mt-1 flex" href="/admin">
                             <logo class="fill-white" width="28" height="28" />
                             <span class="text-white text-lg ml-3 font-medium">SEDESYS</span>
@@ -23,7 +23,7 @@
                         </dropdown>
                     </div>
                     <!-- BreadCrumbs -->
-                    <div class="bg-teal-900 text-white md:text-md flex items-center justify-between p-4 w-full text-sm bg-white border-b md:px-12 md:py-0">
+                    <div class="bg-zinc-900 text-white md:text-md flex items-center justify-between p-4 w-full text-sm border-b md:px-12 md:py-0">
                         <div class="mr-4 mt-1">
                             <bread-crumbs />
                         </div>
@@ -48,8 +48,8 @@
                     </div>
                 </div>
                 <div class="md:flex md:grow md:overflow-hidden">
-                    <main-menu class="hidden shrink-0 pt-3 w-56 bg-indigo-800 overflow-y-auto md:block" />
-                    <div class="px-4 py-8 md:flex-1 md:p-10 md:overflow-y-auto bg-gray-100" scroll-region>
+                    <main-menu class="hidden shrink-0 pt-3 w-56  overflow-y-auto md:block" />
+                    <div class="px-4 py-8 md:flex-1 md:p-10 md:overflow-y-auto bg-zinc-100" scroll-region>
                         <flash-messages />
                         <slot />
                     </div>

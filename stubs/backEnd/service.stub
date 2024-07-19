@@ -9,22 +9,47 @@ use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
 
 class DummyEntitySingularService
 {
-    //TODO Внести методы и объект
+
     public function create(Request $request): DummyEntitySingular
     {
-        $dummyVariableEntitySingular = DummyEntitySingular::register();
+        /**
+         * Создаем объект с базовыми данными
+         */
+        $dummyVariableEntitySingular = DummyEntitySingular::register(
+            (string)$request->string('name')
+        );
 
+        $this->save_fields($dummyVariableEntitySingular, $request);
 
         return  $dummyVariableEntitySingular;
     }
 
     public function update(DummyEntitySingular $dummyVariableEntitySingular, Request $request)
     {
+        /**
+         * Сохраняем базовые поля
+         */
+        $dummyVariableEntitySingular->name = (string)$request->string('name');
+        $dummyVariableEntitySingular->save();
 
+        $this->save_fields($dummyVariableEntitySingular, $request);
     }
 
-    public function delete(DummyEntitySingular $dummyVariableEntitySingular)
+    private function save_fields(DummyEntitySingular $dummyVariableEntitySingular, Request $request)
     {
+        /**
+         * Сохраняем оставшиеся поля
+         */
+
+        $dummyVariableEntitySingular->save();
+    }
+
+
+    public function destroy(DummyEntitySingular $dummyVariableEntitySingular)
+    {
+        /**
+         * Проверить на возможность удаления
+         */
         $dummyVariableEntitySingular->delete();
     }
 }

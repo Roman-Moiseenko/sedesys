@@ -1,7 +1,7 @@
 <template>
     <el-menu :default-active="getUrl($page.url)" class="bg-indigo-800"
-             active-text-color="rgb(253 186 116)" text-color="rgb(204 251 241)"
-             background-color="rgb(15 118 110)">
+             active-text-color="rgb(253 186 116)" text-color="rgb(244 244 245)"
+             background-color="rgb(82 82 91)">
         <template v-for="(item, index)  in $page.props.menus">
             <template v-if="item.submenu">
                 <el-sub-menu :index="index">

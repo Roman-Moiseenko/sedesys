@@ -23,6 +23,7 @@ export default {
         breadcrumbs: Object
     }
 }
+// #d9dce1;
 </script>
 
 <style>
@@ -33,9 +34,10 @@ export default {
     --el-text-color-placeholder: var(--el-color-white);
 }
 .el-breadcrumb__item:last-child .el-breadcrumb__inner {
-    --el-text-color-regular: #d9dce1;
+    --el-text-color-regular: rgb(161 161 170);
+
 }
 .el-breadcrumb__inner a:hover {
-    --el-color-primary: rgb(13 148 136);
+    --el-color-primary: rgb(161 161 170);
 }
 </style>

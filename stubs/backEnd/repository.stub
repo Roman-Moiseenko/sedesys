@@ -1,0 +1,30 @@
+<?php
+
+namespace DummyRootNamespaceModules\DummySingular\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class DummyEntitySingularRepository
+{
+
+    public function getIndex(Request $request): array
+    {
+        $dummyVariableEntityPlural = DummyEntitySingular::orderBy('name')
+            ->paginate(20)->withQueryString()
+            ->through(fn(DummyEntitySingular $dummyVariableEntitySingular) => [
+                'id' => $dummyVariableEntitySingular->id,
+                'name' => $dummyVariableEntitySingular->name,
+                /**
+
+                 */
+
+                'url' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular),
+                'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
+                'destroy' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.destroy', $dummyVariableEntitySingular),
+
+            ]);
+
+        return $dummyVariableEntityPlural;
+    }
+}

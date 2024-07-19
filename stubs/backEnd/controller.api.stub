@@ -18,50 +18,41 @@ class DummyEntitySingularController extends Controller
 {
 
     private DummyEntitySingularService $service;
+    private DummyEntitySingularRepository $repository;
 
-    public function __construct(DummyEntitySingularService $service)
+    public function __construct(DummyEntitySingularService $service, DummyEntitySingularRepository $repository)
     {
         $this->service = $service;
+        $this->repository = $repository;
     }
 
 
     public function index(Request $request)
     {
-        /*
-        [$column, $order] = explode(',', $request->input('sortBy', 'id,asc'));
-        $pageSize = (int) $request->input('pageSize', 10);
-
-        $resource = DummyEntitySingular::query()
-            ->when($request->filled('search'), function (Builder $q) use ($request) {
-                $q->where(DummyEntitySingular::COLUMN_NAME, 'like', '%'.$request->search.'%');
-            })
-            ->orderBy($column, $order)->paginate($pageSize);
-        */
+        $dummyVariableEntityPlural = $this->repository->getIndex($request);
 
         return Inertia::render('DummySingular/DummyEntitySingular/Index', [
-
+                'dummyVariableEntityPlural' => $dummyVariableEntityPlural,
             ]
         );
     }
 
     public function create(Request $request)
     {
-
         return Inertia::render('DummySingular/DummyEntitySingular/Create', []);
     }
-
-
 
     public function store(DummyEntitySingularRequest $request)
     {
         $data = $request->validated();
-        $dummyVariableEntitySingular = $this->service->create($request->all()->except('_token'));
-        return redirect()->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular);
+        $dummyVariableEntitySingular = $this->service->create($request);
+        return redirect()
+            ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
+            ->with('success', 'Новый dummyVariableEntitySingular добавлен');;
     }
 
     public function show(DummyEntitySingular $dummyVariableEntitySingular)
     {
-
         return Inertia::render('DummySingular/DummyEntitySingular/Show', [
                 'dummyVariableEntitySingular' => $dummyVariableEntitySingular
             ]
@@ -70,7 +61,6 @@ class DummyEntitySingularController extends Controller
 
     public function edit(DummyEntitySingular $dummyVariableEntitySingular)
     {
-
         return Inertia::render('DummySingular/DummyEntitySingular/Edit', [
             'dummyVariableEntitySingular' => $dummyVariableEntitySingular
         ]);
@@ -79,14 +69,16 @@ class DummyEntitySingularController extends Controller
     public function update(DummyEntitySingularRequest $request, DummyEntitySingular $dummyVariableEntitySingular)
     {
         $data = $request->validated();
-        $dummyVariableEntitySingular = $this->service->update($dummyVariableEntitySingular, $request->all()->except('_token'));
-        return redirect()->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular);
+        $dummyVariableEntitySingular = $this->service->update($dummyVariableEntitySingular, $request);
+        return redirect()
+            ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
+            ->with('success', 'Сохранение прошло успешно');;
     }
 
     public function destroy(DummyEntitySingular $dummyVariableEntitySingular)
     {
-        $this->service->delete($dummyVariableEntitySingular);
+        $this->service->destroy($dummyVariableEntitySingular);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Удаление прошло успешно');;
     }
 }

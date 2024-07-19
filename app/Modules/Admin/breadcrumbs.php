@@ -16,6 +16,11 @@ Breadcrumbs::for('admin.staff.index', function (BreadcrumbTrail $trail) {
     $trail->push('Сотрудники', route('admin.staff.index'));
 });
 
+Breadcrumbs::for('admin.staff.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.staff.index');
+    $trail->push('Добавить сотрудника', route('admin.staff.create'));
+});
+
 Breadcrumbs::for('admin.staff.show', function (BreadcrumbTrail $trail, Admin $staff) {
     $trail->parent('admin.staff.index');
     $trail->push($staff->fullname->getShortname(), route('admin.staff.show', $staff));

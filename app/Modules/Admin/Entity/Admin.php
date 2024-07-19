@@ -58,7 +58,6 @@ class Admin extends Authenticatable
     protected $fillable = [
         'id',
         'name',
-//        'email',
         'password',
         'phone',
         'role',
@@ -79,11 +78,10 @@ class Admin extends Authenticatable
         'fullname' => FullNameCast::class
     ];
 
-    public static function register(string $name, string $email, string $phone, string $password): self
+    public static function register(string $name, string $phone, string $password): self
     {
         return static::create([
             'name' => $name,
-            'email' => $email,
             'phone' => $phone,
             'password' => Hash::make($password),
             'role' => self::ROLE_STAFF,
