@@ -1,4 +1,5 @@
 <template>
+    <el-config-provider :locale="ru">
     <div>
         <Head title="Dashboard" />
         <h2 class="font-medium text-xl">Сотрудники</h2>
@@ -9,9 +10,11 @@
     <div class="mt-2 p-5 bg-white rounded-md">
         <el-table
             :data="tableData"
+            :height="tableHeight"
             style="width: 100%; cursor: pointer;"
             :row-class-name="tableRowClassName"
             @row-click="routeClick"
+            v-loading="loading"
         >
             <el-table-column sortable prop="name" label="Логин" width="100" />
             <el-table-column prop="phone" label="Телефон" width="120" />
@@ -20,7 +23,9 @@
             <el-table-column sortable prop="role" label="Роль" />
             <el-table-column label="Действия">
                 <template #default="scope">
-                    <el-button size="small" @click.stop="handleEdit(scope.$index, scope.row)">
+                    <el-button
+                        size="small"
+                        @click.stop="handleEdit(scope.$index, scope.row)">
                         Edit
                     </el-button>
                     <el-button
@@ -34,6 +39,13 @@
             </el-table-column>
         </el-table>
     </div>
+
+        <pagination
+            :current_page="$page.props.staffs.current_page"
+            :per_page="$page.props.staffs.per_page"
+            :total="$page.props.staffs.total"/>
+    </el-config-provider>
+
 </template>
 
 <script lang="ts" setup>
@@ -54,10 +66,14 @@ const tableRowClassName = ({row, rowIndex}: {row: Staff }) => {
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
 import { router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+
 
 export default {
     components: {
         Head,
+        Pagination
     },
     layout: Layout,
     props: {
@@ -65,7 +81,9 @@ export default {
     },
     data() {
         return {
-            tableData: [...this.staffs.data]
+            tableData: [...this.staffs.data],
+            TableHeight: '500',
+            Loading: false,
         }
     },
     methods: {

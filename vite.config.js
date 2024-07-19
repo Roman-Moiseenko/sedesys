@@ -8,7 +8,6 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import path from "path";
 
 
-
 export default defineConfig({
     build: {
         commonjsOptions: {
