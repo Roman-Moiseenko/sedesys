@@ -14,8 +14,7 @@
             style="width: 100%; cursor: pointer;"
             :row-class-name="tableRowClassName"
             @row-click="routeClick"
-            v-loading="$data.Loading"
-            v-on:toggle-loading="tLoading"
+            v-loading="store.loading"
         >
             <el-table-column sortable prop="name" label="Логин" width="100" />
             <el-table-column prop="phone" label="Телефон" width="120" />
@@ -47,10 +46,11 @@
             :total="$page.props.staffs.total"
         />
     </el-config-provider>
-
 </template>
 
 <script lang="ts" setup>
+import { useStore } from "/resources/js/store.js"
+const store = useStore();
 
 interface Staff {
     role: string
@@ -61,16 +61,16 @@ const tableRowClassName = ({row, rowIndex}: {row: Staff }) => {
         return 'warning-row'
     }
     return ''
-}
+};
 </script>
 
 <script lang="ts">
+
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
 import { router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
-
 
 export default {
     components: {
@@ -89,6 +89,8 @@ export default {
             Loading: false,
         }
     },
+    mounted() {
+    },
     methods: {
         createButton() {
             router.get('/admin/staff/create')
@@ -104,9 +106,11 @@ export default {
         },
         tLoading(val) {
             console.log('toggle-', val);
-        }
+        },
     }
 }
+
+
 </script>
 
 <style >

@@ -15,9 +15,11 @@
 </template>
 
 
-
 <script>
 import { router } from '@inertiajs/vue3'
+import { useStore } from "/resources/js/store.js"
+
+//console.log(setup())
 
 export default {
     props: {
@@ -25,26 +27,46 @@ export default {
         per_page: Number,
         total: Number,
     },
-    emits: [],
     data() {
         return {
             CurrentPage: this.current_page,
             PageSize: this.per_page,
             Total: this.total,
+            Loading: false,
         }
     },
     methods: {
         handleSizeChange(val) {
-
-           // this.$emit('toggle-loading', 'begiiiin');
+            this.$data.Loading = true;
             this.pageSize = val;
-            router.get(this.$page.url, {page: this.$data.CurrentPage, size: val});
+            router.visit(this.$page.url,
+                {
+                    method: 'get',
+                    data: {page: this.$data.CurrentPage, size: val},
+                    onBefore: visit => {
+                        useStore().load();
+                    },
+                    onFinish: visit => {
+                        useStore().stop();
+                    },
+                }
+            );
+
         },
         handleCurrentChange(val) {
-
-           // this.$emit('toggle-loading', 'begiiiineeer');
             this.$data.CurrentPage = val;
-            router.get(this.$page.url, {page: val, size: this.$data.PageSize});
+            router.visit(this.$page.url,
+                {
+                    method: 'get',
+                    data: {page: val, size: this.$data.PageSize},
+                    onBefore: visit => {
+                        useStore().load();
+                    },
+                    onFinish: visit => {
+                        useStore().stop();
+                    },
+                }
+                );
         },
     }
 }
