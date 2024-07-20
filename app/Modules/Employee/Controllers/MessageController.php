@@ -54,7 +54,7 @@ class MessageController extends Controller
 
     public function store(MessageRequest $request)
     {
-        $data = $request->validated();
+        $request->validated();
         $message = $this->service->create($request->all()->except('_token'));
         return redirect()->route('admin.employee.message.show', $message);
     }

@@ -4,13 +4,13 @@ export const useStore = defineStore('table_data', {
         loading: false,
     }),
     getters: {
-        //doubleCount: (state) => state.count * 2,
+        getLoading: (state) => state.loading,
     },
     actions: {
-        load() {
+        beforeLoad() {
             this.loading = true;
         },
-        stop() {
+        afterLoad() {
             this.loading = false;
         }
     },

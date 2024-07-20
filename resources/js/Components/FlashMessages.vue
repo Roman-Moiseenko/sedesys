@@ -15,7 +15,7 @@
                 <div v-if="$page.props.flash.error" class="py-4 text-white text-sm font-medium">{{ $page.props.flash.error }}</div>
                 <div v-else class="py-4 text-white text-sm font-medium">
                     <span v-if="Object.keys($page.props.errors).length === 1">Есть ошибки в форме.</span>
-                    <span v-else>Обнаружено {{ Object.keys($page.props.errors).length }} ошибок в формк.</span>
+                    <span v-else>Обнаружено {{ Object.keys($page.props.errors).length }} ошибки(ок) в форме.</span>
                 </div>
             </div>
             <button type="button" class="group mr-2 p-2" @click="show = false">

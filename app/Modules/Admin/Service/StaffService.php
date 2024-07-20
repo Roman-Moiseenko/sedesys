@@ -30,6 +30,7 @@ class StaffService
         $staff->phone = (string)$request->string('phone');
         if ($request->has('password')) {
             $staff->password = Hash::make((string)$request->string('password'));
+            //flash('Пароль сменен');
         }
         $staff->save();
 
@@ -40,7 +41,7 @@ class StaffService
     {
         $staff->role = (string)$request->string('role');
         $staff->post = (string)$request->string('post');
-        $staff->telegram_user_id = (string)$request->string('telegram_user_id');
+        $staff->telegram_user_id = $request->integer('telegram_user_id');
 
         $staff->fullname = new FullName(
             (string)$request->string('surname'),

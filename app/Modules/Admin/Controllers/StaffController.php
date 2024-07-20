@@ -6,6 +6,7 @@ namespace App\Modules\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Entity\Admin;
 use App\Modules\Admin\Repository\StaffRepository;
+use App\Modules\Admin\Request\StaffRequest;
 use App\Modules\Admin\Service\StaffService;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -38,11 +39,9 @@ class StaffController extends Controller
             ]);
     }
 
-    public function store(Request $request)
+    public function store(StaffRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'max:20']
-        ]);
+        $request->validated([]);
 
         $staff = $this->service->create($request);
         return redirect()->route('admin.staff.show', $staff)->with('success', 'Новый сотрудник добавлен');
@@ -58,12 +57,16 @@ class StaffController extends Controller
     public function edit(Admin $staff)
     {
         return Inertia::render('Admin/Staff/Edit', [
+            'roles' => $this->repository->roles(),
             'staff' => $staff,
+            'route' => route('admin.staff.update', $staff),
         ]);
     }
 
-    public function update(Admin $staff, Request $request)
+    public function update(Admin $staff, StaffRequest $request)
     {
+        $request->validated();
+
         $this->service->update($staff, $request);
         return redirect()->route('admin.staff.show', $staff)->with('success', 'Сохранение прошло успешно');
     }

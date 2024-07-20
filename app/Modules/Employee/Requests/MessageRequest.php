@@ -25,7 +25,9 @@ class MessageRequest extends FormRequest
     public function rules()
     {
         return [
-            Message::COLUMN_NAME => 'required|string',
+
+
+
         ];
     }
 }

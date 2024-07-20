@@ -1,5 +1,5 @@
 <template>
-    <h1> {{ staff.name }} </h1>
+    <h1> {{ dummyVariableSingular.name }} </h1>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
     },
     layout: Layout,
     props: {
-        staff: Object
+        dummyVariableSingular: Object
     }
 }
 </script>

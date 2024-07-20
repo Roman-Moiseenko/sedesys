@@ -33,6 +33,9 @@ class MakeFrontEndModule extends MakeModuleCommand
         $this->createVueForm();*/
 
         $this->createVueIndex();
+        $this->createVueCreate();
+        $this->createVueEdit();
+        $this->createVueShow();
 
 /*
         $this->createStore();
@@ -50,13 +53,56 @@ class MakeFrontEndModule extends MakeModuleCommand
 
 
         if ($this->alreadyExists($path)) {
-            $this->error('VueList Component already exists!');
+            $this->error('Index Component already exists!');
         } else {
             $stub = $this->files->get(base_path('stubs/frontEnd/vue.index.stub'));
             $this->createFileWithStub($stub, $path);
-            $this->info('VueList Component created successfully.');
+            $this->info('Index Component created successfully.');
         }
     }
+
+    private function createVueCreate()
+    {
+        $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Create.vue';
+
+
+        if ($this->alreadyExists($path)) {
+            $this->error('Create Component already exists!');
+        } else {
+            $stub = $this->files->get(base_path('stubs/frontEnd/vue.create.stub'));
+            $this->createFileWithStub($stub, $path);
+            $this->info('Create Component created successfully.');
+        }
+    }
+
+    private function createVueEdit()
+    {
+        $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Edit.vue';
+
+
+        if ($this->alreadyExists($path)) {
+            $this->error('Edit Component already exists!');
+        } else {
+            $stub = $this->files->get(base_path('stubs/frontEnd/vue.edit.stub'));
+            $this->createFileWithStub($stub, $path);
+            $this->info('Edit Component created successfully.');
+        }
+    }
+
+    private function createVueShow()
+    {
+        $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Show.vue';
+
+
+        if ($this->alreadyExists($path)) {
+            $this->error('Show Component already exists!');
+        } else {
+            $stub = $this->files->get(base_path('stubs/frontEnd/vue.show.stub'));
+            $this->createFileWithStub($stub, $path);
+            $this->info('Show Component created successfully.');
+        }
+    }
+
 
     /**
      * Create a Vue component file for the module.

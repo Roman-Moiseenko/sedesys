@@ -14,7 +14,7 @@
             style="width: 100%; cursor: pointer;"
             :row-class-name="tableRowClassName"
             @row-click="routeClick"
-            v-loading="store.loading"
+            v-loading="store.getLoading"
         >
             <el-table-column sortable prop="name" label="Логин" width="100" />
             <el-table-column prop="phone" label="Телефон" width="120" />
@@ -103,9 +103,6 @@ export default {
         },
         handleDelete(index, row) {
             router.delete(row.destroy);
-        },
-        tLoading(val) {
-            console.log('toggle-', val);
         },
     }
 }

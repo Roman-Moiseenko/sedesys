@@ -22,7 +22,7 @@ class StaffRepository
                 'fullname' => $staff->fullname->getFullName(),
                 'shortname' => $staff->fullname->getShortname(),
                 'post'=> $staff->post,
-                'role' => $staff->role,
+                'role' => $staff->roleHTML(),
                 'active' => $staff->active,
                 'url' => route('admin.staff.show', $staff),
                 'edit' => route('admin.staff.edit', $staff),

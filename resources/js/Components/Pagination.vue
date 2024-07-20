@@ -44,10 +44,10 @@ export default {
                     method: 'get',
                     data: {page: this.$data.CurrentPage, size: val},
                     onBefore: visit => {
-                        useStore().load();
+                        useStore().beforeLoad();
                     },
                     onFinish: visit => {
-                        useStore().stop();
+                        useStore().afterLoad();
                     },
                 }
             );
@@ -60,10 +60,10 @@ export default {
                     method: 'get',
                     data: {page: val, size: this.$data.PageSize},
                     onBefore: visit => {
-                        useStore().load();
+                        useStore().beforeLoad();
                     },
                     onFinish: visit => {
-                        useStore().stop();
+                        useStore().afterLoad();
                     },
                 }
                 );
