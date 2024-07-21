@@ -59,6 +59,7 @@ class StaffController extends Controller
         return Inertia::render('Admin/Staff/Edit', [
             'roles' => $this->repository->roles(),
             'staff' => $staff,
+            'photo' => !empty($staff->photo) ? $staff->photo->getUploadUrl() : null,
             'route' => route('admin.staff.update', $staff),
         ]);
     }

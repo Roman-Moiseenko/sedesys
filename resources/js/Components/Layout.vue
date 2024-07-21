@@ -61,7 +61,6 @@
 
 <script>
 import { Link } from '@inertiajs/vue3'
-
 import Icon from '@/Components/Icon.vue'
 import Logo from '@/Components/Logo.vue'
 import Dropdown from '@/Components/Dropdown.vue'
@@ -78,7 +77,7 @@ export default {
         Icon,
         Link,
         Logo,
-        MainMenu,
+        MainMenu
     },
     props: {
         auth: Object,

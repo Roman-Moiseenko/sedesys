@@ -1,44 +1,42 @@
 <template>
+    <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-    <div>
-        <Head title="Dashboard" />
-        <h2 class="font-medium text-xl">Сотрудники</h2>
-    </div>
 
-    <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить сотрудника</el-button>
+        <h1 class="font-medium text-xl">Сотрудники</h1>
+        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить сотрудника</el-button>
 
-    <div class="mt-2 p-5 bg-white rounded-md">
-        <el-table
-            :data="tableData"
-            :height="$data.tableHeight"
-            style="width: 100%; cursor: pointer;"
-            :row-class-name="tableRowClassName"
-            @row-click="routeClick"
-            v-loading="store.getLoading"
-        >
-            <el-table-column sortable prop="name" label="Логин" width="100" />
-            <el-table-column prop="phone" label="Телефон" width="120" />
-            <el-table-column sortable prop="fullname" label="ФИО" />
-            <el-table-column prop="post" label="Должность" />
-            <el-table-column sortable prop="role" label="Роль" />
-            <el-table-column label="Действия">
-                <template #default="scope">
-                    <el-button
-                        size="small"
-                        @click.stop="handleEdit(scope.$index, scope.row)">
-                        Edit
-                    </el-button>
-                    <el-button
-                        size="small"
-                        type="danger"
-                        @click.stop="handleDelete(scope.$index, scope.row)"
-                    >
-                        Delete
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-    </div>
+        <div class="mt-2 p-5 bg-white rounded-md">
+            <el-table
+                :data="tableData"
+                :height="$data.tableHeight"
+                style="width: 100%; cursor: pointer;"
+                :row-class-name="tableRowClassName"
+                @row-click="routeClick"
+                v-loading="store.getLoading"
+            >
+                <el-table-column sortable prop="name" label="Логин" width="100" />
+                <el-table-column prop="phone" label="Телефон" width="120" />
+                <el-table-column sortable prop="fullname" label="ФИО" />
+                <el-table-column prop="post" label="Должность" />
+                <el-table-column sortable prop="role" label="Роль" />
+                <el-table-column label="Действия">
+                    <template #default="scope">
+                        <el-button
+                            size="small"
+                            @click.stop="handleEdit(scope.$index, scope.row)">
+                            Edit
+                        </el-button>
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click.stop="handleDelete(scope.$index, scope.row)"
+                        >
+                            Delete
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
 
         <pagination
             :current_page="$page.props.staffs.current_page"
@@ -79,7 +77,11 @@ export default {
     },
     layout: Layout,
     props: {
-        staffs: Object
+        staffs: Object,
+        title: {
+            type: String,
+            default: 'Список сотрудников',
+        }
     },
     emits: ['toggle-loading'],
     data() {

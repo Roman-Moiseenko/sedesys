@@ -5,6 +5,7 @@ namespace App\Modules\Admin\Service;
 
 use App\Modules\Admin\Entity\Admin;
 use App\Modules\Base\Entity\FullName;
+use App\Modules\Base\Entity\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -33,7 +34,9 @@ class StaffService
             //flash('Пароль сменен');
         }
         $staff->save();
-
+        if ($request->boolean('clear_file')) {
+            $staff->photo->delete();
+        }
         $this->save_fields($staff, $request);
     }
 
@@ -49,10 +52,23 @@ class StaffService
             (string)$request->string('secondname')
         );
         $staff->save();
+
+        $this->photo($staff, $request->file('file'));
     }
 
     public function destroy(Admin $staff)
     {
         $staff->delete();
+    }
+
+    public function photo(Admin $admin, $file): void
+    {
+        if (empty($file)) return;
+        if (!empty($admin->photo)) {
+            $admin->photo->newUploadFile($file);
+        } else {
+            $admin->photo()->save(Photo::upload($file));
+        }
+        $admin->refresh();
     }
 }

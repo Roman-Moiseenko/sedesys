@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Modules\Base\Entity;
 
-use App\Jobs\ClearTempFile;
-use App\Modules\Admin\Entity\Options;
-use App\Modules\Shop\Parser\HttpPage;
+//use App\Jobs\ClearTempFile;
+//use App\Modules\Admin\Entity\Options;
+//use App\Modules\Shop\Parser\HttpPage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -44,8 +44,7 @@ class Photo extends Model
 
     private string $urlUpload;
 
-    /** @var UploadedFile $fileForUpload */
-    private  $fileForUpload;
+    private UploadedFile $fileForUpload;
 
     public function imageable()
     {
@@ -62,21 +61,20 @@ class Photo extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $options = new Options();
+        $config = config('sedesys.image');
 
-        $this->watermark = $options->image->watermark;
+        $this->watermark = $config['watermark'];
 
-        if (empty($this->thumbs)) $this->thumbs = $options->image->thumbs;
+        if (empty($this->thumbs)) $this->thumbs = $config['thumbs'];
 
-        $this->createThumbsOnSave = $options->image->createThumbsOnSave;
-        $this->createThumbsOnRequest = $options->image->createThumbsOnRequest;
+        $this->createThumbsOnSave = $config['createThumbsOnSave'];
+        $this->createThumbsOnRequest = $config['createThumbsOnRequest'];
 
-        //TODO Сделать переключение  м/у getPublicPath и getStoragePath
-        $this->catalogUpload = $options->image->getPublicPath('uploads');
-        $this->catalogThumb =   $options->image->getPublicPath('cache');
+        $this->catalogUpload = public_path() . $config['paths']['uploads'];
+        $this->catalogThumb = public_path() . $config['paths']['cache'];
 
-        $this->urlUpload = $options->image->path['uploads'];
-        $this->urlThumb = $options->image->path['cache'];
+        $this->urlUpload = $config['paths']['uploads'];
+        $this->urlThumb = $config['paths']['cache'];
     }
 
     public static function upload(UploadedFile $file, string $type = '', int $sort = 0, string $alt = ''): self
@@ -90,7 +88,7 @@ class Photo extends Model
         $photo->fileForUpload = $file;
         return $photo;
     }
-
+/*
     public static function uploadByUrlProxy(string $url, string $type = '', int $sort = 0, string $alt = ''): self
     {
         $storage = public_path() . '/temp/';
@@ -109,7 +107,8 @@ class Photo extends Model
         ClearTempFile::dispatch($storage . $upload_file_name)->delay(now()->addMinutes(30)); //Удаление временного файла через 30 минут
         return self::upload($upload, $type, $sort, $alt);
     }
-
+*/
+    /*
     public static function uploadByUrl(string $url, string $type = '', int $sort = 0, string $alt = ''): self
     {
         $storage = public_path() . '/temp/';
@@ -125,7 +124,7 @@ class Photo extends Model
         return self::upload($upload, $type, $sort, $alt);
     }
 
-
+*/
     // Set и Is
     public function setSort(int $sort): void
     {

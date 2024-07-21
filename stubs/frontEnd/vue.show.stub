@@ -1,5 +1,6 @@
 <template>
-    <h1> {{ staff.name }} </h1>
+    <Head><title>{{ title }}</title></Head>
+    <h1 class="font-medium text-xl">  {{ dummyVariableSingular.name }}  </h1>
 </template>
 
 <script>
@@ -12,7 +13,11 @@
         },
         layout: Layout,
         props: {
-            staff: Object
+            dummyVariableSingular: Object,
+            title: {
+                type: String,
+                default: 'Карточка dummyVariableSingular',
+            }
         }
     }
 </script>

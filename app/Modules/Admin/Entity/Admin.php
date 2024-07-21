@@ -161,7 +161,7 @@ class Admin extends Authenticatable
 
     public function photo()
     {
-        return $this->morphOne(Photo::class, 'imageable')->withDefault();
+        return $this->morphOne(Photo::class, 'imageable');//->withDefault();
     }
 
 
