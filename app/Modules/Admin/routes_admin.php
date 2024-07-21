@@ -10,4 +10,15 @@ Route::group([
     Route::any('/logout', 'LoginController@logout')->name('logout');
 });
 
+Route::group([
+    'prefix' => 'staff',
+    'as' => 'staff.',
+], function() {
+    Route::post('/{staff}/password', 'StaffController@password')->name('password');
+    Route::post('/{staff}/toggle', 'StaffController@toggle')->name('toggle');
+});
+
+
 Route::resource('staff', 'StaffController');
+
+

@@ -31,10 +31,9 @@ class StaffService
         $staff->phone = (string)$request->string('phone');
         if ($request->has('password')) {
             $staff->password = Hash::make((string)$request->string('password'));
-            //flash('Пароль сменен');
         }
         $staff->save();
-        if ($request->boolean('clear_file')) {
+        if ($request->boolean('clear_file') && !is_null($staff->photo)) {
             $staff->photo->delete();
         }
         $this->save_fields($staff, $request);
@@ -70,5 +69,11 @@ class StaffService
             $admin->photo()->save(Photo::upload($file));
         }
         $admin->refresh();
+    }
+
+    public function password(Admin $admin, Request $request)
+    {
+        $admin->password = Hash::make((string)$request->string('password'));
+        $admin->save();
     }
 }

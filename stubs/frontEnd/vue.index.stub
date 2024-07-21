@@ -40,7 +40,23 @@
             :total="$page.props.dummyVariableEntityPlural.total"
         />
     </el-config-provider>
-
+    <!-- Dialog Delete -->
+    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
+        <div class="font-medium text-md mt-2">
+            Вы уверены, что хотите удалить dummyVariableEntitySingular?
+        </div>
+        <div class="text-red-600 text-md mt-2">
+            Восстановить данные будет невозможно!
+        </div>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
+                <el-button type="danger" @click="removeItem($data.routeDestroy)">
+                    Удалить
+                </el-button>
+            </div>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -86,6 +102,8 @@ export default {
             tableData: [...this.dummyVariableEntityPlural.data],
             TableHeight: '500',
             Loading: false,
+            dialogDelete: false,
+            routeDestroy: null,
         }
     },
     methods: {
@@ -98,8 +116,19 @@ export default {
         handleEdit(index, row) {
             router.get(row.edit);
         },
+
         handleDelete(index, row) {
-            router.delete(row.destroy);
+            this.$data.dialogDelete = true;
+            this.$data.routeDestroy = row.destroy;
+        },
+        removeItem(_route) {
+            if (_route !== null) {
+                router.visit(_route, {
+                    method: 'delete'
+                });
+                this.$data.dialogDelete = false;
+                this.$data.routeDestroy = null;
+            }
         },
     }
 }

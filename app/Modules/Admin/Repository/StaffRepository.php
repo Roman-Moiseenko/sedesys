@@ -11,7 +11,6 @@ class StaffRepository
 {
     public function getIndex(Request $request): Arrayable
     {
-        //dd($request->all());
         $size = $request->input('size', 5);
         return Admin::orderBy('name')
             ->paginate($size)->withQueryString()
@@ -27,6 +26,7 @@ class StaffRepository
                 'url' => route('admin.staff.show', $staff),
                 'edit' => route('admin.staff.edit', $staff),
                 'destroy' => route('admin.staff.destroy', $staff),
+                'toggle' => route('admin.staff.toggle', $staff),
             ]);
     }
 

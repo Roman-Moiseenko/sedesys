@@ -1,5 +1,5 @@
 <template>
-    <el-menu :default-active="getUrl($page.url)" class="bg-indigo-800"
+    <el-menu :default-active="getUrl($page.url)" class=""
              active-text-color="rgb(253 186 116)" text-color="rgb(244 244 245)"
              background-color="rgb(82 82 91)">
         <template v-for="(item, index)  in $page.props.menus">

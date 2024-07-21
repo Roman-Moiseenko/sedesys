@@ -21,6 +21,18 @@
                 <el-table-column sortable prop="role" label="Роль" />
                 <el-table-column label="Действия">
                     <template #default="scope">
+                        <el-button v-if="scope.row.active"
+                            size="small"
+                            type="warning"
+                            @click.stop="handleToggle(scope.$index, scope.row)">
+                            Blocked
+                        </el-button>
+                        <el-button v-if="!scope.row.active"
+                                   size="small"
+                                   type="success"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Activated
+                        </el-button>
                         <el-button
                             size="small"
                             @click.stop="handleEdit(scope.$index, scope.row)">
@@ -44,6 +56,25 @@
             :total="$page.props.staffs.total"
         />
     </el-config-provider>
+
+    <!-- Dialog Delete -->
+    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
+
+        <div class="font-medium text-md mt-2">
+            Вы уверены, что хотите удалить сотрудника?
+        </div>
+        <div class="text-red-600 text-md mt-2">
+            Восстановить данные будет невозможно!
+        </div>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
+                <el-button type="danger" @click="removeItem($data.routeDestroy)">
+                    Удалить
+                </el-button>
+            </div>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -89,6 +120,8 @@ export default {
             tableData: [...this.staffs.data],
             TableHeight: '500',
             Loading: false,
+            dialogDelete: false,
+            routeDestroy: null,
         }
     },
     mounted() {
@@ -104,7 +137,22 @@ export default {
             router.get(row.edit);
         },
         handleDelete(index, row) {
-            router.delete(row.destroy);
+            this.$data.dialogDelete = true;
+            this.$data.routeDestroy = row.destroy;
+            //router.delete(row.destroy);
+        },
+        removeItem(_route) {
+            if (_route !== null) {
+                router.visit(_route, {
+                    method: 'delete'
+                });
+                this.$data.dialogDelete = false;
+                this.$data.routeDestroy = null;
+            }
+        },
+        handleToggle(index, row) {
+            router.visit(row.toggle, {
+                method:'post'});
         },
     }
 }

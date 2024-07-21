@@ -28,7 +28,6 @@ class StaffController extends Controller
 
         return Inertia::render('Admin/Staff/Index', [
             'staffs' => $staffs,
-
         ]);
     }
     public function create()
@@ -42,7 +41,6 @@ class StaffController extends Controller
     public function store(StaffRequest $request)
     {
         $request->validated([]);
-
         $staff = $this->service->create($request);
         return redirect()->route('admin.staff.show', $staff)->with('success', 'Новый сотрудник добавлен');
     }
@@ -51,6 +49,9 @@ class StaffController extends Controller
     {
         return Inertia::render('Admin/Staff/Show', [
             'staff' => $staff,
+            'photo' => !empty($staff->photo) ? $staff->photo->getUploadUrl() : null,
+            'edit' => route('admin.staff.edit', $staff),
+            'password' => route('admin.staff.password', $staff),
         ]);
     }
 
@@ -76,5 +77,24 @@ class StaffController extends Controller
     {
         $this->service->destroy($staff);
         return redirect()->back()->with('success', 'Удаление прошло успешно');
+    }
+
+    public function password(Admin $staff, Request $request)
+    {
+        $request->validate([
+            'password' => ['required', 'min:6'],
+        ]);
+        $this->service->password($staff, $request);
+        return redirect()->back()->with('success', 'Пароль изменен');
+    }
+
+    public function toggle(Admin $staff)
+    {
+        if ($staff->isBlocked()) {
+            $staff->activated();
+        } else {
+            $staff->blocked();
+        }
+        return redirect()->back();
     }
 }

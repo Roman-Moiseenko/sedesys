@@ -4,7 +4,7 @@
     <div class="mt-3 p-3 bg-white rounded-lg">
 
         <el-form :model="form" label-width="auto">
-            <div class="grid grid-cols-3 divide-x">
+            <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                 <div class="p-4">
                     <el-form-item label="Логин" :rules="{required: true}">
                         <el-input v-model="form.name" placeholder="Только латиница и цифры" @input="handleMaskLogin"/>
@@ -78,6 +78,9 @@
                         </template>
                     </el-upload>
                     <!-- End FileUpload -->
+                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                        {{ form.progress.percentage }}%
+                    </progress>
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
