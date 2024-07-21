@@ -2,7 +2,7 @@
 
 return [
     'employees' => [
-        'sort' => 2,
+        'sort' => 20,
         'icon' => 'users',
         'title' => 'Персонал',
         'can' => 'staff',

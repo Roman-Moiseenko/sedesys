@@ -1,14 +1,16 @@
 <?php
 
-namespace DummyRootNamespaceModules\DummySingular\Resources;
+namespace DummyRootNamespaceModules\DummySingular\Repository;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
+use App\Modules\DummySingular\DummyEntitySingular\DummyEntitySingular;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DummyEntitySingularRepository
 {
 
-    public function getIndex(Request $request): array
+    public function getIndex(Request $request): Arrayable
     {
         $dummyVariableEntityPlural = DummyEntitySingular::orderBy('name')
             ->paginate(20)->withQueryString()

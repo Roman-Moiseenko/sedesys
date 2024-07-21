@@ -5,7 +5,7 @@ namespace DummyRootNamespaceModules\DummySingular\Controllers;
 use DummyRootNamespaceHttp\Controllers\Controller;
 use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
 use DummyRootNamespaceModules\DummySingular\Requests\DummyEntitySingularRequest;
-use DummyRootNamespaceModules\DummySingular\Resources\DummyEntitySingularResource;
+use DummyRootNamespaceModules\DummySingular\Repository\DummyEntitySingularRepository;
 use DummyRootNamespaceModules\DummySingular\Service\DummyEntitySingularService;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
