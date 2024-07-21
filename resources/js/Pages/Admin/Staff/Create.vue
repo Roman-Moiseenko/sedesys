@@ -47,7 +47,7 @@
                     </el-form-item>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium">Фото сотрудника на аватар</h2>
+                    <h2 class="font-medium mb-3">Фото сотрудника на аватар</h2>
                     <!-- FileUpload -->
                     <el-upload action="#" list-type="picture-card"
                                :limit="1"
