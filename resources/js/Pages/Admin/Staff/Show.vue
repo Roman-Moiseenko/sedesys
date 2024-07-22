@@ -53,7 +53,6 @@
                 </div>
             </div>
         </div>
-
         <div class="mt-3 flex flex-row">
             <el-button type="primary" @click="goEdit">Редактировать</el-button>
             <el-button plain @click="dialogFormVisible = true">

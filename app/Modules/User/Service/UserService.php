@@ -2,8 +2,7 @@
 
 namespace App\Modules\User\Service;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Modules\Base\Entity\FullName;
 use Illuminate\Http\Request;
 use App\Modules\User\Entity\User;
 
@@ -12,15 +11,10 @@ class UserService
 
     public function create(Request $request): User
     {
-        /**
-         * Создаем объект с базовыми данными
-         */
-        $user = User::register(
-            (string)$request->string('name')
-        );
+        $user = User::register($request->string('phone'), $request->string('password'));
 
         $this->save_fields($user, $request);
-
+        $user->verify();
         return  $user;
     }
 
@@ -29,7 +23,7 @@ class UserService
         /**
          * Сохраняем базовые поля
          */
-        $user->name = (string)$request->string('name');
+        $user->phone = (string)$request->string('phone');
         $user->save();
 
         $this->save_fields($user, $request);
@@ -37,13 +31,15 @@ class UserService
 
     private function save_fields(User $user, Request $request)
     {
-        /**
-         * Сохраняем оставшиеся поля
-         */
+        $user->fullname = new FullName(
+            (string)$request->string('surname'),
+            (string)$request->string('firstname'),
+            (string)$request->string('secondname')
+        );
+        $user->address->address = (string)$request->string('address');
 
         $user->save();
     }
-
 
     public function destroy(User $user)
     {
@@ -52,4 +48,5 @@ class UserService
          */
         $user->delete();
     }
+
 }

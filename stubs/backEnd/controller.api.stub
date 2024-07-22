@@ -39,7 +39,9 @@ class DummyEntitySingularController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('DummySingular/DummyEntitySingular/Create', []);
+        return Inertia::render('DummySingular/DummyEntitySingular/Create', [
+            'route' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.store'),
+        ]);
     }
 
     public function store(DummyEntitySingularRequest $request)
@@ -48,13 +50,14 @@ class DummyEntitySingularController extends Controller
         $dummyVariableEntitySingular = $this->service->create($request);
         return redirect()
             ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
-            ->with('success', 'Новый dummyVariableEntitySingular добавлен');;
+            ->with('success', 'Новый dummyVariableEntitySingular добавлен');
     }
 
     public function show(DummyEntitySingular $dummyVariableEntitySingular)
     {
         return Inertia::render('DummySingular/DummyEntitySingular/Show', [
-                'dummyVariableEntitySingular' => $dummyVariableEntitySingular
+                'dummyVariableEntitySingular' => $dummyVariableEntitySingular,
+                'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
             ]
         );
     }
@@ -62,7 +65,8 @@ class DummyEntitySingularController extends Controller
     public function edit(DummyEntitySingular $dummyVariableEntitySingular)
     {
         return Inertia::render('DummySingular/DummyEntitySingular/Edit', [
-            'dummyVariableEntitySingular' => $dummyVariableEntitySingular
+            'dummyVariableEntitySingular' => $dummyVariableEntitySingular,
+            'route' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.update', $dummyVariableEntitySingular),
         ]);
     }
 
@@ -72,13 +76,13 @@ class DummyEntitySingularController extends Controller
         $dummyVariableEntitySingular = $this->service->update($dummyVariableEntitySingular, $request);
         return redirect()
             ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
-            ->with('success', 'Сохранение прошло успешно');;
+            ->with('success', 'Сохранение прошло успешно');
     }
 
     public function destroy(DummyEntitySingular $dummyVariableEntitySingular)
     {
         $this->service->destroy($dummyVariableEntitySingular);
 
-        return redirect()->back()->with('success', 'Удаление прошло успешно');;
+        return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 }

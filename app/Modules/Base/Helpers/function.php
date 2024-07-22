@@ -9,6 +9,15 @@ if (!function_exists('price')) {
         return number_format($value, 0, ',', ' ') . ' ₽';
     }
 }
+if (!function_exists('phone')) {
+    function phone($value): string
+    {
+        if (empty($value) || !is_numeric($value)) return '';
+        return mb_substr($value, 0, 1) . ' ' . mb_substr($value, 1, 3) . '-' . mb_substr($value, 6, 3) . '-' . mb_substr($value, 7, 4);
+
+
+    }
+}
 
 if (!function_exists('modules')) {
     /**

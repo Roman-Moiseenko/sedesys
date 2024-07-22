@@ -26,6 +26,10 @@
     const props = defineProps({
         errors: Object,
         route: String,
+        title: {
+            type: String,
+            default: 'Создание dummyVariableSingular',
+        }
     });
 
     const form = reactive({
@@ -56,11 +60,5 @@
             Head,
         },
         layout: Layout,
-        props: {
-            title: {
-                type: String,
-                default: 'Создание dummyVariableSingular',
-            }
-        }
     }
 </script>

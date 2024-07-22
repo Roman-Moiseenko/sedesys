@@ -13,10 +13,21 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Name" width="100" />
+                <el-table-column sortable prop="phone" label="Телефон" width="140" />
+                <el-table-column sortable prop="fullname" label="ФИО" />
+                <el-table-column sortable prop="email" label="Email" />
+                <el-table-column sortable prop="address" label="Адрес" />
+
                 <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">
+                        <el-button
+                            v-if="!scope.row.active"
+                            size="small"
+                            type="success"
+                            @click.stop="handleActivated(scope.$index, scope.row)">
+                            Activated
+                        </el-button>
                         <el-button
                             size="small"
                             @click.stop="handleEdit(scope.$index, scope.row)">
@@ -43,7 +54,7 @@
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить user?
+            Вы уверены, что хотите удалить Клиента?
         </div>
         <div class="text-red-600 text-md mt-2">
             Восстановить данные будет невозможно!
@@ -67,10 +78,10 @@
         /**
          * Статусы
         */
-        active: number
+        active: boolean
     }
     const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === 0) {
+        if (row.active === false) {
             return 'warning-row'
         }
         return ''
@@ -94,7 +105,7 @@ export default {
         users: Object,
         title: {
             type: String,
-            default: 'Список users',
+            default: 'Список клиентов',
         }
     },
     data() {
@@ -117,9 +128,15 @@ export default {
             router.get(row.edit);
         },
 
+
         handleDelete(index, row) {
             this.$data.dialogDelete = true;
             this.$data.routeDestroy = row.destroy;
+        },
+        handleActivated(index, row) {
+            router.visit(row.verify, {
+                method: 'post'
+            });
         },
         removeItem(_route) {
             if (_route !== null) {
@@ -130,6 +147,7 @@ export default {
                 this.$data.routeDestroy = null;
             }
         },
+
     }
 }
 </script>

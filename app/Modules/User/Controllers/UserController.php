@@ -7,11 +7,7 @@ use App\Modules\User\Entity\User;
 use App\Modules\User\Requests\UserRequest;
 use App\Modules\User\Repository\UserRepository;
 use App\Modules\User\Service\UserService;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -39,22 +35,25 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('User/User/Create', []);
+        return Inertia::render('User/User/Create', [
+            'route' => route('admin.user.user.store'),
+        ]);
     }
 
     public function store(UserRequest $request)
     {
-        $data = $request->validated();
+        $request->validated();
         $user = $this->service->create($request);
         return redirect()
             ->route('admin.user.user.show', $user)
-            ->with('success', 'Новый user добавлен');;
+            ->with('success', 'Новый клиент добавлен');
     }
 
     public function show(User $user)
     {
         return Inertia::render('User/User/Show', [
-                'user' => $user
+                'user' => $user,
+                'edit' => route('admin.user.user.edit', $user),
             ]
         );
     }
@@ -62,23 +61,30 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return Inertia::render('User/User/Edit', [
-            'user' => $user
+            'user' => $user,
+            'route' => route('admin.user.user.update', $user),
         ]);
     }
 
     public function update(UserRequest $request, User $user)
     {
         $data = $request->validated();
-        $user = $this->service->update($user, $request);
+        $this->service->update($user, $request);
         return redirect()
             ->route('admin.user.user.show', $user)
-            ->with('success', 'Сохранение прошло успешно');;
+            ->with('success', 'Сохранение прошло успешно');
     }
 
     public function destroy(User $user)
     {
         $this->service->destroy($user);
 
-        return redirect()->back()->with('success', 'Удаление прошло успешно');;
+        return redirect()->back()->with('success', 'Удаление прошло успешно');
+    }
+
+    public function verify(User $user)
+    {
+        $user->verify();
+        return redirect()->back();
     }
 }

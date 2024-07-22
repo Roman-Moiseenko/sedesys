@@ -55,7 +55,6 @@
                                v-model:fileList="fileList"
                                @input="form.file = $event.target.files[0]" :on-remove="handleRemove"
                                class="file-uploader-one"
-                               :on-success="handleSuccess"
                                ref="template"
                     >
                         <el-icon><Plus/></el-icon>

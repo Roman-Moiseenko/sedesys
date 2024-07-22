@@ -17,7 +17,7 @@ Breadcrumbs::for('admin.user.user.create', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('admin.user.user.show', function (BreadcrumbTrail $trail, User $user) {
     $trail->parent('admin.user.user.index');
-    $trail->push($user->fullname->getShortname(), route('admin.user.user.show', $user));
+    $trail->push($user->fullname->firstname . ' (' . phone($user->phone) . ')', route('admin.user.user.show', $user));
 });
 
 Breadcrumbs::for('admin.user.user.edit', function (BreadcrumbTrail $trail, User $user) {

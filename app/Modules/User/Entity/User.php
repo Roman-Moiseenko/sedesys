@@ -21,8 +21,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $phone
  * @property string $password
  * @property string $verify_token
- * @property int $client
- * @property bool $legal
  * @property FullName $fullname
  * @property GeoAddress $address
 
@@ -62,11 +60,11 @@ class User extends Authenticatable
         'address' => GeoAddressCast::class
     ];
 
-    public static function register(string $email, string $password): self
+    public static function register(string $phone, string $password): self
     {
         return static::create([
-            'email' => $email,
-            //'phone' => $phone,
+            //'email' => $email,
+            'phone' => $phone,
             'password' => Hash::make($password),
             'verify_token' => rand(1234, 9876), //Str::uuid(),
             'status' => self::STATUS_WAIT,

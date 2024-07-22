@@ -11,8 +11,7 @@ class RegisterService
     public function register(Request $request): void
     {
         $user = User::register(
-            $request['email'],
-            // $request['phone'],
+            $request['phone'],
             $request['password']
         );
         //TODO События
@@ -26,14 +25,4 @@ class RegisterService
         //event(new UserHasRegistered($user));
     }
 
-    public function newUser($email, $password)
-    {
-        //$user = User::where($email)->first();
-        $user = User::register(
-            $email,
-            // $request['phone'],
-            $password
-        );
-        return $user;
-    }
 }

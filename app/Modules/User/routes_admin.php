@@ -8,4 +8,5 @@ Route::group([
     'as' => 'user.',
 ], function() {
     Route::resource('user', 'UserController');
+    Route::post('/user/{user}/verify', 'UserController@verify')->name('user.verify');
 });

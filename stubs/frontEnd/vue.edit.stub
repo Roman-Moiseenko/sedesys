@@ -49,7 +49,7 @@
     }
 
     function onSubmit() {
-        router.post(props.route, form)
+        router.put(props.route, form)
     }
 
 </script>
