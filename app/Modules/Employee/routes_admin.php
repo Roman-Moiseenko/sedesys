@@ -9,8 +9,7 @@ Route::group(
     ],
     function() {
         Route::resource('employee', 'EmployeeController');
-        Route::Resource('operating', 'OperatingController');
-        Route::Resource('message', 'MessageController');
+        Route::Resource('specialization', 'SpecializationController');
     }
 );
 

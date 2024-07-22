@@ -4,8 +4,7 @@ namespace DummyRootNamespaceModules\DummySingular\Repository;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
-use App\Modules\DummySingular\DummyEntitySingular\DummyEntitySingular;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Modules\DummySingular\Entity\DummyEntitySingular;
 
 class DummyEntitySingularRepository
 {

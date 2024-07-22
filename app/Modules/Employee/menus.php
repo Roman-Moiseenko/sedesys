@@ -12,15 +12,10 @@ return [
                 'title' => 'Список',
                 'route' => route('admin.employee.employee.index', [], false),
             ],
-            'send' => [
+            'specialization' => [
                 'icon' => 'printer',
-                'title' => 'Оповещение',
-                'route' => route('admin.employee.message.index', [], false),
-            ],
-            'works' => [
-                'icon' => 'printer',
-                'title' => 'График работы',
-                'route' => route('admin.employee.operating.index', [], false),
+                'title' => 'Специализация',
+                'route' => '', //route('admin.employee.specialization.index', [], false),
             ],
         ],
     ],

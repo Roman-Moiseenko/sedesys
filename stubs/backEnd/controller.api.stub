@@ -46,7 +46,7 @@ class DummyEntitySingularController extends Controller
 
     public function store(DummyEntitySingularRequest $request)
     {
-        $data = $request->validated();
+        $request->validated();
         $dummyVariableEntitySingular = $this->service->create($request);
         return redirect()
             ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
