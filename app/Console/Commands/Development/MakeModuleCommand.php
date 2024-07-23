@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Development;
 
 use Exception;
 use Illuminate\Console\Command;
@@ -11,13 +11,16 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use JetBrains\PhpStorm\Pure;
+use function app_path;
+use function base_path;
+use function class_basename;
 
 class MakeModuleCommand extends Command
 {
     protected Filesystem $files;
     protected $signature = 'make:module {module}
     {--entity= : "Сущность в модуле" / "Пусто, если совпадает"}';
-    protected $description = 'Create a new Module for front-end and back-end';
+    protected $description = 'Создание Модуля for front-end and back-end';
     protected Stringable $module;
     protected Stringable $entity;
 

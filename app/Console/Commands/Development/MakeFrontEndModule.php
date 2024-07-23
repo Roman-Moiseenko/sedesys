@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Development;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use function base_path;
 
 class MakeFrontEndModule extends MakeModuleCommand
 {
