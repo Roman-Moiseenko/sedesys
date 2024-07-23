@@ -19,10 +19,12 @@ class EmployeeRepository
                 'fullname' => $employee->fullname->getFullName(),
                 'shortname' => $employee->fullname->getShortname(),
                 'active' => $employee->active,
+                'address' => $employee->address->address,
 
                 'url' => route('admin.employee.employee.show', $employee),
                 'edit' => route('admin.employee.employee.edit', $employee),
                 'destroy' => route('admin.employee.employee.destroy', $employee),
+                'toggle' => route('admin.employee.employee.toggle', $employee),
             ]);
 
         return $employees;

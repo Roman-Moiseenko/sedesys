@@ -58,6 +58,7 @@ class EmployeeController extends Controller
         return Inertia::render('Employee/Employee/Show', [
                 'employee' => $employee,
                 'edit' => route('admin.employee.employee.edit', $employee),
+                'photo' => !empty($employee->photo) ? $employee->photo->getUploadUrl() : null,
             ]
         );
     }
@@ -67,13 +68,15 @@ class EmployeeController extends Controller
         return Inertia::render('Employee/Employee/Edit', [
             'employee' => $employee,
             'route' => route('admin.employee.employee.update', $employee),
+            'photo' => !empty($employee->photo) ? $employee->photo->getUploadUrl() : null,
+
         ]);
     }
 
     public function update(EmployeeRequest $request, Employee $employee)
     {
-        $data = $request->validated();
-        $employee = $this->service->update($employee, $request);
+        $request->validated();
+        $this->service->update($employee, $request);
         return redirect()
             ->route('admin.employee.employee.show', $employee)
             ->with('success', 'Сохранение прошло успешно');
@@ -84,5 +87,15 @@ class EmployeeController extends Controller
         $this->service->destroy($employee);
 
         return redirect()->back()->with('success', 'Удаление прошло успешно');
+    }
+
+    public function toggle(Employee $employee)
+    {
+        if ($employee->isBlocked()) {
+            $employee->activated();
+        } else {
+            $employee->blocked();
+        }
+        return redirect()->back();
     }
 }

@@ -24,11 +24,20 @@ class EmployeeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'phone' => ['required', 'min:10'],
-            'password' => ['required', 'min:6'],
-            'surname' => ['required', 'min:2'],
-            'firstname' => ['required', 'min:2'],
+        $rules = [
+            'POST' => [
+                'phone' => ['required', 'min:10'],
+                'password' => ['required', 'min:6'],
+                'surname' => ['required', 'min:2'],
+                'firstname' => ['required', 'min:2'],
+            ],
+            'PUT' => [
+                'phone' => ['required', 'min:10'],
+                'surname' => ['required', 'min:2'],
+                'firstname' => ['required', 'min:2'],
+            ],
         ];
+        return $rules[$this->method()];
+
     }
 }

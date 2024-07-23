@@ -58,6 +58,25 @@ class Employee extends Authenticatable
     }
 
 
+
+
+    public function isBlocked(): bool
+    {
+        return $this->active == false;
+    }
+
+    public function activated()
+    {
+        $this->active = true;
+        $this->save();
+    }
+
+    public function blocked()
+    {
+        $this->active = false;
+        $this->save();
+    }
+
     public function photo()
     {
         return $this->morphOne(Photo::class, 'imageable');//->withDefault();

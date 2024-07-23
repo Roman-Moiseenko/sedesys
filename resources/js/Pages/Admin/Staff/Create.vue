@@ -1,5 +1,5 @@
 <template>
-    <Head><title>{{ title }}</title></Head>
+    <Head><title>{{ $props.title }}</title></Head>
     <h1 class="font-medium text-xl">Добавить нового сотрудника</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto">

@@ -7,7 +7,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :height="tableHeight"
+                :max-height="$data.tableHeight"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -111,7 +111,7 @@ export default {
     data() {
         return {
             tableData: [...this.users.data],
-            TableHeight: '500',
+            tableHeight: '600',
             Loading: false,
             dialogDelete: false,
             routeDestroy: null,

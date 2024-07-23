@@ -9,7 +9,9 @@ Route::group(
     ],
     function() {
         Route::resource('employee', 'EmployeeController');
-        Route::Resource('specialization', 'SpecializationController');
+//        Route::Resource('specialization', 'SpecializationController');
+        Route::post('/employee/{employee}/toggle', 'EmployeeController@toggle')->name('employee.toggle');
+
     }
 );
 
