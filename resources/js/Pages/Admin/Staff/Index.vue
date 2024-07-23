@@ -14,6 +14,7 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
+
                 <el-table-column sortable prop="name" label="Логин" width="100" />
                 <el-table-column prop="phone" label="Телефон" width="120" />
                 <el-table-column sortable prop="fullname" label="ФИО" />
