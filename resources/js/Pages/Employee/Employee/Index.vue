@@ -1,7 +1,7 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">Employee</h1>
+        <h1 class="font-medium text-xl">Обслуживающий персонал</h1>
         <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Персонал</el-button>
 
         <div class="mt-2 p-5 bg-white rounded-md">

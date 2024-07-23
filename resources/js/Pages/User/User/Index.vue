@@ -1,8 +1,8 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">User</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить User</el-button>
+        <h1 class="font-medium text-xl">Клиенты</h1>
+        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Клиента</el-button>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table

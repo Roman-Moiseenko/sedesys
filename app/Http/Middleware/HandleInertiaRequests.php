@@ -64,6 +64,7 @@ class HandleInertiaRequests extends Middleware
                 return AdminMenu::menu();
             },
             'breadcrumbs' => function () use($request) {
+                if ($request->path() == 'admin/login') return '';
                 return \Diglactic\Breadcrumbs\Breadcrumbs::view('breadcrumbs::json-ld')->getData()['breadcrumbs'];
             },
         ]);

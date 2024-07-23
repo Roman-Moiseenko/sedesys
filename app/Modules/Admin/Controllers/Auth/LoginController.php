@@ -95,6 +95,9 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+       // dd($request->all());
+
+
 /*
         $this->validate($request, [
             'name'   => 'required',
@@ -107,27 +110,13 @@ class LoginController extends Controller
             $admin = $this->guard()->user();
             if ($admin->isBlocked()) {
                 Auth::logout();
-                $message= 'Ваш аккаунт заблокирован';
-                $success = false;
+                return redirect()->back()->with('danger', 'Ваш аккаунт заблокирован');
             } else {
-                $success = true;
-                $message = 'Добро пожаловать ' . $admin->fullname->getFullName();
+                return redirect()->intended('/admin')->with('success', 'Добро пожаловать ' . $admin->fullname->getFullName());
             }
-
         } else {
-            $message= 'Неверные данные';
-            $success = false;
+            return redirect()->back()->with('danger', 'Ошибка доступа');
         }
-        // response
-        $response = [
-            'success' => $success,
-            'message' => $message,
-        ];
-        //dd([$request['login'], $request['password']]);
-        return redirect()->intended('/admin');
-        //return response()->json($response);
-        //return back()->withInput($request->only('name', 'remember'));
-
     }
 
     /**

@@ -1,6 +1,8 @@
 <template>
-    <Head title="Login" />
-    <div class="flex items-center justify-center p-6 min-h-screen bg-indigo-800">
+    <Head title="Login in SeDeSys" />
+
+    <div class="flex items-center justify-center p-6 min-h-screen bg-zinc-600">
+        <flash-messages />
         <div class="w-full max-w-md">
             <div class="block mx-auto w-full max-w-xs fill-white flex text-gray-50" >
                 <logo height="100" />
@@ -31,11 +33,13 @@
 <script>
 import { Head } from '@inertiajs/vue3'
 import Logo from '@/Components/Logo.vue'
+import FlashMessages from '@/Components/FlashMessages.vue'
 
 export default {
     components: {
         Head,
         Logo,
+        FlashMessages,
     },
     data() {
         return {
