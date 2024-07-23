@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "start": "concurrently  \"php artisan config:cache\" \"php artisan serve\" \"npm run dev\""
     },
     "devDependencies": {
         "laravel-vite-plugin": "^1.0.1",
@@ -21,8 +22,9 @@
         "@popperjs/core": "^2.11.8",
         "@vitejs/plugin-vue": "^5.0.5",
         "autoprefixer": "^10.4.19",
+        "bootstrap": "^5.3.3",
         "element-plus": "^2.7.7",
-        "glob": "^11.0.0",
+        "glob": "^10.4.5",
         "lodash": "^4.17.21",
         "pathe": "^1.1.2",
         "pinia": "^2.1.7",

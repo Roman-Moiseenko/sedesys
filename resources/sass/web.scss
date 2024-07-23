@@ -1,0 +1,11 @@
+
+//Собственные переменные для bootstrap
+@import 'variables';
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+//Шрифты
+
+@import './resources/sass/fontawesome/fontawesome.scss';
+//Собственные стили
+@import "menu";
+

@@ -38,6 +38,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/sass/web.scss',
+                'resources/js/web.js',
                 //'resources/sass/admin.scss',
             ],
             refresh: true,
