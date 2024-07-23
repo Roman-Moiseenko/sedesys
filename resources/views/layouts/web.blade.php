@@ -3,13 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{{ url('images/favicon/32x32.png') }}" size="32x32">
-    <link rel="icon" href="{{ url('images/favicon/192x192.png') }}" size="192x192">
-    <link rel="apple-touch-icon" href="{{ url('images/favicon/180x180.png') }}" size="192x192">
+    <link rel="icon" href="{{Vite::asset('resources/images/favicon/32x32.png')}}" size="32x32">
+    <link rel="icon" href="{{Vite::asset('resources/images/favicon/192x192.png')}}" size="192x192">
+    <link rel="apple-touch-icon" href="{{Vite::asset('resources/images/favicon/180x180.png')}}" size="180x180">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-
-
     <title>@yield('title', 'Система управления услугами')</title>
     <meta name="description"
           content="@yield('description', 'Универсальная CRM для малого бизнеса в сфере услуг. Индивидуальная настройка под каждый проект')">

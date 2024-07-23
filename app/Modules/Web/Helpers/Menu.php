@@ -98,7 +98,7 @@ class Menu
                 'name' => 'VK',
                 'color' => '',
                 'url' => '',
-                ],
+            ],
 
         ];
     }
@@ -107,11 +107,41 @@ class Menu
     public static function menuFooter(): array
     {
         return [
-            ['icon' => '',
-                'image' => '',
-                'name' => '',
-                'class' => '',
-                'url' => '',],
+            [
+                'title' => 'Колонка 1',
+                'items' => [
+                    ['icon' => '',
+                        'image' => '',
+                        'name' => '',
+                        'class' => '',
+                        'url' => '',
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Колонка 2',
+                'items' => [
+                    ['icon' => '',
+                        'image' => '',
+                        'name' => '',
+                        'class' => '',
+                        'url' => '',
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Колонка 3',
+                'items' => [
+                    ['icon' => '',
+                        'image' => '',
+                        'name' => '',
+                        'class' => '',
+                        'url' => '',
+                    ],
+                ],
+            ],
+
+
         ];
     }
 }
