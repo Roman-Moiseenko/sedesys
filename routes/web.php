@@ -12,4 +12,4 @@ Route::group([
     Route::post('/login', 'LoginController@login');
 });
 
-Route::get('/', 'App\Modules\Web\Controllers\WebController@index')->name('web.home');
+//Route::get('/', 'App\Modules\Web\Controllers\WebController@index')->name('web.home');

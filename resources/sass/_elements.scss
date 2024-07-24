@@ -1,0 +1,67 @@
+//Кнопка Scroll Up
+%scrollup_hover_focus {
+    color: #fff;
+    transform: translateY(-95%) rotate(-45deg);
+    -webkit-transform: translateY(-95%) rotate(-45deg);
+    -moz-transform: translateY(-95%) rotate(-45deg);
+    -o-transform: translateY(-95%) rotate(-45deg);
+    -ms-transform: translateY(-95%) rotate(-45deg);
+    i {
+        transform: translateY(0) rotate(45deg);
+        -webkit-transform: translateY(0) rotate(45deg);
+        -moz-transform: translateY(0) rotate(45deg);
+        -o-transform: translateY(0) rotate(45deg);
+        -ms-transform: translateY(0) rotate(45deg);
+    }
+}
+.scrollup {
+    position: fixed;
+    top: 0;
+    right: 25px;
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+    padding: 0;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--bs-gray-900);
+    border: 1px solid var(--bs-gray-100);
+    outline: none;
+    border-radius: 50% 0 50% 50%;
+    box-shadow: 0 0 12px 0 rgba(0,0,0,.2);
+    -webkit-transition: .9s;
+    transition: .9s;
+    z-index: 99;
+    visibility: hidden;
+    opacity: 0;
+    i {
+        display: inline-block;
+        -webkit-transition: all .5s;
+        -o-transition: all .5s;
+        transition: all .5s;
+    }
+    &.is-active {
+        top: 98%;
+        -webkit-transform: translateY(-95%);
+        transform: translateY(-95%);
+        opacity: 1;
+        visibility: visible;
+
+        &:hover {
+            @extend %scrollup_hover_focus;
+        }
+        &:focus {
+            @extend %scrollup_hover_focus;
+        }
+    }
+}
+@media screen and (max-width: 991px) {
+    .scrollup {
+        &.is-active {
+            top: unset;
+            bottom: 16px;
+        }
+    }
+}

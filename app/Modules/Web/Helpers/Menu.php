@@ -8,39 +8,55 @@ class Menu
 //TODO Временное решение
 // Заменить на Entity или Modules
 
+    /**
+     * Определ
+     * @return array
+     */
     public static function menuTop(): array
     {
         return [
-            [
+            'page1' => [
                 'icon' => '',
                 'image' => '',
-                'name' => 'Страница 1',
-                'url' => '/',
+                'name' => 'Услуги',
+                'route' => 'web.home',
             ],
-            [
+            'page2' => [
                 'icon' => '',
                 'image' => '',
-                'name' => 'Страница 2',
-                'url' => '/',
+                'name' => 'Мастера',
+                'route' => 'web.home',
             ],
-            [
+            'page3' => [
                 'icon' => '',
                 'image' => '',
-                'name' => 'Страница 3',
+                'name' => 'Цены',
+                'route' => 'web.home',
+            ],
+            'page4' => [
+                'icon' => '',
+                'image' => '',
+                'name' => 'Записаться',
+                'route' => 'web.home',
+            ],
+            'page5' => [
+                'icon' => '',
+                'image' => '',
+                'name' => 'О нас',
 
-                'url' => '/',
+                //'route' => 'web.home',
                 'submenu' => [
-                    [
+                    'page31' => [
                         'icon' => '',
                         'image' => '',
-                        'name' => 'Страница 3.1',
-                        'url' => '/',
+                        'name' => 'Контакты',
+                        'route' => 'web.home',
                     ],
-                    [
+                    'page32' => [
                         'icon' => '',
                         'image' => '',
-                        'name' => 'Страница 3.2',
-                        'url' => '/',
+                        'name' => 'О Компании',
+                        'route' => 'web.home',
                     ],
                 ]
             ],
@@ -92,14 +108,21 @@ class Menu
     {
         return [
             [
-                'icon' => 'fa-light fa-user-vneck',
+                'icon' => 'fa-brands fa-vk',
                 'image' => '',
                 'class' => '',
                 'name' => 'VK',
-                'color' => '',
+                'color' => '#333333',
                 'url' => '',
             ],
-
+            [
+                'icon' => 'fa-brands fa-telegram',
+                'image' => '',
+                'class' => '',
+                'name' => 'Telegram',
+                'color' => '#333333',
+                'url' => '',
+            ],
         ];
     }
 
@@ -112,9 +135,9 @@ class Menu
                 'items' => [
                     ['icon' => '',
                         'image' => '',
-                        'name' => '',
+                        'name' => 'Страница 1',
                         'class' => '',
-                        'url' => '',
+                        'route' => 'web.home',
                     ],
                 ],
             ],
@@ -123,9 +146,9 @@ class Menu
                 'items' => [
                     ['icon' => '',
                         'image' => '',
-                        'name' => '',
+                        'name' => 'Страница 2',
                         'class' => '',
-                        'url' => '',
+                        'route' => 'web.home',
                     ],
                 ],
             ],
@@ -134,9 +157,9 @@ class Menu
                 'items' => [
                     ['icon' => '',
                         'image' => '',
-                        'name' => '',
+                        'name' => 'Страница 3',
                         'class' => '',
-                        'url' => '',
+                        'route' => 'web.home',
                     ],
                 ],
             ],

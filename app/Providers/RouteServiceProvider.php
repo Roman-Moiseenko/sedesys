@@ -52,8 +52,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapModulesRoutesWeb()
     {
         modules_callback('routes_web.php', function($routesPath, $module) {
-            Route::prefix('web')
-                ->middleware(['web'])
+            Route::middleware(['web'])
+                ->as('web.')
                 ->namespace("\\App\\Modules\\$module\Controllers")
                 ->group($routesPath);
         });

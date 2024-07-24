@@ -9,7 +9,7 @@ use function Ramsey\Uuid\v1;
 class WebController extends Controller
 {
 
-    public function index()
+    public function home()
     {
         return view('web.home');
     }

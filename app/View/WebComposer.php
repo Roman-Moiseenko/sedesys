@@ -19,8 +19,6 @@ class WebComposer
             } else {
                 $layout = (str_contains($pageName, '.')) ? substr($pageName, 0, strpos($pageName, '.')) : 'web';
             }
-            //$activeMenu = $this->activeMenu($pageName, $layout);
-
             if ($layout == 'web') {
                 $user = (Auth::guard('user')->check()) ? Auth::guard('user')->user() : null;
                 $view->with('user', $user);
@@ -31,10 +29,60 @@ class WebComposer
                 $view->with('menu_contact', Menu::menuContact());
                 $view->with('menu_footer', Menu::menuFooter());
                 $view->with('menu_mobile', Menu::menuMobile(!is_null($user)));
+                $view->with('active_menu', $this->activeMenu($pageName));
+            }
+        }
+    }
+
+    private function activeMenu($pageName)
+    {
+        $firstLevelActiveIndex = '';
+        $secondLevelActiveIndex = '';
+        $thirdLevelActiveIndex = '';
+
+        foreach (Menu::menuTop() as $menuKey => $menu) {
+            if ($menu !== 'divider' && isset($menu['route']) && $this->checkRouteName($menu, $pageName) && empty($firstPageName)) {
+                $firstLevelActiveIndex = $menuKey;
             }
 
+            if (isset($menu['submenu'])) {
+                foreach ($menu['submenu'] as $subMenuKey => $subMenu) {
+                    if (isset($subMenu['route']) && $this->checkRouteName($subMenu, $pageName) && $menuKey != 'menu-layout' && empty($secondPageName)) {
+                        $firstLevelActiveIndex = $menuKey;
+                        $secondLevelActiveIndex = $subMenuKey;
+                    }
 
-
+                    if (isset($subMenu['submenu'])) {
+                        foreach ($subMenu['submenu'] as $lastSubMenuKey => $lastSubMenu) {
+                            if (isset($lastSubMenu['route']) && $this->checkRouteName($lastSubMenu, $pageName)) {
+                                $firstLevelActiveIndex = $menuKey;
+                                $secondLevelActiveIndex = $subMenuKey;
+                                $thirdLevelActiveIndex = $lastSubMenuKey;
+                            }
+                        }
+                    }
+                }
+            }
         }
+        return [
+            'first' => $firstLevelActiveIndex,
+            'second' => $secondLevelActiveIndex,
+            'third' => $thirdLevelActiveIndex
+        ];
+    }
+
+
+    private function checkRouteName($menu, $pageName): bool
+    {
+        if (isset($menu['action'])) return $menu['route'] == $pageName;
+        return $this->clearAction($menu['route']) == $this->clearAction($pageName);
+    }
+
+    private function clearAction($str): string
+    {
+        if ($str == null) return '';
+        $pos = strrpos($str, '.');
+        $str = substr($str, 0, $pos);
+        return $str;
     }
 }

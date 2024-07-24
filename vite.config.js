@@ -22,6 +22,7 @@ export default defineConfig({
         alias: {
             '@': '/resources/js',
             "tailwind-config.js": path.resolve(__dirname, "./tailwind.config.js"),
+            '$': 'jQuery',
         },
     },
     plugins: [
@@ -39,6 +40,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/sass/web.scss',
                 'resources/js/web.js',
+                'resources/js/_frontend.js',
                 //'resources/sass/admin.scss',
             ],
             refresh: true,
