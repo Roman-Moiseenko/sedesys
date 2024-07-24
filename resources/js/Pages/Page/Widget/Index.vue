@@ -1,8 +1,8 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">DummyEntitySingular</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить DummyEntitySingular</el-button>
+        <h1 class="font-medium text-xl">Widget</h1>
+        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Widget</el-button>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
@@ -35,15 +35,15 @@
         </div>
 
         <pagination
-            :current_page="$page.props.dummyVariableEntityPlural.current_page"
-            :per_page="$page.props.dummyVariableEntityPlural.per_page"
-            :total="$page.props.dummyVariableEntityPlural.total"
+            :current_page="$page.props.widgets.current_page"
+            :per_page="$page.props.widgets.per_page"
+            :total="$page.props.widgets.total"
         />
     </el-config-provider>
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить dummyVariableEntitySingular?
+            Вы уверены, что хотите удалить widget?
         </div>
         <div class="text-red-600 text-md mt-2">
             Восстановить данные будет невозможно!
@@ -70,7 +70,7 @@
         active: number
     }
     const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
+        if (row.active === 0) {
             return 'warning-row'
         }
         return ''
@@ -91,15 +91,15 @@ export default {
     },
     layout: Layout,
     props: {
-        dummyVariableEntityPlural: Object,
+        widgets: Object,
         title: {
             type: String,
-            default: 'Список dummyVariableEntityPlural',
+            default: 'Список widgets',
         }
     },
     data() {
         return {
-            tableData: [...this.dummyVariableEntityPlural.data],
+            tableData: [...this.widgets.data],
             tableHeight: '600',
             Loading: false,
             dialogDelete: false,
@@ -108,7 +108,7 @@ export default {
     },
     methods: {
         createButton() {
-            router.get('/admin/dummyVariableSingular/dummyVariableEntitySingular/create')
+            router.get('/admin/page/widget/create')
         },
         routeClick(row) {
             router.get(row.url)

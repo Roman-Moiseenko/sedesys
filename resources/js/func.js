@@ -30,4 +30,11 @@ export const func = {
         }
         return val;
     },
+    MaskSlug: (val) => {
+        let last = val.slice(-1);
+        if (last.match(/\d+/g) === null && last.match(/[a-z\-_]/g) === null) {
+            val = val.substring(0, val.length - 1);
+        }
+        return val;
+    },
 }

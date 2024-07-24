@@ -33,4 +33,5 @@ return [
 
         ],//другие параметры
     ],
+    'tinymce' => env('TINYMCE', ''),
 ];

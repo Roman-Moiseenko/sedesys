@@ -7,11 +7,7 @@ use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
 use DummyRootNamespaceModules\DummySingular\Requests\DummyEntitySingularRequest;
 use DummyRootNamespaceModules\DummySingular\Repository\DummyEntitySingularRepository;
 use DummyRootNamespaceModules\DummySingular\Service\DummyEntitySingularService;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 
 class DummyEntitySingularController extends Controller
@@ -72,7 +68,7 @@ class DummyEntitySingularController extends Controller
 
     public function update(DummyEntitySingularRequest $request, DummyEntitySingular $dummyVariableEntitySingular)
     {
-        $data = $request->validated();
+        $request->validated();
         $dummyVariableEntitySingular = $this->service->update($dummyVariableEntitySingular, $request);
         return redirect()
             ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)

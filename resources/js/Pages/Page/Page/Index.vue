@@ -1,8 +1,8 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">DummyEntitySingular</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить DummyEntitySingular</el-button>
+        <h1 class="font-medium text-xl">Страницы</h1>
+        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить страницу</el-button>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
@@ -13,10 +13,25 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Name" width="100" />
+                <el-table-column sortable prop="name" label="Название" />
+                <el-table-column sortable prop="slug" label="Ссылка"  />
+                <el-table-column sortable prop="template" label="Шаблон" />
+                <el-table-column sortable prop="published" label="Дата публикации"/>
                 <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">
+                        <el-button v-if="scope.row.active"
+                                   size="small"
+                                   type="warning"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Blocked
+                        </el-button>
+                        <el-button v-if="!scope.row.active"
+                                   size="small"
+                                   type="success"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Activated
+                        </el-button>
                         <el-button
                             size="small"
                             @click.stop="handleEdit(scope.$index, scope.row)">
@@ -35,15 +50,15 @@
         </div>
 
         <pagination
-            :current_page="$page.props.dummyVariableEntityPlural.current_page"
-            :per_page="$page.props.dummyVariableEntityPlural.per_page"
-            :total="$page.props.dummyVariableEntityPlural.total"
+            :current_page="$page.props.pages.current_page"
+            :per_page="$page.props.pages.per_page"
+            :total="$page.props.pages.total"
         />
     </el-config-provider>
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить dummyVariableEntitySingular?
+            Вы уверены, что хотите удалить page?
         </div>
         <div class="text-red-600 text-md mt-2">
             Восстановить данные будет невозможно!
@@ -91,15 +106,15 @@ export default {
     },
     layout: Layout,
     props: {
-        dummyVariableEntityPlural: Object,
+        pages: Object,
         title: {
             type: String,
-            default: 'Список dummyVariableEntityPlural',
+            default: 'Список страниц',
         }
     },
     data() {
         return {
-            tableData: [...this.dummyVariableEntityPlural.data],
+            tableData: [...this.pages.data],
             tableHeight: '600',
             Loading: false,
             dialogDelete: false,
@@ -108,7 +123,7 @@ export default {
     },
     methods: {
         createButton() {
-            router.get('/admin/dummyVariableSingular/dummyVariableEntitySingular/create')
+            router.get('/admin/page/page/create')
         },
         routeClick(row) {
             router.get(row.url)
@@ -129,6 +144,10 @@ export default {
                 this.$data.dialogDelete = false;
                 this.$data.routeDestroy = null;
             }
+        },
+        handleToggle(index, row) {
+            router.visit(row.toggle, {
+                method:'post'});
         },
     }
 }

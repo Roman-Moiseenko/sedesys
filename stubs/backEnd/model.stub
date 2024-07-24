@@ -2,15 +2,32 @@
 
 namespace DummyRootNamespaceModules\DummySingular\Entity;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class DummyEntitySingular extends Model
 {
     use HasFactory;
 
-    const COLUMN_ID = 'id';
-    const COLUMN_NAME = 'name';
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+    protected $fillable = [
+        'name',
+    ];
 
-    protected $guarded = [self::COLUMN_ID];
+    public static function register(string $name): self
+    {
+        return self::create([
+            'name' => $name,
+        ]);
+    }
 }
