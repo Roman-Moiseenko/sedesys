@@ -6,7 +6,7 @@
             <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                 <div class="p-4">
                     <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Внутреннее название" @input="handleMaskName"/>
+                        <el-input v-model="form.name" placeholder="Внутреннее название"/>
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Ссылка">
@@ -70,19 +70,18 @@
             <div class="w-full mt-3 mb-5">
                 <!-- TinyMCE -->
                 <editor
-                    :api-key="this.$props.tiny_api" v-model="form.text"
+                    :api-key="$props.tiny_api" v-model="form.text"
                     :init="{
-        toolbar_mode: 'sliding',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        tinycomments_mode: 'embedded',
-        tinycomments_author: 'Author name',
-        mergetags_list: [
-          { value: 'First.Name', title: 'First Name' },
-          { value: 'Email', title: 'Email' },
-        ],
-
-                }"
+                        toolbar_mode: 'sliding',
+                        plugins: store.tiny.plugins,
+                        toolbar: store.tiny.toolbar,
+                        tinycomments_mode: 'embedded',
+                        tinycomments_author: 'Author name',
+                        mergetags_list: [
+                          { value: 'First.Name', title: 'First Name' },
+                          { value: 'Email', title: 'Email' },
+                        ],
+                    }"
                 />
                     <div v-if="errors.text" class="text-red-700">{{ errors.text }}</div>
             </div>
@@ -105,6 +104,8 @@
     import {func} from "/resources/js/func.js"
     import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
     import type {UploadFile} from 'element-plus'
+    import {useStore} from '/resources/js/store.js'
+    const store = useStore();
 
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)

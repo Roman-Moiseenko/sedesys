@@ -10,13 +10,15 @@
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Ссылка">
-                        <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
+                        <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения"
+                                  @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
                     </el-form-item>
 
                     <el-form-item label="Шаблон" :rules="{required: true}">
                         <el-select v-model="form.template" placeholder="Select" style="width: 240px">
-                            <el-option v-for="item in templates" :key="item.value" :label="item.label" :value="item.value"/>
+                            <el-option v-for="item in templates" :key="item.value" :label="item.label"
+                                       :value="item.value"/>
                         </el-select>
                         <div v-if="errors.template" class="text-red-700">{{ errors.template }}</div>
                     </el-form-item>
@@ -48,7 +50,9 @@
                                class="file-uploader-one"
                                ref="template"
                     >
-                        <el-icon><Plus/></el-icon>
+                        <el-icon>
+                            <Plus/>
+                        </el-icon>
                         <template #file="{ file }">
                             <div>
                                 <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
@@ -56,7 +60,8 @@
                                   <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                                  <span v-if="!disabled" class="el-upload-list__item-delete"
+                                        @click="handleRemove(file)">
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
@@ -72,17 +77,16 @@
                 <editor
                     :api-key="this.$props.tiny_api" v-model="form.text"
                     :init="{
-        toolbar_mode: 'sliding',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        tinycomments_mode: 'embedded',
-        tinycomments_author: 'Author name',
-        mergetags_list: [
-          { value: 'First.Name', title: 'First Name' },
-          { value: 'Email', title: 'Email' },
-        ],
-
-                }"
+                        toolbar_mode: 'sliding',
+                        plugins: store.tiny.plugins,
+                        toolbar: store.tiny.toolbar,
+                        tinycomments_mode: 'embedded',
+                        tinycomments_author: 'Author name',
+                        mergetags_list: [
+                          { value: 'First.Name', title: 'First Name' },
+                          { value: 'Email', title: 'Email' },
+                        ],
+                    }"
                 />
 
 
@@ -102,86 +106,86 @@
 
 
 <script lang="ts" setup>
-    import {reactive, ref} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
-    import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
-    import type {UploadFile} from 'element-plus'
+import {reactive, ref} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
+import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
+import type {UploadFile} from 'element-plus'
 
-    const dialogImageUrl = ref('')
-    const dialogVisible = ref(false)
-    const disabled = ref(false)
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const disabled = ref(false)
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        page: Object,
-        title: {
-            type: String,
-            default: 'Редактирование page',
-        },
-        photo: {
-            type: String,
-            default: null
-        },
-        templates: Array,
-        pages: Array,
-        tiny_api: String,
-    });
+const props = defineProps({
+    errors: Object,
+    route: String,
+    page: Object,
+    title: {
+        type: String,
+        default: 'Редактирование page',
+    },
+    photo: {
+        type: String,
+        default: null
+    },
+    templates: Array,
+    pages: Array,
+    tiny_api: String,
+});
 
-    /* Загружаем фото назначенное */
-    let _default = [];
-    if (props.photo !== null) {
-        _default = [{
-            name: 'default',
-            url: props.photo,
-        }];
-    }
-    const fileList = ref<UploadFile>(_default);
+/* Загружаем фото назначенное */
+let _default = [];
+if (props.photo !== null) {
+    _default = [{
+        name: 'default',
+        url: props.photo,
+    }];
+}
+const fileList = ref<UploadFile>(_default);
 
-    const form = reactive({
-        name: props.page.name,
-        slug: props.page.slug,
-        parent_id: props.page.parent_id,
-        title: props.page.title,
-        description: props.page.description,
-        template: props.page.template,
-        text: props.page.text,
-        file: null,
-        _method: 'put',
-        clear_file: false,
-    })
+const form = reactive({
+    name: props.page.name,
+    slug: props.page.slug,
+    parent_id: props.page.parent_id,
+    title: props.page.title,
+    description: props.page.description,
+    template: props.page.template,
+    text: props.page.text,
+    file: null,
+    _method: 'put',
+    clear_file: false,
+})
 
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
+function handleMaskName(val) {
+    /**
+     * Функции маски ввода
+     * Например, form.phone = func.MaskPhone(val);
+     */
+}
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-    const handleRemove= (file: UploadFile) => {
-        fileList.value.splice(0, 1);
-        form.clear_file = true;
-    }
-    const handlePictureCardPreview = (file: UploadFile) => {
-        dialogImageUrl.value = file.url!
-            dialogVisible.value = true
-    }
+function onSubmit() {
+    router.post(props.route, form)
+}
+
+const handleRemove = (file: UploadFile) => {
+    fileList.value.splice(0, 1);
+    form.clear_file = true;
+}
+const handlePictureCardPreview = (file: UploadFile) => {
+    dialogImageUrl.value = file.url!
+    dialogVisible.value = true
+}
 </script>
 <script lang="ts">
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import Editor from '@tinymce/tinymce-vue'
+import {Head} from '@inertiajs/vue3'
+import Layout from '@/Components/Layout.vue'
+import Editor from '@tinymce/tinymce-vue'
 
-    export default {
-        components: {
-            Head,
-            'editor': Editor,
-        },
-        layout: Layout,
-    }
+export default {
+    components: {
+        Head,
+        'editor': Editor,
+    },
+    layout: Layout,
+}
 </script>
