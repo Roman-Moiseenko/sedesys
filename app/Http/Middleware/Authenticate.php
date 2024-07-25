@@ -9,9 +9,11 @@ class Authenticate extends Middleware
 {
     /**
      * Get the path the user should be redirected to when they are not authenticated.
+     * @throws \Illuminate\Auth\AuthenticationException
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('login');
+
+        return $request->expectsJson() ? null : throw new \Illuminate\Auth\AuthenticationException();//route('login');
     }
 }
