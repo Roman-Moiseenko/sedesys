@@ -3,6 +3,9 @@ export const useStore = defineStore('table_data', {
     state: () => ({
         loading: false,
         tiny: {
+            height: 600,
+            min_height: 500,
+            resize: true,
             plugins: 'quickbars image anchor link autolink autoresize charmap directionality emoticons ' +
                 'fullscreen importcss insertdatetime lists advlist media nonbreaking pagebreak preview ' +
                 'searchreplace table visualblocks',

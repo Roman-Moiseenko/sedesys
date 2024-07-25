@@ -76,17 +76,7 @@
 
                 <editor
                     :api-key="this.$props.tiny_api" v-model="form.text"
-                    :init="{
-                        toolbar_mode: 'sliding',
-                        plugins: store.tiny.plugins,
-                        toolbar: store.tiny.toolbar,
-                        tinycomments_mode: 'embedded',
-                        tinycomments_author: 'Author name',
-                        mergetags_list: [
-                          { value: 'First.Name', title: 'First Name' },
-                          { value: 'Email', title: 'Email' },
-                        ],
-                    }"
+                    :init="store.tiny"
                 />
 
 
@@ -111,6 +101,8 @@ import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import type {UploadFile} from 'element-plus'
+import {useStore} from '/resources/js/store.js'
+const store = useStore();
 
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)

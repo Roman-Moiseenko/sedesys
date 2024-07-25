@@ -71,17 +71,7 @@
                 <!-- TinyMCE -->
                 <editor
                     :api-key="$props.tiny_api" v-model="form.text"
-                    :init="{
-                        toolbar_mode: 'sliding',
-                        plugins: store.tiny.plugins,
-                        toolbar: store.tiny.toolbar,
-                        tinycomments_mode: 'embedded',
-                        tinycomments_author: 'Author name',
-                        mergetags_list: [
-                          { value: 'First.Name', title: 'First Name' },
-                          { value: 'Email', title: 'Email' },
-                        ],
-                    }"
+                    :init="store.tiny"
                 />
                     <div v-if="errors.text" class="text-red-700">{{ errors.text }}</div>
             </div>
