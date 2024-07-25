@@ -80,7 +80,7 @@
             },
             title: {
                 type: String,
-                default: 'Карточка employee',
+                default: 'Карточка Персонала',
             }
         },
         methods: {

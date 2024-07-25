@@ -70,7 +70,7 @@
             toggle: String,
             title: {
                 type: String,
-                default: 'Карточка page',
+                default: 'Карточка Страницы',
             },
             photo: {
                 type: String,

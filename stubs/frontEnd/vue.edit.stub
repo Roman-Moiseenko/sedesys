@@ -29,7 +29,7 @@
         dummyVariableEntitySingular: Object,
         title: {
             type: String,
-            default: 'Редактирование dummyVariableSingular',
+            default: 'Редактирование dummyVariableEntitySingular',
         }
     });
 

@@ -1,6 +1,6 @@
 <template>
     <Head><title>{{ $props.title }}</title></Head>
-    <h1 class="font-medium text-xl">Добавить нового DummyEntitySingular</h1>
+    <h1 class="font-medium text-xl">Добавить новый dummyVariableEntitySingular</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto" style="max-width: 500px">
 
@@ -28,7 +28,7 @@
         route: String,
         title: {
             type: String,
-            default: 'Создание dummyVariableSingular',
+            default: 'Создание dummyVariableEntitySingular',
         }
     });
 

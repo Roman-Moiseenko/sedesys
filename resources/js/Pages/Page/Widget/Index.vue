@@ -1,8 +1,8 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">Widget</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Widget</el-button>
+        <h1 class="font-medium text-xl">Виджеты</h1>
+        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить виджет</el-button>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
@@ -43,7 +43,7 @@
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить widget?
+            Вы уверены, что хотите удалить виджет?
         </div>
         <div class="text-red-600 text-md mt-2">
             Восстановить данные будет невозможно!
@@ -94,7 +94,7 @@ export default {
         widgets: Object,
         title: {
             type: String,
-            default: 'Список widgets',
+            default: 'Список виджетов',
         }
     },
     data() {

@@ -27,7 +27,7 @@
             edit: String,
             title: {
                 type: String,
-                default: 'Карточка page',
+                default: 'Карточка виджета',
             }
         },
         methods: {

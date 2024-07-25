@@ -29,7 +29,7 @@
         widget: Object,
         title: {
             type: String,
-            default: 'Редактирование page',
+            default: 'Редактирование виджета',
         }
     });
 
