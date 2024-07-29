@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('template')->default('text');
             $table->json('data');
             $table->json('options');
+            $table->string('model')->default('');
         });
     }
 

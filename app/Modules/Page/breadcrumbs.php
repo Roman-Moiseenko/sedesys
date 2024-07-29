@@ -27,11 +27,11 @@ Breadcrumbs::for('admin.page.page.edit', function (BreadcrumbTrail $trail, Page 
 
 Breadcrumbs::for('admin.page.widget.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.home');
-    $trail->push('Страницы', route('admin.page.widget.index'));
+    $trail->push('Виджеты', route('admin.page.widget.index'));
 });
 Breadcrumbs::for('admin.page.widget.create', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.page.widget.index');
-    $trail->push('Добавить страницу', route('admin.page.widget.create'));
+    $trail->push('Добавить виджет', route('admin.page.widget.create'));
 });
 
 Breadcrumbs::for('admin.page.widget.show', function (BreadcrumbTrail $trail, Widget $widget) {

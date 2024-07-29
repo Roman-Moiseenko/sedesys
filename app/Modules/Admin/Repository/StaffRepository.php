@@ -32,13 +32,6 @@ class StaffRepository
 
     public function roles(): array
     {
-        $result = [];
-        foreach (Admin::ROLES as $key => $value) {
-            $result[] = [
-                'value' => $key,
-                'label' => $value,
-            ];
-        }
-        return $result;
+        return array_select(Admin::ROLES);
     }
 }

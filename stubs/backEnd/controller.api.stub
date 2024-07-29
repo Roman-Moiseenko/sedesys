@@ -69,7 +69,7 @@ class DummyEntitySingularController extends Controller
     public function update(DummyEntitySingularRequest $request, DummyEntitySingular $dummyVariableEntitySingular)
     {
         $request->validated();
-        $dummyVariableEntitySingular = $this->service->update($dummyVariableEntitySingular, $request);
+        $this->service->update($dummyVariableEntitySingular, $request);
         return redirect()
             ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
             ->with('success', 'Сохранение прошло успешно');

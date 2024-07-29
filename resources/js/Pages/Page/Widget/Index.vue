@@ -13,7 +13,10 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Name" width="100" />
+                <el-table-column prop="short" label="код" width="120" />
+                <el-table-column sortable prop="name" label="Название"  />
+                <el-table-column sortable prop="template" label="Шаблон" />
+                <el-table-column sortable prop="model" label="Модель"  />
                 <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">

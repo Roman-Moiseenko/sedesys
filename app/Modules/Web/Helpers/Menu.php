@@ -50,7 +50,8 @@ class Menu
                         'icon' => '',
                         'image' => '',
                         'name' => 'Контакты',
-                        'route' => 'web.home',
+                        'route' => 'web.page.view',
+                        'item' => 'kontakty',
                     ],
                     'page32' => [
                         'icon' => '',

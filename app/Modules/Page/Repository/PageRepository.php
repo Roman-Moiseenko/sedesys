@@ -11,7 +11,7 @@ class PageRepository
 
     public function getIndex(Request $request): Arrayable
     {
-        $pages = Page::orderBy('name')
+        return Page::orderBy('name')
             ->paginate(20)->withQueryString()
             ->through(fn(Page $page) => [
                 'id' => $page->id,
@@ -20,26 +20,16 @@ class PageRepository
                 'active' => $page->isPublished(),
                 'published' => is_null($page->published_at) ? '' : $page->published_at->translatedFormat('d F Y'),
                 'template' => $page->template,
-
                 'url' => route('admin.page.page.show', $page),
                 'edit' => route('admin.page.page.edit', $page),
                 'destroy' => route('admin.page.page.destroy', $page),
                 'toggle' => route('admin.page.page.toggle', $page),
             ]);
-
-        return $pages;
     }
 
     public function getTemplates(): array
     {
-        $templates = [];
-        foreach (Page::PAGES_TEMPLATES as $value => $label) {
-            $templates[] = [
-                'value' => $value,
-                'label' => $label,
-            ];
-        }
-        return $templates;
+        return array_select(Page::PAGES_TEMPLATES);
     }
 
     public function getPages(int $id = null): array

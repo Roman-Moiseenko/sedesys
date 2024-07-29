@@ -47,7 +47,6 @@ class MakeModuleCommand extends Command
 
         $this->createMigration();
         $backEndModule->create($this->module, $this->entity);
-        //TODO Доработать для Entity
         $frontEndModule->create($this->module, $this->entity);
         $this->createFactory();
         $this->createTest();

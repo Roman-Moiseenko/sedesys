@@ -25,7 +25,8 @@ class WidgetRequest extends FormRequest
     public function rules()
     {
         return [
-            Widget::COLUMN_NAME => 'required|string',
+            'name'=> ['required', 'string'],
+            'template'=> ['required', 'string'],
         ];
     }
 }

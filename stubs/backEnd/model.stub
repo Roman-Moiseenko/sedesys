@@ -30,4 +30,29 @@ class DummyEntitySingular extends Model
             'name' => $name,
         ]);
     }
+
+    public function isField(): bool
+    {
+        /**
+         * Ф-ции состояния
+         */
+        return true;
+    }
+
+    public function setField($value): void
+    {
+        /**
+         * Сетеры
+         */
+        $this->field = $value;
+        $this->save();
+    }
+
+    public function getField(): mixed
+    {
+        /**
+         * Гетеры
+         */
+        return $this->field;
+    }
 }

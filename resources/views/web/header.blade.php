@@ -22,18 +22,18 @@
                     @foreach($menu_top as $key => $item)
                         @if(isset($item['submenu']))
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle {{ ($key == $active_menu['first']) ? 'active' : '' }}" href="{{ isset($item['route']) ? route($item['route']) : '#' }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle {{ ($key == $active_menu['first']) ? 'active' : '' }}" href="{{ isset($item['route']) ? route($item['route'], $item['item'] ?? '') : '#' }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ $item['name'] }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @foreach($item['submenu'] as $subkey => $subitem)
-                                    <li><a class="dropdown-item {{ ($subkey == $active_menu['second']) ? 'active' : '' }}" href="{{ route($subitem['route']) }}">{{ $subitem['name'] }}</a></li>
+                                    <li><a class="dropdown-item {{ ($subkey == $active_menu['second']) ? 'active' : '' }}" href="{{ route($subitem['route'], $subitem['item'] ?? '') }}">{{ $subitem['name'] }}</a></li>
                                     @endforeach
                                 </ul>
                             </li>
                         @else
                         <li class="nav-item">
-                            <a class="nav-link {{ ($key == $active_menu['first']) ? 'active' : '' }}" aria-current="page" href="{{ route($item['route']) }}">{{ $item['name'] }}</a>
+                            <a class="nav-link {{ ($key == $active_menu['first']) ? 'active' : '' }}" aria-current="page" href="{{ route($item['route'], $item['item'] ?? '') }}">{{ $item['name'] }}</a>
                         </li>
                         @endif
                     @endforeach

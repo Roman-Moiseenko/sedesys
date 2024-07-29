@@ -14,8 +14,6 @@ if (!function_exists('phone')) {
     {
         if (empty($value) || !is_numeric($value)) return '';
         return mb_substr($value, 0, 1) . ' ' . mb_substr($value, 1, 3) . '-' . mb_substr($value, 6, 3) . '-' . mb_substr($value, 7, 4);
-
-
     }
 }
 
@@ -55,5 +53,20 @@ if (!function_exists('modules_callback')){
             }
         }
 
+    }
+}
+
+
+if (!function_exists('array_select')) {
+    function array_select(array $array): array
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            $result[] = [
+                'value' => $key,
+                'label' => $value,
+            ];
+        }
+        return $result;
     }
 }

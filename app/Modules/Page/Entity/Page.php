@@ -101,7 +101,20 @@ class Page extends Model
     {
         $text = $this->text;
         //TODO Поиск и замена [widget id="7"] на Widget::findView(7); //find(7)->view()
+        preg_match_all('/\[widget=\"(.+)\"\]/', $text, $matches);
+        $replaces = $matches[0];
+        $widget_ids = $matches[1];
+        $data = [];
 
+        foreach ($widget_ids as $key => $widget_id) {
+            $data[$replaces[$key]] = Widget::findView($widget_id);
+        }
+        foreach ($data as $key => $value) {
+
+            $text = str_replace($key, $value, $text);
+
+        }
+        $this->text = $text;
         return view(self::PATH_TEMPLATES . $this->template,
             ['page' => $this, 'title' => $this->title, 'description' => $this->description, 'text' => $text]
         )->render();

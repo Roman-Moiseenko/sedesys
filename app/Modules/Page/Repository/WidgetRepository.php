@@ -11,21 +11,27 @@ class WidgetRepository
 
     public function getIndex(Request $request): Arrayable
     {
-        $widgets = Widget::orderBy('name')
+        return Widget::orderBy('name')
             ->paginate(20)->withQueryString()
             ->through(fn(Widget $widget) => [
                 'id' => $widget->id,
                 'name' => $widget->name,
-                /**
-
-                 */
-
+                'model' => $widget->model,
+                'template' => $widget->template,
+                'short' => '[widget="'. $widget->id . '"]',
                 'url' => route('admin.page.widget.show', $widget),
                 'edit' => route('admin.page.widget.edit', $widget),
                 'destroy' => route('admin.page.widget.destroy', $widget),
-
             ]);
+    }
 
-        return $widgets;
+    public function getModels(): array
+    {
+        return array_select(Widget::WIDGET_MODELS);
+    }
+
+    public function getTemplates(): array
+    {
+        return array_select(Widget::WIDGET_TEMPLATES);
     }
 }

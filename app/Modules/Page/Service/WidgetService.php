@@ -40,6 +40,10 @@ class WidgetService
         /**
          * Сохраняем оставшиеся поля
          */
+        $widget->model = $request->string('model')->trim()->value();
+        $widget->template = $request->string('template')->trim()->value();
+        $widget->data = $request->string('data')->trim()->value();
+        $widget->options = $request->string('options')->trim()->value();
 
         $widget->save();
     }

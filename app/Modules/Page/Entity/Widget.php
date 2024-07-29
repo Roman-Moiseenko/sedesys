@@ -2,6 +2,7 @@
 
 namespace App\Modules\Page\Entity;
 
+use App\Modules\Employee\Entity\Employee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,11 +15,27 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $updated_at
  * @property string $data
  * @property string $options
+ * @property string $model - Класс модели формата WidgetData (getImage, getUrl, getCaption, getText)
  */
 class Widget extends Model
 {
     use HasFactory;
     const PATH_TEMPLATES = 'web.templates.widget.';
+    //TODO Динамический список шаблонов по файлам
+    const WIDGET_TEMPLATES = [
+        'gallery' => 'Галерея',
+        'review' => 'Карточки',
+        'employee' => 'Сотрудники',
+    ];
+
+    const WIDGET_MODELS = [
+        Employee::class => 'Сотрудники',
+    ];
+
+    protected $attributes = [
+        'data' => '{}',
+        'options' => '{}',
+    ];
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -40,7 +57,14 @@ class Widget extends Model
     public function view(): string
     {
        // $dataItem = $this->DataWidget();
-        return view(self::PATH_TEMPLATES . $this->template, ['data' => $this->data, 'options' => $this->options])->render();
+
+        if (!empty($this->model)) {
+            $items = $this->model::where('active', true)->getModels();
+            return view(self::PATH_TEMPLATES . $this->template, ['items' => $items, 'options' => $this->options])->render();
+        } else {
+            return view(self::PATH_TEMPLATES . $this->template, ['data' => $this->data, 'options' => $this->options])->render();
+        }
+
     }
 
     public static function findView(int $id): string

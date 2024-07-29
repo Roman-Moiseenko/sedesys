@@ -8,6 +8,7 @@ use App\Modules\Base\Casts\GeoAddressCast;
 use App\Modules\Base\Entity\FullName;
 use App\Modules\Base\Entity\GeoAddress;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Page\Entity\WidgetData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,7 +27,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Photo $photo
  * @property Specialization[] $specializations
  */
-class Employee extends Authenticatable
+class Employee extends Authenticatable implements WidgetData
 {
 
     use HasApiTokens, HasFactory, Notifiable;
@@ -58,8 +59,6 @@ class Employee extends Authenticatable
     }
 
 
-
-
     public function isBlocked(): bool
     {
         return $this->active == false;
@@ -82,4 +81,24 @@ class Employee extends Authenticatable
         return $this->morphOne(Photo::class, 'imageable');//->withDefault();
     }
 
+    public function getImage(): ?string
+    {
+        if (is_null($this->photo)) return null;
+        return $this->photo->getThumbUrl('card');
+    }
+
+    public function getUrl(): string
+    {
+        return route('web.employee.view', $this);
+    }
+
+    public function getCaption(): string
+    {
+        return $this->fullname->getFullName();
+    }
+
+    public function getText(): string
+    {
+        return '';
+    }
 }

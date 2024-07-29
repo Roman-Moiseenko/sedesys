@@ -10,7 +10,7 @@
         </div>
         <br> ***
         <br> ***
-        <br> ***
+        {!! \App\Modules\Page\Entity\Widget::find(1)->view() !!}
         <br> ***
         <br> ***
         <br> ***

@@ -26,7 +26,6 @@ class WidgetController extends Controller
     public function index(Request $request)
     {
         $widgets = $this->repository->getIndex($request);
-
         return Inertia::render('Page/Widget/Index', [
                 'widgets' => $widgets,
             ]
@@ -37,6 +36,8 @@ class WidgetController extends Controller
     {
         return Inertia::render('Page/Widget/Create', [
             'route' => route('admin.page.widget.store'),
+            'templates' => $this->repository->getTemplates(),
+            'models' => $this->repository->getModels(),
         ]);
     }
 
@@ -54,6 +55,7 @@ class WidgetController extends Controller
         return Inertia::render('Page/Widget/Show', [
                 'widget' => $widget,
                 'edit' => route('admin.page.widget.edit', $widget),
+                'view' => $widget->view()
             ]
         );
     }
@@ -63,13 +65,15 @@ class WidgetController extends Controller
         return Inertia::render('Page/Widget/Edit', [
             'widget' => $widget,
             'route' => route('admin.page.widget.update', $widget),
+            'templates' => $this->repository->getTemplates(),
+            'models' => $this->repository->getModels(),
         ]);
     }
 
     public function update(WidgetRequest $request, Widget $widget)
     {
-        $data = $request->validated();
-        $widget = $this->service->update($widget, $request);
+        $request->validated();
+        $this->service->update($widget, $request);
         return redirect()
             ->route('admin.page.widget.show', $widget)
             ->with('success', 'Сохранение прошло успешно');
