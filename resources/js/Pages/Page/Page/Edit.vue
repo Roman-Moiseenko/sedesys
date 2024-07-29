@@ -73,13 +73,10 @@
             </div>
             <div class="w-full mt-3 mb-5">
                 <!-- TinyMCE -->
-
                 <editor
-                    :api-key="this.$props.tiny_api" v-model="form.text"
+                    :api-key="tiny_api" v-model="form.text"
                     :init="store.tiny"
                 />
-
-
                 <div v-if="errors.text" class="text-red-700">{{ errors.text }}</div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
