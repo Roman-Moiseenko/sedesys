@@ -3,7 +3,7 @@
 return [
     'admins' => [
         'sort' => 1,
-        'icon' => 'office',
+        'icon' => 'Management',
         'title' => 'Сотрудники',
         'route' => route('admin.staff.index', [], false),
         'can' => 'staff',

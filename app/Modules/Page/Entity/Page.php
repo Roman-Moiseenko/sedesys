@@ -61,13 +61,8 @@ class Page extends Model
     {
         //$sort = Page::where('parent_id', $parent_id)->max('sort');
         return self::create([
-            //'parent_id' => $parent_id,
             'name' => $name,
             'slug' => empty($slug) ? Str::slug($name) : $slug,
-           // 'title' => $title,
-           // 'description' => $description,
-           // 'template' => $template,
-           // 'sort' => ($sort + 1),
             'published' => false,
             'text' => '',
         ]);
@@ -100,23 +95,24 @@ class Page extends Model
     public function view(): string
     {
         $text = $this->text;
-        //TODO Поиск и замена [widget id="7"] на Widget::findView(7); //find(7)->view()
         preg_match_all('/\[widget=\"(.+)\"\]/', $text, $matches);
-        $replaces = $matches[0];
-        $widget_ids = $matches[1];
-        $data = [];
+        $replaces = $matches[0]; //шот-коды вида [widget="7"] (массив)
+        $widget_ids = $matches[1]; //значение id виджета (массив)
 
         foreach ($widget_ids as $key => $widget_id) {
-            $data[$replaces[$key]] = Widget::findView($widget_id);
-        }
-        foreach ($data as $key => $value) {
-
-            $text = str_replace($key, $value, $text);
-
+            $text = str_replace(
+                $replaces[$key],
+                Widget::findView($widget_id),
+                $text);
         }
         $this->text = $text;
+
         return view(self::PATH_TEMPLATES . $this->template,
-            ['page' => $this, 'title' => $this->title, 'description' => $this->description, 'text' => $text]
+            [
+                'page' => $this,
+                'title' => $this->title,
+                'description' => $this->description,
+            ]
         )->render();
     }
 

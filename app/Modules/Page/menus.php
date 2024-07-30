@@ -3,17 +3,17 @@
 return [
     'pages' => [
         'sort' => 40,
-        'icon' => 'office',
+        'icon' => 'DocumentCopy',
         'title' => 'Страницы',
         'can' => '',
         'submenu' => [
             [
-                'icon' => 'office',
+                'icon' => 'Document',
                 'title' => 'Страницы',
                 'route' => route('admin.page.page.index', [], false),
             ],
             [
-                'icon' => 'office',
+                'icon' => 'Postcard',
                 'title' => 'Виджеты',
                 'route' => route('admin.page.widget.index', [], false),
             ],

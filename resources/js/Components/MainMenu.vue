@@ -6,13 +6,17 @@
             <template v-if="item.submenu">
                 <el-sub-menu :index="index">
                     <template #title>
-                        <icon :name="item.icon" class="mr-2 w-4 h-4" />
+                        <el-icon>
+                            <component :is="item.icon"></component>
+                        </el-icon>
                         <span>{{ item.title }}</span>
                     </template>
                     <template v-for="subitem in item.submenu">
                         <el-menu-item :index="subitem.route">
                             <Link :href="subitem.route" class="flex items-center">
-                            <icon :name="subitem.icon" class="mr-2 w-4 h-4" />
+                            <el-icon>
+                                <component :is="subitem.icon"></component>
+                            </el-icon>
                             <span>{{ subitem.title }}</span>
                             </Link>
                         </el-menu-item>
@@ -22,7 +26,9 @@
             <template v-else >
                     <el-menu-item :index="item.route">
                         <Link :href="item.route" class="flex items-center">
-                        <icon :name="item.icon" class="mr-2 w-4 h-4" />
+                        <el-icon>
+                            <component :is="item.icon"></component>
+                        </el-icon>
                         <span>{{ item.title }}</span>
                         </Link>
                     </el-menu-item>
@@ -35,7 +41,6 @@
 <script>
 import { Link } from '@inertiajs/vue3'
 import Icon from '@/Components/Icon.vue'
-
 
 export default {
     components: {

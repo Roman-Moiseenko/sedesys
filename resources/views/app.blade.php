@@ -7,6 +7,8 @@
     <link rel="icon" href="{{Vite::asset('resources/images/admin/192x192.png')}}" size="192x192">
     <link rel="apple-touch-icon" href="{{Vite::asset('resources/images/admin/180x180.png')}}" size="180x180">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    <!--script src="//cdn.jsdelivr.net/npm/@element-plus/icons-vue"></script-->
     <title inertia>{{ 'SeDeSys - CMS Управления бизнесом' }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

@@ -3,17 +3,17 @@
 return [
     'employees' => [
         'sort' => 20,
-        'icon' => 'users',
+        'icon' => 'Service',
         'title' => 'Персонал',
         'can' => 'staff',
         'submenu' => [
             'users' => [
-                'icon' => 'printer',
+                'icon' => 'List',
                 'title' => 'Список',
                 'route' => route('admin.employee.employee.index', [], false),
             ],
             'specialization' => [
-                'icon' => 'printer',
+                'icon' => 'Connection',
                 'title' => 'Специализация',
                 'route' => '', //route('admin.employee.specialization.index', [], false),
             ],

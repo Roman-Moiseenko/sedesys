@@ -3,7 +3,7 @@
 return [
     'users' => [
         'sort' => 30,
-        'icon' => 'users',
+        'icon' => 'User',
         'title' => 'Клиенты',
         'route' => route('admin.user.user.index', [], false),
         'can' => 'staff',
