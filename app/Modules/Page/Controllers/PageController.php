@@ -59,6 +59,7 @@ class PageController extends Controller
     {
         return Inertia::render('Page/Page/Show', [
                 'page' => $page,
+                'parent' => is_null($page->parent_id) ? '-' : $page->parent->name,
                 'edit' => route('admin.page.page.edit', $page),
                 'photo' => !empty($page->photo) ? $page->photo->getUploadUrl() : null,
                 'toggle' => route('admin.page.page.toggle', $page),

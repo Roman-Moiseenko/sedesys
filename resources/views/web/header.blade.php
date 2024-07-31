@@ -40,6 +40,7 @@
                 </ul>
 
                 <div class="d-flex">
+
                     @foreach($menu_contact as $item)
                         <div class="ms-2">
                             <a href="{{ $item['url'] }}" target="_blank" title="{{ $item['name'] }}">

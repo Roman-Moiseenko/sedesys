@@ -17,7 +17,6 @@ class WebController extends Controller
         } else {
             return view('web.home');
         }
-
     }
 
 

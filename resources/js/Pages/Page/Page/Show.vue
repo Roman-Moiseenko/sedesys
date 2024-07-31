@@ -7,23 +7,23 @@
             <div class="p-2">
                 <div class="flex flex-col justify-center items-center lg:items-start mt-4">
                     <div class="truncate sm:whitespace-normal flex items-center">
-                        Страница&nbsp;{{ $props.page.name}}
+                        Страница&nbsp;<span class="font-medium ml-6">{{ $props.page.name}}</span>
                     </div>
-                    <div class="truncate sm:whitespace-normal flex items-center">
-                        Ссылка&nbsp;{{ $props.page.slug}}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Ссылка&nbsp;<span class="font-medium ml-6">{{ $props.page.slug}}</span>
                     </div>
-                    <div class="truncate sm:whitespace-normal flex items-center">
-                        Шаблон&nbsp;{{ $props.page.template}}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Шаблон&nbsp;<span class="font-medium ml-6">{{ $props.page.template}}</span>
                     </div>
 
-                    <div class="truncate sm:whitespace-normal flex items-center">
-                        Родительская страница&nbsp;{{ $props.page.parent_id }}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Родительская страница&nbsp;<span class="font-medium ml-6">{{ $props.parent }}</span>
                     </div>
-                    <div class="truncate sm:whitespace-normal flex items-center">
-                        Заголовок&nbsp;{{ $props.page.title}}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.page.title}}</span>
                     </div>
-                    <div class="truncate sm:whitespace-normal flex items-center">
-                        Описание&nbsp;{{ $props.page.description}}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Описание&nbsp;<span class="font-medium ml-6">{{ $props.page.description}}</span>
                     </div>
                 </div>
             </div>
@@ -48,11 +48,7 @@
         </div>
     </div>
 
-    <div class="mt-3 p-3 bg-white rounded-lg" v-html="$props.page.text">
-
-
-
-    </div>
+    <div class="mt-3 p-3 bg-white rounded-lg" v-html="$props.page.text"></div>
 </template>
 
 <script>
@@ -76,6 +72,7 @@
                 type: String,
                 default: null,
             },
+            parent: String
         },
         methods: {
             goEdit() {

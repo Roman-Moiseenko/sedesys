@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * @property Carbon $updated_at
  * @property Carbon $published_at
  * @property Photo $photo
+ * @property Page $parent
  */
 
 class Page extends Model
@@ -119,6 +120,11 @@ class Page extends Model
     public function photo()
     {
         return $this->morphOne(Photo::class, 'imageable');//->withDefault();
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Page::class, 'parent_id', 'id');
     }
 
 }

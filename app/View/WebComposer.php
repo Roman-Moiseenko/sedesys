@@ -4,14 +4,22 @@ declare(strict_types=1);
 namespace App\View;
 
 use App\Modules\Web\Helpers\Menu;
+use App\Modules\Web\Repository\WebRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class WebComposer
 {
+    private WebRepository $repository;
+
+    public function __construct(WebRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function compose(View $view): void
     {
+        //dd($this->repository->getContacts());
         if (!is_null(request()->route())) {
             $pageName = request()->route()->getName();
             if ($pageName == null) {
@@ -26,7 +34,7 @@ class WebComposer
                 //$view->with('schema', new Schema());
 
                 $view->with('menu_top', Menu::menuTop());
-                $view->with('menu_contact', Menu::menuContact());
+                $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());
                 $view->with('menu_mobile', Menu::menuMobile(!is_null($user)));
                 $view->with('active_menu', $this->activeMenu($pageName));

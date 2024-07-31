@@ -17,6 +17,11 @@ return [
                 'title' => 'Виджеты',
                 'route' => route('admin.page.widget.index', [], false),
             ],
+            [
+                'icon' => 'Phone',
+                'title' => 'Контакты',
+                'route' => route('admin.page.contact.index', [], false),
+            ],
         ],
 
     ],
