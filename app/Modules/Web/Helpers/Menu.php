@@ -24,8 +24,8 @@ class Menu
             'page2' => [
                 'icon' => '',
                 'image' => '',
-                'name' => 'Мастера',
-                'route' => 'web.home',
+                'name' => 'Специалисты',
+                'route' => 'web.employee.index',
             ],
             'page3' => [
                 'icon' => '',

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Modules\Web\Repository;
 
+use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Entity\Contact;
+use App\Modules\Page\Entity\Page;
 
 class WebRepository
 {
@@ -20,5 +22,16 @@ class WebRepository
             ];
         })->toArray();
         return $contacts;
+    }
+
+    public function PageBySlug(string $slug): Page
+    {
+        return Page::where('slug', $slug)->where('published', true)->firstOrFail();
+    }
+
+    public function getEmployees()
+    {
+        $employees = Employee::orderBy('created_at')->where('active', true)->get();
+        return $employees;
     }
 }

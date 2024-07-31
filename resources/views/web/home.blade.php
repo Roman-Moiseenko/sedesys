@@ -1,5 +1,8 @@
 @extends('layouts.web')
 
+@section('breadcrumbs')
+@endsection
+
 @section('content')
     <div class="container">
         <h1> Клиентская часть </h1>
@@ -47,4 +50,5 @@
         <br> ***
         Разработка проекта ведется <a href="https://website39.ru">Калининградской веб-студией Web39</a>
     </div>
+    {!! $schema->HomePage() !!}
 @endsection

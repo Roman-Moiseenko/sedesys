@@ -18,7 +18,11 @@
 
 @include('web.header')
 @include('flash::message')
-
+@section('breadcrumbs')
+    <div class="container-xl">
+        {{ \Diglactic\Breadcrumbs\Breadcrumbs::view('web.breadcrumbs') }}
+    </div>
+@show
 <main class="@yield('main')">
     @yield('content')
 </main>

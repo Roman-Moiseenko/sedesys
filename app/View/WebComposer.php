@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\View;
 
 use App\Modules\Web\Helpers\Menu;
+use App\Modules\Web\Helpers\Schema;
 use App\Modules\Web\Repository\WebRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -30,9 +31,8 @@ class WebComposer
             if ($layout == 'web') {
                 $user = (Auth::guard('user')->check()) ? Auth::guard('user')->user() : null;
                 $view->with('user', $user);
-                //TODO Подключить
-                //$view->with('schema', new Schema());
 
+                $view->with('schema', new Schema());
                 $view->with('menu_top', Menu::menuTop());
                 $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());
