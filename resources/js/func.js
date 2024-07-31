@@ -37,4 +37,18 @@ export const func = {
         }
         return val;
     },
+    MaskInteger: (val, max = 999) => {
+        let last = val.slice(-1);
+        if (last.match(/\d+/g) === null || val.length > max) {
+            val = val.substring(0, val.length - 1);
+        }
+        return val;
+    },
+    MaskFloat: (val) => {
+        let last = val.slice(-1);
+        if (last.match(/\d+/g) === null && last.match(/\./g) === null) {
+            val = val.substring(0, val.length - 1);
+        }
+        return val;
+    },
 }
