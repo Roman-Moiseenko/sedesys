@@ -7,14 +7,15 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class Version
 {
-    const version = '0.1';
+    const version = '0.1.1';
 
 
     public static function updates(): array
     {
         return [
             '0.2' => [
-                '... в разработке ...'
+                '... в разработке ...',
+                'Schema - добавлены настройки офиса'
             ],
             '0.1. Базовая версия' => [
                 'Сотрудники - раздел специалистов имеющих доступ к CRM.

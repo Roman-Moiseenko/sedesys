@@ -37,13 +37,36 @@
                 <el-input v-model="form.account" placeholder="Расч/счет" @input="handleMaskAccount"/>
                 <div v-if="errors.account" class="text-red-700">{{ errors.account }}</div>
             </el-form-item>
-
+            <el-form-item label="Индекс" :rules="{required: true}">
+                <el-input v-model="form.post" placeholder="Почтовый индекс"/>
+                <div v-if="errors.post" class="text-red-700">{{ errors.post }}</div>
+            </el-form-item>
+            <el-form-item label="Город" :rules="{required: true}">
+                <el-input v-model="form.city" placeholder="Город"/>
+                <div v-if="errors.city" class="text-red-700">{{ errors.city }}</div>
+            </el-form-item>
             <el-form-item label="Адрес" :rules="{required: true}">
                 <el-input v-model="form.address" placeholder="Адрес"/>
                 <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
             </el-form-item>
-
-
+            <el-form-item label="Телефоны">
+                <el-select
+                    v-model="form.phones"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    :reserve-keyword="false"
+                    placeholder="Добавьте телефоны"
+                >
+                    <el-option
+                        v-for="item in form.phones"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                    />
+                </el-select>
+            </el-form-item>
 
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
@@ -77,8 +100,11 @@
         bank: props.organization.bank,
         bank_account: props.organization.bank_account,
         account: props.organization.account,
+        post: props.organization.post,
+        city: props.organization.city,
         address: props.organization.address,
 
+        phones: props.organization.phones,
         /**
          * Добавить новые поля
          */

@@ -13,6 +13,10 @@ class Organization extends AbstractSetting
     public string $bank;
     public string $bank_account;
     public string $account;
+    public string $post;
+    public string $city;
     public string $address;
+
+    public array $phones;
 
 }

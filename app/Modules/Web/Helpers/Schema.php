@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace App\Modules\Web\Helpers;
 
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Setting\Entity\Office;
+use App\Modules\Setting\Entity\Organization;
+use App\Modules\Setting\Entity\Web;
+use App\Modules\Setting\Repository\SettingRepository;
 use Carbon\Carbon;
 
 class Schema
@@ -11,9 +15,19 @@ class Schema
     private string $url;
 
     //TODO Настройки Компании
-    public function __construct()
+
+    private Organization $organization;
+    private Office $office;
+    private Web $web;
+
+    public function __construct(SettingRepository $settings)
     {
         $this->url = route('web.home');
+
+        $this->organization = $settings->getOrganization();
+        $this->office = $settings->getOffice();
+        $this->web = $settings->getWeb();
+
     }
 
     public function HomePage()
@@ -24,7 +38,7 @@ class Schema
         return $this->html($schema1) . PHP_EOL . $this->html($schema2);
     }
 
-
+    /**/
     public function BreadCrumbs($breadcrumbs): string
     {
         $bread = [];
@@ -144,27 +158,28 @@ class Schema
         return [
             "@type" => "Organization",
             "@id" => $this->url . "/#organization",
-            "name" => "ООО «Негоциант»",
+            "name" => $this->organization->name,
             "url" => $this->url,
             "logo" => [
                 "@type" => "ImageObject",
+                //TODO После добавления Галереи
                 "url" => "https://nordihome.com/wp-content/uploads/2023/07/logo-nordi-home-1.png",
                 "contentUrl" => "https://nordihome.com/wp-content/uploads/2023/07/logo-nordi-home-1.png",
                 "width" => 2047,
                 "height" => 2141,
-                "caption" => "NORDI Home"
+                "caption" => "NORDI Home" //Alt от логотипа
             ],
             "contactPoint" => [
                 "@type" => "ContactPoint",
                 "contactOption" => "TollFree",
                 "contactType" => "Customer Service",
-                "telephone" => ["+7 (4012) 37-37-30", "+7 906 210-85-05"],
+                "telephone" => $this->organization->phones,
             ],
             "address" => [
                 "@type" => "PostalAddress",
-                "postalCode" => "236023",
-                "addressLocality" => "Калининград",
-                "streetAddress" => "ул. Советский проспект 103А корпус 1"
+                "postalCode" => $this->organization->post,
+                "addressLocality" => $this->organization->city,
+                "streetAddress" => $this->organization->address
             ],
         ];
     }
@@ -244,7 +259,8 @@ class Schema
             "@context" => "https://schema.org",
             "@type" => "Store",
             "@id" => $this->url . "/#store",
-            "name" => "Магазин NORDI HOME - товары для дома",
+            "name" => $this->office->name,
+            //TODO После Галереи
             "image" => [
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl.jpg",
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-1.jpg",
@@ -252,39 +268,32 @@ class Schema
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-4.jpg",
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-3.jpg"
             ],
-            "openingHours" => "ПН-ПТ - 10:00-19:00, СБ-ВС - 11:00-18:00",
-            "openingHoursSpecification" => [
-                "@type" => "OpeningHoursSpecification",
-                "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                "opens" => "10:00",
-                "closes" => "19:00"
-            ],
-            "paymentAccepted" => "Наличные, QR-код, Платежи СБП, Банковские карты, Оплата по счету",
-            "priceRange" => "100 - 100 000 руб.",
-            "telephone" => ["+7 (4012) 37-37-30", "+7 906 210-85-05"],
+            "openingHours" => $this->office->open_hours,
+
+            "paymentAccepted" => $this->office->payment, //"Наличные, QR-код, Платежи СБП, Банковские карты, Оплата по счету",
+            "priceRange" => $this->office->prices,
+            "telephone" => $this->office->phones,
             "address" => [
                 "@type" => "PostalAddress",
-                "addressLocality" => "Калининград",
-                "streetAddress" => "ул Советский проспект 103А корпус 1"
+                "addressLocality" => $this->office->city,
+                "streetAddress" => $this->office->address
             ],
             "aggregateRating" => [
                 "@type" => "aggregateRating",
-                "ratingValue" => "5.0",
-                "ratingCount" => "475",
-                "url" => "https://www.avito.ru/user/767a54a084b8b382bc26e36a914ec5f7/profile/all?sellerId=767a54a084b8b382bc26e36a914ec5f7"
+                "ratingValue" => $this->office->rating_value,
+                "ratingCount" => $this->office->rating_count,
+                "url" => $this->office->rating_url
             ],
             "geo" => [
                 "@type" => "GeoCoordinates",
-                "latitude" => "54.737798",
-                "longitude" => "20.477079"
+                "latitude" => $this->office->latitude,
+                "longitude" => $this->office->longitude
             ],
             "brand" => [
                 "@type" => "Brand",
-                "name" => "NORDI HOME",
-                "alternateName" => ["Евро Икеа", "Евроикеа", "euroikea", "euro ikea",
-                    "nordihome", "nordi home", "нордихом", "норди хом", "нордихоум", "норди хоум", "нордик хоум",
-                    "евроикея", "евро икея", "evroikea", "evro ikea"],
-                "sameAs" => "https://vk.com/nordihome",
+                "name" => $this->office->brand_name,
+                "alternateName" => $this->office->brand_alternate,
+                "sameAs" => $this->office->brand_sameas,
             ]
         ];
     }
