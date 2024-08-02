@@ -34,6 +34,8 @@ class GalleryRepository
                 'name' => $photo->file,
                 'url' => $photo->getUploadUrl(),
                 'alt' => $photo->alt,
+                'title' => $photo->title,
+                'description' => $photo->description,
             ];
         }
         return $result;

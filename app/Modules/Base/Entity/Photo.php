@@ -39,6 +39,8 @@ class Photo extends Model
         'sort',
         'alt',
         'type',
+        'title',
+        'description',
     ];
 
     private string $urlUpload;

@@ -42,7 +42,9 @@
             <el-icon><Plus /></el-icon>
         </el-upload>
 
-        <el-dialog v-model="dialogVisible" width="90%">
+        <el-dialog v-model="dialogVisible" width="80%"
+
+        >
             <div class="flex">
                 <div style="width: 80%" class="grid">
                     <img w-full :src="dialogImageUrl" alt="Preview Image" class="mx-auto"/>
@@ -56,16 +58,16 @@
                             <el-input v-model="form.alt" placeholder="Напишите Alt для SEO" />
                         </el-form-item>
                         <el-form-item label="Заголовок" label-position="top">
-                            <el-input v-model="form.title" placeholder="На будущее" />
+                            <el-input v-model="form.title" placeholder="Заголовок" />
                         </el-form-item>
                         <el-form-item label="Описание" label-position="top">
-                            <el-input v-model="form.description" placeholder="На будущее" type="textarea" :rows="3"/>
+                            <el-input v-model="form.description" placeholder="Описание" type="textarea" :rows="3"/>
                         </el-form-item>
                         <el-button type="primary" @click="onSubmit">Сохранить</el-button>
                     </el-form>
-
                     <div class="mt-3">
                         <span>{{ dialogImageUrl }}</span>
+                        <el-button type="success" class="text-sm mt-2">Скопировать Url</el-button>
                     </div>
                 </div>
             </div>
@@ -105,6 +107,8 @@ const props = defineProps({
 const form = reactive({
     photo_id: null,
     alt: null,
+    title: null,
+    description: null,
 })
 
 const fileList = ref<UploadUserFile[]>(props.photos);
@@ -118,6 +122,8 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
     dialogImageUrl.value = uploadFile.url!
     form.photo_id = uploadFile.id;
     form.alt = uploadFile.alt;
+    form.title = uploadFile.title;
+    form.description = uploadFile.description;
     dialogVisible.value = true
 }
 

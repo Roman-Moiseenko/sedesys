@@ -68,10 +68,13 @@ class GalleryService
     public function setAlt(Gallery $gallery, Request $request)
     {
         $id = $request->integer('photo_id');
-        $alt = $request->string('alt')->trim()->value();
         foreach ($gallery->photos as $photo) {
             if ($photo->id === $id) {
-                $photo->update(['alt' => $alt]);
+                $photo->update([
+                    'alt' => $request->string('alt')->trim()->value(),
+                    'title' => $request->string('title')->trim()->value(),
+                    'description' => $request->string('description')->trim()->value(),
+                    ]);
             }
         }
     }
