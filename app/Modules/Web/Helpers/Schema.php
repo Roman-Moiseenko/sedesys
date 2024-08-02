@@ -163,11 +163,11 @@ class Schema
             "logo" => [
                 "@type" => "ImageObject",
                 //TODO После добавления Галереи
-                "url" => "https://nordihome.com/wp-content/uploads/2023/07/logo-nordi-home-1.png",
-                "contentUrl" => "https://nordihome.com/wp-content/uploads/2023/07/logo-nordi-home-1.png",
+                "url" => '', //"https://nordihome.com/wp-content/uploads/2023/07/logo-nordi-home-1.png",
+                "contentUrl" => '', //"https://nordihome.com/wp-content/uploads/2023/07/logo-nordi-home-1.png",
                 "width" => 2047,
                 "height" => 2141,
-                "caption" => "NORDI Home" //Alt от логотипа
+                "caption" => '', //"NORDI Home" //Alt от логотипа
             ],
             "contactPoint" => [
                 "@type" => "ContactPoint",
@@ -262,11 +262,13 @@ class Schema
             "name" => $this->office->name,
             //TODO После Галереи
             "image" => [
-                "https://nordihome.ru/wp-content/uploads/2023/08/xxxl.jpg",
+                '',
+                '',
+                /*"https://nordihome.ru/wp-content/uploads/2023/08/xxxl.jpg",
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-1.jpg",
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-2.jpg",
                 "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-4.jpg",
-                "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-3.jpg"
+                "https://nordihome.ru/wp-content/uploads/2023/08/xxxl-3.jpg"*/
             ],
             "openingHours" => $this->office->open_hours,
 

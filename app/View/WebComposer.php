@@ -31,8 +31,8 @@ class WebComposer
             if ($layout == 'web') {
                 $user = (Auth::guard('user')->check()) ? Auth::guard('user')->user() : null;
                 $view->with('user', $user);
-
-                $view->with('schema', new Schema());
+                $schema = app()->make('\App\Modules\Web\Helpers\Schema');
+                $view->with('schema', $schema);
                 $view->with('menu_top', Menu::menuTop());
                 $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());

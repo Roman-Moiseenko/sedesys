@@ -13,9 +13,9 @@ return [
         'createThumbsOnSave' => true,
         'createThumbsOnRequest' => true,
         'thumbs' => [
-            'mini' => ['width' => 80, 'height' => 80,],
+            //'mini' => ['width' => 80, 'height' => 80,],
             'thumb' => ['width' => 150, 'height' => 150,],
-            'list' => ['width' => 200, 'height' => 200,],
+            //'list' => ['width' => 200, 'height' => 200,],
             //catalog - для списка товаров и категорий
             'catalog' => ['width' => 320, 'height' => 320,],
             //'catalog-watermark' => ['width' => 320, 'height' => 320, 'watermark' => true],

@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="icon" href="{{Vite::asset('resources/images/admin/32x32.png')}}" size="32x32">
     <link rel="icon" href="{{Vite::asset('resources/images/admin/192x192.png')}}" size="192x192">
     <link rel="apple-touch-icon" href="{{Vite::asset('resources/images/admin/180x180.png')}}" size="180x180">

@@ -9,13 +9,27 @@ Route::group([
     function () {
         Route::post('/page/{page}/toggle', 'PageController@toggle')->name('page.toggle');
         Route::post('/widget/{widget}/toggle', 'WidgetController@toggle')->name('widget.toggle');
-        Route::post('/contact/{contact}/toggle', 'ContactController@toggle')->name('contact.toggle');
-        Route::post('/contact/{contact}/up', 'ContactController@up')->name('contact.up');
-        Route::post('/contact/{contact}/down', 'ContactController@down')->name('contact.down');
+        Route::group([
+            'prefix' => 'contact',
+            'as' => 'contact.',
+        ], function() {
+            Route::post('/{contact}/toggle', 'ContactController@toggle')->name('toggle');
+            Route::post('/{contact}/up', 'ContactController@up')->name('up');
+            Route::post('/{contact}/down', 'ContactController@down')->name('down');
+        });
+        Route::group([
+            'prefix' => 'gallery',
+            'as' => 'gallery.',
+        ], function() {
+            Route::post('/{gallery}/add', 'GalleryController@add')->name('add');
+            Route::post('/{gallery}/del', 'GalleryController@del')->name('del');
+            Route::post('/{gallery}/set', 'GalleryController@set')->name('set');
+        });
 
         Route::Resource('page', 'PageController');
         Route::Resource('widget', 'WidgetController');
         Route::Resource('contact', 'ContactController');
+        Route::Resource('gallery', 'GalleryController');
     }
 );
 

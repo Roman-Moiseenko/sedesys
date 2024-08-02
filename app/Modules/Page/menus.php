@@ -22,6 +22,11 @@ return [
                 'title' => 'Контакты',
                 'route' => route('admin.page.contact.index', [], false),
             ],
+            [
+                'icon' => 'Picture',
+                'title' => 'Галерея',
+                'route' => route('admin.page.gallery.index', [], false),
+            ],
         ],
 
     ],

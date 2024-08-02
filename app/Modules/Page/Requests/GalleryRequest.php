@@ -1,11 +1,11 @@
 <?php
 
-namespace DummyRootNamespaceModules\DummySingular\Requests;
+namespace App\Modules\Page\Requests;
 
-use DummyRootNamespaceModules\DummySingular\Entity\DummyEntitySingular;
+use App\Modules\Page\Entity\Gallery;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DummyEntitySingularRequest extends FormRequest
+class GalleryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

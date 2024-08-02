@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace App\Modules\Base\Entity;
 
-//use App\Jobs\ClearTempFile;
-//use App\Modules\Admin\Entity\Options;
-//use App\Modules\Shop\Parser\HttpPage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -22,6 +19,8 @@ use function public_path;
  * @property string $alt
  * @property int $sort
  * @property string $type
+ * @property string $title
+ * @property string $description
  */
 class Photo extends Model
 {

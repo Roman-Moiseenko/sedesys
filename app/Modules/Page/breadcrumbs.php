@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Page\Entity\Contact;
+use App\Modules\Page\Entity\Gallery;
 use App\Modules\Page\Entity\Page;
 use App\Modules\Page\Entity\Widget;
 use Diglactic\Breadcrumbs\Breadcrumbs;
@@ -60,6 +61,24 @@ Breadcrumbs::for('admin.page.contact.show', function (BreadcrumbTrail $trail, Co
 Breadcrumbs::for('admin.page.contact.edit', function (BreadcrumbTrail $trail, Contact $contact) {
     $trail->parent('admin.page.contact.show', $contact);
     $trail->push('Редактировать', route('admin.page.contact.edit', $contact));
+});
+
+//GALLERY
+Breadcrumbs::for('admin.page.gallery.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.home');
+    $trail->push('Галерея', route('admin.page.gallery.index'));
+});
+Breadcrumbs::for('admin.page.gallery.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.page.gallery.index');
+    $trail->push('Добавить раздел', route('admin.page.gallery.create'));
+});
+Breadcrumbs::for('admin.page.gallery.show', function (BreadcrumbTrail $trail, Gallery $gallery) {
+    $trail->parent('admin.page.gallery.index');
+    $trail->push($gallery->name, route('admin.page.gallery.show', $gallery));
+});
+Breadcrumbs::for('admin.page.gallery.edit', function (BreadcrumbTrail $trail, Gallery $gallery) {
+    $trail->parent('admin.page.gallery.show', $gallery);
+    $trail->push('Редактировать', route('admin.page.gallery.edit', $gallery));
 });
 
 /*

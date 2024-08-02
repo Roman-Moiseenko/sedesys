@@ -16,7 +16,7 @@ class DummyEntitySingularService
          * Создаем объект с базовыми данными
          */
         $dummyVariableEntitySingular = DummyEntitySingular::register(
-            (string)$request->string('name')
+            $request->string('name')->trim()->value(),
         );
 
         $this->save_fields($dummyVariableEntitySingular, $request);
@@ -29,7 +29,7 @@ class DummyEntitySingularService
         /**
          * Сохраняем базовые поля
          */
-        $dummyVariableEntitySingular->name = (string)$request->string('name');
+        $dummyVariableEntitySingular->name = $request->string('name')->trim()->value();
         $dummyVariableEntitySingular->save();
 
         $this->save_fields($dummyVariableEntitySingular, $request);
