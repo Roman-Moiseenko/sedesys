@@ -89,6 +89,16 @@ class Photo extends Model
         $photo->fileForUpload = $file;
         return $photo;
     }
+
+    //Статические методы
+    public static function get(int $id, string $thumb = 'original'): string
+    {
+        /** @var Photo $photo */
+        $photo = Photo::find($id);
+        if (is_null($photo)) throw new \DomainException('Изображение не найдено');
+        return $photo->getThumbUrl($thumb);
+    }
+
 /*
     public static function uploadByUrlProxy(string $url, string $type = '', int $sort = 0, string $alt = ''): self
     {
@@ -264,5 +274,7 @@ class Photo extends Model
     {
         return pathinfo($this->file, PATHINFO_EXTENSION);
     }
+
+
 
 }

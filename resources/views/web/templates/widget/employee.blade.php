@@ -1,4 +1,6 @@
 <div>
+    <img src="{{ photo(15, 'card') }}">
+    <br>
     Шаблон показа карточек сотрудников
     <div class="row">
         @foreach($items as $item)

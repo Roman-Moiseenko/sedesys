@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title')->default('');
             $table->text('description');
             $table->string('template')->default('text');
-            $table->mediumText('text');
+            $table->longText('text');
         });
     }
 

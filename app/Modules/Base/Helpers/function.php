@@ -70,3 +70,10 @@ if (!function_exists('array_select')) {
         return $result;
     }
 }
+
+if (!function_exists('photo')) {
+    function photo(int $id, string $thumb = 'original'): string
+    {
+        return \App\Modules\Base\Entity\Photo::get($id, $thumb);
+    }
+}

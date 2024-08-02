@@ -21,6 +21,7 @@ return [
             //'catalog-watermark' => ['width' => 320, 'height' => 320, 'watermark' => true],
             //Для карточки товара/услуги
             'card' => ['width' => 700, 'height' => 700/*,'watermark' => true*/],
+            'original' => []
         ],
         'paths' => [
             'uploads' => '/uploads',

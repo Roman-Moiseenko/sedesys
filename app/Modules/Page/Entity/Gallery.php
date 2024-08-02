@@ -42,4 +42,12 @@ class Gallery extends Model
     {
         return $this->morphMany(Photo::class, 'imageable');
     }
+
+    public static function photo(int $id, string $thumb = 'original')
+    {
+        /** @var Photo $photo */
+        $photo = Photo::find($id);
+        return $photo->getThumbUrl($thumb);
+    }
+
 }

@@ -19,8 +19,11 @@
                 <div class="p-3 rounded-lg bg-cyan-100 border border-cyan-600">
                     <div class="font-medium mb-1">Инструкция</div>
                     <div class="text-sm">
-                        При добавлении фотографии, чтоб установить Alt или удалить ошибочно загруженную фотографию, необходимо обновить страницу.
+                        При добавлении фотографии, чтоб <strong>установить Alt</strong> или удалить ошибочно загруженную фотографию, необходимо обновить страницу.
                     </div>
+                    <div class="text-sm">В шаблоне страниц и виджетов используйте функцию <strong>photo(id, thumb)</strong></div>
+                    <div class="text-sm">id - идентификатор изображения, thumb - вид карточки (mini, thumb, card, original - по-умолчанию)</div>
+                    <div class="text-sm"></div>
                 </div>
             </div>
         </div>
