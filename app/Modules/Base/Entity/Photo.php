@@ -95,7 +95,7 @@ class Photo extends Model
     {
         /** @var Photo $photo */
         $photo = Photo::find($id);
-        if (is_null($photo)) throw new \DomainException('Изображение не найдено');
+        if (is_null($photo)) return '';
         return $photo->getThumbUrl($thumb);
     }
 

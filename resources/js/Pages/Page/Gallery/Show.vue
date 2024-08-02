@@ -16,8 +16,8 @@
             </div>
             </div>
             <div class="p-4">
-                <div class="p-3 rounded-lg bg-cyan-100 border border-cyan-600">
-                    <div class="font-medium mb-1">Инструкция</div>
+                <div class="p-3 rounded-lg bg-sky-100 border border-sky-600">
+                    <div class="font-medium mb-1 text-sky-700">Инструкция</div>
                     <div class="text-sm">
                         При добавлении фотографии, чтоб <strong>установить Alt</strong> или удалить ошибочно загруженную фотографию, необходимо обновить страницу.
                     </div>

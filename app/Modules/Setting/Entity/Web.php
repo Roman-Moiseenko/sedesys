@@ -5,5 +5,5 @@ namespace App\Modules\Setting\Entity;
 
 class Web extends AbstractSetting
 {
-    public string $name;
+    public string $name = '';
 }

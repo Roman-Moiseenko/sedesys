@@ -58,7 +58,6 @@ class GalleryController extends Controller
                 'del' => route('admin.page.gallery.del', $gallery),
                 'set' => route('admin.page.gallery.set', $gallery),
                 'photos' => $this->repository->getPhotos($gallery),
-                //TODO Список всех фото
             ]
         );
     }

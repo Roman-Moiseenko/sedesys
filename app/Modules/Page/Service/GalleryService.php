@@ -4,8 +4,6 @@ namespace App\Modules\Page\Service;
 
 use App\Modules\Base\Entity\Photo;
 use DragonCode\Support\Facades\Helpers\Str;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Modules\Page\Entity\Gallery;
 
@@ -47,7 +45,6 @@ class GalleryService
         $gallery->delete();
     }
 
-    //TODO ***
     public function addPhoto(Gallery $gallery, Request $request)
     {
         if (empty($file = $request->file('file'))) throw new \DomainException('Нет файла');
