@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 
+use App\Modules\Base\Entity\Photo;
+
 if (!function_exists('price')) {
     function price($value): string
     {
@@ -9,6 +11,7 @@ if (!function_exists('price')) {
         return number_format($value, 0, ',', ' ') . ' ₽';
     }
 }
+
 if (!function_exists('phone')) {
     function phone($value): string
     {
@@ -37,7 +40,6 @@ if (!function_exists('modules')) {
     }
 }
 
-
 if (!function_exists('modules_callback')){
     /**
      *
@@ -56,7 +58,6 @@ if (!function_exists('modules_callback')){
     }
 }
 
-
 if (!function_exists('array_select')) {
     function array_select(array $array): array
     {
@@ -74,6 +75,20 @@ if (!function_exists('array_select')) {
 if (!function_exists('photo')) {
     function photo(int $id, string $thumb = 'original'): string
     {
-        return \App\Modules\Base\Entity\Photo::get($id, $thumb);
+        return Photo::get($id, $thumb);
+    }
+}
+
+if (!function_exists('photo_std')) {
+    function photo_std(int $id, string $thumb = 'original'): stdClass
+    {
+        /** @var Photo $photo */
+        $photo = Photo::find($id);
+        $result = new stdClass();
+        $result->url = is_null($photo) ? '' : $photo->getThumbUrl($thumb);
+        $result->alt = is_null($photo) ? '' : $photo->alt;
+        $result->title = is_null($photo) ? '' : $photo->title;
+        $result->description = is_null($photo) ? '' : $photo->description;
+        return $result;
     }
 }

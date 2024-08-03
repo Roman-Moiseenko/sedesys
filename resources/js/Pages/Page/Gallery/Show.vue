@@ -19,9 +19,10 @@
                 <div class="p-3 rounded-lg bg-sky-100 border border-sky-600">
                     <div class="font-medium mb-1 text-sky-700">Инструкция</div>
                     <div class="text-sm">
-                        При добавлении фотографии, чтоб <strong>установить Alt</strong> или удалить ошибочно загруженную фотографию, необходимо обновить страницу.
+                        После добавления фотографии, чтоб <strong>установить Alt</strong> или удалить ошибочно загруженную фотографию, необходимо обновить страницу.
                     </div>
-                    <div class="text-sm">В шаблоне страниц и виджетов используйте функцию <strong>photo(id, thumb)</strong></div>
+                    <div class="text-sm">В шаблоне страниц и виджетов используйте функцию <strong>photo(id, thumb)</strong> для получения ссылки</div>
+                    <div class="text-sm">Для получения полных данных -  <strong>photo_std(id, thumb)</strong> возвращает объект stdClass {url, alt, title, description} </div>
                     <div class="text-sm">id - идентификатор изображения, thumb - вид карточки (mini, thumb, card, original - по-умолчанию)</div>
                     <div class="text-sm"></div>
                 </div>
@@ -67,10 +68,12 @@
                             <el-input v-model="form.description" placeholder="Описание" type="textarea" :rows="3"/>
                         </el-form-item>
                         <el-button type="primary" @click="onSubmit">Сохранить</el-button>
+                        <span v-if="dialogSave" class="text-lime-500 text-sm ml-3">Сохранено</span>
                     </el-form>
-                    <div class="mt-3">
-                        <span>{{ dialogImageUrl }}</span>
-                        <el-button type="success" class="text-sm mt-2">Скопировать Url</el-button>
+                    <div class="mt-5">
+                        <el-input v-model="dialogImageUrl"  readonly />
+                        <el-button id="copy_buffer" type="success" class="text-sm mt-2" @click="copyBuffer" plain>Скопировать Url</el-button>
+                        <span v-if="dialogCopy" class="text-lime-500 text-sm ml-3">Скопировано</span>
                     </div>
                 </div>
             </div>
@@ -88,9 +91,10 @@ import {router} from "@inertiajs/vue3";
 import type { UploadProps, UploadUserFile, UploadRawFile  } from 'element-plus'
 
 
-
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
+const dialogCopy = ref(false)
+const dialogSave = ref(false)
 const imageAlt = ref('')
 const imageId = ref('')
 
@@ -129,8 +133,21 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
     form.description = uploadFile.description;
     dialogVisible.value = true
 }
+function copyBuffer(val) {
+    console.log(val);
+    dialogCopy.value = true;
+    setTimeout(() => {
+        dialogCopy.value = false;
+    }, 2000);
+//    document.getElementById('copy_buffer')
+    navigator.clipboard.writeText(dialogImageUrl.value);
+}
 
 function onSubmit() {
+    dialogSave.value = true;
+    setTimeout(() => {
+        dialogSave.value = false;
+    }, 2000);
     router.post(props.set, form);
 }
 

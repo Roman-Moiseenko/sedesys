@@ -32,7 +32,7 @@ class GalleryRepository
             $result[] = [
                 'id' => $photo->id,
                 'name' => $photo->file,
-                'url' => $photo->getUploadUrl(),
+                'url' => $photo->getThumbUrl('original'),
                 'alt' => $photo->alt,
                 'title' => $photo->title,
                 'description' => $photo->description,
