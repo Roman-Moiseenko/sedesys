@@ -65,7 +65,6 @@ class Handler extends ExceptionHandler
     {
 
         if ($this->isHttpException($e)) {
-
             if (request()->is('admin/*')) {
                 if ($e->getStatusCode() == 404) {
                     return Inertia::render('Base/404');
@@ -78,8 +77,9 @@ class Handler extends ExceptionHandler
                     return response()->view('errors.' . '404', [], 404);
                 }
             }
-
-
+        }
+        if ($e instanceof \DomainException) {
+            return back()->with('danger', $e->getMessage());
         }
         return parent::render($request, $e);
     }

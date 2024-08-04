@@ -2,8 +2,9 @@
 
 namespace App\Modules\Page\Service;
 
+use App\Modules\Page\Entity\Page;
+use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Repository\TemplateRepository;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
 class TemplateService
@@ -41,7 +42,22 @@ class TemplateService
     public function destroy(string $type, string $template)
     {
         $file = $this->repository->getPath($type) . $template . '.blade.php';
-        unlink($file);
+
+        $isset = null;
+        if ($type == 'widget') {
+            $isset = Widget::where('template', $template)->first();
+        }
+        if ($type == 'page') {
+            $isset = Page::where('template', $template)->first();
+        }
+        if (is_null($isset)) {
+            unlink($file);
+            //return true;
+        } else {
+            //return false;
+            throw new \DomainException('Шаблон используется. Удалить нельзя');
+        }
+
     }
 
     public function update(Request $request)

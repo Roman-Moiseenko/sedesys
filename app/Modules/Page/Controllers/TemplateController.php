@@ -80,7 +80,8 @@ class TemplateController extends Controller
 
     public function destroy($type, $template)
     {
-        $this->service->destroy($type, $template);
         return redirect()->back()->with('success', 'Удаление прошло успешно');
+        /*if ($this->service->destroy($type, $template))
+        return redirect()->back()->with('danger', 'Шаблон используется. Удалить нельзя');*/
     }
 }
