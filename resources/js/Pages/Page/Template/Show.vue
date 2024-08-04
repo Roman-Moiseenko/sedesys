@@ -1,14 +1,24 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl"> {{ title }} </h1>
+    <h1 class="font-medium text-xl"> {{ title }} <span class="text-red-800" v-if="formChange">*</span> </h1>
 
     <div class="mt-3 p-3 bg-white rounded-lg ">
-        <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-            Данные
-        </div>
-        <div class="mt-3 flex flex-row">
-            {{ template }}
-        </div>
+        <el-form :model="form">
+            <Codemirror
+                v-model:value="form.content"
+                :options="cmOptions"
+                border
+                :height="600"
+                @change="change"
+                original-style
+            />
+            <el-button type="primary" @click="onSubmit(false)" plain :disabled="!formChange">
+                Сохранить
+            </el-button>
+            <el-button type="primary" @click="onSubmit(true)" class="ml-3" :disabled="!formChange">
+                Сохранить и закрыть
+            </el-button>
+        </el-form>
     </div>
 
 </template>
@@ -16,9 +26,13 @@
 <script lang="ts" setup>
 import {Head, Link, router} from '@inertiajs/vue3'
 
+
+
 const props = defineProps({
     template: String,
-
+    content: String,
+    type: String,
+    route: String,
     title: {
         type: String,
         default: 'Шаблон',
@@ -28,10 +42,45 @@ const props = defineProps({
 </script>
 
 <script lang="ts">
+import Codemirror from "codemirror-editor-vue3";
+//import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/htmlmixed/htmlmixed.js";
+import "codemirror/theme/bespin.css";
 import Layout from '@/Components/Layout.vue'
+import {router} from '@inertiajs/vue3'
 
 export default {
+    components: {
+        Codemirror
+    },
     layout: Layout,
+    data() {
+        return {
+            cmOptions: {
+                mode: "htmlmixed", // Language mode
+                theme: "bespin", // Theme
+            },
+            form: {
+                content: this.content,
+                type: this.type,
+                template: this.template,
+                close: false,
+            },
+            formChange: false
+        }
+    },
+
+    methods: {
+        change(val) {
+            this.formChange = true;
+        },
+        onSubmit(val) {
+            this.form.close = val;
+            this.formChange = false;
+            router.put(this.route, this.form)
+            console.log(this.form);
+        }
+    },
 }
 
 </script>

@@ -48,4 +48,5 @@ class TemplateRepository
     {
         return resource_path() . '/views/web/templates/' . $type . '/';
     }
+
 }

@@ -8,7 +8,7 @@
 @section('description', $description)
 
 @section('content')
-    <!--template:Текстовая страница без форматирования-->
+    <!--template:Текстовая страница без форматирования2-->
     <h1 class="my-4">{{ $page->name }}</h1>
     <div class="mt-4">
         {!! $page->text !!}

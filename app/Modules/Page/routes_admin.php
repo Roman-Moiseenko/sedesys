@@ -32,6 +32,7 @@ Route::group([
             Route::get('/', 'TemplateController@index')->name('index');
             Route::get('/{type}/{template}', 'TemplateController@show')->name('show');
             Route::post('/', 'TemplateController@store')->name('store');
+            Route::put('/', 'TemplateController@update')->name('update');
             Route::delete('/{type}/{template}', 'TemplateController@destroy')->name('destroy');
         });
 

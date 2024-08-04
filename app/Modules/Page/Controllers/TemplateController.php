@@ -49,13 +49,30 @@ class TemplateController extends Controller
             ->with('success', 'Новый Шаблон создан');
     }
 
+    public function update(Request $request)
+    {
+
+        $this->service->update($request);
+
+        if ($request->boolean('close')) {
+            return redirect()->route('admin.page.template.index')->with('success', 'Шаблон сохранен!');
+        } else {
+            return redirect()->back()->with('success', 'Сохранено!');
+        }
+    }
+
+
+
     public function show($type, $template)
     {
         $file = $this->repository->getPath($type) . $template . '.blade.php';
 
         return Inertia::render('Page/Template/Show', [
-                'template' => file_get_contents($file),
+                'content' => file_get_contents($file),
                 'title' => 'Шаблон ' . Template::TEMPLATES[$type] . '/' . $template,
+                'type' => $type,
+                'template' => $template,
+                'route' => route('admin.page.template.update'),
             ]
         );
     }

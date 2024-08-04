@@ -37,4 +37,16 @@ class TemplateService
         $file = $this->repository->getPath($type) . $template . '.blade.php';
         unlink($file);
     }
+
+    public function update(Request $request)
+    {
+        $content = $request->string('content')->value();
+        $type = $request->string('type')->value();
+        $template = $request->string('template')->value();
+
+
+        $file = $this->repository->getPath($type) . $template . '.blade.php';
+
+        file_put_contents($file, $content);
+    }
 }
