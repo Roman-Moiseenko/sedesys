@@ -9,12 +9,12 @@ use App\Modules\Page\Entity\Template;
 class TemplateRepository
 {
 
-    public function getIndex(Request $request): array
+    public function getIndex(Request $request)
     {
-        return array_merge(
+        return collect(array_merge(
             $this->getDataArray('page'),
             $this->getDataArray('widget'),
-        );
+        ));
     }
 
 

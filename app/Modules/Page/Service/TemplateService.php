@@ -6,6 +6,7 @@ use App\Modules\Page\Entity\Page;
 use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Repository\TemplateRepository;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\NoReturn;
 
 class TemplateService
 {
@@ -50,11 +51,10 @@ class TemplateService
         if ($type == 'page') {
             $isset = Page::where('template', $template)->first();
         }
+
         if (is_null($isset)) {
             unlink($file);
-            //return true;
         } else {
-            //return false;
             throw new \DomainException('Шаблон используется. Удалить нельзя');
         }
 

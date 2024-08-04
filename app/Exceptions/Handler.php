@@ -70,17 +70,19 @@ class Handler extends ExceptionHandler
                     return Inertia::render('Base/404');
                     //return response()->view('errors.' . 'admin_404', [], 404);
                 }
-            }
-            else
-            {
+            } else {
                 if ($e->getStatusCode() == 404) {
                     return response()->view('errors.' . '404', [], 404);
                 }
             }
         }
+
         if ($e instanceof \DomainException) {
-            return back()->with('danger', $e->getMessage());
+            $temp = 'danger';
+            if (request()->is('admin/*')) $temp = 'error';
+            return back()->with($temp, $e->getMessage());
         }
+
         return parent::render($request, $e);
     }
 }

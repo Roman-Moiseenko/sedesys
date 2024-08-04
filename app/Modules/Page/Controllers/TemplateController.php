@@ -22,7 +22,6 @@ class TemplateController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index(Request $request)
     {
         $templates = $this->repository->getIndex($request);
@@ -32,14 +31,7 @@ class TemplateController extends Controller
             ]
         );
     }
-/*
-    public function create(Request $request)
-    {
-        return Inertia::render('Page/Template/Create', [
-            'route' => route('admin.page.template.store'),
-        ]);
-    }
-*/
+
     public function store(TemplateRequest $request)
     {
         $request->validated();
@@ -51,7 +43,6 @@ class TemplateController extends Controller
 
     public function update(Request $request)
     {
-
         $this->service->update($request);
 
         if ($request->boolean('close')) {
@@ -62,14 +53,13 @@ class TemplateController extends Controller
     }
 
 
-
     public function show($type, $template)
     {
         $file = $this->repository->getPath($type) . $template . '.blade.php';
 
         return Inertia::render('Page/Template/Show', [
                 'content' => file_get_contents($file),
-                'title' => 'Шаблон ' . Template::TEMPLATES[$type] . '/' . $template,
+                'title' => 'Шаблон ' . Template::TEMPLATES[$type] . ' / ' . $template,
                 'type' => $type,
                 'template' => $template,
                 'route' => route('admin.page.template.update'),
@@ -80,8 +70,7 @@ class TemplateController extends Controller
 
     public function destroy($type, $template)
     {
+        $this->service->destroy($type, $template);
         return redirect()->back()->with('success', 'Удаление прошло успешно');
-        /*if ($this->service->destroy($type, $template))
-        return redirect()->back()->with('danger', 'Шаблон используется. Удалить нельзя');*/
     }
 }

@@ -23,37 +23,33 @@
 
 </template>
 
-<script lang="ts" setup>
-import {Head, Link, router} from '@inertiajs/vue3'
-
-
-
-const props = defineProps({
-    template: String,
-    content: String,
-    type: String,
-    route: String,
-    title: {
-        type: String,
-        default: 'Шаблон',
-    }
-});
-
-</script>
-
 <script lang="ts">
 import Codemirror from "codemirror-editor-vue3";
-//import "codemirror/mode/javascript/javascript.js";
+import {Head, Link, router} from '@inertiajs/vue3'
+
 import "codemirror/mode/htmlmixed/htmlmixed.js";
 import "codemirror/theme/bespin.css";
 import Layout from '@/Components/Layout.vue'
-import {router} from '@inertiajs/vue3'
+
 
 export default {
     components: {
-        Codemirror
+        Codemirror,
+        Head,
+        Link,
     },
     layout: Layout,
+    props: {
+        template: String,
+        content: String,
+        type: String,
+        route: String,
+        title: {
+            type: String,
+            default: 'Шаблон',
+        }
+    },
+
     data() {
         return {
             cmOptions: {
@@ -71,7 +67,7 @@ export default {
     },
 
     methods: {
-        change(val) {
+        change() {
             this.formChange = true;
         },
         onSubmit(val) {
