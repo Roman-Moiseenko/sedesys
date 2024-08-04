@@ -11,9 +11,9 @@ class StaffRepository
 {
     public function getIndex(Request $request): Arrayable
     {
-        $size = $request->input('size', 20);
         return Admin::orderBy('name')
-            ->paginate($size)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Admin $staff) => [
                 'id' => $staff->id,
                 'name' => $staff->name,

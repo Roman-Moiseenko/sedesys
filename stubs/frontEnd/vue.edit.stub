@@ -18,7 +18,8 @@
 </template>
 
 
-<script setup>
+<script lang="ts" setup>
+    import {Head} from '@inertiajs/vue3'
     import {reactive} from 'vue'
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
@@ -53,13 +54,10 @@
     }
 
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
+<script lang="ts">
     import Layout from '@/Components/Layout.vue'
+
     export default {
-        components: {
-            Head,
-        },
         layout: Layout,
     }
 </script>

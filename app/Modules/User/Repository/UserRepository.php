@@ -13,7 +13,8 @@ class UserRepository
     public function getIndex(Request $request): Arrayable
     {
         $users = User::orderByDesc('created_at')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(User $user) => [
                 'id' => $user->id,
                 'phone' => phone($user->phone),

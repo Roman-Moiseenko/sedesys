@@ -12,7 +12,8 @@ class GalleryRepository
     public function getIndex(Request $request): Arrayable
     {
         return Gallery::orderBy('name')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Gallery $gallery) => [
                 'id' => $gallery->id,
                 'name' => $gallery->name,

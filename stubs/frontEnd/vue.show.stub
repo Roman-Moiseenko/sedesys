@@ -13,23 +13,33 @@
 
 </template>
 
+<script lang="ts" setup>
+    import { Head, Link } from '@inertiajs/vue3'
+
+    const props = defineProps({
+        dummyVariableEntitySingular: Object,
+        edit: String,
+        title: {
+            type: String,
+            default: 'Карточка dummyVariableEntitySingular',
+        },
+        /**
+         * Задать props
+         */
+    });
+
+    /**
+     * Методы
+     */
+
+
+</script>
 <script>
-    import { Head, Link, router } from '@inertiajs/vue3'
+    import { router } from '@inertiajs/vue3'
     import Layout from '@/Components/Layout.vue'
 
     export default {
-        components: {
-            Head,
-        },
         layout: Layout,
-        props: {
-            dummyVariableEntitySingular: Object,
-            edit: String,
-            title: {
-                type: String,
-                default: 'Карточка dummyVariableEntitySingular',
-            }
-        },
         methods: {
             goEdit() {
                 router.get(this.$props.edit);
@@ -39,6 +49,6 @@
 
 </script>
 
-<style scoped>
+<style>
 
 </style>

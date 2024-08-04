@@ -12,7 +12,8 @@ class PageRepository
     public function getIndex(Request $request): Arrayable
     {
         return Page::orderBy('name')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Page $page) => [
                 'id' => $page->id,
                 'name' => $page->name,

@@ -3,6 +3,7 @@
 use App\Modules\Page\Entity\Contact;
 use App\Modules\Page\Entity\Gallery;
 use App\Modules\Page\Entity\Page;
+use App\Modules\Page\Entity\Template;
 use App\Modules\Page\Entity\Widget;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
@@ -79,6 +80,24 @@ Breadcrumbs::for('admin.page.gallery.show', function (BreadcrumbTrail $trail, Ga
 Breadcrumbs::for('admin.page.gallery.edit', function (BreadcrumbTrail $trail, Gallery $gallery) {
     $trail->parent('admin.page.gallery.show', $gallery);
     $trail->push('Редактировать', route('admin.page.gallery.edit', $gallery));
+});
+
+//TEMPLATE
+Breadcrumbs::for('admin.page.template.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.home');
+    $trail->push('Шаблоны', route('admin.page.template.index'));
+});
+Breadcrumbs::for('admin.page.template.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.page.template.index');
+    $trail->push('Создать шаблон', route('admin.page.template.create'));
+});
+Breadcrumbs::for('admin.page.template.show', function (BreadcrumbTrail $trail, $type, $template) {
+    $trail->parent('admin.page.template.index');
+    $trail->push($type . '/' . $template, route('admin.page.template.show', [$type, $template]));
+});
+Breadcrumbs::for('admin.page.template.edit', function (BreadcrumbTrail $trail, $template) {
+    $trail->parent('admin.page.template.show', $template);
+    $trail->push('Редактировать', route('admin.page.template.edit', $template));
 });
 
 /*

@@ -25,6 +25,8 @@
         "@vitejs/plugin-vue": "^5.0.5",
         "autoprefixer": "^10.4.19",
         "bootstrap": "^5.3.3",
+        "codemirror": "^5.65.17",
+        "codemirror-editor-vue3": "^2.7.0",
         "element-plus": "^2.7.7",
         "glob": "^10.4.5",
         "jquery": "^3.7.1",

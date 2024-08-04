@@ -61,6 +61,10 @@
 
 <script lang="ts" setup>
     import { useStore } from "/resources/js/store.js"
+    import { Head, Link } from '@inertiajs/vue3'
+    import Pagination from '@/Components/Pagination.vue'
+    import ru from 'element-plus/dist/locale/ru.mjs'
+
     const store = useStore();
 
     interface IRow {
@@ -78,17 +82,11 @@
 </script>
 
 <script lang="ts">
-    import { Head, Link } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import { router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
+import Layout from '@/Components/Layout.vue'
+import { router } from '@inertiajs/vue3'
 
 export default {
-    components: {
-        Head,
-        Pagination
-    },
+
     layout: Layout,
     props: {
         dummyVariableEntityPlural: Object,

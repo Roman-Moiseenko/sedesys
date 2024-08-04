@@ -1,6 +1,6 @@
 <template>
-    <Head><title>{{ $props.title }}</title></Head>
-    <h1 class="font-medium text-xl">Добавить новый dummyVariableEntitySingular</h1>
+    <Head><title>{{ title }}</title></Head>
+    <h1 class="font-medium text-xl">Редактировать {{ template.name }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto" style="max-width: 500px">
 
@@ -18,8 +18,7 @@
 </template>
 
 
-<script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
+<script setup>
     import {reactive} from 'vue'
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
@@ -27,14 +26,15 @@
     const props = defineProps({
         errors: Object,
         route: String,
+        template: Object,
         title: {
             type: String,
-            default: 'Создание dummyVariableEntitySingular',
-        },
+            default: 'Редактирование template',
+        }
     });
 
     const form = reactive({
-        name: null,
+        name: props.template.name,
         /**
          * Добавить новые поля
          */
@@ -49,14 +49,17 @@
     }
 
     function onSubmit() {
-        router.post(props.route, form)
+        router.put(props.route, form)
     }
 
 </script>
-<script lang="ts">
+<script>
+    import {Head} from '@inertiajs/vue3'
     import Layout from '@/Components/Layout.vue'
-
     export default {
+        components: {
+            Head,
+        },
         layout: Layout,
     }
 </script>

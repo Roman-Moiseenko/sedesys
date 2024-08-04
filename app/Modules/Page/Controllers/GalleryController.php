@@ -26,7 +26,6 @@ class GalleryController extends Controller
     public function index(Request $request)
     {
         $galleries = $this->repository->getIndex($request);
-
         return Inertia::render('Page/Gallery/Index', [
                 'galleries' => $galleries,
             ]
@@ -46,7 +45,7 @@ class GalleryController extends Controller
         $gallery = $this->service->create($request);
         return redirect()
             ->route('admin.page.gallery.show', $gallery)
-            ->with('success', 'Новый gallery добавлен');
+            ->with('success', 'Новая галерея добавлена');
     }
 
     public function show(Gallery $gallery)

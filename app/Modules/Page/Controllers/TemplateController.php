@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Modules\Page\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Page\Entity\Template;
+use App\Modules\Page\Requests\TemplateRequest;
+use App\Modules\Page\Repository\TemplateRepository;
+use App\Modules\Page\Service\TemplateService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class TemplateController extends Controller
+{
+
+    private TemplateService $service;
+    private TemplateRepository $repository;
+
+    public function __construct(TemplateService $service, TemplateRepository $repository)
+    {
+        $this->service = $service;
+        $this->repository = $repository;
+    }
+
+
+    public function index(Request $request)
+    {
+        $templates = $this->repository->getIndex($request);
+        return Inertia::render('Page/Template/Index', [
+                'templates' => $templates,
+                'store' => route('admin.page.template.store')
+            ]
+        );
+    }
+/*
+    public function create(Request $request)
+    {
+        return Inertia::render('Page/Template/Create', [
+            'route' => route('admin.page.template.store'),
+        ]);
+    }
+*/
+    public function store(TemplateRequest $request)
+    {
+        $request->validated();
+        $params = $this->service->create($request);
+        return redirect()
+            ->route('admin.page.template.show', $params)
+            ->with('success', 'Новый Шаблон создан');
+    }
+
+    public function show($type, $template)
+    {
+        $file = $this->repository->getPath($type) . $template . '.blade.php';
+
+        return Inertia::render('Page/Template/Show', [
+                'template' => file_get_contents($file),
+                'title' => 'Шаблон ' . Template::TEMPLATES[$type] . '/' . $template,
+            ]
+        );
+    }
+
+
+    public function destroy($type, $template)
+    {
+        $this->service->destroy($type, $template);
+        return redirect()->back()->with('success', 'Удаление прошло успешно');
+    }
+}

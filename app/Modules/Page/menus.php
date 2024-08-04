@@ -27,6 +27,11 @@ return [
                 'title' => 'Галерея',
                 'route' => route('admin.page.gallery.index', [], false),
             ],
+            [
+                'icon' => 'ScaleToOriginal',
+                'title' => 'Шаблоны',
+                'route' => route('admin.page.template.index', [], false),
+            ],
         ],
 
     ],

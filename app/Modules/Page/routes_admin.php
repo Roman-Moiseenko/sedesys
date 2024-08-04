@@ -25,11 +25,22 @@ Route::group([
             Route::post('/{gallery}/del', 'GalleryController@del')->name('del');
             Route::post('/{gallery}/set', 'GalleryController@set')->name('set');
         });
+        Route::group([
+            'prefix' => 'template',
+            'as' => 'template.',
+        ], function() {
+            Route::get('/', 'TemplateController@index')->name('index');
+            Route::get('/{type}/{template}', 'TemplateController@show')->name('show');
+            Route::post('/', 'TemplateController@store')->name('store');
+            Route::delete('/{type}/{template}', 'TemplateController@destroy')->name('destroy');
+        });
+
 
         Route::Resource('page', 'PageController');
         Route::Resource('widget', 'WidgetController');
         Route::Resource('contact', 'ContactController');
         Route::Resource('gallery', 'GalleryController');
+       // Route::Resource('template', 'TemplateController');
     }
 );
 

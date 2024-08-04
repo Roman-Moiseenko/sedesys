@@ -12,7 +12,8 @@ class WidgetRepository
     public function getIndex(Request $request): Arrayable
     {
         return Widget::orderBy('name')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Widget $widget) => [
                 'id' => $widget->id,
                 'name' => $widget->name,

@@ -12,7 +12,8 @@ class DummyEntitySingularRepository
     public function getIndex(Request $request): Arrayable
     {
         $dummyVariableEntityPlural = DummyEntitySingular::orderBy('name')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(DummyEntitySingular $dummyVariableEntitySingular) => [
                 'id' => $dummyVariableEntitySingular->id,
                 'name' => $dummyVariableEntitySingular->name,

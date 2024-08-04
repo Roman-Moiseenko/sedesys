@@ -15,7 +15,8 @@ class SettingRepository
     public function getIndex(Request $request): Arrayable
     {
         return Setting::orderBy('name')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Setting $setting) => [
                 'id' => $setting->id,
                 'name' => $setting->name,

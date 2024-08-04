@@ -12,7 +12,8 @@ class EmployeeRepository
     public function getIndex(Request $request): Arrayable
     {
         $employees = Employee::orderByDesc('created_at')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Employee $employee) => [
                 'id' => $employee->id,
                 'phone' => $employee->phone,

@@ -76,14 +76,16 @@
 
 <script lang="ts" setup>
     import { useStore } from "/resources/js/store.js"
+    import Pagination from '@/Components/Pagination.vue'
+    import ru from 'element-plus/dist/locale/ru.mjs'
+    import { Head, Link } from '@inertiajs/vue3'
+
     const store = useStore();
 
     interface IRow {
-        /**
-         * Статусы
-        */
         active: number
     }
+
     const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
         if (row.active === false) {
             return 'warning-row'
@@ -93,17 +95,13 @@
 </script>
 
 <script lang="ts">
-    import { Head, Link } from '@inertiajs/vue3'
+
     import Layout from '@/Components/Layout.vue'
     import { router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
+
 
 export default {
-    components: {
-        Head,
-        Pagination
-    },
+
     layout: Layout,
     props: {
         pages: Object,

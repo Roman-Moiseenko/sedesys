@@ -12,7 +12,8 @@ class ContactRepository
     public function getIndex(Request $request): Arrayable
     {
         return Contact::orderBy('sort')
-            ->paginate(20)->withQueryString()
+            ->paginate($request->input('size', 20))
+            ->withQueryString()
             ->through(fn(Contact $contact) => [
                 'id' => $contact->id,
                 'name' => $contact->name,
