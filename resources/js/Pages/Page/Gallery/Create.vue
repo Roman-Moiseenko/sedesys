@@ -14,7 +14,7 @@
                 <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
             </el-form-item>
 
-            <el-form-item label="Описание" :rules="{required: true}">
+            <el-form-item label="Описание">
                 <el-input v-model="form.description" placeholder="Описание" :rows="5" type="textarea"/>
                 <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
             </el-form-item>

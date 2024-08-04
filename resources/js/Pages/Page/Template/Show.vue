@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Codemirror from "codemirror-editor-vue3";
-import {Head, Link, router} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 
 import "codemirror/mode/htmlmixed/htmlmixed.js";
 import "codemirror/theme/bespin.css";
@@ -36,7 +36,6 @@ export default {
     components: {
         Codemirror,
         Head,
-        Link,
     },
     layout: Layout,
     props: {
@@ -73,7 +72,7 @@ export default {
         onSubmit(val) {
             this.form.close = val;
             this.formChange = false;
-            router.put(this.route, this.form)
+            router.put(this.route, this.form);
             console.log(this.form);
         }
     },

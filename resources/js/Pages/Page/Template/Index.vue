@@ -120,7 +120,8 @@ export default {
         removeItem(_route) {
             if (_route !== null) {
                 router.visit(_route, {
-                    method: 'delete'
+                    method: 'delete',
+                    preserveState: true,
                 });
                 this.dialogDelete = false;
                 this.routeDestroy = null;
@@ -128,7 +129,7 @@ export default {
         },
         onSubmit() {
             this.dialogFormVisible = false;
-            router.post(this.store, this.form);
+            router.post(this.store, this.form, { preserveState: true });
         },
         routeClick(row) {
             router.get(row.url);

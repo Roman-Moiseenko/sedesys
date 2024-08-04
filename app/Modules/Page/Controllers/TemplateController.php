@@ -52,7 +52,6 @@ class TemplateController extends Controller
         }
     }
 
-
     public function show($type, $template)
     {
         $file = $this->repository->getPath($type) . $template . '.blade.php';
