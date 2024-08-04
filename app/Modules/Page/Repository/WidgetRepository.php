@@ -8,6 +8,12 @@ use App\Modules\Page\Entity\Widget;
 
 class WidgetRepository
 {
+    private TemplateRepository $templateRepository;
+
+    public function __construct(TemplateRepository $templateRepository)
+    {
+        $this->templateRepository = $templateRepository;
+    }
 
     public function getIndex(Request $request): Arrayable
     {
@@ -33,6 +39,15 @@ class WidgetRepository
 
     public function getTemplates(): array
     {
-        return array_select(Widget::WIDGET_TEMPLATES);
+        $list = $this->templateRepository->getDataArray('widget');
+        $result = [];
+        foreach ($list as $item) {
+            $result[] = [
+                'value' => $item['template'],
+                'label' => $item['name'],
+            ];
+        }
+
+        return $result;//array_select(Widget::WIDGET_TEMPLATES);
     }
 }

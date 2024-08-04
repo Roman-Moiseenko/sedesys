@@ -18,7 +18,7 @@ class TemplateRepository
     }
 
 
-    private function getDataArray(string $type): array
+    public function getDataArray(string $type): array
     {
         $path = $this->getPath($type);
 

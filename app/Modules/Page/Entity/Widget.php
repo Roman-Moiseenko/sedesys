@@ -22,13 +22,6 @@ class Widget extends Model
     use HasFactory;
     const PATH_TEMPLATES = 'web.templates.widget.';
 
-    //TODO Динамический список шаблонов по файлам
-    const WIDGET_TEMPLATES = [
-        'gallery' => 'Галерея',
-        'review' => 'Карточки',
-        'employee' => 'Сотрудники',
-    ];
-
     const WIDGET_MODELS = [
         Employee::class => 'Сотрудники',
     ];

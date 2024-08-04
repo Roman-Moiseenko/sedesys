@@ -19,7 +19,6 @@ class WebController extends Controller
         }
     }
 
-
     public function page(string $slug)
     {
         if (!is_null($page = Page::where('slug', $slug)->where('published', true)->first())) {

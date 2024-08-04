@@ -8,6 +8,12 @@ use App\Modules\Page\Entity\Page;
 
 class PageRepository
 {
+    private TemplateRepository $templateRepository;
+
+    public function __construct(TemplateRepository $templateRepository)
+    {
+        $this->templateRepository = $templateRepository;
+    }
 
     public function getIndex(Request $request): Arrayable
     {
@@ -30,7 +36,16 @@ class PageRepository
 
     public function getTemplates(): array
     {
-        return array_select(Page::PAGES_TEMPLATES);
+        $list = $this->templateRepository->getDataArray('page');
+        $result = [];
+        foreach ($list as $item) {
+            $result[] = [
+                'value' => $item['template'],
+                'label' => $item['name'],
+            ];
+        }
+
+        return $result;// array_select(Page::PAGES_TEMPLATES);
     }
 
     public function getPages(int $id = null): array

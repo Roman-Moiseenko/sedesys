@@ -3,6 +3,7 @@
 namespace App\Modules\Page\Service;
 
 use App\Modules\Page\Repository\TemplateRepository;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 
 class TemplateService
@@ -17,16 +18,21 @@ class TemplateService
 
     public function create(Request $request): array
     {
-
         $type = $request->string('type')->value();
-        //TODO Сделать шаблоны по типам и загружать как базовые данные в файл
-
         $template = $request->string('template')->trim()->value();
         $name = $request->string('name')->trim()->value();
-
         $file = $this->repository->getPath($type) . $template . '.blade.php';
+        //Заменяем данные в шаблоне
+        //Возможно расширение параметров, для версии 0.2 dummyParamsName = Имя шаблона
+        $content = str_replace([
+            'dummyParamsName',
+        ], [
+            $name,
+        ],
+            file_get_contents(resource_path('views/web/templates/base/'. $type . '.stub'))
+        );
 
-        file_put_contents($file, '<!--template:'. $name .'.-->');
+        file_put_contents($file, $content);
 
         return ['type' => $type, 'template' => $template];
     }
@@ -43,8 +49,6 @@ class TemplateService
         $content = $request->string('content')->value();
         $type = $request->string('type')->value();
         $template = $request->string('template')->value();
-
-
         $file = $this->repository->getPath($type) . $template . '.blade.php';
 
         file_put_contents($file, $content);
