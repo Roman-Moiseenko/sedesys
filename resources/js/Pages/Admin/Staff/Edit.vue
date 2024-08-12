@@ -59,7 +59,9 @@
                                ref="template"
 
                     >
-                        <el-icon><Plus/></el-icon>
+                        <el-icon>
+                            <Plus/>
+                        </el-icon>
 
                         <template #file="{ file }">
                             <div>
@@ -69,7 +71,8 @@
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
 
-                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                                  <span v-if="!disabled" class="el-upload-list__item-delete"
+                                        @click="handleRemove(file)">
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
@@ -92,6 +95,15 @@
         </el-dialog>
     </div>
 
+    <div class="mt-3 p-3 bg-white rounded-lg">
+        <div class="mt-3 mb-2 font-medium text-gray-800">Сотрудники и персонал, подключившиеся к чат-боту телеграм</div>
+        <el-button type="success" @click="onGetChatID" class="mb-3">Получить список</el-button>
+        <div v-for="item in chat_ids" class="mt-1 p-2 bg-gray-100">
+            Имя: <span class="font-medium mr-5">{{ item.name }}</span>
+            User: <span class="font-medium ml-1 mr-5">{{ item.login }}</span>
+            ID: <span class="font-medium ml-1">{{ item.id }}</span>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -102,14 +114,17 @@ import {func} from "/resources/js/func.js"
 import {ref} from 'vue'
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import type {UploadFile} from 'element-plus'
+import axios from 'axios'
 
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const disabled = ref(false)
+const chat_ids = ref([])
 
 const props = defineProps({
     errors: Object,
     route: String,
+    chat_id: String,
     staff: Object,
     roles: Array,
     title: {
@@ -124,7 +139,7 @@ const props = defineProps({
 /* Загружаем фото назначенное */
 let _default = [];
 if (props.photo !== null) {
-     _default = [{
+    _default = [{
         name: 'default',
         url: props.photo,
     }];
@@ -148,9 +163,11 @@ const form = reactive({
     clear_file: false, //Удалить загруженное ранее фото
 })
 
+
 function handleMaskPhone(val) {
     form.phone = func.MaskPhone(val);
 }
+
 function handleMaskLogin(val) {
     form.name = func.MaskLogin(val);
 }
@@ -159,7 +176,14 @@ function onSubmit() {
     router.post(props.route, form);
 }
 
-const handleRemove= (file: UploadFile) => {
+function onGetChatID() {
+    axios.post(props.chat_id)
+        .then(response => {
+            chat_ids.value = response.data;
+        });
+}
+
+const handleRemove = (file: UploadFile) => {
     fileList.value.splice(0, 1);
     form.clear_file = true;
 }
@@ -183,6 +207,8 @@ export default {
 </script>
 
 <style>
+
+
 .file-uploader-one > ul > li + div {
     display: none;
 }

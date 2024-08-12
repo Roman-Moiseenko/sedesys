@@ -61,9 +61,18 @@ class SettingController extends Controller
                 'route' => route('admin.setting.update'),
             ]
         );
-
     }
 
+    //Настройки Уведомлений
+    public function notification()
+    {
+        $notification = $this->repository->getNotification();
+        return Inertia::render('Setting/Notification', [
+                'notification' => $notification,
+                'route' => route('admin.setting.update'),
+            ]
+        );
+    }
 
     public function update(Request $request)
     {

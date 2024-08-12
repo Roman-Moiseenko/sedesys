@@ -41,6 +41,7 @@ class EmployeeController extends Controller
     {
         return Inertia::render('Employee/Employee/Create', [
             'route' => route('admin.employee.employee.store'),
+            'chat_id' => route('admin.notification.telegram.chat-id'),
         ]);
     }
 
@@ -69,7 +70,7 @@ class EmployeeController extends Controller
             'employee' => $employee,
             'route' => route('admin.employee.employee.update', $employee),
             'photo' => !empty($employee->photo) ? $employee->photo->getUploadUrl() : null,
-
+            'chat_id' => route('admin.notification.telegram.chat-id'),
         ]);
     }
 

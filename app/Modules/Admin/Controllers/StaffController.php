@@ -35,6 +35,7 @@ class StaffController extends Controller
         return Inertia::render('Admin/Staff/Create', [
             'roles' => $this->repository->roles(),
             'route' => route('admin.staff.store'),
+            'chat_id' => route('admin.notification.telegram.chat-id'),
             ]);
     }
 
@@ -62,6 +63,7 @@ class StaffController extends Controller
             'staff' => $staff,
             'photo' => !empty($staff->photo) ? $staff->photo->getUploadUrl() : null,
             'route' => route('admin.staff.update', $staff),
+            'chat_id' => route('admin.notification.telegram.chat-id'),
         ]);
     }
 

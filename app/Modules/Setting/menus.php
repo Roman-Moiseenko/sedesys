@@ -22,6 +22,11 @@ return [
                 'title' => 'Верстка',
                 'route' => route('admin.setting.web', [], false),
             ],
+            [
+                'icon' => 'MessageBox',
+                'title' => 'Уведомления',
+                'route' => route('admin.setting.notification', [], false),
+            ],
         ],
     ],
 ];

@@ -23,7 +23,7 @@ class Widget extends Model
     const PATH_TEMPLATES = 'web.templates.widget.';
 
     const WIDGET_MODELS = [
-        Employee::class => 'Сотрудники',
+        Employee::class => 'Персонал',
     ];
 
     protected $attributes = [

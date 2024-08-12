@@ -24,5 +24,8 @@ Breadcrumbs::for('admin.setting.web', function (BreadcrumbTrail $trail) {
     $trail->push('Верстка', route('admin.setting.web'));
 });
 
-
+Breadcrumbs::for('admin.setting.notification', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.setting.index');
+    $trail->push('Уведомления', route('admin.setting.notification'));
+});
 

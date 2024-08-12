@@ -76,6 +76,16 @@
             <img w-full :src="dialogImageUrl" alt="Preview Image"/>
         </el-dialog>
     </div>
+
+    <div class="mt-3 p-3 bg-white rounded-lg">
+        <div class="mt-3 mb-2 font-medium text-gray-800">Сотрудники и персонал, подключившиеся к чат-боту телеграм</div>
+        <el-button type="success" @click="onGetChatID" class="mb-3">Получить список</el-button>
+        <div v-for="item in chat_ids" class="mt-1 p-2 bg-gray-100">
+            Имя: <span class="font-medium mr-5">{{ item.name }}</span>
+            User: <span class="font-medium ml-1 mr-5">{{ item.login }}</span>
+            ID: <span class="font-medium ml-1">{{ item.id }}</span>
+        </div>
+    </div>
 </template>
 
 
@@ -87,6 +97,9 @@
     import {ref} from 'vue'
     import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
     import type {UploadFile} from 'element-plus'
+    import axios from 'axios'
+
+    const chat_ids = ref([])
 
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
@@ -95,6 +108,7 @@
     const props = defineProps({
         errors: Object,
         route: String,
+        chat_id: String,
         employee: Object,
         title: {
             type: String,
@@ -137,6 +151,12 @@
 
     function onSubmit() {
         router.post(props.route, form)
+    }
+    function onGetChatID() {
+        axios.post(props.chat_id)
+            .then(response => {
+                chat_ids.value = response.data;
+            });
     }
     const handleRemove= (file: UploadFile) => {
         fileList.value.splice(0, 1);
