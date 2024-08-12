@@ -37,6 +37,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapModulesRoutesAdmin();
         $this->mapModulesRoutesWeb();
+        $this->mapModulesRoutesApi();
     }
 
     /**
@@ -59,7 +60,6 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-
     protected function mapModulesRoutesAdmin()
     {
         modules_callback('routes_admin.php', function($routesPath, $module) {
@@ -67,6 +67,16 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware(['web', 'auth:admin'])
                 ->as('admin.')
                 ->namespace("\\App\\Modules\\$module\\Controllers")
+                ->group($routesPath);
+        });
+    }
+
+    protected function mapModulesRoutesApi()
+    {
+        modules_callback('routes_api.php', function($routesPath, $module) {
+            Route::middleware(['web'])
+                ->as('api.')
+                ->namespace("\\App\\Modules\\$module\Controllers")
                 ->group($routesPath);
         });
     }
