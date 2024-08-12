@@ -34,4 +34,10 @@ class StaffRepository
     {
         return array_select(Admin::ROLES);
     }
+
+    public function byTelegram(int $telegram_id):? Admin
+    {
+        return Admin::where('telegram_user_id', $telegram_id)->first();
+    }
 }
+

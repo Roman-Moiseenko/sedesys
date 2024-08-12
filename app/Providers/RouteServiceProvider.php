@@ -76,6 +76,7 @@ class RouteServiceProvider extends ServiceProvider
         modules_callback('routes_api.php', function($routesPath, $module) {
             Route::middleware(['web'])
                 ->as('api.')
+                ->prefix('api')
                 ->namespace("\\App\\Modules\\$module\Controllers")
                 ->group($routesPath);
         });

@@ -30,4 +30,9 @@ class EmployeeRepository
 
         return $employees;
     }
+
+    public function byTelegram(int $telegram_id):? Employee
+    {
+        return Employee::where('telegram_user_id', $telegram_id)->first();
+    }
 }

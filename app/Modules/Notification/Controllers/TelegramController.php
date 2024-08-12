@@ -27,8 +27,9 @@ class TelegramController extends Controller
     public function web_hook(Request $request)
     {
         Log::info(json_encode($request->all()));
+        $this->service->checkOperation(json_encode($request->all()));
 
-        return response('True', 200);
+        return response('true', 200);
         //TODO Принимаев вебхуки
     }
 }

@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace App\Modules\Notification\Message;
 
 use App\Modules\Notification\Helpers\NotificationHelper;
+use App\Modules\Notification\Helpers\TelegramParams;
 use NotificationChannels\Telegram\TelegramMessage;
 
 /**
  * @property int $event
  * @property string $message
  * @property string $url
- * @property array $params
+ * @property TelegramParams $params
  */
 class EmployeeMessage extends AbstractMessage
 {
@@ -27,8 +28,12 @@ class EmployeeMessage extends AbstractMessage
     {
         $message = TelegramMessage::create()
             ->content(NotificationHelper::EVENTS[$this->event])
-            ->line($this->message)
-            ->buttonWithCallback('Подтвердить', (string)$notifiable->id);
+            ->line($this->message);
+
+        if (!is_null($this->params))
+            $message->buttonWithCallback($this->params->caption, $this->params->toTelegram());
+
+        if (!empty($this->url)) $message = $message->button('Перейти', $this->url);
 
         return $message;
     }

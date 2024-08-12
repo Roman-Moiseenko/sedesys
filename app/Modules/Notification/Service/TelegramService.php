@@ -5,6 +5,7 @@ namespace App\Modules\Notification\Service;
 
 use App\Modules\Setting\Entity\Notification;
 use App\Modules\Setting\Repository\SettingRepository;
+use Illuminate\Support\Facades\Log;
 use JetBrains\PhpStorm\ArrayShape;
 use NotificationChannels\Telegram\TelegramUpdates;
 
@@ -43,7 +44,7 @@ class TelegramService
 
     public function setWebHook(): bool|string
     {
-        $route = route('admin.notification.telegram.web-hook');
+        $route = route('api.telegram.web-hook');
 
         $url = "https://api.telegram.org/bot" .
             $this->notification->telegram_api .
@@ -89,5 +90,19 @@ class TelegramService
         $result = curl_exec($curl);
         curl_close($curl);
         return $result;
+    }
+
+    public function checkOperation(mixed $data)
+    {
+        Log::info('ТЕЛЕГРАМ ПОЛУЧЕН ХУК');
+        Log::info(json_encode($data));
+        $message = $data['callback_query']['message'];
+        $telegram_id = $message['chat']['id'];
+        Log::info('ID User - '. $telegram_id);
+
+        $callback = $message['reply_markup']['inline_keyboard'];
+
+        Log::info('Data - '. json_encode($data['callback_query']['data']));
+
     }
 }
