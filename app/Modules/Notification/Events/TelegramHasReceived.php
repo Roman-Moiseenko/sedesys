@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Modules\Notification\Events;
+
+use App\Modules\Admin\Entity\Admin;
+use App\Modules\Employee\Entity\Employee;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
+
+class TelegramHasReceived
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public Admin|Employee $user;
+    public int $operation;
+    public int $id;
+
+    public function __construct(Admin|Employee $user, int $operation, int $id)
+    {
+        $this->user = $user;
+        $this->operation = $operation;
+        $this->id = $id;
+    }
+
+    public function broadcastOn(): array
+    {
+        return [
+            new PrivateChannel('channel-name'),
+        ];
+    }
+}

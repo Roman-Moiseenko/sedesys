@@ -15,6 +15,7 @@ class TestCommand extends Command
     protected $description = 'Отправить тестовое сообщение в чат c подтверждением';
     public function handle()
     {
+        /** @var Admin[] $admins */
         $admins = Admin::where('telegram_user_id', '>', 0)->get();
 
         $params = new TelegramParams( TelegramParams::OPERATION_READ, null);

@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace App\Modules\Notification\Service;
 
+use App\Modules\Notification\Events\TelegramHasReceived;
+use App\Modules\Notification\Repository\TelegramRepository;
 use App\Modules\Setting\Entity\Notification;
 use App\Modules\Setting\Repository\SettingRepository;
-use Illuminate\Support\Facades\Log;
-use JetBrains\PhpStorm\ArrayShape;
 use NotificationChannels\Telegram\TelegramUpdates;
 
 class TelegramService
 {
 
     private Notification $notification;
+    private TelegramRepository $repository;
 
-    public function __construct(SettingRepository $settings)
+    public function __construct(SettingRepository $settings, TelegramRepository $repository)
     {
         $this->notification = $settings->getNotification();
+        $this->repository = $repository;
     }
 
     public function getListChatIds(): array
@@ -41,11 +43,9 @@ class TelegramService
         return $list;
     }
 
-
     public function setWebHook(): bool|string
     {
         $route = route('api.telegram.web-hook');
-
         $url = "https://api.telegram.org/bot" .
             $this->notification->telegram_api .
             "/setWebhook?url=" . $route . '&certificate=@sds_bot.pem';
@@ -66,6 +66,22 @@ class TelegramService
             $this->notification->telegram_api
             . '/getWebhookInfo';
         return $this->setCurl($url);
+    }
+
+    public function checkOperation(mixed $data)
+    {
+        $callback = $data['callback_query'];
+        $message_id = $callback['message']['id'];
+        $message = $callback['message']['text'];
+        $telegram_user_id = $callback['from']['id'];
+
+        $user = $this->repository->getUserByTelegram($telegram_user_id);
+        $this->repository->checkMessage($message_id, $telegram_user_id, $message);//Проверка Отвечал ли user на message_id
+        $data = json_decode($callback['data'], true);
+
+        event(new TelegramHasReceived(
+            $user, (int)$data['operation'], (int)$data['id']
+        ));
     }
 
     private function setCurl($url): bool|string
@@ -90,19 +106,5 @@ class TelegramService
         $result = curl_exec($curl);
         curl_close($curl);
         return $result;
-    }
-
-    public function checkOperation(mixed $data)
-    {
-        Log::info('ТЕЛЕГРАМ ПОЛУЧЕН ХУК');
-        Log::info(json_encode($data));
-        $message = $data['callback_query']['message'];
-        $telegram_id = $message['chat']['id'];
-        Log::info('ID User - '. $telegram_id);
-
-        $callback = $message['reply_markup']['inline_keyboard'];
-
-        Log::info('Data - '. json_encode($data['callback_query']['data']));
-
     }
 }

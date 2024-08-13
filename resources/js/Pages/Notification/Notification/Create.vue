@@ -28,9 +28,12 @@
                 <el-input v-model="form.message" placeholder="Напишите сообщение сотрудникам" @input="handleMaskName" type="textarea" :rows="2"/>
                 <div v-if="errors.message" class="text-red-700">{{ errors.message }}</div>
             </el-form-item>
+            <el-checkbox v-model="form.confirmation" label="Подтверждение получения"
+                         type="checkbox"/>
 
-
-            <el-button type="primary" @click="onSubmit">Отправить</el-button>
+            <div class="mt-4">
+                <el-button type="primary" @click="onSubmit">Отправить</el-button>
+            </div>
             <div v-if="form.isDirty">Изменения не сохранены</div>
         </el-form>
     </div>
@@ -58,6 +61,7 @@
         staffs: [],
         employees: [],
         message: null,
+        confirmation: false,
     })
 
     function handleMaskName(val)

@@ -24,12 +24,17 @@ class TelegramController extends Controller
         return response()->json($list);
     }
 
+    //Принимаем вебхуки
     public function web_hook(Request $request)
     {
-        Log::info(json_encode($request->all()));
-        $this->service->checkOperation(json_encode($request->all()));
+        try {
+            $this->service->checkOperation($request->all());
+        } catch (\Throwable $e) {
+
+            Log::error($e->getMessage());
+        }
 
         return response('true', 200);
-        //TODO Принимаев вебхуки
+
     }
 }

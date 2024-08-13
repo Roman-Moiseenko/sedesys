@@ -5,22 +5,52 @@ namespace App\Modules\Notification\Message;
 
 use App\Modules\Notification\Helpers\NotificationHelper;
 use App\Modules\Notification\Helpers\TelegramParams;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+use JetBrains\PhpStorm\ExpectedValues;
 use NotificationChannels\Telegram\TelegramMessage;
 
-/**
- * @property int $event
- * @property string $message
- * @property string $url
- * @property TelegramParams $params
- */
-class StaffMessage extends AbstractMessage
+
+class StaffMessage extends  Notification implements ShouldQueue
 {
+
+    use Queueable;
+
+    protected int $event;
+    protected string $message;
+    protected string $url;
+    protected TelegramParams $params;
+    private int $type; ///
+    private bool $telegram;
+    private bool $database;
+    private bool $mail;
+
+    public function __construct(
+        #[ExpectedValues(valuesFromClass: NotificationHelper::class)] int $event,
+                                string $message,
+                                string $url = '', TelegramParams $params = null,
+        bool $telegram = true, bool $database = false, bool $mail = false,
+    )
+    {
+        $this->event = $event;
+        $this->message = $message;
+        $this->url = $url;
+        $this->params = $params;
+        $this->telegram = $telegram;
+        $this->database = $database;
+        $this->mail = $mail;
+    }
 
     public function via(object $notifiable): array
     {
-        if (app()->environment() === 'production' && $notifiable->telegram_user_id > 0) return ['telegram', 'database'];
+        $result = [];
+        if ($this->telegram) $result[] = 'telegram';
+        if ($this->database) $result[] = 'database';
+        if ($this->mail) $result[] = 'mail';
+        //if (app()->environment() === 'production' && $notifiable->telegram_user_id > 0) return ['telegram', 'database'];
 
-        return ['telegram', 'database'];
+        return $result;
     }
 
     /**
@@ -55,5 +85,7 @@ class StaffMessage extends AbstractMessage
             'params' => json_encode($this->params),
         ];
     }
+
+
 
 }

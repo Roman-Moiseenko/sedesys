@@ -5,9 +5,11 @@ namespace App\Modules\Notification\Helpers;
 
 class NotificationHelper
 {
+
     const EVENT_TEST = 1001;
     const EVENT_ERROR = 1002;
     const EVENT_CHIEF = 1003;
+    const EVENT_INFO = 1004;
 
     const EVENT_NEW_ORDER = 1010;
 
@@ -15,6 +17,7 @@ class NotificationHelper
         self::EVENT_TEST => 'Тестовое событие',
         self::EVENT_ERROR => 'Ошибка',
         self::EVENT_CHIEF => 'От руководства',
+        self::EVENT_INFO => 'Информирование',
         self::EVENT_NEW_ORDER => 'Новый заказ',
     ];
 

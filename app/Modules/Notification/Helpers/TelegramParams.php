@@ -7,7 +7,7 @@ class TelegramParams
 {
     public string $caption;
     public int $operation;
-    public int $id;
+    public ?int $id;
   //  public int $type; //staff, employee
 
     //const TYPE_STAFF = 1;

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Modules\Notification\Events\TelegramHasReceived;
+use App\Modules\Notification\Service\NotificationService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +19,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        TelegramHasReceived::class => [
+            NotificationService::class,
+            //TODO Добавляем классы которые обрабатывают подтверждения из Телеграм
+
         ],
     ];
 
