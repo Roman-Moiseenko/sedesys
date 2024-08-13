@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\ExpectedValues;
 use NotificationChannels\Telegram\TelegramMessage;
 
 
-class StaffMessage extends  Notification implements ShouldQueue
+class StaffMessage extends Notification implements ShouldQueue
 {
 
     use Queueable;
@@ -20,7 +20,7 @@ class StaffMessage extends  Notification implements ShouldQueue
     protected int $event;
     protected string $message;
     protected string $url;
-    protected TelegramParams $params;
+    protected ?TelegramParams $params;
     private int $type; ///
     private bool $telegram;
     private bool $database;
@@ -28,8 +28,8 @@ class StaffMessage extends  Notification implements ShouldQueue
 
     public function __construct(
         #[ExpectedValues(valuesFromClass: NotificationHelper::class)] int $event,
-                                string $message,
-                                string $url = '', TelegramParams $params = null,
+        string $message,
+        string $url = '', TelegramParams $params = null,
         bool $telegram = true, bool $database = false, bool $mail = false,
     )
     {
@@ -48,8 +48,6 @@ class StaffMessage extends  Notification implements ShouldQueue
         if ($this->telegram) $result[] = 'telegram';
         if ($this->database) $result[] = 'database';
         if ($this->mail) $result[] = 'mail';
-        //if (app()->environment() === 'production' && $notifiable->telegram_user_id > 0) return ['telegram', 'database'];
-
         return $result;
     }
 
@@ -58,14 +56,14 @@ class StaffMessage extends  Notification implements ShouldQueue
      */
     public function toTelegram(object $notifiable)
     {
+        $event = NotificationHelper::EMOJI[$this->event] . ' ' .
+            NotificationHelper::EVENTS[$this->event] . ".\n";
         $message = TelegramMessage::create()
-            ->content(NotificationHelper::EVENTS[$this->event])
+            ->content($event)
             ->line($this->message);
-
         if (!is_null($this->params))
             $message->buttonWithCallback($this->params->caption, $this->params->toTelegram());
-
-        if (!empty($this->url)) $message = $message->button('Перейти', $this->url);
+        if (!empty($this->url)) $message = $message->button('Перейти по ссылке', $this->url);
 
         return $message;
     }
@@ -85,7 +83,6 @@ class StaffMessage extends  Notification implements ShouldQueue
             'params' => json_encode($this->params),
         ];
     }
-
 
 
 }

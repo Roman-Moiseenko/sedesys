@@ -2,18 +2,16 @@
 declare(strict_types=1);
 
 namespace App\Modules\Notification\Helpers;
-
+/**
+ * Параметры для callback
+ * OPERATION_... - операция произведенная клиентов в чат-боте
+ */
 class TelegramParams
 {
     public string $caption;
     public int $operation;
     public ?int $id;
-  //  public int $type; //staff, employee
 
-    //const TYPE_STAFF = 1;
-    //const TYPE_EMPLOYEE = 2;
-
-    //const OPERATION_TEST = -1;
     const OPERATION_READ = 101;
     const OPERATION_TAKE_ORDER = 102;
     const OPERATION_PAYMENT = 103;
@@ -24,21 +22,11 @@ class TelegramParams
         self::OPERATION_PAYMENT => 'Оплата получена',
     ];
 
-
     public function __construct(int $operation = null, int $id = null)
     {
         $this->caption = is_null($operation) ? '' : self::OPERATIONS[$operation];
         $this->operation = $operation;
         $this->id = $id;
-        //$this->type = $type;
-    }
-
-    public static function encode(mixed $data): self
-    {
-        $params = new static();
-
-
-        return $params;
     }
 
     public function toTelegram(): string

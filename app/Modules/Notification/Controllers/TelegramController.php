@@ -30,8 +30,8 @@ class TelegramController extends Controller
         try {
             $this->service->checkOperation($request->all());
         } catch (\Throwable $e) {
-
-            Log::error($e->getMessage());
+            Log::error($request->all());
+            Log::error(json_encode([$e->getMessage(), $e->getLine(), $e->getFile()]));
         }
 
         return response('true', 200);

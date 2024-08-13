@@ -55,11 +55,11 @@ class NotificationService
      */
     public function handle(TelegramHasReceived $event): void
     {
-        if ($event->operation == NotificationHelper::EVENT_CHIEF) {
+        if ($event->operation == TelegramParams::OPERATION_READ) {
             $event->user->notify(
                 new StaffMessage(
                     NotificationHelper::EVENT_INFO,
-                    'Спасибо'
+                    'Спасибо!'
                 )
             );
         }

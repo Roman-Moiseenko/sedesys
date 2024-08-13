@@ -70,8 +70,9 @@ class TelegramService
 
     public function checkOperation(mixed $data)
     {
+        if (!isset($data['callback_query'])) return;
         $callback = $data['callback_query'];
-        $message_id = $callback['message']['id'];
+        $message_id = $callback['message']['message_id'];
         $message = $callback['message']['text'];
         $telegram_user_id = $callback['from']['id'];
 

@@ -1,0 +1,48 @@
+{
+    "update_id": 924913917,
+    "callback_query": {
+        "id": "5908689078043346220",
+        "from": {
+            "id": 1375723881,
+            "is_bot": false,
+            "first_name": "\u0420\u043e\u043c\u0430\u043d",
+            "username": "Saint_Koenigs",
+            "language_code": "ru"
+        },
+        "message": {
+            "message_id": 11,
+            "from": {
+                "id": 7295391752,
+                "is_bot": true,
+                "first_name": "SeDeSys",
+                "username": "sedesys_bot"
+            },
+            "chat": {
+                "id": 1375723881,
+                "first_name": "\u0420\u043e\u043c\u0430\u043d",
+                "username": "Saint_Koenigs",
+                "type": "private"
+            },
+            "date": 1723484995,
+            "text": "\u0422\u0435\u0441\u0442\u043e\u0432\u043e\u0435 \u0441\u043e\u0431\u044b\u0442\u0438\u0435\u041d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u043e \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u0438\u044f \u0442\u0435\u0441\u0442\u043e\u0432\u043e\u0433\u043e \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f",
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        {
+                            "text": "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e",
+                            "callback_data": "{\"operation\":101,\"id\":null}"
+                        }
+                    ]
+                ]
+            }
+        },
+        "chat_instance": "-4566379442595379581",
+        "data": "{\"operation\":101,\"id\":null}"
+    }
+}
+
+
+
+
+
+
