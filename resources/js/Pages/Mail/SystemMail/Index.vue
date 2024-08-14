@@ -11,7 +11,8 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="mailable" label="Служба" width="100" />
+                <el-table-column sortable prop="mailable" label="Служба"/>
+                <el-table-column sortable prop="title" label="Заголовок"/>
                 <el-table-column sortable prop="user" label="Получатель" />
                 <el-table-column sortable prop="created_at" label="Отправлено" />
                 <el-table-column prop="count" label="Отправок" />
@@ -35,23 +36,7 @@
             :total="$page.props.systemMails.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить systemMail?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+
 </template>
 
 <script lang="ts" setup>

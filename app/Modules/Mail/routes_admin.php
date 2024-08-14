@@ -11,6 +11,7 @@ Route::group(
     function() {
 
         Route::Resource('system', 'SystemMailController')->only(['index', 'show']);
+        Route::post('/system/repeat', 'SystemMailController@repeat')->name('system.repeat');
         Route::Resource('inbox', 'InboxController')->only(['index', 'show']);
         Route::Resource('outbox', 'OutboxController');
     }

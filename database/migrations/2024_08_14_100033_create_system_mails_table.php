@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('mailable');
             $table->integer('user_id');
+            $table->string('title');
             $table->mediumText('content');
             $table->json('attachments');
             $table->integer('count')->default(1);

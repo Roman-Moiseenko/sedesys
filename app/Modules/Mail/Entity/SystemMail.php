@@ -14,6 +14,7 @@ use Illuminate\Mail\Mailable;
  * @property int $id
  * @property string $mailable
  * @property string $user_id
+ * @property string $title
  * @property string $content
  * @property array $attachments
  * @property int $count
@@ -38,7 +39,8 @@ class SystemMail extends Model
         'user_id',
         'content',
         'attachments',
-        'count'
+        'count',
+        'title',
     ];
 
     //TODO Возможно перенести в Хелпер
@@ -48,9 +50,11 @@ class SystemMail extends Model
 
     public static function register(AbstractMailable $mailable, int $user_id): self
     {
+        //dd($mailable->envelope()->subject);
         return self::create([
             'mailable' => $mailable::class,
             'user_id' => $user_id,
+            'title' => $mailable->envelope()->subject,
             'content' => $mailable->render(),
             'attachments' => $mailable->attachments(),
             'count' => 1

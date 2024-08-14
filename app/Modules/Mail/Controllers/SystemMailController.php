@@ -14,10 +14,12 @@ class SystemMailController extends Controller
 {
 
     private SystemMailRepository $repository;
+    private SystemMailService $service;
 
-    public function __construct(SystemMailRepository $repository)
+    public function __construct(SystemMailService $service, SystemMailRepository $repository)
     {
         $this->repository = $repository;
+        $this->service = $service;
     }
 
 
@@ -39,6 +41,7 @@ class SystemMailController extends Controller
             'created_at' => $system->created_at->translatedFormat('j F Y H:i:s'),
             'updated_at' => $system->updated_at->translatedFormat('j F Y H:i:s'),
             'user' => $system->user->getPublicName(),
+            'title' => $system->title,
             'content' => $system->content,
             'attachments' => $system->attachments,
             'count' => $system->count,
@@ -48,5 +51,11 @@ class SystemMailController extends Controller
                 'repeat' => route('admin.mail.system.repeat', $system),
             ]
         );
+    }
+
+    public function repeat(SystemMail $system)
+    {
+        $this->service->repeat($system);
+        return redirect()->back();
     }
 }
