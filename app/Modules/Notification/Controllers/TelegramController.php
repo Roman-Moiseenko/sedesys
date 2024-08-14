@@ -34,7 +34,7 @@ class TelegramController extends Controller
             Log::error(json_encode([$e->getMessage(), $e->getLine(), $e->getFile()]));
         }
 
-        return response('true', 200);
+        return response('OK', 200);
 
     }
 }

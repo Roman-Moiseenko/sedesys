@@ -24,13 +24,13 @@ class StaffMessage extends Notification implements ShouldQueue
     private int $type; ///
     private bool $telegram;
     private bool $database;
-    private bool $mail;
+    //private bool $mail;
 
     public function __construct(
         #[ExpectedValues(valuesFromClass: NotificationHelper::class)] int $event,
         string $message,
         string $url = '', TelegramParams $params = null,
-        bool $telegram = true, bool $database = false, bool $mail = false,
+        bool $telegram = true, bool $database = false//, bool $mail = false,
     )
     {
         $this->event = $event;
@@ -39,7 +39,7 @@ class StaffMessage extends Notification implements ShouldQueue
         $this->params = $params;
         $this->telegram = $telegram;
         $this->database = $database;
-        $this->mail = $mail;
+        //$this->mail = $mail;
     }
 
     public function via(object $notifiable): array
@@ -47,7 +47,7 @@ class StaffMessage extends Notification implements ShouldQueue
         $result = [];
         if ($this->telegram) $result[] = 'telegram';
         if ($this->database) $result[] = 'database';
-        if ($this->mail) $result[] = 'mail';
+        //if ($this->mail) $result[] = 'mail';
         return $result;
     }
 

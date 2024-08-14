@@ -27,4 +27,8 @@ class WebController extends Controller
             abort(404, 'Страница не найдена');
         }
     }
+    public function test()
+    {
+        return view('web.test');
+    }
 }

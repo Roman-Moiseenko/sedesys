@@ -2,7 +2,7 @@
 
 return [
     'pages' => [
-        'sort' => 40,
+        'sort' => 60,
         'icon' => 'DocumentCopy',
         'title' => 'Страницы',
         'can' => '',

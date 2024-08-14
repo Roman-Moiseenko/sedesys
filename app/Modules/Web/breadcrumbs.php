@@ -26,3 +26,6 @@ Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, Employee
     $trail->parent('web.employee.index');
     $trail->push($employee->fullname->getShortname(), route('web.employee.view', $employee));
 });
+Breadcrumbs::for('web.test', function (BreadcrumbTrail $trail) {
+    $trail->push('<i class="fa-light fa-house"></i>', route('web.test'));
+});
