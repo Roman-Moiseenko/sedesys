@@ -8,7 +8,6 @@ use App\Modules\User\Entity\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Mail\Mailable;
 
 /**
  * @property int $id
@@ -50,7 +49,6 @@ class SystemMail extends Model
 
     public static function register(AbstractMailable $mailable, int $user_id): self
     {
-        //dd($mailable->envelope()->subject);
         return self::create([
             'mailable' => $mailable::class,
             'user_id' => $user_id,

@@ -11,15 +11,16 @@ class SystemMailService
 
     public function create(AbstractMailable $mailable, int $user_id): SystemMail
     {
-
-
         return SystemMail::register($mailable, $user_id);
     }
 
     public function repeat(SystemMail $mail)
     {
-        //TODO
-        Mail::send($mail->user->email);
+
+        $data['html'] = $mail->content;
+        Mail::send('mail.repeat', $data, function($message) use ($mail) {
+            $message->to($mail->user->email, $mail->user->getPublicName())->subject($mail->title);
+        });
     }
 
 }
