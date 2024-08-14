@@ -1,14 +1,23 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl">  {{ systemMail.name }}  </h1>
+    <h1 class="font-medium text-xl">  {{ mail.name }}  </h1>
 
-    <div class="mt-3 p-3 bg-white rounded-lg ">
-        <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-            Данные
+    <div class="mt-3 p-3 bg-white rounded-lg">
+        <div class="truncate sm:whitespace-normal flex items-center mt-2">
+            Служба&nbsp;<span class="font-medium ml-6">{{ mail.mailable}}</span>
         </div>
-        <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goEdit">Редактировать</el-button>
+        <div class="truncate sm:whitespace-normal flex items-center mt-2">
+            Получатель&nbsp;<span class="font-medium ml-6">{{ mail.user}}</span>
         </div>
+        <div class="truncate sm:whitespace-normal flex items-center mt-2">
+            Отправлено&nbsp;<span class="font-medium ml-6">{{ mail.created_at}}</span>
+        </div>
+        <div class="truncate sm:whitespace-normal flex items-center mt-2">
+            Вложения&nbsp;<span v-for="item in mail.attachments" class="font-medium ml-6">{{ mail.item}} | </span>
+        </div>
+    </div>
+
+    <div v-html="mail.content" class="mt-3 p-3 bg-white rounded-lg">
     </div>
 
 </template>
@@ -17,7 +26,7 @@
     import { Head, Link } from '@inertiajs/vue3'
 
     const props = defineProps({
-        systemMail: Object,
+        mail: Object,
         edit: String,
         title: {
             type: String,

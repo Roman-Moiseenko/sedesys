@@ -23,7 +23,7 @@ class UserService
         /**
          * Сохраняем базовые поля
          */
-        $user->phone = (string)$request->string('phone');
+        $user->phone = $request->string('phone')->trim()->value();
         $user->save();
 
         $this->save_fields($user, $request);
@@ -32,10 +32,11 @@ class UserService
     private function save_fields(User $user, Request $request)
     {
         $user->fullname = new FullName(
-            (string)$request->string('surname'),
-            (string)$request->string('firstname'),
-            (string)$request->string('secondname')
+            $request->string('surname')->trim()->value(),
+            $request->string('firstname')->trim()->value(),
+            $request->string('secondname')->trim()->value()
         );
+        $user->email = $request->string('email')->trim()->value();
         $user->address->address = (string)$request->string('address');
 
         $user->save();

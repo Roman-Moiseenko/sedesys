@@ -13,12 +13,10 @@ use Inertia\Inertia;
 class SystemMailController extends Controller
 {
 
-    private SystemMailService $service;
     private SystemMailRepository $repository;
 
-    public function __construct(SystemMailService $service, SystemMailRepository $repository)
+    public function __construct(SystemMailRepository $repository)
     {
-        $this->service = $service;
         $this->repository = $repository;
     }
 
@@ -33,52 +31,22 @@ class SystemMailController extends Controller
         );
     }
 
-    public function create(Request $request)
+    public function show(SystemMail $system)
     {
-        return Inertia::render('Mail/SystemMail/Create', [
-            'route' => route('admin.mail.systemMail.store'),
-        ]);
-    }
-
-    public function store(SystemMailRequest $request)
-    {
-        $request->validated();
-        $systemMail = $this->service->create($request);
-        return redirect()
-            ->route('admin.mail.systemMail.show', $systemMail)
-            ->with('success', 'Новый systemMail добавлен');
-    }
-
-    public function show(SystemMail $systemMail)
-    {
+        $mail = [
+            'id' => $system->id,
+            'mailable' => $system->getMailable(),
+            'created_at' => $system->created_at->translatedFormat('j F Y H:i:s'),
+            'updated_at' => $system->updated_at->translatedFormat('j F Y H:i:s'),
+            'user' => $system->user->getPublicName(),
+            'content' => $system->content,
+            'attachments' => $system->attachments,
+            'count' => $system->count,
+        ];
         return Inertia::render('Mail/SystemMail/Show', [
-                'systemMail' => $systemMail,
-                'edit' => route('admin.mail.systemMail.edit', $systemMail),
+                'mail' => $mail,
+                'repeat' => route('admin.mail.system.repeat', $system),
             ]
         );
-    }
-
-    public function edit(SystemMail $systemMail)
-    {
-        return Inertia::render('Mail/SystemMail/Edit', [
-            'systemMail' => $systemMail,
-            'route' => route('admin.mail.systemMail.update', $systemMail),
-        ]);
-    }
-
-    public function update(SystemMailRequest $request, SystemMail $systemMail)
-    {
-        $request->validated();
-        $this->service->update($systemMail, $request);
-        return redirect()
-            ->route('admin.mail.systemMail.show', $systemMail)
-            ->with('success', 'Сохранение прошло успешно');
-    }
-
-    public function destroy(SystemMail $systemMail)
-    {
-        $this->service->destroy($systemMail);
-
-        return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 }

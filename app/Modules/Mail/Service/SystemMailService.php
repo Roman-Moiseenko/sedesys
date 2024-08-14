@@ -13,4 +13,9 @@ class SystemMailService
         return SystemMail::register($mailable, $user_id);
     }
 
+    public function repeat(SystemMail $mail)
+    {
+        //TODO
+    }
+
 }

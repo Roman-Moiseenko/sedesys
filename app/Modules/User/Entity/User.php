@@ -23,7 +23,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $verify_token
  * @property FullName $fullname
  * @property GeoAddress $address
-
+ * @property bool $firm //?
  *
  */
 class User extends Authenticatable
@@ -124,5 +124,11 @@ class User extends Authenticatable
         if (!empty($firstname)) $this->fullname->firstname = $firstname;
         if (!empty($secondname)) $this->fullname->secondname = $secondname;
         $this->save();
+    }
+
+    public function getPublicName(): string
+    {
+        //TODO Сделать ФизЛицо и ЮрЛицо
+        return $this->fullname->getFullName();
     }
 }

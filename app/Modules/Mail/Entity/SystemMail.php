@@ -51,7 +51,7 @@ class SystemMail extends Model
         return self::create([
             'mailable' => $mailable::class,
             'user_id' => $user_id,
-            'content' => $mailable->content()->html,
+            'content' => $mailable->render(),
             'attachments' => $mailable->attachments(),
             'count' => 1
         ]);
@@ -60,5 +60,10 @@ class SystemMail extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function getMailable(): string
+    {
+        return self::MAILABLES[$this->mailable];
     }
 }

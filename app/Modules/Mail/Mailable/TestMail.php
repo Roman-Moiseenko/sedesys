@@ -16,6 +16,7 @@ class TestMail extends AbstractMailable
     public function envelope(): Envelope
     {
         return new Envelope(
+           // from: 'Служба оповещения SeDeSys',
             subject: 'Служебное письмо',
         );
     }
@@ -25,6 +26,8 @@ class TestMail extends AbstractMailable
     {
         return new Content(
             markdown: 'mail.test',
+            with: [
+            ],
         );
     }
 
@@ -32,5 +35,4 @@ class TestMail extends AbstractMailable
     {
         return [];
     }
-
 }

@@ -11,19 +11,20 @@ class SystemMailRepository
 
     public function getIndex(Request $request): Arrayable
     {
-        $systemMails = SystemMail::orderBy('name')
+        $systemMails = SystemMail::orderByDesc('created_at')
             ->paginate($request->input('size', 20))
             ->withQueryString()
-            ->through(fn(SystemMail $systemMail) => [
-                'id' => $systemMail->id,
-                'name' => $systemMail->name,
-                /**
-
-                 */
-
-                'url' => route('admin.mail.systemMail.show', $systemMail),
-                'edit' => route('admin.mail.systemMail.edit', $systemMail),
-                'destroy' => route('admin.mail.systemMail.destroy', $systemMail),
+            ->through(fn(SystemMail $system) => [
+                'id' => $system->id,
+                'mailable' => $system->getMailable(),
+                'created_at' => $system->created_at->translatedFormat('j F Y H:i:s'),
+                'updated_at' => $system->updated_at->translatedFormat('j F Y H:i:s'),
+                'user' => $system->user->getPublicName(),
+                'content' => $system->content,
+                'attachments' => $system->attachments,
+                'count' => $system->count,
+                'url' => route('admin.mail.system.show', $system),
+                'repeat' => route('admin.mail.system.repeat', $system),
 
             ]);
 

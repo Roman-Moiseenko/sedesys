@@ -1,33 +1,28 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">SystemMail</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить SystemMail</el-button>
+        <h1 class="font-medium text-xl">Системные письма</h1>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
                 :max-height="$data.tableHeight"
                 style="width: 100%; cursor: pointer;"
-                :row-class-name="tableRowClassName"
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Name" width="100" />
+                <el-table-column sortable prop="mailable" label="Служба" width="100" />
+                <el-table-column sortable prop="user" label="Получатель" />
+                <el-table-column sortable prop="created_at" label="Отправлено" />
+                <el-table-column prop="count" label="Отправок" />
+
                 <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">
                         <el-button
                             size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
-                            Edit
-                        </el-button>
-                        <el-button
-                            size="small"
-                            type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
-                        >
-                            Delete
+                            @click.stop="handleRepeat(scope.$index, scope.row)">
+                            Repeat
                         </el-button>
                     </template>
                 </el-table-column>
@@ -67,18 +62,6 @@
 
     const store = useStore();
 
-    interface IRow {
-        /**
-         * Статусы
-        */
-        active: number
-    }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
 </script>
 
 <script lang="ts">
@@ -92,7 +75,7 @@ export default {
         systemMails: Object,
         title: {
             type: String,
-            default: 'Список systemMails',
+            default: 'Системная почта',
         }
     },
     data() {
@@ -105,20 +88,13 @@ export default {
         }
     },
     methods: {
-        createButton() {
-            router.get('/admin/mail/systemMail/create')
-        },
         routeClick(row) {
             router.get(row.url)
         },
-        handleEdit(index, row) {
-            router.get(row.edit);
+        handleRepeat(index, row) {
+            router.post(row.repeat);
         },
 
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
         removeItem(_route) {
             if (_route !== null) {
                 router.visit(_route, {
