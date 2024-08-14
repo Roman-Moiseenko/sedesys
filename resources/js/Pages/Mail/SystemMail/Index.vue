@@ -77,17 +77,9 @@ export default {
             router.get(row.url)
         },
         handleRepeat(index, row) {
-            router.post(row.repeat);
-        },
-
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
+            router.visit(row.repeat, {
+                method: 'post'
+            });
         },
     }
 }

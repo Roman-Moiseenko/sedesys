@@ -18,8 +18,16 @@ class SystemMailService
     {
 
         $data['html'] = $mail->content;
+
         Mail::send('mail.repeat', $data, function($message) use ($mail) {
             $message->to($mail->user->email, $mail->user->getPublicName())->subject($mail->title);
+
+            foreach($mail->attachments as $file) {
+                $message->attach($file);
+            }
+
+            $mail->count++;
+            $mail->save();
         });
     }
 
