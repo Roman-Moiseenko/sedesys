@@ -56,6 +56,6 @@ class SystemMailController extends Controller
     public function repeat(SystemMail $system)
     {
         $this->service->repeat($system);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Письмо было отправлено!');;
     }
 }

@@ -59,13 +59,21 @@ class SystemMail extends Model
         ]);
     }
 
-    public function user()
+    public function notSent()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        $this->count = 0;
+        $this->save();
     }
 
     public function getMailable(): string
     {
         return self::MAILABLES[$this->mailable];
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+
 }

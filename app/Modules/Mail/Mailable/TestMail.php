@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Mail\Mailable;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -33,6 +34,10 @@ class TestMail extends AbstractMailable
 
     public function attachments(): array
     {
-        return [];
+        $path = storage_path('app/files/order/0/');
+        return [
+            Attachment::fromPath($path . 'test-01.txt'),
+            Attachment::fromPath($path . 'test-02.txt'),
+        ];
     }
 }
