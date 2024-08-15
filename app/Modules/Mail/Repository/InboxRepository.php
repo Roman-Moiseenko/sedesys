@@ -9,16 +9,27 @@ use App\Modules\Mail\Entity\Inbox;
 class InboxRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
-        $inboxes = Inbox::orderBy('name')
-            ->paginate($request->input('size', 20))
+        $query = Inbox::orderBy('name');
+
+        $filters = [];
+
+        if ($request->has('email')) {
+            $email = $request->string('email')->trim()->value();
+            $filters['email'] = $email;
+            $query->where('email', 'LIKE', "%$email%");
+
+        }
+
+        if (count($filters) > 0) $filters['count'] = count($filters);
+
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Inbox $inbox) => [
                 'id' => $inbox->id,
                 'name' => $inbox->name,
                 /**
-
                  */
 
                 'url' => route('admin.mail.inbox.show', $inbox),
@@ -27,6 +38,5 @@ class InboxRepository
 
             ]);
 
-        return $inboxes;
     }
 }

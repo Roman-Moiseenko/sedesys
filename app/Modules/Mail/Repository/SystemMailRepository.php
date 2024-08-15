@@ -9,10 +9,19 @@ use App\Modules\Mail\Entity\SystemMail;
 class SystemMailRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
-        $systemMails = SystemMail::orderByDesc('created_at')
-            ->paginate($request->input('size', 20))
+        $query = SystemMail::orderByDesc('created_at');
+        $filters =[];
+
+        if ($request->has('mailable')) {
+            $mailable = $request->string('mailable')->trim()->value();
+            $filters['mailable'] = $mailable;
+            $query->where('mailable', $mailable);
+        }
+
+        if (count($filters) > 0) $filters['count'] = count($filters);
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(SystemMail $system) => [
                 'id' => $system->id,
@@ -28,7 +37,5 @@ class SystemMailRepository
                 'repeat' => route('admin.mail.system.repeat', $system),
 
             ]);
-
-        return $systemMails;
     }
 }

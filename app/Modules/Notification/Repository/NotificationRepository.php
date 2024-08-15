@@ -10,13 +10,30 @@ use Illuminate\Support\Facades\Auth;
 class NotificationRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
         /** @var Admin $staff */
         $staff = Auth::guard('admin')->user();
         if (is_null($staff)) throw new \DomainException('Что-то пошло не так');
-        return $staff->notifications()
-            ->paginate($request->input('size', 20))
+        $query = $staff->notifications();
+        //TODO Фильтр Без учета регистра
+        $filters = [];
+
+        if ($request->has('event')) {
+            $event = $request->integer('event');
+            $filters['event'] = $event;
+
+            $query->where('data', 'LIKE', "%\"code\":\"$event\"%");
+
+        }
+        if ($request->input('read', 'false') == 'true' ) {
+            $filters['read'] = 'true';
+            $query->where('read_at', null);
+        }
+
+        if (count($filters) > 0) $filters['count'] = count($filters);
+
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn($notification) => [
                 'id' => $notification->id,
@@ -29,5 +46,7 @@ class NotificationRepository
                 'read_at' => is_null($notification->read_at) ? null : $notification->read_at->translatedFormat('j F Y H:i:s'),
                 'read' => route('admin.notification.notification.read', $notification),
             ]);
+
+
     }
 }

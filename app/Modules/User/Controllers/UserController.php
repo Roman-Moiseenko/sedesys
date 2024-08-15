@@ -25,10 +25,11 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = $this->repository->getIndex($request);
+        $users = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('User/User/Index', [
                 'users' => $users,
+                'filters' => $filters,
             ]
         );
     }

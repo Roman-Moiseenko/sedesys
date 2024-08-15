@@ -2,7 +2,15 @@
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Клиенты</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Клиента</el-button>
+        <div class="flex">
+            <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Клиента</el-button>
+
+            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+                <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
+                <el-input v-model="filter.address" placeholder="Адрес" class="mt-1"/>
+                <el-checkbox v-model="filter.draft" label="Не активированные" :checked="filter.draft"/>
+            </TableFilter>
+        </div>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
@@ -13,10 +21,10 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="phone" label="Телефон" width="140" />
-                <el-table-column sortable prop="fullname" label="ФИО" />
-                <el-table-column sortable prop="email" label="Email" />
-                <el-table-column sortable prop="address" label="Адрес" />
+                <el-table-column sortable prop="phone" label="Телефон" width="140"/>
+                <el-table-column sortable prop="fullname" label="ФИО"/>
+                <el-table-column sortable prop="email" label="Email"/>
+                <el-table-column sortable prop="address" label="Адрес"/>
 
                 <!-- Повторить -->
                 <el-table-column label="Действия">
@@ -71,29 +79,32 @@
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    const store = useStore();
+import {useStore} from "/resources/js/store.js"
+import TableFilter from '@/Components/TableFilter.vue'
 
-    interface IRow {
-        /**
-         * Статусы
-        */
-        active: boolean
+const store = useStore();
+
+interface IRow {
+    /**
+     * Статусы
+     */
+    active: boolean
+}
+
+const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
+    if (row.active === false) {
+        return 'warning-row'
     }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
+    return ''
+}
 </script>
 
 <script lang="ts">
-    import { Head, Link } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import { router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
+import {Head, Link} from '@inertiajs/vue3'
+import Layout from '@/Components/Layout.vue'
+import {router} from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
 
 export default {
     components: {
@@ -106,7 +117,8 @@ export default {
         title: {
             type: String,
             default: 'Список клиентов',
-        }
+        },
+        filters: Array,
     },
     data() {
         return {
@@ -115,6 +127,14 @@ export default {
             Loading: false,
             dialogDelete: false,
             routeDestroy: null,
+            /**
+             * Данные для формы-фильтр
+             */
+            filter: {
+                user: this.$props.filters.user,
+                address: this.$props.filters.address,
+                draft: this.$props.filters.draft,
+            },
         }
     },
     methods: {
@@ -152,11 +172,12 @@ export default {
 }
 </script>
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
+<style>
+.el-table tr.warning-row {
+    --el-table-tr-bg-color: var(--el-color-warning-light-7);
+}
+
+.el-table .success-row {
+    --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
 </style>

@@ -77,6 +77,7 @@ class StaffMessage extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
+            'code' => $this->event,
             'event' => NotificationHelper::EVENTS[$this->event],
             'message' => $this->message,
             'url' => $this->url,

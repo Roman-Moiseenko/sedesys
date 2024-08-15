@@ -25,10 +25,11 @@ class InboxController extends Controller
 
     public function index(Request $request)
     {
-        $inboxes = $this->repository->getIndex($request);
+        $inboxes = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('Mail/Inbox/Index', [
                 'inboxes' => $inboxes,
+                'filters' => $filters,
             ]
         );
     }

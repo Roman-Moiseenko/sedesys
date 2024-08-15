@@ -26,10 +26,11 @@ class OutboxController extends Controller
 
     public function index(Request $request)
     {
-        $outboxes = $this->repository->getIndex($request);
+        $outboxes = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('Mail/Outbox/Index', [
                 'outboxes' => $outboxes,
+                'filters' => $filters,
             ]
         );
     }

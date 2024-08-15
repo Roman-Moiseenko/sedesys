@@ -25,10 +25,11 @@ class DummyEntitySingularController extends Controller
 
     public function index(Request $request)
     {
-        $dummyVariableEntityPlural = $this->repository->getIndex($request);
+        $dummyVariableEntityPlural = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('DummySingular/DummyEntitySingular/Index', [
                 'dummyVariableEntityPlural' => $dummyVariableEntityPlural,
+                'filters' => $filters,
             ]
         );
     }

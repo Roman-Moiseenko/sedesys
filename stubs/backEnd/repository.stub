@@ -9,10 +9,21 @@ use App\Modules\DummySingular\Entity\DummyEntitySingular;
 class DummyEntitySingularRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
-        $dummyVariableEntityPlural = DummyEntitySingular::orderBy('name')
-            ->paginate($request->input('size', 20))
+        $query = DummyEntitySingular::orderBy('name');
+        /**
+         * Фильтр, для каждого параметра своя проверка
+         */
+        $filters = [];
+        if ($request->has('name')) {
+            $name = $request->string('name')->trim()->value();
+            $filters['name'] = $name;
+            $query->where('name', 'LIKE', "%$name%");
+        }
+
+        if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
+        $dummyVariableEntityPlural = $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(DummyEntitySingular $dummyVariableEntitySingular) => [
                 'id' => $dummyVariableEntitySingular->id,

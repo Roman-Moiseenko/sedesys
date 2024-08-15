@@ -9,16 +9,25 @@ use App\Modules\Mail\Entity\Outbox;
 class OutboxRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
-        $outboxes = Outbox::orderBy('name')
-            ->paginate($request->input('size', 20))
+        $query = Outbox::orderBy('name');
+        $filters = [];
+
+        if ($request->has('email')) {
+            $email = $request->string('email')->trim()->value();
+            $filters['email'] = $email;
+            $query->where('email', 'LIKE', "%$email%");
+
+        }
+        //TODO Тип сотрудника
+        if (count($filters) > 0) $filters['count'] = count($filters);
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Outbox $outbox) => [
                 'id' => $outbox->id,
                 'name' => $outbox->name,
                 /**
-
                  */
 
                 'url' => route('admin.mail.outbox.show', $outbox),
@@ -27,6 +36,5 @@ class OutboxRepository
 
             ]);
 
-        return $outboxes;
     }
 }

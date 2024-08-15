@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Admin\Entity\Admin;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Notification\Entity\Notification;
+use App\Modules\Notification\Helpers\NotificationHelper;
 use App\Modules\Notification\Requests\NotificationRequest;
 use App\Modules\Notification\Repository\NotificationRepository;
 use App\Modules\Notification\Service\NotificationService;
@@ -32,11 +33,13 @@ class NotificationController extends Controller
     {
         /** @var Admin $admin */
         $admin = Auth::guard('admin')->user();
-        $notifications = $this->repository->getIndex($request);
+        $notifications = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('Notification/Notification/Index', [
                 'notifications' => $notifications,
                 'chief' => $admin->isAdmin() || $admin->isChief(),
+                'filters' => $filters,
+                'events' => array_select(NotificationHelper::EVENTS),
             ]
         );
     }

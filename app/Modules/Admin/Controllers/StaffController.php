@@ -24,10 +24,12 @@ class StaffController extends Controller
 
     public function index(Request $request)
     {
-        $staffs = $this->repository->getIndex($request);
+        $staffs = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('Admin/Staff/Index', [
             'staffs' => $staffs,
+            'filters' => $filters,
+            'roles' => $this->repository->roles(),
         ]);
     }
     public function create()

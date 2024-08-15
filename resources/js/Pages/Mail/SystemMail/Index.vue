@@ -2,7 +2,13 @@
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Системные письма</h1>
-
+        <div class="flex">
+            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+                <el-select v-model="filter.mailable" placeholder="Событие">
+                    <el-option v-for="item in mailables" :key="item.value" :label="item.label" :value="item.value"/>
+                </el-select>
+            </TableFilter>
+        </div>
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
@@ -13,10 +19,10 @@
             >
                 <el-table-column sortable prop="mailable" label="Служба"/>
                 <el-table-column prop="title" label="Заголовок"/>
-                <el-table-column sortable prop="user" label="Получатель" />
-                <el-table-column prop="created_at" label="Отправлено" />
-                <el-table-column prop="attachments" label="Вложения" width="120" />
-                <el-table-column prop="count" label="Отправок" />
+                <el-table-column sortable prop="user" label="Получатель"/>
+                <el-table-column prop="created_at" label="Отправлено"/>
+                <el-table-column prop="attachments" label="Вложения" width="120"/>
+                <el-table-column prop="count" label="Отправок"/>
 
                 <!-- Повторить -->
                 <el-table-column label="Действия">
@@ -41,18 +47,19 @@
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    import { Head, Link } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
+import {useStore} from "/resources/js/store.js"
+import {Head, Link} from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+import TableFilter from '@/Components/TableFilter.vue'
 
-    const store = useStore();
+const store = useStore();
 
 </script>
 
 <script lang="ts">
 import Layout from '@/Components/Layout.vue'
-import { router } from '@inertiajs/vue3'
+import {router} from '@inertiajs/vue3'
 
 export default {
 
@@ -62,7 +69,9 @@ export default {
         title: {
             type: String,
             default: 'Системная почта',
-        }
+        },
+        filters: Array,
+        mailables: Array,
     },
     data() {
         return {
@@ -71,6 +80,13 @@ export default {
             Loading: false,
             dialogDelete: false,
             routeDestroy: null,
+            /**
+             * Данные для формы-фильтр
+             */
+            filter: {
+                mailable: this.$props.filters.mailable,
+                //draft: this.$props.filters.draft,
+            },
         }
     },
     methods: {
@@ -86,11 +102,12 @@ export default {
 }
 </script>
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
+<style>
+.el-table tr.warning-row {
+    --el-table-tr-bg-color: var(--el-color-warning-light-7);
+}
+
+.el-table .success-row {
+    --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
 </style>

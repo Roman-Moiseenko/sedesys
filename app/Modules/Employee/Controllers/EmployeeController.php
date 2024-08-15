@@ -29,10 +29,11 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $employees = $this->repository->getIndex($request);
+        $employees = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('Employee/Employee/Index', [
                 'employees' => $employees,
+                'filters' => $filters,
             ]
         );
     }

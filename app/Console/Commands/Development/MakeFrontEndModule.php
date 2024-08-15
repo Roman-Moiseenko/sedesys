@@ -37,7 +37,6 @@ class MakeFrontEndModule extends MakeModuleCommand
         $this->createVueCreate();
         $this->createVueEdit();
         $this->createVueShow();
-
 /*
         $this->createStore();
         $this->createStoreTypes();
@@ -52,7 +51,6 @@ class MakeFrontEndModule extends MakeModuleCommand
     {
         $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Index.vue';
 
-
         if ($this->alreadyExists($path)) {
             $this->error('Index Component already exists!');
         } else {
@@ -65,7 +63,6 @@ class MakeFrontEndModule extends MakeModuleCommand
     private function createVueCreate()
     {
         $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Create.vue';
-
 
         if ($this->alreadyExists($path)) {
             $this->error('Create Component already exists!');
@@ -80,7 +77,6 @@ class MakeFrontEndModule extends MakeModuleCommand
     {
         $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Edit.vue';
 
-
         if ($this->alreadyExists($path)) {
             $this->error('Edit Component already exists!');
         } else {
@@ -93,7 +89,6 @@ class MakeFrontEndModule extends MakeModuleCommand
     private function createVueShow()
     {
         $path = base_path('resources/js/Pages/') . (string)$this->module . '/' . (string)$this->entity . '/Show.vue';
-
 
         if ($this->alreadyExists($path)) {
             $this->error('Show Component already exists!');

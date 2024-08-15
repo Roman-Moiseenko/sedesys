@@ -25,10 +25,12 @@ class SystemMailController extends Controller
 
     public function index(Request $request)
     {
-        $systemMails = $this->repository->getIndex($request);
+        $systemMails = $this->repository->getIndex($request, $filters);
 
         return Inertia::render('Mail/SystemMail/Index', [
                 'systemMails' => $systemMails,
+                'filters' => $filters,
+                'mailables' => array_select(SystemMail::MAILABLES),
             ]
         );
     }

@@ -2,7 +2,18 @@
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Уведомления Системы</h1>
-        <el-button v-if="chief" type="primary" class="p-4 my-3" @click="createButton">Создать уведомление</el-button>
+        <div class="flex">
+            <el-button v-if="chief" type="primary" class="p-4 my-3" @click="createButton">Создать уведомление</el-button>
+
+            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+
+                <el-select v-model="filter.event" placeholder="Событие">
+                    <el-option v-for="item in events" :key="item.value" :label="item.label" :value="item.value"/>
+                </el-select>
+                <el-checkbox v-model="filter.read" label="Не прочитанные" :checked="filter.read"/>
+            </TableFilter>
+        </div>
+
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
@@ -20,7 +31,7 @@
                 <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">
-                        <el-button
+                        <el-button v-if="scope.read_at === null"
                             size="small"
                             @click.stop="handleRead(scope.$index, scope.row)">
                             Read
@@ -60,6 +71,7 @@
     import { Head, Link } from '@inertiajs/vue3'
     import Pagination from '@/Components/Pagination.vue'
     import ru from 'element-plus/dist/locale/ru.mjs'
+    import TableFilter from '@/Components/TableFilter.vue'
 
     const store = useStore();
 
@@ -93,7 +105,9 @@ export default {
         title: {
             type: String,
             default: 'Уведомления',
-        }
+        },
+        filters: Array,
+        events: Array,
     },
     data() {
         return {
@@ -102,6 +116,13 @@ export default {
             Loading: false,
             dialogDelete: false,
             routeDestroy: null,
+            /**
+             * Данные для формы-фильтр
+             */
+            filter: {
+                event: this.$props.filters.event,
+                read: this.$props.filters.read,
+            },
         }
     },
     methods: {

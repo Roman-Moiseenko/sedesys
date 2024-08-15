@@ -10,10 +10,33 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
-        $users = User::orderByDesc('created_at')
-            ->paginate($request->input('size', 20))
+        $query = User::orderByDesc('created_at');
+        //TODO Фильтр Без учета регистра
+        $filters = [];
+
+        if ($request->has('user')) {
+            $user = $request->string('user')->trim()->value();
+            $filters['user'] = $user;
+            $query->where(function ($q) use ($user) {
+                $q->orWhere('fullname', 'LIKE', "%$user%")
+                    ->orWhere('phone', 'LIKE', "%$user%")
+                ->orWhere('email', 'LIKE', "%$user%");
+            });
+        }
+        if ($request->has('address')) {
+            $address = $request->string('address')->trim()->value();
+            $filters['address'] = $address;
+            $query->where('address', 'LIKE', "%$address%");
+        }
+        if ($request->input('draft', 'false') == 'true' ) {
+            $filters['draft'] = 'true';
+            $query->where('status', User::STATUS_WAIT);
+        }
+        //TODO Другие данные клиента
+        if (count($filters) > 0) $filters['count'] = count($filters);
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(User $user) => [
                 'id' => $user->id,
@@ -28,7 +51,5 @@ class UserRepository
                 'edit' => route('admin.user.user.edit', $user),
                 'destroy' => route('admin.user.user.destroy', $user),
             ]);
-
-        return $users;
     }
 }

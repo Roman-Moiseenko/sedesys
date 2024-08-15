@@ -9,10 +9,27 @@ use App\Modules\Employee\Entity\Employee;
 class EmployeeRepository
 {
 
-    public function getIndex(Request $request): Arrayable
+    public function getIndex(Request $request, &$filter): Arrayable
     {
-        $employees = Employee::orderByDesc('created_at')
-            ->paginate($request->input('size', 20))
+        $query = Employee::orderByDesc('created_at');
+        $filter = [];
+
+        if ($request->has('user')) {
+            $user = $request->string('user')->trim()->value();
+            $filter['user'] = $user;
+            $query->where(function ($q) use ($user) {
+                $q->orWhere('fullname', 'LIKE', "%$user%")
+                    ->orWhere('phone', 'LIKE', "%$user%");
+            });
+        }
+        if ($request->input('draft', 'false') == 'true' ) {
+            $filter['draft'] = 'true';
+            $query->where('active', false);
+        }
+        //TODO Тип сотрудника
+        if (count($filter) > 0) $filter['count'] = count($filter);
+
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Employee $employee) => [
                 'id' => $employee->id,
@@ -27,8 +44,6 @@ class EmployeeRepository
                 'destroy' => route('admin.employee.employee.destroy', $employee),
                 'toggle' => route('admin.employee.employee.toggle', $employee),
             ]);
-
-        return $employees;
     }
 
     public function byTelegram(int $telegram_id):? Employee

@@ -2,7 +2,16 @@
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Outbox</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Outbox</el-button>
+
+        <div class="flex">
+            <el-button type="primary" class="p-4 my-3" @click="createButton">Создать письмо</el-button>
+
+            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+                <el-input v-model="filter.email" placeholder="Email"/>
+            </TableFilter>
+        </div>
+
+
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
@@ -64,6 +73,7 @@
     import { Head, Link } from '@inertiajs/vue3'
     import Pagination from '@/Components/Pagination.vue'
     import ru from 'element-plus/dist/locale/ru.mjs'
+    import TableFilter from '@/Components/TableFilter.vue'
 
     const store = useStore();
 
@@ -93,7 +103,8 @@ export default {
         title: {
             type: String,
             default: 'Список outboxes',
-        }
+        },
+        filters: Array,
     },
     data() {
         return {
@@ -102,6 +113,12 @@ export default {
             Loading: false,
             dialogDelete: false,
             routeDestroy: null,
+            /**
+             * Данные для формы-фильтр
+             */
+            filter: {
+                email: this.$props.filters.email,
+            },
         }
     },
     methods: {
