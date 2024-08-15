@@ -19,9 +19,11 @@
                 </div>
             </div>
             <div class="p-2">
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Вложения&nbsp;<span v-for="(item, index) in mail.attachments"
-                                        class="font-medium ml-6 cursor-pointer" @click="download(item, index)">{{ index }}<br></span>
+                <div class="truncate sm:whitespace-normal items-center mt-2">
+                    Вложения:&nbsp;
+                    <div v-for="(item, index) in mail.attachments" class="ml-1 mt-1">
+                        <span class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">{{ index }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,7 +63,6 @@ export default {
             axios.get(this.$props.attachment,
                 {responseType: 'arraybuffer', params: {file: file}}
             ).then(res=>{
-                console.log(res)
                 let blob = new Blob([res.data], {type:'application/*'})
                 let link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
@@ -69,10 +70,6 @@ export default {
                 link._target = 'blank'
                 link.click();
             })
-            /*
-            router.post(this.$props.attachment, {
-                file: val
-            })*/
         },
     },
 }

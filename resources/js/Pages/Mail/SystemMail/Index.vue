@@ -12,10 +12,10 @@
                 v-loading="store.getLoading"
             >
                 <el-table-column sortable prop="mailable" label="Служба"/>
-                <el-table-column sortable prop="title" label="Заголовок"/>
+                <el-table-column prop="title" label="Заголовок"/>
                 <el-table-column sortable prop="user" label="Получатель" />
-                <el-table-column sortable prop="created_at" label="Отправлено" />
-                <el-table-column sortable prop="attachments" label="Вложения" width="120" />
+                <el-table-column prop="created_at" label="Отправлено" />
+                <el-table-column prop="attachments" label="Вложения" width="120" />
                 <el-table-column prop="count" label="Отправок" />
 
                 <!-- Повторить -->
