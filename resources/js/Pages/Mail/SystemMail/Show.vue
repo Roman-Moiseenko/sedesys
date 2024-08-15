@@ -20,8 +20,8 @@
             </div>
             <div class="p-2">
                 <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Вложения&nbsp;<span v-for="item in mail.attachments"
-                                        class="font-medium ml-6">{{ mail.item }} | </span>
+                    Вложения&nbsp;<span v-for="(item, index) in mail.attachments"
+                                        class="font-medium ml-6 cursor-pointer" @click="download(item)">{{ index }}<br></span>
                 </div>
             </div>
         </div>
@@ -38,19 +38,12 @@ import {Head, Link} from '@inertiajs/vue3'
 const props = defineProps({
     mail: Object,
     edit: String,
+    attachment: String,
     title: {
         type: String,
         default: 'Карточка systemMail',
     },
-    /**
-     * Задать props
-     */
 });
-
-/**
- * Методы
- */
-
 
 </script>
 <script lang="ts">
@@ -62,6 +55,11 @@ export default {
     methods: {
         goEdit() {
             router.get(this.$props.edit);
+        },
+        download(val) {
+            router.post(this.$props.attachment, {
+                file: val
+            })
         },
     },
 }

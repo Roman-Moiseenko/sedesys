@@ -49,6 +49,7 @@ class SystemMailController extends Controller
         return Inertia::render('Mail/SystemMail/Show', [
                 'mail' => $mail,
                 'repeat' => route('admin.mail.system.repeat', $system),
+                'attachment' => route('admin.mail.system.attachment'),
             ]
         );
     }
@@ -57,5 +58,10 @@ class SystemMailController extends Controller
     {
         $this->service->repeat($system);
         return redirect()->back()->with('success', 'Письмо было отправлено!');;
+    }
+
+    public function attachment(Request $request)
+    {
+        return response()->download($request->string('file')->value());
     }
 }

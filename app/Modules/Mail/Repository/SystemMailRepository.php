@@ -22,7 +22,7 @@ class SystemMailRepository
                 'user' => $system->user->getPublicName(),
                 'title' => $system->title,
                 'content' => $system->content,
-                'attachments' => $system->attachments,
+                'attachments' => count($system->attachments),
                 'count' => $system->count,
                 'url' => route('admin.mail.system.show', $system),
                 'repeat' => route('admin.mail.system.repeat', $system),

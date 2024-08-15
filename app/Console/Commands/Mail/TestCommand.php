@@ -17,7 +17,7 @@ class TestCommand extends Command
     {
         try {
             $mail = new TestMail();
-            dd($mail->attachments());
+
             $user = User::where('email', 'saint_johnny@mail.ru')->first();
             SendSystemMail::dispatch($user, $mail);
         } catch (\Throwable $e) {

@@ -15,6 +15,7 @@
                 <el-table-column sortable prop="title" label="Заголовок"/>
                 <el-table-column sortable prop="user" label="Получатель" />
                 <el-table-column sortable prop="created_at" label="Отправлено" />
+                <el-table-column sortable prop="attachments" label="Вложения" width="120" />
                 <el-table-column prop="count" label="Отправок" />
 
                 <!-- Повторить -->
