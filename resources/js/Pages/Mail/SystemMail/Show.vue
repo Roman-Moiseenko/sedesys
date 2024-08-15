@@ -49,6 +49,7 @@ const props = defineProps({
 <script lang="ts">
 import {router} from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
+import axios from "axios";
 
 export default {
     layout: Layout,
@@ -57,9 +58,18 @@ export default {
             router.get(this.$props.edit);
         },
         download(val) {
+            axios.get(this.$props.attachment, {responseType: 'arraybuffer'}).then(res=>{
+                let blob = new Blob([res.data], {type:'application/*'})
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = this.$props.attachment
+                link._target = 'blank'
+                link.click();
+            })
+            /*
             router.post(this.$props.attachment, {
                 file: val
-            })
+            })*/
         },
     },
 }
