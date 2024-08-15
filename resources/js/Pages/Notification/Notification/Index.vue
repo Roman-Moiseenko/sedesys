@@ -5,7 +5,7 @@
         <div class="flex">
             <el-button v-if="chief" type="primary" class="p-4 my-3" @click="createButton">Создать уведомление</el-button>
 
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
 
                 <el-select v-model="filter.event" placeholder="Событие">
                     <el-option v-for="item in events" :key="item.value" :label="item.label" :value="item.value"/>

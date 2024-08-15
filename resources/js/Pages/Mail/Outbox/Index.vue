@@ -2,17 +2,13 @@
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Outbox</h1>
-
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Создать письмо</el-button>
 
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.email" placeholder="Email"/>
             </TableFilter>
         </div>
-
-
-
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"

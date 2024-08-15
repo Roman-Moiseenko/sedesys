@@ -3,7 +3,7 @@
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Системные письма</h1>
         <div class="flex">
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-select v-model="filter.mailable" placeholder="Событие">
                     <el-option v-for="item in mailables" :key="item.value" :label="item.label" :value="item.value"/>
                 </el-select>

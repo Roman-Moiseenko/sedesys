@@ -4,7 +4,7 @@
         <h1 class="font-medium text-xl">Inbox</h1>
         <div class="flex">
 
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.email" placeholder="Email"/>
             </TableFilter>
         </div>

@@ -6,7 +6,7 @@
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить сотрудника</el-button>
 
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
                 <el-select v-model="filter.role" placeholder="Роль" class="mt-1">
                     <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value"/>

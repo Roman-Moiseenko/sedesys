@@ -4,7 +4,7 @@
         <h1 class="font-medium text-xl">Обслуживающий персонал</h1>
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Персонал</el-button>
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
                 <el-checkbox v-model="filter.draft" label="Заблокированные" :checked="filter.draft"/>
             </TableFilter>

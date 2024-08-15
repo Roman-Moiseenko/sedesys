@@ -5,7 +5,7 @@
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Клиента</el-button>
 
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
                 <el-input v-model="filter.address" placeholder="Адрес" class="mt-1"/>
                 <el-checkbox v-model="filter.draft" label="Не активированные" :checked="filter.draft"/>
