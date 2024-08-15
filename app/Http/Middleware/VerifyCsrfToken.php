@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/api/telegram/web-hook/',
+        '/admin/mail/system/attachment',
     ];
 }

@@ -62,6 +62,7 @@ class SystemMailController extends Controller
 
     public function attachment(Request $request)
     {
-        return response()->download($request->string('file')->value());
+        return response()->download(
+            $request->string('file')->value());
     }
 }

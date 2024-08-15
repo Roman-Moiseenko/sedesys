@@ -21,7 +21,7 @@
             <div class="p-2">
                 <div class="truncate sm:whitespace-normal flex items-center mt-2">
                     Вложения&nbsp;<span v-for="(item, index) in mail.attachments"
-                                        class="font-medium ml-6 cursor-pointer" @click="download(item)">{{ index }}<br></span>
+                                        class="font-medium ml-6 cursor-pointer" @click="download(item, index)">{{ index }}<br></span>
                 </div>
             </div>
         </div>
@@ -57,12 +57,15 @@ export default {
         goEdit() {
             router.get(this.$props.edit);
         },
-        download(val) {
-            axios.get(this.$props.attachment, {responseType: 'arraybuffer'}).then(res=>{
+        download(file, name) {
+            axios.get(this.$props.attachment,
+                {responseType: 'arraybuffer', params: {file: file}}
+            ).then(res=>{
+                console.log(res)
                 let blob = new Blob([res.data], {type:'application/*'})
                 let link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
-                link.download = this.$props.attachment
+                link.download = name
                 link._target = 'blank'
                 link.click();
             })
