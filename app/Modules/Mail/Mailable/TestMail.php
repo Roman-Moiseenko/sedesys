@@ -14,6 +14,16 @@ class TestMail extends AbstractMailable
 {
     use Queueable, SerializesModels;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $path = storage_path('app/files/order/0/');
+        $this->files = [
+            'test-01.txt' => $path . 'test-01.txt',
+            'test-02.txt' => $path . 'test-02.txt',
+        ];
+    }
+
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -34,10 +44,13 @@ class TestMail extends AbstractMailable
 
     public function attachments(): array
     {
-        $path = storage_path('app/files/order/0/');
-        return [
-            Attachment::fromPath($path . 'test-01.txt'),
-            Attachment::fromPath($path . 'test-02.txt'),
-        ];
+        return array_map(function ($item) {
+                return Attachment::fromPath($item);
+            }, $this->files);
+    }
+
+    public function getFiles(): array
+    {
+        return $this->files;
     }
 }

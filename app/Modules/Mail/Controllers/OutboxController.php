@@ -4,6 +4,7 @@ namespace App\Modules\Mail\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Mail\Entity\Outbox;
+use App\Modules\Mail\Mailable\TestMail;
 use App\Modules\Mail\Requests\OutboxRequest;
 use App\Modules\Mail\Repository\OutboxRepository;
 use App\Modules\Mail\Service\OutboxService;

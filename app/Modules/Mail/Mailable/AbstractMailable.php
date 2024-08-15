@@ -13,9 +13,16 @@ use JetBrains\PhpStorm\Pure;
 abstract class AbstractMailable extends Mailable
 {
     use Queueable, SerializesModels;
+    protected array $files;
+
+    public function __construct()
+    {
+        $this->files = [];
+    }
 
     abstract public function envelope(): Envelope;
     #[Pure]
     abstract public function content(): Content;
     abstract public function attachments(): array;
+    abstract public function getFiles(): array;
 }

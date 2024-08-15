@@ -54,7 +54,7 @@ class SystemMail extends Model
             'user_id' => $user_id,
             'title' => $mailable->envelope()->subject,
             'content' => $mailable->render(),
-            'attachments' => $mailable->attachments(),
+            'attachments' => $mailable->getFiles(),
             'count' => 1
         ]);
     }
