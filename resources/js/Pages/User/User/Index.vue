@@ -4,14 +4,12 @@
         <h1 class="font-medium text-xl">Клиенты</h1>
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Клиента</el-button>
-
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
                 <el-input v-model="filter.address" placeholder="Адрес" class="mt-1"/>
                 <el-checkbox v-model="filter.draft" label="Не активированные" :checked="filter.draft"/>
             </TableFilter>
         </div>
-
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
@@ -52,7 +50,6 @@
                 </el-table-column>
             </el-table>
         </div>
-
         <pagination
             :current_page="$page.props.users.current_page"
             :per_page="$page.props.users.per_page"

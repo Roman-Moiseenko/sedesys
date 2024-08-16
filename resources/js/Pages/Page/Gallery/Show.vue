@@ -46,9 +46,7 @@
             <el-icon><Plus /></el-icon>
         </el-upload>
 
-        <el-dialog v-model="dialogVisible" width="80%"
-
-        >
+        <el-dialog v-model="dialogVisible" width="80%">
             <div class="flex">
                 <div style="width: 80%" class="grid">
                     <img w-full :src="dialogImageUrl" alt="Preview Image" class="mx-auto"/>
@@ -77,8 +75,6 @@
                     </div>
                 </div>
             </div>
-
-
         </el-dialog>
 
     </div>

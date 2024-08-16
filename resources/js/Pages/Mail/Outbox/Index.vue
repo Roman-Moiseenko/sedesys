@@ -1,7 +1,7 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">Outbox</h1>
+        <h1 class="font-medium text-xl">Исходящие письма</h1>
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Создать письмо</el-button>
 
@@ -18,14 +18,31 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Name" width="100" />
-                <!-- Повторить -->
+                <el-table-column label="Получатели">
+                    <template #default="scope">
+                        <div v-for="item in scope.row.emails">{{ item }}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column  prop="subject" label="Тема"/>
+                <el-table-column prop="attachments" label="Вложения" width="120"/>
+                <el-table-column  prop="created_at" label="Создано"/>
+                <el-table-column  prop="sent_at" label="Отправлено"/>
                 <el-table-column label="Действия">
                     <template #default="scope">
-                        <el-button
+                        <el-button v-if="!scope.row.sent"
                             size="small"
                             @click.stop="handleEdit(scope.$index, scope.row)">
                             Edit
+                        </el-button>
+                        <el-button v-if="!scope.row.sent"
+                                   size="small"
+                                   @click.stop="handleSend(scope.$index, scope.row)">
+                            Send
+                        </el-button>
+                        <el-button v-if="scope.row.sent"
+                                   size="small"
+                                   @click.stop="handleRepeat(scope.$index, scope.row)">
+                            Repeat
                         </el-button>
                         <el-button
                             size="small"
@@ -98,7 +115,7 @@ export default {
         outboxes: Object,
         title: {
             type: String,
-            default: 'Список outboxes',
+            default: 'Исходящая почта',
         },
         filters: Array,
     },
@@ -127,7 +144,12 @@ export default {
         handleEdit(index, row) {
             router.get(row.edit);
         },
-
+        handleRepeat(index, row) {
+            router.post(row.repeat);
+        },
+        handleSend(index, row) {
+            router.post(row.send);
+        },
         handleDelete(index, row) {
             this.$data.dialogDelete = true;
             this.$data.routeDestroy = row.destroy;

@@ -2,54 +2,78 @@
 
 namespace App\Modules\Mail\Service;
 
+use App\Modules\Mail\Job\SendOutbox;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Modules\Mail\Entity\Outbox;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class OutboxService
 {
-
     public function create(Request $request): Outbox
     {
-        /**
-         * Создаем объект с базовыми данными
-         */
-        $outbox = Outbox::register(
-            $request->string('name')->trim()->value(),
+        $staff = Auth::guard('admin')->user();
+        $outbox = Outbox::register($staff->id,
+            $request->input('emails'),
+            $request->string('subject')->trim()->value(),
         );
 
         $this->save_fields($outbox, $request);
-
+        if ($request->boolean('send')) $this->send_mail($outbox);
         return  $outbox;
     }
 
     public function update(Outbox $outbox, Request $request)
     {
-        /**
-         * Сохраняем базовые поля
-         */
-        $outbox->name = $request->string('name')->trim()->value();
+        $outbox->emails = $request->input('emails');
+        $outbox->subject = $request->string('subject')->trim()->value();
         $outbox->save();
-
         $this->save_fields($outbox, $request);
+
+        if ($request->boolean('send')) $this->send_mail($outbox);
     }
 
     private function save_fields(Outbox $outbox, Request $request)
     {
-        /**
-         * Сохраняем оставшиеся поля
-         */
-
+        $outbox->message = $request->string('message')->trim()->value();
+        $files = $request->file('attachments') ?? [];
+        $attach = $outbox->attachments;
+        foreach ($files as $file) {
+            $attach[$file->getClientOriginalName()] = $file->store('files/mail/' . $outbox->id . '/');
+        }
+        $outbox->attachments = $attach;
         $outbox->save();
     }
 
+    public function send_mail(Outbox $outbox)
+    {
+        //Отправка через почты
+        SendOutbox::dispatch($outbox);
+    }
 
     public function destroy(Outbox $outbox)
     {
-        /**
-         * Проверить на возможность удаления
-         */
+        if ($outbox->isSent()) throw new \DomainException('Нельзя удалить отправленное письмо!');
+        $dir = '';
+
+        foreach ($outbox->attachments as $file) {
+            $dir = pathinfo(storage_path('app/') . $file, PATHINFO_DIRNAME);
+            unlink(storage_path('app/') . $file);
+        }
+        if (!empty($dir)) rmdir($dir);
         $outbox->delete();
+    }
+
+    public function delete_attachment(Outbox $outbox, Request $request)
+    {
+        $name = $request->string('file')->value();
+        $url = $request->string('url')->value();
+        $attach = $outbox->attachments;
+        unset($attach[$name]);
+        $outbox->attachments = $attach;
+        $outbox->save();
+        unlink(storage_path('app/') . $url);
     }
 }

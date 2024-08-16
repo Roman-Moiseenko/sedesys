@@ -1,17 +1,68 @@
 <template>
     <Head><title>{{ $props.title }}</title></Head>
-    <h1 class="font-medium text-xl">Добавить новый outbox</h1>
+    <h1 class="font-medium text-xl">Написать письмо</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
-        <el-form :model="form" label-width="auto" style="max-width: 500px">
+        <el-form :model="form" label-width="auto">
 
-            <!-- Повторить поля -->
-            <el-form-item label="Название" :rules="{required: true}">
-                <el-input v-model="form.name" placeholder="Название" @input="handleMaskName"/>
-                <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
+            <el-form-item label="Получатели" :rules="{required: true}">
+                <el-select
+                    v-model="form.emails"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    :reserve-keyword="false"
+                    placeholder="Добавьте почту"
+                >
+                    <el-option
+                        v-for="item in form.emails"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                    />
+                </el-select>
+                <div v-if="errors.emails" class="text-red-700">{{ errors.emails }}</div>
             </el-form-item>
 
+            <el-form-item label="Тема письма" :rules="{required: true}">
+                <el-input v-model="form.subject" placeholder="Название"/>
+                <div v-if="errors.subject" class="text-red-700">{{ errors.subject }}</div>
+            </el-form-item>
 
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
+            <div class="w-full mt-3 mb-5">
+                <!-- TinyMCE -->
+                <editor
+                    :api-key="$props.tiny_api" v-model="form.message"
+                    :init="store.tiny"
+                />
+                <div v-if="errors.message" class="text-red-700">{{ errors.message }}</div>
+            </div>
+
+            <el-upload
+                ref="upload" action="#"
+
+                class="upload-demo"
+                :auto-upload="false"
+                multiple
+                @input="form.attachments = $event.target.files"
+            >
+                <template #trigger>
+                    <el-button type="info" circle>
+                        <el-icon>
+                            <Paperclip/>
+                        </el-icon>
+                    </el-button>
+                </template>
+                <template #tip>
+                    <div class="el-upload__tip">
+                        Выберите один или несколько файлов
+                    </div>
+                </template>
+            </el-upload>
+
+
+            <el-button type="info" @click="onSubmit">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmitSend">Отправить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
         </el-form>
     </div>
@@ -19,44 +70,56 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head} from '@inertiajs/vue3'
+import {reactive, ref} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
+import {useStore} from '/resources/js/store.js'
+import {UploadUserFile, UploadInstance} from "element-plus";
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание outbox',
-        },
-    });
+const store = useStore();
 
-    const form = reactive({
-        name: null,
-        /**
-         * Добавить новые поля
-         */
-    })
+const props = defineProps({
+    errors: Object,
+    route: String,
+    title: {
+        type: String,
+        default: 'Новое письмо',
+    },
+    tiny_api: String,
 
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
+});
+const upload = ref<UploadInstance>();
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
+
+const fileList = ref<UploadUserFile[]>();
+const form = reactive({
+    emails: [],
+    subject: null,
+    message: null,
+    attachments: [],
+    send: false,
+})
+
+
+function onSubmit() {
+    router.post(props.route, form)
+}
+
+function onSubmitSend() {
+    form.send = true;
+    router.post(props.route, form)
+}
 
 </script>
 <script lang="ts">
-    import Layout from '@/Components/Layout.vue'
+import Layout from '@/Components/Layout.vue'
+import Editor from '@tinymce/tinymce-vue'
+import {router} from "@inertiajs/vue3";
 
-    export default {
-        layout: Layout,
-    }
+export default {
+    layout: Layout,
+    'editor': Editor,
+    methods: {}
+}
 </script>

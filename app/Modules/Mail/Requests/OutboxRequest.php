@@ -25,7 +25,8 @@ class OutboxRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'emails' => ['required', 'array'],
+            'subject' => ['required', 'string'],
         ];
     }
 }

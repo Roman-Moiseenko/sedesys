@@ -22,7 +22,6 @@ class UserController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index(Request $request)
     {
         $users = $this->repository->getIndex($request, $filters);
@@ -69,7 +68,7 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        $data = $request->validated();
+        $request->validated();
         $this->service->update($user, $request);
         return redirect()
             ->route('admin.user.user.show', $user)

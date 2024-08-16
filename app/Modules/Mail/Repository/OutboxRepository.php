@@ -11,29 +11,33 @@ class OutboxRepository
 
     public function getIndex(Request $request, &$filters): Arrayable
     {
-        $query = Outbox::orderBy('name');
+        $query = Outbox::orderByDesc('created_at');
         $filters = [];
 
         if ($request->has('email')) {
             $email = $request->string('email')->trim()->value();
             $filters['email'] = $email;
-            $query->where('email', 'LIKE', "%$email%");
+            $query->where('emails', 'LIKE', "%$email%");
 
         }
-        //TODO Тип сотрудника
+
         if (count($filters) > 0) $filters['count'] = count($filters);
         return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Outbox $outbox) => [
                 'id' => $outbox->id,
-                'name' => $outbox->name,
-                /**
-                 */
+                'emails' => $outbox->emails,
+                'subject' => $outbox->subject,
+                'attachments' => count($outbox->attachments),
+                'sent' => $outbox->isSent(),
+                'created_at' => $outbox->created_at->translatedFormat('j F Y H:i:s'),
+                'sent_at' => is_null($outbox->sent_at) ? '' : $outbox->sent_at->translatedFormat('j F Y H:i:s'),
 
                 'url' => route('admin.mail.outbox.show', $outbox),
                 'edit' => route('admin.mail.outbox.edit', $outbox),
                 'destroy' => route('admin.mail.outbox.destroy', $outbox),
-
+                'repeat' => route('admin.mail.outbox.repeat', $outbox),
+                'send' => route('admin.mail.outbox.send', $outbox),
             ]);
 
     }

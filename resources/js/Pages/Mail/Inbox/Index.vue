@@ -98,7 +98,7 @@ export default {
         inboxes: Object,
         title: {
             type: String,
-            default: 'Список inboxes',
+            default: 'Входящая почта',
         },
         filters: Array,
     },

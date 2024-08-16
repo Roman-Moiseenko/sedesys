@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('attachments');
             $table->boolean('sent')->default(false);
             $table->timestamps();
+            $table->timestamp('sent_at')->nullable();
         });
     }
 

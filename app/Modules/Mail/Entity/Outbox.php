@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $sent
  * @property Carbon $created_at //Создано
  * @property Carbon $updated_at //Отправлено
+ * @property Carbon $sent_at //Отправлено
  */
 class Outbox extends Model
 {
@@ -24,10 +25,12 @@ class Outbox extends Model
     protected $attributes = [
         'attachments' => '{}',
         'emails' => '{}',
+        'message' => '',
     ];
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'sent_at' => 'datetime',
         'attachments' =>'json',
         'emails' =>'json',
     ];
@@ -37,17 +40,16 @@ class Outbox extends Model
         'subject',
         'message',
         'attachments',
-        'sent'
+        'sent',
+        'sent_at',
     ];
 
-    public static function register(int $staff_id, array $emails, string $subject, string $message, array $attachments = []): self
+    public static function register(int $staff_id, array $emails, string $subject): self
     {
         return self::create([
             'staff_id' => $staff_id,
             'emails' => $emails,
             'subject' => $subject,
-            'message' => $message,
-            'attachments' => $attachments,
             'sent' => false
         ]);
     }
@@ -57,8 +59,9 @@ class Outbox extends Model
         return $this->sent == true;
     }
 
-    public function sent(): void
+    public function send(): void
     {
+        $this->sent_at = now();
         $this->sent = true;
         $this->save();
     }
