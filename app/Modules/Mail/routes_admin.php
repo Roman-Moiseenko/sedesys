@@ -14,7 +14,7 @@ Route::group(
         Route::Resource('system', 'SystemMailController')->only(['index', 'show']);
         Route::post('/system/repeat/{system}', 'SystemMailController@repeat')->name('system.repeat');
 
-
+        Route::get('/outbox/attachment', 'OutboxController@attachment')->name('outbox.attachment');
         Route::post('/outbox/repeat/{outbox}', 'OutboxController@repeat')->name('outbox.repeat');
         Route::post('/outbox/send/{outbox}', 'OutboxController@send')->name('outbox.send');
         Route::post('/outbox/delete-attachment/{outbox}', 'OutboxController@delete_attachment')->name('outbox.delete-attachment');

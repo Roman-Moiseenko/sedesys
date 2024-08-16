@@ -41,7 +41,7 @@
             <el-upload
                 ref="upload" action="#"
 
-                class="upload-demo"
+                class="lg:w-80"
                 :auto-upload="false"
                 multiple
                 @input="form.attachments = $event.target.files"

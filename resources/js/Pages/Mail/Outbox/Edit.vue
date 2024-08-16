@@ -40,7 +40,7 @@
             <el-upload
                 ref="upload" action="#"
                 v-model:file-list="fileList"
-                class="upload-demo"
+                class="lg:w-80"
                 :on-remove="handleRemove"
                 :auto-upload="false"
                 multiple

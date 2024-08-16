@@ -16,19 +16,21 @@
                 </div>
                 <div class="mt-2">
                     <span class="font-medium">Отправлено:</span> <span
-                    v-if="$props.outbox.sent">{{ $props.outbox.read_at }}</span>
+                    v-if="$props.outbox.sent">{{ $props.outbox.sent_at }}</span>
                 </div>
             </div>
             <div class="p-2">
                 <div class="font-medium mb-2">Вложенные файлы:</div>
-                <div v-for="(item, index) in $props.outbox.attachments">{{ index }}</div>
+                <div v-for="(item, index) in $props.outbox.attachments" class="ml-1 mt-1">
+                    <span class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">{{ index }}</span>
+                </div>
             </div>
         </div>
 
 
         <div class="mt-3 flex flex-row">
             <el-button v-if="!$props.outbox.sent" type="info" @click="goEdit">Редактировать</el-button>
-            <el-button v-if="!$props.outbox.sent" type="primary" @click="goEdit">Отправить</el-button>
+            <el-button v-if="!$props.outbox.sent" type="primary" @click="goSend">Отправить</el-button>
         </div>
     </div>
 
@@ -48,9 +50,9 @@ const props = defineProps({
         type: String,
         default: 'Карточка outbox',
     },
-    /**
-     * Задать props
-     */
+    send: String,
+    attachment: String,
+
 });
 
 /**
@@ -62,12 +64,28 @@ const props = defineProps({
 <script lang="ts">
 import {router} from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
+import axios from "axios";
 
 export default {
     layout: Layout,
     methods: {
         goEdit() {
             router.get(this.$props.edit);
+        },
+        goSend() {
+            router.post(this.$props.send);
+        },
+        download(file, name) {
+            axios.get(this.$props.attachment,
+                {responseType: 'arraybuffer', params: {file: file}}
+            ).then(res=>{
+                let blob = new Blob([res.data], {type:'application/*'})
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = name
+                link._target = 'blank'
+                link.click();
+            })
         },
     },
 }

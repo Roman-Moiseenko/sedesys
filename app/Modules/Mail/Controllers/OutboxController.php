@@ -61,6 +61,8 @@ class OutboxController extends Controller
         return Inertia::render('Mail/Outbox/Show', [
                 'outbox' => $outbox,
                 'edit' => route('admin.mail.outbox.edit', $outbox),
+                'send' => route('admin.mail.outbox.send', $outbox),
+                'attachment' => route('admin.mail.outbox.attachment'),
             ]
         );
     }
@@ -93,14 +95,19 @@ class OutboxController extends Controller
     public function delete_attachment(Request $request, Outbox $outbox)
     {
         $this->service->delete_attachment($outbox, $request);
-
         return redirect()->back()->with('success', 'Удаление файла прошло успешно');
     }
 
     public function destroy(Outbox $outbox)
     {
         $this->service->destroy($outbox);
-
         return redirect()->back()->with('success', 'Удаление прошло успешно');
+    }
+
+    public function attachment(Request $request)
+    {
+        $path = storage_path('app/');
+        return response()->download($path .
+            $request->string('file')->value());
     }
 }
