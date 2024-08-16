@@ -37,10 +37,6 @@
                 />
                 <div v-if="errors.message" class="text-red-700">{{ errors.message }}</div>
             </div>
-            <div>
-                Список уже загруженных файлов, с удалением @click=onDelAttach(val) - х
-
-            </div>
             <el-upload
                 ref="upload" action="#"
                 v-model:file-list="fileList"

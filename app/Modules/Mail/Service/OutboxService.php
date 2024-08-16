@@ -3,11 +3,13 @@
 namespace App\Modules\Mail\Service;
 
 use App\Modules\Mail\Job\SendOutbox;
+use App\Modules\Mail\Mailable\OutboxMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Modules\Mail\Entity\Outbox;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class OutboxService
@@ -49,8 +51,8 @@ class OutboxService
 
     public function send_mail(Outbox $outbox)
     {
-        //Отправка через почты
-        SendOutbox::dispatch($outbox);
+        //Отправка почты через очередь
+        SendOutbox::dispatch(new OutboxMail($outbox));
     }
 
     public function destroy(Outbox $outbox)

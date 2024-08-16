@@ -75,6 +75,12 @@ class OutboxController extends Controller
         ]);
     }
 
+    public function send(Outbox $outbox)
+    {
+        $this->service->send_mail($outbox);
+        return redirect()->back()->with('success', 'Письмо поставлено в очередь на отправку');
+    }
+
     public function update(OutboxRequest $request, Outbox $outbox)
     {
         $request->validated();

@@ -44,7 +44,7 @@
                                    @click.stop="handleRepeat(scope.$index, scope.row)">
                             Repeat
                         </el-button>
-                        <el-button
+                        <el-button v-if="!scope.row.sent"
                             size="small"
                             type="danger"
                             @click.stop="handleDelete(scope.$index, scope.row)"
