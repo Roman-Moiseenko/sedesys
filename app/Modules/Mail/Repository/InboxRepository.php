@@ -28,12 +28,15 @@ class InboxRepository
             ->withQueryString()
             ->through(fn(Inbox $inbox) => [
                 'id' => $inbox->id,
-                'name' => $inbox->name,
-                /**
-                 */
+                'box' => $inbox->box,
+                'email' => $inbox->email,
+                'subject' => $inbox->subject,
+                'attachments' => count($inbox->attachments),
+                'created_at' => $inbox->created_at->translatedFormat('j F Y H:i:s'),
+                'read_at' => ($inbox->isRead()) ? $inbox->created_at->translatedFormat('j F Y H:i:s') : '',
+                'read' => $inbox->isRead(),
 
                 'url' => route('admin.mail.inbox.show', $inbox),
-                'edit' => route('admin.mail.inbox.edit', $inbox),
                 'destroy' => route('admin.mail.inbox.destroy', $inbox),
 
             ]);

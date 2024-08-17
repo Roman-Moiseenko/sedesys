@@ -59,7 +59,6 @@ class OutboxService
     {
         if ($outbox->isSent()) throw new \DomainException('Нельзя удалить отправленное письмо!');
         $dir = '';
-
         foreach ($outbox->attachments as $file) {
             $dir = pathinfo(storage_path('app/') . $file, PATHINFO_DIRNAME);
             unlink(storage_path('app/') . $file);

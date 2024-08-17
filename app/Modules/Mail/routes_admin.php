@@ -18,6 +18,8 @@ Route::group(
         Route::post('/outbox/repeat/{outbox}', 'OutboxController@repeat')->name('outbox.repeat');
         Route::post('/outbox/send/{outbox}', 'OutboxController@send')->name('outbox.send');
         Route::post('/outbox/delete-attachment/{outbox}', 'OutboxController@delete_attachment')->name('outbox.delete-attachment');
+        Route::get('/inbox/attachment', 'InboxController@attachment')->name('inbox.attachment');
+        Route::get('/inbox/load', 'InboxController@load')->name('inbox.load');
 
 
         Route::Resource('inbox', 'InboxController')->only(['index', 'show']);

@@ -30,56 +30,34 @@ class InboxController extends Controller
         return Inertia::render('Mail/Inbox/Index', [
                 'inboxes' => $inboxes,
                 'filters' => $filters,
+                'load' => route('admin.mail.inbox.load'),
             ]
         );
     }
 
-    public function create(Request $request)
-    {
-        return Inertia::render('Mail/Inbox/Create', [
-            'route' => route('admin.mail.inbox.store'),
-        ]);
-    }
-
-    public function store(InboxRequest $request)
-    {
-        $request->validated();
-        $inbox = $this->service->create($request);
-        return redirect()
-            ->route('admin.mail.inbox.show', $inbox)
-            ->with('success', 'Новый inbox добавлен');
-    }
 
     public function show(Inbox $inbox)
     {
+        if (!$inbox->isRead()) $inbox->read();
         return Inertia::render('Mail/Inbox/Show', [
                 'inbox' => $inbox,
-                'edit' => route('admin.mail.inbox.edit', $inbox),
+                'delete' => route('admin.mail.inbox.edit', $inbox),
+                'attachment' => route('admin.mail.inbox.attachment'),
             ]
         );
     }
 
-    public function edit(Inbox $inbox)
-    {
-        return Inertia::render('Mail/Inbox/Edit', [
-            'inbox' => $inbox,
-            'route' => route('admin.mail.inbox.update', $inbox),
-        ]);
-    }
 
-    public function update(InboxRequest $request, Inbox $inbox)
+    public function load()
     {
-        $request->validated();
-        $this->service->update($inbox, $request);
-        return redirect()
-            ->route('admin.mail.inbox.show', $inbox)
-            ->with('success', 'Сохранение прошло успешно');
+        $count = $this->service->readAllInBox();
+        return redirect()->back()
+            ->with('success', 'Почтовые ящики обновлены! Получено ' . $count . ' писем.');
     }
 
     public function destroy(Inbox $inbox)
     {
         $this->service->destroy($inbox);
-
         return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 }

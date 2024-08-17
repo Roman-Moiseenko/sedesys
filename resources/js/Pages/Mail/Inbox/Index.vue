@@ -18,15 +18,15 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Name" width="100" />
+                <el-table-column sortable prop="created_at" label="Получено" width="100" />
+                <el-table-column sortable prop="email" label="От кого" width="100" />
+                <el-table-column  prop="subject" label="Тема"/>
+                <el-table-column prop="attachments" label="Вложения" width="120"/>
+                <el-table-column sortable prop="read_at" label="Прочитано" width="100" />
+
                 <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">
-                        <el-button
-                            size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
-                            Edit
-                        </el-button>
                         <el-button
                             size="small"
                             type="danger"
@@ -77,10 +77,10 @@
         /**
          * Статусы
         */
-        active: number
+        read: number
     }
     const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
+        if (row.read === false) {
             return 'warning-row'
         }
         return ''
@@ -118,15 +118,11 @@ export default {
         }
     },
     methods: {
-        createButton() {
-            router.get('/admin/mail/inbox/create')
-        },
+
         routeClick(row) {
             router.get(row.url)
         },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
+
 
         handleDelete(index, row) {
             this.$data.dialogDelete = true;

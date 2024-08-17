@@ -12,8 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
-        //TODO Получение почты
+        // $schedule->command('inspire')->hourly();3
+        //Получение почты
+        $schedule->command('inbox:load')->hourly();
+
         //Верификация клиентов, удаление токена??
     }
 

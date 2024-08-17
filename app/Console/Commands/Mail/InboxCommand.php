@@ -14,7 +14,11 @@ class InboxCommand extends Command
     protected $description = 'Получение почты';
     public function handle(InboxService $service)
     {
-        $service->readAllInBox();
-        //TODO Добавить Лог
+        try {
+            $service->readAllInBox();
+        } catch (\Throwable $e) {
+           $this->info($e->getMessage() . ' ' . $e->getLine() . ' ' . $e->getFile());
+            //TODO Добавить Информирование
+        }
     }
 }
