@@ -8,5 +8,6 @@ Route::get('/setting/organization', 'SettingController@organization')->name('set
 Route::get('/setting/office', 'SettingController@office')->name('setting.office');
 Route::get('/setting/web', 'SettingController@web')->name('setting.web');
 Route::get('/setting/notification', 'SettingController@notification')->name('setting.notification');
+Route::get('/setting/mail', 'SettingController@mail')->name('setting.mail');
 
 Route::put('/setting', 'SettingController@update')->name('setting.update');

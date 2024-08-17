@@ -2,6 +2,7 @@
 
 namespace App\Modules\Setting\Repository;
 
+use App\Modules\Setting\Entity\Mail;
 use App\Modules\Setting\Entity\Notification;
 use App\Modules\Setting\Entity\Office;
 use App\Modules\Setting\Entity\Organization;
@@ -50,5 +51,11 @@ class SettingRepository
     {
         $notification = Setting::where('slug', 'notification')->first();
         return new Notification($notification->getData());
+    }
+
+    public function getMail(): Mail
+    {
+        $setting = Setting::where('slug', 'mail')->first();
+        return new Mail($setting->getData());
     }
 }

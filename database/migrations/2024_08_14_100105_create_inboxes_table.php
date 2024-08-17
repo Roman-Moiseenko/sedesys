@@ -11,12 +11,14 @@ return new class extends Migration
     {
         Schema::create('inboxes', function (Blueprint $table) {
             $table->id();
+            $table->string('box');
             $table->string('email');
             $table->string('subject');
             $table->mediumText('message');
             $table->json('attachments');
             $table->boolean('read')->default(false);
             $table->timestamps();
+            $table->timestamp('read_at')->nullable();
         });
     }
 

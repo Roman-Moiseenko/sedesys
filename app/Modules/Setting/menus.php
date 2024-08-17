@@ -23,9 +23,14 @@ return [
                 'route' => route('admin.setting.web', [], false),
             ],
             [
-                'icon' => 'MessageBox',
+                'icon' => 'Bell',
                 'title' => 'Уведомления',
                 'route' => route('admin.setting.notification', [], false),
+            ],
+            [
+                'icon' => 'MessageBox',
+                'title' => 'Почта',
+                'route' => route('admin.setting.mail', [], false),
             ],
         ],
     ],

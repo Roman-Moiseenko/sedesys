@@ -29,3 +29,8 @@ Breadcrumbs::for('admin.setting.notification', function (BreadcrumbTrail $trail)
     $trail->push('Уведомления', route('admin.setting.notification'));
 });
 
+Breadcrumbs::for('admin.setting.mail', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.setting.index');
+    $trail->push('Почта', route('admin.setting.mail'));
+});
+

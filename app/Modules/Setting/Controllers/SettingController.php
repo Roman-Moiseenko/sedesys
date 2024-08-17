@@ -74,6 +74,17 @@ class SettingController extends Controller
         );
     }
 
+    //Настройки почты
+    public function mail()
+    {
+        $mail = $this->repository->getMail();
+        return Inertia::render('Setting/Mail', [
+                'mail' => $mail,
+                'route' => route('admin.setting.update'),
+            ]
+        );
+    }
+
     public function update(Request $request)
     {
         $this->service->update($request);
