@@ -13,8 +13,14 @@ class Mail extends AbstractSetting
     public string $inbox_password ='';
     public bool $inbox_delete = false;
 
+
+
     /**
      * В версии > 1 добавить настройки исходящей почты (с записью в .env)
      */
+    public string $outbox_name ='';
+    public string $outbox_password ='';
+    public string $system_name ='';
+    public string $system_password ='';
 
 }
