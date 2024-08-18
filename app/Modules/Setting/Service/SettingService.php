@@ -42,9 +42,9 @@ class SettingService
     private function saveMailBoxes()
     {
         $mail = $this->repository->getMail();
-        $this->putPermanentEnv('MAIL_OUTBOX_USERNAME', $mail->outbox_name);
+        $this->putPermanentEnv('MAIL_OUTBOX_USERNAME', $mail->outbox_name . '@' . $mail->mail_domain);
         $this->putPermanentEnv('MAIL_OUTBOX_PASSWORD', $mail->outbox_password);
-        $this->putPermanentEnv('MAIL_SYSTEM_USERNAME', $mail->system_name);
+        $this->putPermanentEnv('MAIL_SYSTEM_USERNAME', $mail->system_name . '@' . $mail->mail_domain);
         $this->putPermanentEnv('MAIL_SYSTEM_PASSWORD', $mail->system_password);
     }
 

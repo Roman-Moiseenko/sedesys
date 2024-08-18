@@ -53,9 +53,15 @@ class OutboxController extends Controller
     {
         $request->validated();
         $outbox = $this->service->create($request);
+
+        if ($request->boolean('send')) {
+            $flash = 'Письмо поставлено в очередь на отправку';
+        } else {
+            $flash = 'Новое письмо создано.';
+        }
         return redirect()
             ->route('admin.mail.outbox.show', $outbox)
-            ->with('success', 'Новый outbox добавлен');
+            ->with('success', $flash);
     }
 
     public function show(Outbox $outbox)
