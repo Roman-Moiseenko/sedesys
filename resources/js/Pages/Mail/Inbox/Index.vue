@@ -3,6 +3,7 @@
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Входящие</h1>
         <div class="flex">
+            <el-button type="primary" class="p-4 my-3" @click="handleLoad">Получить почту</el-button>
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.from" placeholder="Email, Имя"/>
                 <el-select v-model="filter.box" placeholder="Почта" class="mt-1">
@@ -105,6 +106,7 @@ export default {
         },
         filters: Array,
         boxes: Array,
+        load: String,
     },
     data() {
         return {
@@ -129,7 +131,9 @@ export default {
         routeClick(row) {
             router.get(row.url)
         },
-
+        handleLoad() {
+            router.get(this.$props.load)
+        },
 
         handleDelete(index, row) {
             this.$data.dialogDelete = true;

@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Setting::where('slug', 'notification')->first()->delete();
+        Setting::where('slug', 'mail')->first()->delete();
     }
 };
