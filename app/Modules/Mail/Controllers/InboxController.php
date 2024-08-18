@@ -61,4 +61,11 @@ class InboxController extends Controller
         $this->service->destroy($inbox);
         return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
+
+    public function attachment(Request $request)
+    {
+        $path = storage_path('app/');
+        return response()->download($path .
+            $request->string('file')->value());
+    }
 }

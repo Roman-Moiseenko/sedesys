@@ -68,8 +68,10 @@ class InboxService
         $folder = $client->getFolder('INBOX');
 
         //TODO Тест
+        // для теста
+        //$messages = $folder->query()->markAsRead()->all()->get();
         $messages = $folder->query()->markAsRead()->unseen()->get();
-        // для теста $messages = $folder->query()->markAsRead()->all()->get();
+
         /** @var Message $message */
         foreach ($messages as $message) {
             $inbox = Inbox::register($box, $message->getFrom()->get()->personal, $message->getFrom()->get()->mail, $message->getSubject());

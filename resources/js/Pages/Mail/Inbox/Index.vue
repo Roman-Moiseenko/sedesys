@@ -1,18 +1,14 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">Inbox</h1>
+        <h1 class="font-medium text-xl">Входящие</h1>
         <div class="flex">
-
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.from" placeholder="Email, Имя"/>
-
                 <el-select v-model="filter.box" placeholder="Почта" class="mt-1">
                     <el-option v-for="item in boxes" :key="item.value" :label="item.label" :value="item.value"/>
                 </el-select>
                 <el-checkbox v-model="filter.read" label="Непрочитанные" :checked="filter.read"/>
-
-
             </TableFilter>
         </div>
 
@@ -29,8 +25,8 @@
                 <el-table-column sortable prop="from" label="От кого" />
                 <el-table-column prop="subject" label="Тема"/>
                 <el-table-column prop="attachments" label="Вложения" width="120"/>
-                <el-table-column sortable prop="read_at" label="Прочитано" />
-                <el-table-column sortable prop="box" label="Почта" />
+                <el-table-column sortable prop="read_at" label="Прочитано" width="160" />
+                <el-table-column sortable prop="box" label="Почта" width="100"/>
 
                 <el-table-column label="Действия">
                     <template #default="scope">
