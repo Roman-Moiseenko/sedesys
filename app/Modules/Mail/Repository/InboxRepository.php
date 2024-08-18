@@ -11,7 +11,7 @@ class InboxRepository
 
     public function getIndex(Request $request, &$filters): Arrayable
     {
-        $query = Inbox::orderBy('name');
+        $query = Inbox::orderByDesc('created_at');
 
         $filters = [];
 
@@ -19,9 +19,11 @@ class InboxRepository
             $email = $request->string('email')->trim()->value();
             $filters['email'] = $email;
             $query->where('email', 'LIKE', "%$email%");
-
         }
-
+        if ($request->input('read', 'false') == 'true' ) {
+            $filters['read'] = 'true';
+            $query->where('read', false);
+        }
         if (count($filters) > 0) $filters['count'] = count($filters);
 
         return $query->paginate($request->input('size', 20))

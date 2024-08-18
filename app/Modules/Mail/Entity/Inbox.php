@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
+ * @property string $from
  * @property string $email
  * @property string $box //Почтовый ящик
  * @property string $subject
@@ -34,6 +35,7 @@ class Inbox extends Model
     ];
     protected $fillable = [
         'box',
+        'from',
         'email',
         'subject',
         'message',

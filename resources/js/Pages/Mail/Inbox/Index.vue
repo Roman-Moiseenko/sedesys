@@ -6,6 +6,7 @@
 
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.email" placeholder="Email"/>
+                <el-checkbox v-model="filter.read" label="Непрочитанные" :checked="filter.read"/>
             </TableFilter>
         </div>
 
@@ -18,8 +19,8 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="created_at" label="Получено" width="100" />
-                <el-table-column sortable prop="email" label="От кого" width="100" />
+                <el-table-column sortable prop="created_at" label="Получено" width="160" />
+                <el-table-column sortable prop="email" label="От кого" />
                 <el-table-column  prop="subject" label="Тема"/>
                 <el-table-column prop="attachments" label="Вложения" width="120"/>
                 <el-table-column sortable prop="read_at" label="Прочитано" width="100" />
@@ -114,6 +115,7 @@ export default {
              */
             filter: {
                 email: this.$props.filters.email,
+                read: this.$props.filters.read,
             },
         }
     },

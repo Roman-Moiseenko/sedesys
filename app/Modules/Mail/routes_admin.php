@@ -22,7 +22,7 @@ Route::group(
         Route::get('/inbox/load', 'InboxController@load')->name('inbox.load');
 
 
-        Route::Resource('inbox', 'InboxController')->only(['index', 'show']);
+        Route::Resource('inbox', 'InboxController')->only(['index', 'show', 'destroy']);
         Route::Resource('outbox', 'OutboxController');
 
     }
