@@ -9,19 +9,32 @@ Route::group(
         'as' => 'mail.'
     ],
     function() {
-        Route::get('/system/attachment', 'SystemMailController@attachment')->name('system.attachment');
+        Route::group([
+            'prefix' => 'system',
+            'as' => 'system.'
+        ], function() {
+            Route::get('/attachment', 'SystemMailController@attachment')->name('attachment');
+            Route::post('/repeat/{system}', 'SystemMailController@repeat')->name('repeat');
+        });
+        Route::group([
+            'prefix' => 'outbox',
+            'as' => 'outbox.'
+        ], function() {
+            Route::get('/attachment', 'OutboxController@attachment')->name('attachment');
+            Route::post('/repeat/{outbox}', 'OutboxController@repeat')->name('repeat');
+            Route::post('/send/{outbox}', 'OutboxController@send')->name('send');
+            Route::post('/delete-attachment/{outbox}', 'OutboxController@delete_attachment')->name('delete-attachment');
+        });
+        Route::group([
+            'prefix' => 'inbox',
+            'as' => 'inbox.'
+        ], function() {
+            Route::get('/attachment', 'InboxController@attachment')->name('attachment');
+            Route::get('/reply/{inbox}', 'InboxController@reply')->name('reply');
+            Route::get('/load', 'InboxController@load')->name('load');
+        });
 
         Route::Resource('system', 'SystemMailController')->only(['index', 'show']);
-        Route::post('/system/repeat/{system}', 'SystemMailController@repeat')->name('system.repeat');
-
-        Route::get('/outbox/attachment', 'OutboxController@attachment')->name('outbox.attachment');
-        Route::post('/outbox/repeat/{outbox}', 'OutboxController@repeat')->name('outbox.repeat');
-        Route::post('/outbox/send/{outbox}', 'OutboxController@send')->name('outbox.send');
-        Route::post('/outbox/delete-attachment/{outbox}', 'OutboxController@delete_attachment')->name('outbox.delete-attachment');
-        Route::get('/inbox/attachment', 'InboxController@attachment')->name('inbox.attachment');
-        Route::get('/inbox/load', 'InboxController@load')->name('inbox.load');
-
-
         Route::Resource('inbox', 'InboxController')->only(['index', 'show', 'destroy']);
         Route::Resource('outbox', 'OutboxController');
 

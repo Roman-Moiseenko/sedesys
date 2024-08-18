@@ -44,8 +44,14 @@ class InboxController extends Controller
                 'inbox' => $inbox,
                 'delete' => route('admin.mail.inbox.destroy', $inbox),
                 'attachment' => route('admin.mail.inbox.attachment'),
+                'reply' => route('admin.mail.inbox.reply'),
             ]
         );
+    }
+
+    public function reply(Inbox $inbox)
+    {
+        return redirect()->route('admin.mail.outbox.create', ['email' => $inbox->email, 'subject' => 'Re: ' . $inbox->subject]);
     }
 
 

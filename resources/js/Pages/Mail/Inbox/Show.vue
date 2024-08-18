@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goReplay">Ответить</el-button>
+            <el-button type="primary" @click="goReply">Ответить</el-button>
         </div>
     </div>
 
@@ -48,7 +48,7 @@
             type: String,
             default: 'Входящее письмо',
         },
-        replay: String,
+        reply: String,
         attachment: String,
 
     });
@@ -62,8 +62,8 @@
     export default {
         layout: Layout,
         methods: {
-            goReplay() {
-                router.get(this.$props.replay);
+            goReply() {
+                router.get(this.$props.reply);
             },
             download(file, name) {
                 axios.get(this.$props.attachment,

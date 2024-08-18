@@ -87,7 +87,8 @@ const props = defineProps({
         default: 'Новое письмо',
     },
     tiny_api: String,
-
+    email: String,
+    subject: String,
 });
 const upload = ref<UploadInstance>();
 
@@ -95,12 +96,12 @@ const upload = ref<UploadInstance>();
 const fileList = ref<UploadUserFile[]>();
 const form = reactive({
     emails: [],
-    subject: null,
+    subject: props.subject,
     message: null,
     attachments: [],
     send: false,
 })
-
+if (props.email !== '') form.emails.push(props.email);
 
 function onSubmit() {
     router.post(props.route, form)

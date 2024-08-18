@@ -44,6 +44,8 @@ class OutboxController extends Controller
         return Inertia::render('Mail/Outbox/Create', [
             'route' => route('admin.mail.outbox.store'),
             'tiny_api' => $this->tiny_api,
+            'email' => $request->string('email')->value(),
+            'subject' => $request->string('subject')->value(),
         ]);
     }
 
