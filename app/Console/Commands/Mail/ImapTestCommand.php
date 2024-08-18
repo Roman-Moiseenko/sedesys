@@ -30,11 +30,14 @@ class ImapTestCommand extends Command
         /** @var \Webklex\PHPIMAP\Folder $folder */
         $folder = $client->getFolder('INBOX');
         /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-        $messages = $folder->query()->markAsRead()->unseen()->get();//->new()->get();
+        $messages = $folder->query()->markAsRead()->all()->get();//->new()->get();
         /** @var \Webklex\PHPIMAP\Message $message */
         foreach ($messages as $message) {
 
-            $this->info('Письмо от ' . $message->getFrom() . ' ТЕМА ' . $message->getSubject() );
+            $this->info('getFrom = ' . $message->getFrom());
+            $this->info('getSender = ' . $message->getSender());
+            dd($message->getFrom()->get()->mail);
+            //$this->info('Письмо от ' . $message->getFrom() . ' ТЕМА ' . $message->getSubject() );
         }
     }
 

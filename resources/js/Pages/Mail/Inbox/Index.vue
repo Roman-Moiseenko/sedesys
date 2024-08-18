@@ -5,8 +5,14 @@
         <div class="flex">
 
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
-                <el-input v-model="filter.email" placeholder="Email"/>
+                <el-input v-model="filter.from" placeholder="Email, Имя"/>
+
+                <el-select v-model="filter.box" placeholder="Почта" class="mt-1">
+                    <el-option v-for="item in boxes" :key="item.value" :label="item.label" :value="item.value"/>
+                </el-select>
                 <el-checkbox v-model="filter.read" label="Непрочитанные" :checked="filter.read"/>
+
+
             </TableFilter>
         </div>
 
@@ -20,12 +26,12 @@
                 v-loading="store.getLoading"
             >
                 <el-table-column sortable prop="created_at" label="Получено" width="160" />
-                <el-table-column sortable prop="email" label="От кого" />
-                <el-table-column  prop="subject" label="Тема"/>
+                <el-table-column sortable prop="from" label="От кого" />
+                <el-table-column prop="subject" label="Тема"/>
                 <el-table-column prop="attachments" label="Вложения" width="120"/>
-                <el-table-column sortable prop="read_at" label="Прочитано" width="100" />
+                <el-table-column sortable prop="read_at" label="Прочитано" />
+                <el-table-column sortable prop="box" label="Почта" />
 
-                <!-- Повторить -->
                 <el-table-column label="Действия">
                     <template #default="scope">
                         <el-button
@@ -102,6 +108,7 @@ export default {
             default: 'Входящая почта',
         },
         filters: Array,
+        boxes: Array,
     },
     data() {
         return {
@@ -114,8 +121,10 @@ export default {
              * Данные для формы-фильтр
              */
             filter: {
-                email: this.$props.filters.email,
+                from: this.$props.filters.from,
                 read: this.$props.filters.read,
+                box: this.$props.filters.box,
+
             },
         }
     },

@@ -43,10 +43,11 @@ class Inbox extends Model
         'read',
     ];
 
-    public static function register(string $box, string $email, string $subject): self
+    public static function register(string $box, string $from, string $email, string $subject): self
     {
         return self::create([
             'box' => $box,
+            'from' => $from,
             'email' => $email,
             'subject' => $subject,
             'read' => false

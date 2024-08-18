@@ -31,6 +31,7 @@ class InboxController extends Controller
                 'inboxes' => $inboxes,
                 'filters' => $filters,
                 'load' => route('admin.mail.inbox.load'),
+                'boxes' => $this->repository->getBoxes(),
             ]
         );
     }
@@ -41,7 +42,7 @@ class InboxController extends Controller
         if (!$inbox->isRead()) $inbox->read();
         return Inertia::render('Mail/Inbox/Show', [
                 'inbox' => $inbox,
-                'delete' => route('admin.mail.inbox.edit', $inbox),
+                'delete' => route('admin.mail.inbox.destroy', $inbox),
                 'attachment' => route('admin.mail.inbox.attachment'),
             ]
         );

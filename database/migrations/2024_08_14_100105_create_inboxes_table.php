@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('inboxes', function (Blueprint $table) {
             $table->id();
             $table->string('box');
+            $table->string('from');
             $table->string('email');
             $table->string('subject');
             $table->mediumText('message');

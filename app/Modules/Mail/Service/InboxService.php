@@ -72,7 +72,7 @@ class InboxService
         // для теста $messages = $folder->query()->markAsRead()->all()->get();
         /** @var Message $message */
         foreach ($messages as $message) {
-            $inbox = Inbox::register($box, $message->getFrom(), $message->getSubject());
+            $inbox = Inbox::register($box, $message->getFrom()->get()->personal, $message->getFrom()->get()->mail, $message->getSubject());
             $inbox->message = $message->getHTMLBody();
 
             if ($message->getAttachments()->count() > 0) {
