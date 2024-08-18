@@ -23,6 +23,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $verify_token
  * @property FullName $fullname
  * @property GeoAddress $address
+ * @property OAuth[] $oauths
  * @property bool $firm //?
  *
  */
@@ -60,7 +61,7 @@ class User extends Authenticatable
         'address' => GeoAddressCast::class
     ];
 
-    public static function register(string $phone, string $password): self
+    public static function register(?string $phone, string $password): self
     {
         return static::create([
             //'email' => $email,
@@ -91,6 +92,16 @@ class User extends Authenticatable
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isOauth(string $network, string $identity): bool
+    {
+        foreach ($this->oauths as $oauth) {
+            if ($oauth->network == $network && $oauth->identity == $identity) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //*** SET-.....
@@ -130,5 +141,12 @@ class User extends Authenticatable
     {
         //TODO Сделать ФизЛицо и ЮрЛицо
         return $this->fullname->getFullName();
+    }
+
+
+
+    public function oauths()
+    {
+        return $this->hasMany(OAuth::class, 'user_id', 'id');
     }
 }

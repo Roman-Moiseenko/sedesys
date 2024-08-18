@@ -52,4 +52,12 @@ class UserRepository
                 'destroy' => route('admin.user.user.destroy', $user),
             ]);
     }
+
+
+
+    public function getByEmail(string $email)
+    {
+        if (empty($email)) throw new \DomainException('При авторизации OAuth не удалось получить email');
+        return User::where('email', $email)->first();
+    }
 }
