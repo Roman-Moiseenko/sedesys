@@ -7,8 +7,8 @@
                 <div class="p-4">
                     <h2 class="font-medium text-lg mb-3">Входящая почта</h2>
                     <el-form-item label="Почтовый домен" :rules="{required: true}">
-                        <el-input v-model="form.inbox_domain" placeholder="example.com"/>
-                        <div v-if="errors.inbox_domain" class="text-red-700">{{ errors.inbox_domain }}</div>
+                        <el-input v-model="form.mail_domain" placeholder="example.com"/>
+                        <div v-if="errors.mail_domain" class="text-red-700">{{ errors.mail_domain }}</div>
                     </el-form-item>
                     <el-form-item label="Имя ящика" :rules="{required: true}">
                         <el-input v-model="form.inbox_name" placeholder="без @ и домена"/>
@@ -33,6 +33,10 @@
                         <el-input v-model="form.outbox_password" placeholder="example.com"/>
                         <div v-if="errors.outbox_password" class="text-red-700">{{ errors.outbox_password }}</div>
                     </el-form-item>
+                    <el-form-item label="От кого" :rules="{required: true}">
+                        <el-input v-model="form.outbox_from" placeholder="Имя, Компания"/>
+                        <div v-if="errors.outbox_from" class="text-red-700">{{ errors.outbox_from }}</div>
+                    </el-form-item>
                 </div>
                 <div class="p-4">
                     <h2 class="font-medium text-lg mb-3">Системная почта</h2>
@@ -43,6 +47,10 @@
                     <el-form-item label="Пароль" :rules="{required: true}">
                         <el-input v-model="form.system_password" placeholder="example.com"/>
                         <div v-if="errors.system_password" class="text-red-700">{{ errors.system_password }}</div>
+                    </el-form-item>
+                    <el-form-item label="От кого" :rules="{required: true}">
+                        <el-input v-model="form.system_from" placeholder="Имя, Компания"/>
+                        <div v-if="errors.system_from" class="text-red-700">{{ errors.system_from }}</div>
                     </el-form-item>
                 </div>
             </div>
@@ -70,15 +78,18 @@
 
     const form = reactive({
         slug: 'mail',
-        inbox_domain: props.mail.inbox_domain,
+        mail_domain: props.mail.mail_domain,
         inbox_name: props.mail.inbox_name,
         inbox_password: props.mail.inbox_password,
         inbox_delete: props.mail.inbox_delete,
 
         outbox_name: props.mail.outbox_name,
         outbox_password: props.mail.outbox_password,
+        outbox_from: props.mail.outbox_from,
         system_name: props.mail.system_name,
         system_password: props.mail.system_password,
+        system_from: props.mail.system_from,
+
         /**
          * Добавить новые поля
          */

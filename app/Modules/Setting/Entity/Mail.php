@@ -5,7 +5,7 @@ namespace App\Modules\Setting\Entity;
 
 class Mail extends AbstractSetting
 {
-    public string $inbox_domain = '';
+    public string $mail_domain = '';
     /**
      * В версии до 1 используется только 1 почтовый ящик, далее будет массив
      */
@@ -20,7 +20,8 @@ class Mail extends AbstractSetting
      */
     public string $outbox_name ='';
     public string $outbox_password ='';
+    public string $outbox_from ='';
     public string $system_name ='';
     public string $system_password ='';
-
+    public string $system_from ='';
 }

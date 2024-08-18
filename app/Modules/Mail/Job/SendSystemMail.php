@@ -33,7 +33,7 @@ class SendSystemMail implements ShouldQueue
         $system_mail = $service->create($this->mail, $this->user->id);
         //Отправляем письмо
         try {
-            Mail::to($this->user->email)->send($this->mail);
+            Mail::mailer('system')->to($this->user->email)->send($this->mail);
         } catch (\Throwable $e) {
             Log::error(json_encode([$e->getMessage(), $e->getLine(), $e->getFile()]));
             $system_mail->notSent(); //Письмо не отправлено, внутрення ошибка

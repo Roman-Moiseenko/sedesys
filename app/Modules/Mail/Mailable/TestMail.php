@@ -10,9 +10,8 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use JetBrains\PhpStorm\Pure;
 
-class TestMail extends AbstractMailable
+class TestMail extends SystemMailable
 {
-    use Queueable, SerializesModels;
 
     public function __construct()
     {
@@ -22,15 +21,9 @@ class TestMail extends AbstractMailable
             'test-01.txt' => $path . 'test-01.txt',
             'test-02.txt' => $path . 'test-02.txt',
         ];
+        $this->subject = 'Служебное письмо';
     }
 
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-           // from: 'Служба оповещения SeDeSys',
-            subject: 'Служебное письмо',
-        );
-    }
 
     #[Pure]
     public function content(): Content

@@ -58,7 +58,7 @@ class InboxService
             'port' => env('IMAP_PORT', 993),
             'encryption' => env('IMAP_ENCRYPTION', 'ssl'),
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
-            'username' => $box . '@' . $this->mail->inbox_domain,
+            'username' => $box . '@' . $this->mail->mail_domain,
             'password' => $password,
             'authentication' => env('IMAP_AUTH', 'OAuth2'),
         ]);

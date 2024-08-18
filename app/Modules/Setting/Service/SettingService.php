@@ -30,12 +30,22 @@ class SettingService
         $setting->save();
 
         if ($slug == 'notification') $this->saveTelegramToken();
+        if ($slug == 'mail') $this->saveMailBoxes();
     }
 
     private function saveTelegramToken()
     {
         $notification = $this->repository->getNotification();
         $this->putPermanentEnv('TELEGRAM_BOT_TOKEN', $notification->telegram_api);
+    }
+
+    private function saveMailBoxes()
+    {
+        $mail = $this->repository->getMail();
+        $this->putPermanentEnv('MAIL_OUTBOX_USERNAME', $mail->outbox_name);
+        $this->putPermanentEnv('MAIL_OUTBOX_PASSWORD', $mail->outbox_password);
+        $this->putPermanentEnv('MAIL_SYSTEM_USERNAME', $mail->system_name);
+        $this->putPermanentEnv('MAIL_SYSTEM_PASSWORD', $mail->system_password);
     }
 
     private function putPermanentEnv($key, $value)

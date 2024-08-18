@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Mail\Job;
 
 use App\Modules\Mail\Mailable\OutboxMail;
+use App\Modules\Setting\Repository\SettingRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -26,7 +27,7 @@ class SendOutbox implements ShouldQueue
     public function handle()
     {
         try {
-            Mail::to($this->mail->outbox->emails)->send($this->mail);
+            Mail::mailer('outbox')->to($this->mail->outbox->emails)->send($this->mail);
             $this->mail->outbox->send();
         } catch (\Throwable $e) {
             Log::error(json_encode([$e->getMessage(), $e->getLine(), $e->getFile()]));
