@@ -25,6 +25,11 @@
 
 Для Telegram создать чат-бот [добавить ссылку на инструкцию](https://laravel.com/docs)
 
+Подключение через сервисы Oauth2
+- Яндекс - [Yandex Oauth](https://oauth.yandex.ru/client/new/id/)
+- Телеграм - [Настройка бота](https://core.telegram.org/widgets/login)
+- Гугл -
+- ВКонтакте - 
 
 
 ## Laravel Sponsors

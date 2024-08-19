@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use App\Modules\Setting\Entity\Web;
+use App\Modules\Setting\Repository\SettingRepository;
 use App\Modules\Web\Helpers\Menu;
 use App\Modules\Web\Helpers\Schema;
 use App\Modules\Web\Repository\WebRepository;
@@ -12,10 +14,12 @@ use Illuminate\View\View;
 class WebComposer
 {
     private WebRepository $repository;
+    private Web $web;
 
-    public function __construct(WebRepository $repository)
+    public function __construct(WebRepository $repository, SettingRepository $settings)
     {
         $this->repository = $repository;
+        $this->web = $settings->getWeb();
     }
 
     public function compose(View $view): void
@@ -33,6 +37,7 @@ class WebComposer
                 $view->with('user', $user);
                 $schema = app()->make('\App\Modules\Web\Helpers\Schema');
                 $view->with('schema', $schema);
+                $view->with('web', $this->web);
                 $view->with('menu_top', Menu::menuTop());
                 $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());

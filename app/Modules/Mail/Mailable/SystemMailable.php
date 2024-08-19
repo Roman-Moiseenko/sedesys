@@ -24,7 +24,6 @@ abstract class SystemMailable extends AbstractMailable
 
     public function envelope(): Envelope
     {
-
         $mail_set = (new SettingRepository())->getMail();
 
         return new Envelope(

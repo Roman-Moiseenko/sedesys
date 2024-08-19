@@ -29,3 +29,5 @@ Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, Employee
 Breadcrumbs::for('web.test', function (BreadcrumbTrail $trail) {
     $trail->push('<i class="fa-light fa-house"></i>', route('web.test'));
 });
+
+

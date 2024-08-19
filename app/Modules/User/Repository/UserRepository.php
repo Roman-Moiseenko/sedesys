@@ -60,4 +60,12 @@ class UserRepository
         if (empty($email)) throw new \DomainException('При авторизации OAuth не удалось получить email');
         return User::where('email', $email)->first();
     }
+
+    public function findEmailOrPhone($phone, $email):? User
+    {
+        if (is_null($phone)) {
+            return User::where('email', $email)->first();
+        }
+        return User::where('phone', $email)->first();
+    }
 }

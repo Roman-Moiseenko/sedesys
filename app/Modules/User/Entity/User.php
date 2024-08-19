@@ -61,12 +61,13 @@ class User extends Authenticatable
         'address' => GeoAddressCast::class
     ];
 
-    public static function register(?string $phone, string $password): self
+    //?string $phone, string $password
+    public static function register(string $email = null, string $phone = null, string $password = null): self
     {
         return static::create([
-            //'email' => $email,
+            'email' => $email,
             'phone' => $phone,
-            'password' => Hash::make($password),
+            'password' => is_null($password) ? Hash::make(Str::random(12)) : Hash::make($password),
             'verify_token' => rand(1234, 9876), //Str::uuid(),
             'status' => self::STATUS_WAIT,
         ]);
@@ -143,10 +144,16 @@ class User extends Authenticatable
         return $this->fullname->getFullName();
     }
 
-
-
+    //RELATIONS
     public function oauths()
     {
         return $this->hasMany(OAuth::class, 'user_id', 'id');
     }
+
+    //NOTIFICATIONS
+    public function routeNotificationForSmscru(): string
+    {
+        return $this->phone;
+    }
+
 }

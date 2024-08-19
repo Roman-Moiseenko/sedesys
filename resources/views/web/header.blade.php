@@ -18,7 +18,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                     @foreach($menu_top as $key => $item)
                         @if(isset($item['submenu']))
                             <li class="nav-item dropdown">
@@ -38,9 +37,25 @@
                         @endif
                     @endforeach
                 </ul>
-
+                @if($web->auth)
+                    <!-- Если в настройках разрешена аутентификация -->
+                    <div>
+                        @guest
+                            @if (Route::has('web.login'))
+                                <a id="login" class="nav-link d-flex flex-column text-center" href="#" data-bs-toggle="modal" data-bs-target="#login-popup">
+                                    <i class="fa-light fa-user-vneck fs-4"></i>
+                                    <span class="fs-7">Войти</span>
+                                </a>
+                            @endif
+                        @else
+                            <a class="nav-link d-flex flex-column text-center" href="/">
+                                <i class="fa-light fa-user-vneck fs-4"></i>
+                                <span class="fs-7">Кабинет</span>
+                            </a>
+                        @endguest
+                    </div>
+                @endif
                 <div class="d-flex">
-
                     @foreach($menu_contact as $item)
                         <div class="ms-2">
                             <a href="{{ $item['url'] }}" target="_blank" title="{{ $item['name'] }}">

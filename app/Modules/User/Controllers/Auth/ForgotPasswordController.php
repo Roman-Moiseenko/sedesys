@@ -8,4 +8,8 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 class ForgotPasswordController extends Controller
 {
     use SendsPasswordResetEmails;
+    public function showLinkRequestForm()
+    {
+        return view('web.user.auth.passwords.email');
+    }
 }

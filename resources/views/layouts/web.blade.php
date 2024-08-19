@@ -23,10 +23,16 @@
         {{ \Diglactic\Breadcrumbs\Breadcrumbs::view('web.breadcrumbs') }}
     </div>
 @show
+
 <main class="@yield('main')">
     @yield('content')
 </main>
 <!--POP-UP ОКНА-->
+@guest
+    @include('web.pop-up.login')
+@endguest
+
+@include('web.pop-up.notification')
 
 <!--FOOTER-->
 @include('web.footer')

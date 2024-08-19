@@ -19,48 +19,84 @@ window.$ = jQuery;
     /** LOGIN POPUP **/
     let loginPopup = $('#login-popup');
     if (loginPopup.length) {
+        let route = loginPopup.data('route');
         let form = $('form#login-form');
         let buttonLogin = $('#button-login');
+        let inputPhone = loginPopup.find('input[name="phone"]');
         let inputEmail = loginPopup.find('input[name="email"]');
         let inputPassword = loginPopup.find('input[name="password"]');
         let inputVerify = loginPopup.find('input[name="verify_token"]');
         inputVerify.parent().hide();
         buttonLogin.on('click', function () {
-            if (inputEmail.val().length === 0 || inputPassword.val().length === 0 || !isEmail(inputEmail.val())) {
-                form.addClass('was-validated');
-                return true;
-            }
+            if (inputEmail.length !== 0)
+                if (inputEmail.val().length === 0 || inputPassword.val().length === 0 || !isEmail(inputEmail.val())) {
+                    form.addClass('was-validated');
+                    return true;
+                }
+            if (inputPhone.length !== 0)
+                if (inputPhone.val().length !== 11 || inputPassword.val().length === 0) {
+                    form.addClass('was-validated');
+                    return true;
+                }
             if (inputVerify.parent().is(':visible') && inputVerify.val().length === 0) {
                 form.addClass('was-validated');
                 return true;
             }
             $.post(
-                '/login_register',
+                route,
                 {
-                    email: inputEmail.val(),
+                    phone: (inputPhone.length === 0) ? null : inputPhone.val(),
+                    email: (inputEmail.length === 0) ? null : inputEmail.val(),
                     password: inputPassword.val(),
                     verify_token: inputVerify.val()
                 }, function (data) {
                     _error(data);
-                    $('#token-error').hide();
-                    $('#password-error').hide();
-
-                    if (data.token === true) $('#token-error').show(); //неверный токен
+                    let tokenError = $('#token-error');
+                    let passwordError = $('#password-error');
+                    tokenError.hide();
+                    passwordError.hide();
+                    console.log(data);
+                    if (data.token === true) tokenError.show(); //неверный токен
                     if (data.verification === true || data.register === true) { //требуется верификация
                         inputEmail.prop('disabled', true);
                         inputPassword.prop('disabled', true);
                         inputVerify.prop('required', true);
                         inputVerify.parent().show();
                     }
-                    if (data.password === true) $('#password-error').show(); //Неверный пароль
+                    if (data.password === true) passwordError.show(); //Неверный пароль
                     if (data.login === true) location.reload(); //Аутентификация прошла
                 }
             );
 
         });
+
+        //Новый пароль на телефон
+        let newPassword = $('#new-password');
+        let routePhone = newPassword.data('route');
+        let newPasswordSend = $('#new-password-send');
+        let newPasswordInfo = $('#new-password-info');
+        newPassword.on('click', function () {
+            newPasswordSend.show();
+            newPasswordSend.on('click', function () {
+                if (inputPhone.val().length !== 11) {
+                    alert('Неверный номер телефона!');
+                    return;
+                }
+                $.post(
+                    routePhone,
+                    {phone: inputPhone.val(),},
+                    function (data) {
+                        _error(data);
+                        if (data === true) newPasswordInfo.show()
+
+                        newPasswordSend.hide();
+                        newPassword.hide();
+                    }
+                );
+            });
+        });
+
     }
-
-
 
     //Доп.элементы
     let upButton = $('#upbutton');
@@ -77,7 +113,6 @@ window.$ = jQuery;
         } else {
             $('nav.navbar').removeClass('sticky-menu');
         }
-        //
     });
     upButton.on('click', function () {
         $('html, body').stop().animate({scrollTop: 0}, 300, 'swing');

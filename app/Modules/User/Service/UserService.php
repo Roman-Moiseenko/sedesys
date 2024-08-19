@@ -11,7 +11,10 @@ class UserService
 
     public function create(Request $request): User
     {
-        $user = User::register($request->string('phone'), $request->string('password'));
+        $user = User::register(
+            phone: $request->string('phone'),
+            password: $request->string('password')
+        );
 
         $this->save_fields($user, $request);
         $user->verify();

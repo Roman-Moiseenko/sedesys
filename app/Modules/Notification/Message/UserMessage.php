@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use JetBrains\PhpStorm\ExpectedValues;
+use NotificationChannels\SmscRu\SmscRuChannel;
 
 class UserMessage extends Notification implements ShouldQueue
 {
@@ -27,7 +28,9 @@ class UserMessage extends Notification implements ShouldQueue
 
     public function via(object $notifiable): array
     {
+
         //TODO Google_Calendar, VK, SMS
+        // либо в настройках клиента (каналы уведомления) либо отдельными классами
         return [];
     }
 }

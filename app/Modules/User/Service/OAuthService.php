@@ -25,7 +25,7 @@ class OAuthService
         $user = $this->repository->getByEmail($email);
         if (is_null($user)) {
 
-            $user = User::register(null, Hash::make(Str::random(24)));
+            $user = User::register();
 
             $user->email = $email;
             $user->status = User::STATUS_ACTIVE;

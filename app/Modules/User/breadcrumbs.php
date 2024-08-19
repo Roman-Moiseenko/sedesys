@@ -24,3 +24,4 @@ Breadcrumbs::for('admin.user.user.edit', function (BreadcrumbTrail $trail, User 
     $trail->parent('admin.user.user.show', $user);
     $trail->push('Редактировать', route('admin.user.user.edit', $user));
 });
+

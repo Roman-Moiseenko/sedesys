@@ -19,7 +19,7 @@ return [
             ],
             [
                 'icon' => 'Monitor',
-                'title' => 'Верстка',
+                'title' => 'Сайт',
                 'route' => route('admin.setting.web', [], false),
             ],
             [
