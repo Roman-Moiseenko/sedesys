@@ -15,7 +15,9 @@
                         <div v-if="errors.inbox_name" class="text-red-700">{{ errors.inbox_name }}</div>
                     </el-form-item>
                     <el-form-item label="Пароль" :rules="{required: true}">
-                        <el-input v-model="form.inbox_password" placeholder="example.com"/>
+                        <el-input v-model="form.inbox_password" type="password"
+                                  placeholder="Please input password"
+                                  show-password/>
                         <div v-if="errors.inbox_password" class="text-red-700">{{ errors.inbox_password }}</div>
                     </el-form-item>
                     <el-form-item label="Удалять почту после получения">
@@ -30,7 +32,9 @@
                         <div v-if="errors.outbox_name" class="text-red-700">{{ errors.outbox_name }}</div>
                     </el-form-item>
                     <el-form-item label="Пароль" :rules="{required: true}">
-                        <el-input v-model="form.outbox_password" placeholder="example.com"/>
+                        <el-input v-model="form.outbox_password" type="password"
+                                  placeholder="Please input password"
+                                  show-password/>
                         <div v-if="errors.outbox_password" class="text-red-700">{{ errors.outbox_password }}</div>
                     </el-form-item>
                     <el-form-item label="От кого" :rules="{required: true}">
@@ -45,7 +49,9 @@
                         <div v-if="errors.system_name" class="text-red-700">{{ errors.system_name }}</div>
                     </el-form-item>
                     <el-form-item label="Пароль" :rules="{required: true}">
-                        <el-input v-model="form.system_password" placeholder="example.com"/>
+                        <el-input v-model="form.system_password" type="password"
+                                  placeholder="Please input password"
+                                  show-password/>
                         <div v-if="errors.system_password" class="text-red-700">{{ errors.system_password }}</div>
                     </el-form-item>
                     <el-form-item label="От кого" :rules="{required: true}">

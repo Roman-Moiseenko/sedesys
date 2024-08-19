@@ -38,6 +38,6 @@ class YandexController extends Controller
 
         Auth::login($user, true);
 
-        redirect()->route('web.home');
+        return redirect()->route('web.home')->with('success', 'Добро пожаловать');
     }
 }

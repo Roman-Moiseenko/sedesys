@@ -1,0 +1,43 @@
+{
+    "id": "683837889",
+    "nickname": "R.A.Moiseenko",
+    "name": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+    "email": "R.A.Moiseenko@yandex.ru",
+    "avatar": "https:\/\/avatars.yandex.net\/get-yapic\/\/islands-200",
+    "user": {
+        "id": "683837889",
+        "login": "R.A.Moiseenko",
+        "client_id": "abb985898eb948d7a9a32545563a3f52",
+        "display_name": "R.A.Moiseenko",
+        "real_name": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "first_name": "\u0420\u043e\u043c\u0430\u043d",
+        "last_name": "\u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "sex": "male",
+        "default_email": "R.A.Moiseenko@yandex.ru",
+        "emails": [
+            "R.A.Moiseenko@yandex.ru"
+        ],
+        "default_phone": {
+            "id": 615882466,
+            "number": "+79118589719"
+        },
+        "psuid": "1.AAxJpA.9GDYqPJzfYh7b7oOzgbHFg.f0Y-zvBotczwOjfKFEb4qw"
+    },
+    "attributes": {
+        "id": "683837889",
+        "nickname": "R.A.Moiseenko",
+        "name": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "email": "R.A.Moiseenko@yandex.ru",
+        "avatar": "https:\/\/avatars.yandex.net\/get-yapic\/\/islands-200"
+    },
+    "token": "y0_AgAAAAAowonBAAxJpAAAAAEOPscAAAAmDeCSLhhDfb4XKojAX9LvNxwNHg",
+    "refreshToken": "1:3Q81icJoNG36vKJH:gqKoiDjk6f8nAEkMHhCF0NVFAsImDyHiej9eWbPd-dkurl_JIi3uw7klYOydOQoybr6iBelW_Sd9hre7xA:WIRb75iUvCRfLEveqIqaoA",
+    "expiresIn": 31535999,
+    "approvedScopes": [],
+    "accessTokenResponseBody": {
+        "access_token": "y0_AgAAAAAowonBAAxJpAAAAAEOPscAAAAmDeCSLhhDfb4XKojAX9LvNxwNHg",
+        "expires_in": 31535999,
+        "refresh_token": "1:3Q81icJoNG36vKJH:gqKoiDjk6f8nAEkMHhCF0NVFAsImDyHiej9eWbPd-dkurl_JIi3uw7klYOydOQoybr6iBelW_Sd9hre7xA:WIRb75iUvCRfLEveqIqaoA",
+        "token_type": "bearer"
+    }
+}

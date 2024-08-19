@@ -129,6 +129,12 @@ class Admin extends Authenticatable
         return $this->role == self::ROLE_STAFF;
     }
 
+    public function setPassword(string $password)
+    {
+        $this->password = Hash::make($password);
+        $this->save();
+    }
+
     public function setRole($role): void
     {
         if (!array_key_exists($role, self::ROLES)) {

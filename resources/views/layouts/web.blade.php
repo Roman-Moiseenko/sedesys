@@ -7,6 +7,7 @@
     <link rel="icon" href="{{Vite::asset('resources/images/favicon/192x192.png')}}" size="192x192">
     <link rel="apple-touch-icon" href="{{Vite::asset('resources/images/favicon/180x180.png')}}" size="180x180">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="google-site-verification" content="lD62dEesLcfIHUIziVIJvkZhNs7xctK_V_npmkufh8k" />
     <title>@yield('title', 'Система управления услугами')</title>
     <meta name="description"
           content="@yield('description', 'Универсальная CRM для малого бизнеса в сфере услуг. Индивидуальная настройка под каждый проект')">

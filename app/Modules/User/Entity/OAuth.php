@@ -26,17 +26,17 @@ class OAuth extends Model
         self::TELEGRAM => 'Телеграм',
     ];
 
-    protected $table = 'oauth';
+    protected $table = 'oauths';
     protected $fillable = [
         'user_id',
         'network',
         'identity',
     ];
 
-    public function new(int $user_id, string $network, string $identity): self
+    public static function new(string $network, string $identity): self
     {
         return self::make([
-            'user_id' => $user_id,
+            //'user_id' => $user_id,
             'network' => $network,
             'identity' => $identity,
         ]);
