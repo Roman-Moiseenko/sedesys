@@ -26,7 +26,6 @@ class OAuthService
         if (is_null($user)) {
 
             $user = User::register();
-
             $user->email = $email;
             $user->status = User::STATUS_ACTIVE;
 
@@ -34,8 +33,6 @@ class OAuthService
             if ($network == OAuth::TELEGRAM) $this->TelegramData($user, $socialUser);
             if ($network == OAuth::GOOGLE) $this->GoogleData($user, $socialUser);
             if ($network == OAuth::VK) $this->VKData($user, $socialUser);
-
-
 
             $user->oauths()->save(OAuth::new($network, $socialUser->getId()));
 
@@ -51,8 +48,11 @@ class OAuthService
 
     private function YandexData(User $user, SocialUser $yandexUser)
     {
-        $user->setNameField(surname: $yandexUser->user->last_name, firstname: $yandexUser->user->first_name);
-        $user->phone = $yandexUser->user->default_phone->number;
+        $phone = $yandexUser->user['default_phone']['number'];
+        $user->setNameField(surname: $yandexUser->user['last_name'], firstname: $yandexUser->user['first_name']);
+        if (!empty($phone)) {
+            $user->phone = str_replace('+7', '8', $phone);
+        }
         $user->save();
     }
 
