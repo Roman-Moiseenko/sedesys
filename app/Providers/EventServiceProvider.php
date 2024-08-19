@@ -9,6 +9,7 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use SocialiteProviders\Manager\SocialiteWasCalled;
+use SocialiteProviders\Telegram\TelegramExtendSocialite;
 use SocialiteProviders\Yandex\YandexExtendSocialite;
 
 class EventServiceProvider extends ServiceProvider
@@ -32,6 +33,7 @@ class EventServiceProvider extends ServiceProvider
             // ... other providers
 
             YandexExtendSocialite::class.'@handle',
+            TelegramExtendSocialite::class.'@handle',
         ],
     ];
 

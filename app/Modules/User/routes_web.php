@@ -46,6 +46,9 @@ Route::group([
 
     Route::get('/yandex/callback', 'YandexController@callback')->name('yandex.callback');
     Route::get('/yandex', 'YandexController@oauth')->name('yandex');
+
+    Route::get('/telegram/callback', 'TelegramController@callback')->name('telegram.callback');
+    Route::get('/telegram', 'TelegramController@oauth')->name('telegram');
     /**
      * Другие соц.сети
      */
