@@ -10,7 +10,7 @@
                         <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
                     </el-form-item>
                     <el-form-item label="Новый пароль">
-                        <el-input v-model="form.password"/>
+                        <el-input v-model="form.password" type="password" show-password/>
                         <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
                     </el-form-item>
                     <el-divider/>
