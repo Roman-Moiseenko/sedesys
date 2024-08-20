@@ -65,19 +65,20 @@
                         </div>
                     </div>
                     <div>
-                        Аутентификация ч/з соц.сети
+                        Войти с помощью:
                         <div class="d-flex">
-                            <a href="{{ route('web.oauth.yandex') }}" class="badge text-bg-danger">
-                                <i class="fa-brands fa-yandex"></i>
+                            <a href="{{ route('web.oauth.yandex') }}" class="p-1" title="Аутентификация через Яндекс">
+                                <img src="{{Vite::asset('resources/images/network/yandex.jpg')}}" class="rounded-5 shadow" alt="Аутентификация через Яндекс">
                             </a>
-                            <a href="{{ route('web.oauth.telegram') }}" class="badge text-bg-info">
-                                <i class="fa-brands fa-telegram"></i>
+
+                            <a href="{{ route('web.oauth.telegram') }}" class="p-1" title="Аутентификация через Телеграм">
+                                <img src="{{Vite::asset('resources/images/network/telegram.jpg')}}" class="rounded-5 shadow" alt="Аутентификация через Телеграм">
                             </a>
-                            <a href="{{ route('web.oauth.vk') }}" class="badge text-bg-info">
-                                <i class="fa-brands fa-vk"></i>
+                            <a href="{{ route('web.oauth.vk') }}" class="p-1" title="Аутентификация через ВКонтакте">
+                                <img src="{{Vite::asset('resources/images/network/vk.jpg')}}" class="rounded-5 shadow" alt="Аутентификация через ВКонтакте">
                             </a>
-                            <a href="{{ route('web.oauth.google') }}" class="badge text-bg-dark">
-                                <i class="fa-brands fa-google"></i>
+                            <a href="{{ route('web.oauth.google') }}" class="p-1" title="Аутентификация через Гугл">
+                                <img src="{{Vite::asset('resources/images/network/google.jpg')}}" class="rounded-5 shadow" alt="Аутентификация через Гугл">
                             </a>
                         </div>
                     </div>

@@ -82,7 +82,9 @@ class OAuthService
 
     private function google(User $user, SocialUser $socialUser)
     {
-        $user->setNameField(surname: 'Google OAuth', firstname: $socialUser->getName());
+        $user->setNameField(
+            surname: $socialUser->user['family_name'] ?? 'Google OAuth',
+            firstname: $socialUser->user['given_name']);
 
         $user->save();
     }

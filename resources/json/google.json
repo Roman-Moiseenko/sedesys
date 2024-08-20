@@ -1,0 +1,38 @@
+{
+    "id": "105220457944206914502",
+    "nickname": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+    "name": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+    "email": "r.a.moiseenko@gmail.com",
+    "avatar": "https:\/\/lh3.googleusercontent.com\/a\/ACg8ocK45ll1V7BPXcMlilsOF9ipMWE5iIsWZl7a76gj9XBZWCK8254=s96-c",
+    "user": {
+        "sub": "105220457944206914502",
+        "name": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "given_name": "\u0420\u043e\u043c\u0430\u043d",
+        "family_name": "\u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "picture": "https:\/\/lh3.googleusercontent.com\/a\/ACg8ocK45ll1V7BPXcMlilsOF9ipMWE5iIsWZl7a76gj9XBZWCK8254=s96-c",
+        "email": "r.a.moiseenko@gmail.com",
+        "email_verified": true
+    },
+    "attributes": {
+        "id": "105220457944206914502",
+        "nickname": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "name": "\u0420\u043e\u043c\u0430\u043d \u041c\u043e\u0438\u0441\u0435\u0435\u043d\u043a\u043e",
+        "email": "r.a.moiseenko@gmail.com",
+        "avatar": "https:\/\/lh3.googleusercontent.com\/a\/ACg8ocK45ll1V7BPXcMlilsOF9ipMWE5iIsWZl7a76gj9XBZWCK8254=s96-c"
+    },
+    "token": "",
+    "refreshToken": null,
+    "expiresIn": 3599,
+    "approvedScopes": [
+        "https:\/\/www.googleapis.com\/auth\/userinfo.email",
+        "https:\/\/www.googleapis.com\/auth\/userinfo.profile",
+        "openid"
+    ],
+    "accessTokenResponseBody": {
+        "access_token": "",
+        "expires_in": 3599,
+        "scope": "https:\/\/www.googleapis.com\/auth\/userinfo.email https:\/\/www.googleapis.com\/auth\/userinfo.profile openid",
+        "token_type": "Bearer",
+        "id_token": ""
+    }
+}

@@ -28,7 +28,7 @@
 Подключение через сервисы Oauth2
 - Яндекс - [Yandex Oauth](https://oauth.yandex.ru/client/new/id/)
 - Телеграм - [Настройка бота](https://core.telegram.org/widgets/login)
-- Гугл -
+- Гугл - [Настройка приложения](https://console.developers.google.com/apis) [Инструкция](https://www.positronx.io/laravel-9-socialite-login-with-google-example-tutorial/) 
 - ВКонтакте - [Настройка приложения](https://id.vk.com/about/business/go/create-account)
 
 
