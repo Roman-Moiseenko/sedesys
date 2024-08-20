@@ -19,6 +19,11 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
+                <el-table-column label="IMG" width="100">
+                    <template #default="scope">
+                        <el-image style="width: 50px; height: 50px" :src="scope.row.avatar" fit="fill" />
+                    </template>
+                </el-table-column>
                 <el-table-column sortable prop="phone" label="Телефон" width="140"/>
                 <el-table-column sortable prop="fullname" label="ФИО"/>
                 <el-table-column sortable prop="email" label="Email"/>

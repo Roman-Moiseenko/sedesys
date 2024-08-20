@@ -45,6 +45,7 @@ class UserRepository
                 'fullname' => $user->fullname->getFullName(),
                 'shortname' => $user->fullname->getShortname(),
                 'address' => $user->address->address,
+                'avatar' => $user->avatar,
                 'active' => $user->isActive(),
                 'verify' => ($user->isWait()) ? route('admin.user.user.verify', $user) : '',
                 'url' => route('admin.user.user.show', $user),
