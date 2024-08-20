@@ -76,6 +76,9 @@
                             <a href="{{ route('web.oauth.vk') }}" class="badge text-bg-info">
                                 <i class="fa-brands fa-vk"></i>
                             </a>
+                            <a href="{{ route('web.oauth.google') }}" class="badge text-bg-dark">
+                                <i class="fa-brands fa-google"></i>
+                            </a>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">

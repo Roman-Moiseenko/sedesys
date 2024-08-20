@@ -41,11 +41,11 @@ class OAuthService
 
             $this->$network($user, $socialUser);
 
-            $user->oauths()->save(OAuth::new($network, $socialUser->getId()));
+            $user->oauths()->save(OAuth::new($network, (string)$socialUser->getId()));
 
         } else { //Если user зарегистрирован (стандартно), но OAuth еще нет
             if (!$user->isOauth($network, $socialUser->getId())) {
-                $user->oauths()->save(OAuth::new($network, $socialUser->getId()));
+                $user->oauths()->save(OAuth::new($network, (string)$socialUser->getId()));
             }
         }
         return $user;
@@ -69,14 +69,14 @@ class OAuthService
         $user->setNameField(
             surname: $socialUser->user['last_name'] ?? 'Telegram OAuth',
             firstname: $socialUser->user['first_name']);
-
         $user->save();
     }
 
     private function vkontakte(User $user, SocialUser $socialUser)
     {
-        $user->setNameField(surname: 'VK OAuth', firstname: $socialUser->getName());
-
+        $user->setNameField(
+            surname: $socialUser->user['last_name'] ?? 'VK OAuth',
+            firstname: $socialUser->user['first_name']);
         $user->save();
     }
 

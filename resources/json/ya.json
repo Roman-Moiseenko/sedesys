@@ -30,14 +30,14 @@
         "email": "R.A.Moiseenko@yandex.ru",
         "avatar": "https:\/\/avatars.yandex.net\/get-yapic\/\/islands-200"
     },
-    "token": "y0_AgAAAAAowonBAAxJpAAAAAEOPscAAAAmDeCSLhhDfb4XKojAX9LvNxwNHg",
-    "refreshToken": "1:3Q81icJoNG36vKJH:gqKoiDjk6f8nAEkMHhCF0NVFAsImDyHiej9eWbPd-dkurl_JIi3uw7klYOydOQoybr6iBelW_Sd9hre7xA:WIRb75iUvCRfLEveqIqaoA",
+    "token": "",
+    "refreshToken": "",
     "expiresIn": 31535999,
     "approvedScopes": [],
     "accessTokenResponseBody": {
-        "access_token": "y0_AgAAAAAowonBAAxJpAAAAAEOPscAAAAmDeCSLhhDfb4XKojAX9LvNxwNHg",
+        "access_token": "",
         "expires_in": 31535999,
-        "refresh_token": "1:3Q81icJoNG36vKJH:gqKoiDjk6f8nAEkMHhCF0NVFAsImDyHiej9eWbPd-dkurl_JIi3uw7klYOydOQoybr6iBelW_Sd9hre7xA:WIRb75iUvCRfLEveqIqaoA",
+        "refresh_token": "",
         "token_type": "bearer"
     }
 }
