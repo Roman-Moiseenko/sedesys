@@ -20,6 +20,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $phone
  * @property string $password
+ * @property string $avatar //Из соц.сетей, возможно добавить в кабинете загрузку локально
  * @property string $verify_token
  * @property FullName $fullname
  * @property GeoAddress $address

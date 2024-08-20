@@ -49,6 +49,13 @@ Route::group([
 
     Route::get('/telegram/callback', 'TelegramController@callback')->name('telegram.callback');
     Route::get('/telegram', 'TelegramController@oauth')->name('telegram');
+
+    Route::get('/google/callback', 'GoogleController@callback')->name('google.callback');
+    Route::get('/google', 'GoogleController@oauth')->name('google');
+
+    Route::get('/vk/callback', 'VKController@callback')->name('vk.callback');
+    Route::get('/vk', 'VKController@oauth')->name('vk');
+
     /**
      * Другие соц.сети
      */

@@ -26,6 +26,8 @@ return new class extends Migration
             $table->json('fullname');
             $table->json('address');
 
+            $table->string('avatar')->nullable();
+
         });
     }
 
