@@ -29,7 +29,7 @@
 - Яндекс - [Yandex Oauth](https://oauth.yandex.ru/client/new/id/)
 - Телеграм - [Настройка бота](https://core.telegram.org/widgets/login)
 - Гугл -
-- ВКонтакте - 
+- ВКонтакте - [Настройка приложения](https://id.vk.com/about/business/go/create-account)
 
 
 ## Laravel Sponsors

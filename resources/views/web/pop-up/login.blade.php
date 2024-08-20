@@ -73,6 +73,9 @@
                             <a href="{{ route('web.oauth.telegram') }}" class="badge text-bg-info">
                                 <i class="fa-brands fa-telegram"></i>
                             </a>
+                            <a href="{{ route('web.oauth.vk') }}" class="badge text-bg-info">
+                                <i class="fa-brands fa-vk"></i>
+                            </a>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">

@@ -1,0 +1,24 @@
+{
+    "id": "1375723881",
+    "nickname": "Saint_Koenigs",
+    "name": "\u0420\u043e\u043c\u0430\u043d",
+    "email": null,
+    "avatar": "https:\/\/t.me\/i\/userpic\/320\/nMIKMvfQPNRbUfGBd-CLWkvEr0aQj0kQP16jpoFO0Xk.jpg",
+    "user": {
+        "id": "1375723881",
+        "first_name": "\u0420\u043e\u043c\u0430\u043d",
+        "username": "Saint_Koenigs",
+        "photo_url": "https:\/\/t.me\/i\/userpic\/320\/nMIKMvfQPNRbUfGBd-CLWkvEr0aQj0kQP16jpoFO0Xk.jpg"
+    },
+    "attributes": {
+        "id": "1375723881",
+        "nickname": "Saint_Koenigs",
+        "name": "\u0420\u043e\u043c\u0430\u043d",
+        "avatar": "https:\/\/t.me\/i\/userpic\/320\/nMIKMvfQPNRbUfGBd-CLWkvEr0aQj0kQP16jpoFO0Xk.jpg"
+    },
+    "token": null,
+    "refreshToken": null,
+    "expiresIn": null,
+    "approvedScopes": null,
+    "accessTokenResponseBody": null
+}

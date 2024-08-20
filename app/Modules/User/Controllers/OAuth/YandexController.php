@@ -32,10 +32,7 @@ class YandexController extends Controller
     public function callback()
     {
         $yandexUser = Socialite::driver(OAuth::YANDEX)->user();
-        Log::info(json_encode($yandexUser));
-
         $user = $this->service->findOrCreate($yandexUser, OAuth::YANDEX);
-
         Auth::login($user, true);
 
         return redirect()->route('web.home')->with('success', 'Добро пожаловать');

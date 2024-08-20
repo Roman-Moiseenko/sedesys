@@ -8,8 +8,10 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use SocialiteProviders\Google\GoogleExtendSocialite;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 use SocialiteProviders\Telegram\TelegramExtendSocialite;
+use SocialiteProviders\VKontakte\VKontakteExtendSocialite;
 use SocialiteProviders\Yandex\YandexExtendSocialite;
 
 class EventServiceProvider extends ServiceProvider
@@ -30,10 +32,12 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         SocialiteWasCalled::class => [
-            // ... other providers
 
             YandexExtendSocialite::class.'@handle',
             TelegramExtendSocialite::class.'@handle',
+            GoogleExtendSocialite::class.'@handle',
+            VKontakteExtendSocialite::class.'@handle',
+
         ],
     ];
 

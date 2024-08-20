@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class OAuth extends Model
 {
     const YANDEX = 'yandex';
-    const VK = 'vk';
+    const VK = 'vkontakte';
     const GOOGLE = 'google';
     const TELEGRAM = 'telegram';
 

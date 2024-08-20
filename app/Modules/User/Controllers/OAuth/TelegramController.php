@@ -32,10 +32,7 @@ class TelegramController extends Controller
     public function callback()
     {
         $telegramUser = Socialite::driver(OAuth::TELEGRAM)->user();
-        Log::info(json_encode($telegramUser));
-
         $user = $this->service->findOrCreate($telegramUser, OAuth::TELEGRAM);
-
         Auth::login($user, true);
 
         return redirect()->route('web.home')->with('success', 'Добро пожаловать');
