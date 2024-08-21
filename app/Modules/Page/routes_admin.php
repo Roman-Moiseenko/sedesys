@@ -9,6 +9,7 @@ Route::group([
     function () {
         Route::post('/page/{page}/toggle', 'PageController@toggle')->name('page.toggle');
         Route::post('/widget/{widget}/toggle', 'WidgetController@toggle')->name('widget.toggle');
+
         Route::group([
             'prefix' => 'contact',
             'as' => 'contact.',

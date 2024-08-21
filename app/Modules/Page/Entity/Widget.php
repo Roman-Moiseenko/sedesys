@@ -3,6 +3,7 @@
 namespace App\Modules\Page\Entity;
 
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Employee\Entity\Specialization;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class Widget extends Model
 
     const WIDGET_MODELS = [
         Employee::class => 'Персонал',
+        Specialization::class => 'Специализация'
     ];
 
     protected $attributes = [

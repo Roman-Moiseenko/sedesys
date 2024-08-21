@@ -3,12 +3,14 @@
 namespace App\Modules\Page\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Requests\WidgetRequest;
 use App\Modules\Page\Repository\WidgetRepository;
 use App\Modules\Page\Service\WidgetService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use ReflectionClass;
 
 class WidgetController extends Controller
 {
@@ -21,7 +23,6 @@ class WidgetController extends Controller
         $this->service = $service;
         $this->repository = $repository;
     }
-
 
     public function index(Request $request)
     {
@@ -85,4 +86,5 @@ class WidgetController extends Controller
 
         return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
+
 }
