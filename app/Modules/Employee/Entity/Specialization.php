@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property string $title
+ * @property string $caption //Заголовок h1
+ * @property string $title //Заголовок мета
  * @property string $description
  * @property bool $active
  * @property int $sort

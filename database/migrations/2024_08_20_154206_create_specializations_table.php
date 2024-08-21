@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->string('caption')->default('');
             $table->string('title')->default('');
             $table->string('description')->default('');
             $table->boolean('active')->default(false);

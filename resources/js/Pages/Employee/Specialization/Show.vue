@@ -13,6 +13,9 @@
                         Ссылка&nbsp;<span class="font-medium ml-6">{{ $props.specialization.slug}}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Страница (H1)&nbsp;<span class="font-medium ml-6">{{ $props.specialization.caption}}</span>
+                    </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
                         Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.specialization.title}}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">

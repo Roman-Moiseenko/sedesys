@@ -34,6 +34,7 @@ class SpecializationService
 
     private function save_fields(Specialization $specialization, Request $request)
     {
+        $specialization->caption = $request->string('caption')->trim()->value();
         $specialization->title = $request->string('title')->trim()->value();
         $specialization->description = $request->string('description')->trim()->value();
         $specialization->save();
