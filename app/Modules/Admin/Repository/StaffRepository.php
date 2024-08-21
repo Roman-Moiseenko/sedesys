@@ -33,7 +33,6 @@ class StaffRepository
             $filters['draft'] = 'true';
             $query->where('active', false);
         }
-        //TODO Тип сотрудника
         if (count($filters) > 0) $filters['count'] = count($filters);
 
         return $query->paginate($request->input('size', 20))

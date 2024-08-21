@@ -31,6 +31,7 @@ class SpecializationRepository
                 'id' => $specialization->id,
                 'name' => $specialization->name,
                 'slug' => $specialization->slug,
+                'caption' => $specialization->caption,
                 'title' => $specialization->title,
                 'description' => $specialization->description,
                 'image' => $specialization->getImage('thumb'),

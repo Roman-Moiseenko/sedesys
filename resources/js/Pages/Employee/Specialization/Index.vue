@@ -6,7 +6,7 @@
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить специализацию</el-button>
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
-                <el-input v-model="filter.name" placeholder="Name"/>
+                <el-input v-model="filter.name" placeholder="Название"/>
             </TableFilter>
         </div>
         <div class="mt-2 p-5 bg-white rounded-md">
@@ -32,7 +32,13 @@
                 <el-table-column sortable prop="name" label="Название" width="160"/>
                 <el-table-column prop="slug" label="Ссылка" width="160"/>
                 <el-table-column prop="employees" label="Специалистов" width="120"/>
-                <el-table-column prop="description" label="Описание"/>
+                <el-table-column prop="description" label="Описание">
+                    <template #default="scope">
+                        <div class=""><span class="font-medium">H1: </span><span>{{ scope.row.caption }}</span></div>
+                        <div class=""><span class="font-medium">Meta-Title: </span><span>{{ scope.row.title }}</span></div>
+                        <div class=""><span class="font-medium">Met-Description: </span><span>{{ scope.row.description }}</span></div>
+                    </template>
+                </el-table-column>
 
                 <el-table-column label="Действия">
                     <template #default="scope">

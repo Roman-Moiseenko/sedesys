@@ -6,6 +6,9 @@
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Персонал</el-button>
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
+                <el-select v-model="filter.specialization" placeholder="Специализация" class="mt-1">
+                    <el-option v-for="item in $props.specializations" :key="item.value" :label="item.label" :value="item.value"/>
+                </el-select>
                 <el-checkbox v-model="filter.draft" label="Заблокированные" :checked="filter.draft"/>
             </TableFilter>
         </div>
@@ -121,6 +124,7 @@ export default {
             default: 'Список персонала',
         },
         filters: Array,
+        specializations: Array,
     },
     data() {
         return {
@@ -135,6 +139,7 @@ export default {
             filter: {
                 user: this.$props.filters.user,
                 draft: this.$props.filters.draft,
+                specialization: this.$props.filters.specialization
             },
         }
     },

@@ -27,7 +27,14 @@ class EmployeeRepository
             $filter['draft'] = 'true';
             $query->where('active', false);
         }
-        //TODO Тип сотрудника
+
+        if ($request->has('specialization')) {
+            $specialization = $request->integer('specialization');
+            $filter['specialization'] = $specialization;
+            $query->whereHas('specializations', function ($q) use ($specialization) {
+                $q->where('id', $specialization);
+            });
+        }
         if (count($filter) > 0) $filter['count'] = count($filter);
 
         return $query->paginate($request->input('size', 20))
@@ -64,6 +71,16 @@ class EmployeeRepository
                 'name' => $specialization->name,
                 'image' => $specialization->getImage('thumb'),
                 'checked' => in_array($specialization->id, $ids),
+            ];
+        })->toArray();
+    }
+
+    public function getSpecializationForFilter()
+    {
+        return Specialization::orderBy('name')->get()->map(function (Specialization $specialization) {
+            return [
+                'value' => $specialization->id,
+                'label' => $specialization->name,
             ];
         })->toArray();
     }
