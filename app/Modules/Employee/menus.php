@@ -15,7 +15,7 @@ return [
             'specialization' => [
                 'icon' => 'Connection',
                 'title' => 'Специализация',
-                'route' => '', //route('admin.employee.specialization.index', [], false),
+                'route' => route('admin.employee.specialization.index', [], false),
             ],
         ],
     ],

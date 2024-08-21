@@ -2,6 +2,7 @@
 
 namespace App\Modules\User\Repository;
 
+use App\Modules\User\Entity\OAuth;
 use App\Modules\User\Entity\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -46,6 +47,9 @@ class UserRepository
                 'shortname' => $user->fullname->getShortname(),
                 'address' => $user->address->address,
                 'avatar' => $user->avatar,
+                'oauths' => array_map(function (OAuth $item){
+                    return $item->network;
+                }, $user->oauths()->getModels()),
                 'active' => $user->isActive(),
                 'verify' => ($user->isWait()) ? route('admin.user.user.verify', $user) : '',
                 'url' => route('admin.user.user.show', $user),

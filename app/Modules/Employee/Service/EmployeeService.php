@@ -30,11 +30,12 @@ class EmployeeService
         if ($request->has('password')) {
             $employee->password = Hash::make((string)$request->string('password'));
         }
-        $employee->save();
+
         if ($request->boolean('clear_file') && !is_null($employee->photo)) {
             $employee->photo->delete();
         }
         $employee->save();
+
 
         $this->save_fields($employee, $request);
     }
@@ -52,6 +53,13 @@ class EmployeeService
         $employee->address->address = (string)$request->string('address');
 
         $this->photo($employee, $request->file('file'));
+
+        $employee->specializations()->detach();
+        $specializations = $request->input('specializations', []);
+
+        foreach ($specializations as $specialization) {
+            $employee->specializations()->attach($specialization);
+        }
 
         $employee->save();
     }
@@ -80,5 +88,14 @@ class EmployeeService
     {
         $employee->password = Hash::make((string)$request->string('password'));
         $employee->save();
+    }
+
+    public function attach(Employee $employee, Request $request)
+    {
+        $employee->specializations()->detach();
+        $specializations = $request->input('specializations', []);
+        foreach ($specializations as $specialization) {
+            $employee->specializations()->attach($specialization);
+        }
     }
 }

@@ -13,31 +13,35 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column sortable prop="name" label="Название" width="100" />
-                <el-table-column prop="title" label="Описание" />
-                <el-table-column prop="icon" label="Иконка fontawesome" />
+                <el-table-column sortable prop="name" label="Название" width="100"/>
+                <el-table-column prop="title" label="Описание"/>
+                <el-table-column prop="icon" label="Иконка fontawesome"/>
                 <el-table-column label="Цвет" width="80">
                     <template #default="scope">
                         <span class="w-4 h-4 p-5"
                               v-bind:style="{ 'background-color': scope.row.color }"
-                              ></span>
+                        ></span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="link" label="Ссылка" />
+                <el-table-column prop="link" label="Ссылка"/>
 
                 <el-table-column label="Действия">
                     <template #default="scope">
                         <el-button
-                                   size="small"
-                                   type="primary"
-                                   @click.stop="handleUp(scope.$index, scope.row)">
-                            <el-icon><Top /></el-icon>
+                            size="small"
+                            type="primary"
+                            @click.stop="handleUp(scope.$index, scope.row)">
+                            <el-icon>
+                                <Top/>
+                            </el-icon>
                         </el-button>
                         <el-button
                             size="small"
                             type="primary"
                             @click.stop="handleDown(scope.$index, scope.row)">
-                            <el-icon><Bottom /></el-icon>
+                            <el-icon>
+                                <Bottom/>
+                            </el-icon>
                         </el-button>
                         <el-button v-if="scope.row.active"
                                    size="small"
@@ -94,29 +98,31 @@
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    const store = useStore();
+import {useStore} from "/resources/js/store.js"
 
-    interface IRow {
-        /**
-         * Статусы
-        */
-        active: number
+const store = useStore();
+
+interface IRow {
+    /**
+     * Статусы
+     */
+    active: number
+}
+
+const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
+    if (row.active === false) {
+        return 'warning-row'
     }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
+    return ''
+}
 </script>
 
 <script lang="ts">
-    import { Head, Link } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import { router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
+import {Head, Link} from '@inertiajs/vue3'
+import Layout from '@/Components/Layout.vue'
+import {router} from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
 
 export default {
     components: {
@@ -167,25 +173,29 @@ export default {
 
         handleToggle(index, row) {
             router.visit(row.toggle, {
-                method:'post'});
+                method: 'post'
+            });
         },
         handleUp(index, row) {
             router.visit(row.up, {
-                method:'post'});
+                method: 'post'
+            });
         },
         handleDown(index, row) {
             router.visit(row.down, {
-                method:'post'});
+                method: 'post'
+            });
         },
     }
 }
 </script>
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
+<style>
+.el-table tr.warning-row {
+    --el-table-tr-bg-color: var(--el-color-warning-light-7);
+}
+
+.el-table .success-row {
+    --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
 </style>

@@ -49,8 +49,12 @@
             </div>
             <div class="p-2">
                 <h2 class="font-medium">Специализация</h2>
-                <div>
+
+                <div v-for="specialization in specializations" class="flex mt-1">
+                    <el-image :src="specialization.icon" class="w-8 h-8"/>
+                    <span class="ml-2 my-auto">{{ specialization.name }}</span>
                 </div>
+
             </div>
         </div>
         <div class="mt-3 flex flex-row">
@@ -62,7 +66,31 @@
     </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import {reactive} from "vue";
+import {router} from "@inertiajs/vue3";
+
+
+const props = defineProps({
+    employee: Object,
+    edit: String,
+    photo: {
+        type: String,
+        default: null,
+    },
+    title: {
+        type: String,
+        default: 'Карточка Персонала',
+    },
+    attach: String,
+    specializations:  Object,
+
+
+});
+
+</script>
+
+<script lang="ts">
     import { Head, Link, router } from '@inertiajs/vue3'
     import Layout from '@/Components/Layout.vue'
 
@@ -71,18 +99,6 @@
             Head,
         },
         layout: Layout,
-        props: {
-            employee: Object,
-            edit: String,
-            photo: {
-                type: String,
-                default: null,
-            },
-            title: {
-                type: String,
-                default: 'Карточка Персонала',
-            }
-        },
         methods: {
             goEdit() {
                 router.get(this.$props.edit);

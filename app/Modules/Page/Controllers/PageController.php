@@ -61,7 +61,7 @@ class PageController extends Controller
                 'page' => $page,
                 'parent' => is_null($page->parent_id) ? '-' : $page->parent->name,
                 'edit' => route('admin.page.page.edit', $page),
-                'photo' => !empty($page->photo) ? $page->photo->getUploadUrl() : null,
+                'photo' => $page->getImage(),
                 'toggle' => route('admin.page.page.toggle', $page),
             ]
         );
@@ -74,7 +74,7 @@ class PageController extends Controller
             'route' => route('admin.page.page.update', $page),
             'templates' => $this->repository->getTemplates(),
             'pages' => $this->repository->getPages($page->id),
-            'photo' => !empty($page->photo) ? $page->photo->getUploadUrl() : null,
+            'photo' => $page->getImage(),
             'tiny_api' => $this->tiny_api,
         ]);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Web\Repository;
 
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Page\Entity\Contact;
 use App\Modules\Page\Entity\Page;
 
@@ -31,7 +32,11 @@ class WebRepository
 
     public function getEmployees()
     {
-        $employees = Employee::orderBy('created_at')->where('active', true)->get();
-        return $employees;
+        return Employee::orderBy('created_at')->where('active', true)->get();
+    }
+
+    public function getSpecializations()
+    {
+        return Specialization::orderBy('sort')->where('active', true)->get();
     }
 }

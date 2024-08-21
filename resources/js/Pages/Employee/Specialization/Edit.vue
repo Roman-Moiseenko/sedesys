@@ -1,32 +1,19 @@
 <template>
-    <Head><title>{{ $props.title }}</title></Head>
-    <h1 class="font-medium text-xl">Добавить новую страницу</h1>
+    <Head><title>{{ title }}</title></Head>
+    <h1 class="font-medium text-xl">Редактировать {{ specialization.name }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto">
+
             <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                 <div class="p-4">
+                    <!-- Повторить поля -->
                     <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Внутреннее название"/>
+                        <el-input v-model="form.name" placeholder="Название" />
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Ссылка">
                         <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
-                    </el-form-item>
-
-                    <el-form-item label="Шаблон" :rules="{required: true}">
-                        <el-select v-model="form.template" placeholder="Select" style="width: 240px">
-                            <el-option v-for="item in templates" :key="item.value" :label="item.label" :value="item.value"/>
-                        </el-select>
-                        <div v-if="errors.template" class="text-red-700">{{ errors.template }}</div>
-                    </el-form-item>
-                </div>
-                <div class="p-4">
-                    <el-form-item label="Родительская страница">
-                        <el-select v-model="form.parent_id" placeholder="Select" style="width: 240px">
-                            <el-option v-for="item in pages" :key="item.value" :label="item.label" :value="item.value"/>
-                        </el-select>
-                        <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
                     <el-form-item label="Заголовок">
                         <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
@@ -38,13 +25,13 @@
                     </el-form-item>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Изображение страницы</h2>
+                    <h2 class="font-medium mb-3">Изображение для каталога</h2>
                     <!-- FileUpload -->
                     <el-upload action="#" list-type="picture-card"
                                :limit="1"
                                :auto-upload="false"
-                               v-model:fileList="fileList"
-                               @input="form.file = $event.target.files[0]" :on-remove="handleRemove"
+                               v-model:fileList="Images"
+                               @input="form.image = $event.target.files[0]" :on-remove="handleRemoveImages"
                                class="file-uploader-one"
                                ref="template"
                     >
@@ -56,7 +43,35 @@
                                   <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveImages(file)">
+                                    <el-icon><Delete/></el-icon>
+                                  </span>
+                              </span>
+                            </div>
+                        </template>
+                    </el-upload>
+                    <!-- End FileUpload -->
+                </div>
+                <div class="p-4">
+                    <h2 class="font-medium mb-3">Иконка для меню</h2>
+                    <!-- FileUpload -->
+                    <el-upload action="#" list-type="picture-card"
+                               :limit="1"
+                               :auto-upload="false"
+                               v-model:fileList="Icons"
+                               @input="form.icon = $event.target.files[0]" :on-remove="handleRemoveIcons"
+                               class="file-uploader-one"
+                               ref="template"
+                    >
+                        <el-icon><Plus/></el-icon>
+                        <template #file="{ file }">
+                            <div>
+                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                                <span class="el-upload-list__item-actions">
+                                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                                    <el-icon><zoom-in/></el-icon>
+                                  </span>
+                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveIcons(file)">
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
@@ -67,17 +82,9 @@
                 </div>
             </div>
 
-            <div class="w-full mt-3 mb-5">
-                <!-- TinyMCE -->
-                <editor
-                    :api-key="$props.tiny_api" v-model="form.text"
-                    :init="store.tiny"
-                />
-                    <div v-if="errors.text" class="text-red-700">{{ errors.text }}</div>
-            </div>
+
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
-
         </el-form>
 
         <!-- File Preview -->
@@ -89,41 +96,45 @@
 
 
 <script lang="ts" setup>
+    import {Head} from '@inertiajs/vue3'
     import {reactive, ref} from 'vue'
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
-    import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
-    import type {UploadFile} from 'element-plus'
-    import {useStore} from '/resources/js/store.js'
-    const store = useStore();
+    import {UploadFile} from "element-plus";
 
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
     const disabled = ref(false)
-    const fileList = ref<UploadFile>();
 
+    const Images = ref<UploadFile>([]);
+    const Icons = ref<UploadFile>([]);
 
     const props = defineProps({
         errors: Object,
         route: String,
+        specialization: Object,
         title: {
             type: String,
-            default: 'Создание страницы',
+            default: 'Редактирование specialization',
         },
-        templates: Array,
-        pages: Array,
-        tiny_api: String,
+        image: String,
+        icon: String,
     });
 
+    if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
+    if (props.icon !== null) Icons.value.push({name: 'default', url: props.icon,});
+
+    console.log(props.image, props.icon)
     const form = reactive({
-        name: null,
-        slug: null,
-        title: null,
-        parent_id: null,
-        description: null,
-        template: null,
-        text: null,
-        file: null,
+        name: props.specialization.name,
+        slug: props.specialization.slug,
+        title: props.specialization.title,
+        description: props.specialization.description,
+        image: null,
+        icon: null,
+        _method: 'put',
+        clear_image: false,
+        clear_icon: false,
     })
 
     function handleMaskSlug(val)
@@ -134,24 +145,20 @@
     function onSubmit() {
         router.post(props.route, form)
     }
-    const handleRemove= (file: UploadFile) => {
-        fileList.value.splice(0, 1);
+    const handleRemoveImages = (file: UploadFile) => {
+        Images.value.splice(0, 1);
+        form.clear_image = true;
     }
-    const handlePictureCardPreview = (file: UploadFile) => {
-        dialogImageUrl.value = file.url!
-        dialogVisible.value = true
+
+    const handleRemoveIcons = (file: UploadFile) => {
+        Icons.value.splice(0, 1);
+        form.clear_icon = true;
     }
 </script>
 <script lang="ts">
-    import {Head} from '@inertiajs/vue3'
     import Layout from '@/Components/Layout.vue'
-    import Editor from '@tinymce/tinymce-vue'
 
     export default {
-        components: {
-            Head,
-            'editor': Editor,
-        },
         layout: Layout,
     }
 </script>

@@ -166,6 +166,13 @@ class Admin extends Authenticatable
         return Auth::guard($this->guard)->user()->id == $this->id;
     }
 
+    public function getImage(string $thumb = ''): ?string
+    {
+        if (is_null($this->photo) || is_null($this->photo->file)) return null;
+        if (empty($thumb)) return $this->photo->getUploadUrl();
+        return $this->photo->getThumbUrl($thumb);
+    }
+
     public function photo()
     {
         return $this->morphOne(Photo::class, 'imageable');//->withDefault();

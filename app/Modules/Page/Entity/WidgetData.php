@@ -5,7 +5,8 @@ namespace App\Modules\Page\Entity;
 
 interface WidgetData
 {
-    public function getImage(): ?string;
+    public function getImage(string $thumb = ''): ?string;
+    public function getIcon(string $thumb = ''): ?string;
 
     public function getUrl(): string;
 

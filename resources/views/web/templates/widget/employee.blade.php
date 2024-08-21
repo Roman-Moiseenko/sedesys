@@ -6,7 +6,7 @@
     <div class="row">
         @foreach($items as $item)
             <div class="col-4">
-                <img src="{{ $item->getimage() }}" width="100">
+                <img src="{{ $item->getImage('card') }}" width="100">
                 <a href="{{ $item->getUrl() }}">{{ $item->getCaption() }}</a>
             </div>
         @endforeach

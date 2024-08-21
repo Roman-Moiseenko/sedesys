@@ -1,13 +1,12 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">Клиенты</h1>
+        <h1 class="font-medium text-xl">Специальности персонала</h1>
+        <!-- Фильтр -->
         <div class="flex">
-            <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Клиента</el-button>
-            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
-                <el-input v-model="filter.user" placeholder="Имя, Телефон, Email"/>
-                <el-input v-model="filter.address" placeholder="Адрес" class="mt-1"/>
-                <el-checkbox v-model="filter.draft" label="Не активированные" :checked="filter.draft"/>
+            <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить специализацию</el-button>
+            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+                <el-input v-model="filter.name" placeholder="Name"/>
             </TableFilter>
         </div>
         <div class="mt-2 p-5 bg-white rounded-md">
@@ -19,29 +18,51 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
+                <!-- Повторить поля -->
                 <el-table-column label="IMG" width="100">
                     <template #default="scope">
-                        <el-image style="width: 50px; height: 50px" :src="scope.row.avatar" fit="fill" />
+                        <el-image style="width: 50px; height: 50px" :src="scope.row.image" fit="fill"/>
                     </template>
                 </el-table-column>
-                <el-table-column sortable prop="phone" label="Телефон" width="140"/>
-                <el-table-column sortable prop="fullname" label="ФИО"/>
-                <el-table-column sortable prop="email" label="Email"/>
-                <el-table-column sortable prop="address" label="Адрес"/>
-                <el-table-column label="OAuth" width="100">
+                <el-table-column label="ICON" width="100">
                     <template #default="scope">
-                        <span v-for="item in scope.row.oauths">{{ item }} </span>
+                        <el-image style="width: 50px; height: 50px" :src="scope.row.icon" fit="fill"/>
                     </template>
                 </el-table-column>
-                <!-- Повторить -->
+                <el-table-column sortable prop="name" label="Название" width="160"/>
+                <el-table-column prop="slug" label="Ссылка" width="160"/>
+                <el-table-column prop="employees" label="Специалистов" width="120"/>
+                <el-table-column prop="description" label="Описание"/>
+
                 <el-table-column label="Действия">
                     <template #default="scope">
                         <el-button
-                            v-if="!scope.row.active"
                             size="small"
-                            type="success"
-                            @click.stop="handleActivated(scope.$index, scope.row)">
-                            Activated
+                            type="primary"
+                            @click.stop="handleUp(scope.$index, scope.row)">
+                            <el-icon>
+                                <Top/>
+                            </el-icon>
+                        </el-button>
+                        <el-button
+                            size="small"
+                            type="primary"
+                            @click.stop="handleDown(scope.$index, scope.row)">
+                            <el-icon>
+                                <Bottom/>
+                            </el-icon>
+                        </el-button>
+                        <el-button v-if="scope.row.active"
+                                   size="small"
+                                   type="warning"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Hide
+                        </el-button>
+                        <el-button v-if="!scope.row.active"
+                                   size="small"
+                                   type="success"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Show
                         </el-button>
                         <el-button
                             size="small"
@@ -59,16 +80,17 @@
                 </el-table-column>
             </el-table>
         </div>
+
         <pagination
-            :current_page="$page.props.users.current_page"
-            :per_page="$page.props.users.per_page"
-            :total="$page.props.users.total"
+            :current_page="$page.props.specializations.current_page"
+            :per_page="$page.props.specializations.per_page"
+            :total="$page.props.specializations.total"
         />
     </el-config-provider>
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить Клиента?
+            Вы уверены, что хотите удалить specialization?
         </div>
         <div class="text-red-600 text-md mt-2">
             Восстановить данные будет невозможно!
@@ -86,6 +108,9 @@
 
 <script lang="ts" setup>
 import {useStore} from "/resources/js/store.js"
+import {Head, Link} from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
 
 const store = useStore();
@@ -94,7 +119,7 @@ interface IRow {
     /**
      * Статусы
      */
-    active: boolean
+    active: number
 }
 
 const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
@@ -106,29 +131,22 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
 </script>
 
 <script lang="ts">
-import {Head, Link} from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
 import {router} from '@inertiajs/vue3'
-import Pagination from '@/Components/Pagination.vue'
-import ru from 'element-plus/dist/locale/ru.mjs'
 
 export default {
-    components: {
-        Head,
-        Pagination
-    },
     layout: Layout,
     props: {
-        users: Object,
+        specializations: Object,
         title: {
             type: String,
-            default: 'Список клиентов',
+            default: 'Список специальностей',
         },
         filters: Array,
     },
     data() {
         return {
-            tableData: [...this.users.data],
+            tableData: [...this.specializations.data],
             tableHeight: '600',
             Loading: false,
             dialogDelete: false,
@@ -137,15 +155,14 @@ export default {
              * Данные для формы-фильтр
              */
             filter: {
-                user: this.$props.filters.user,
-                address: this.$props.filters.address,
-                draft: this.$props.filters.draft,
-            },
+                name: this.$props.filters.name,
+                //
+            }
         }
     },
     methods: {
         createButton() {
-            router.get('/admin/user/user/create')
+            router.get('/admin/employee/specialization/create')
         },
         routeClick(row) {
             router.get(row.url)
@@ -154,15 +171,9 @@ export default {
             router.get(row.edit);
         },
 
-
         handleDelete(index, row) {
             this.$data.dialogDelete = true;
             this.$data.routeDestroy = row.destroy;
-        },
-        handleActivated(index, row) {
-            router.visit(row.verify, {
-                method: 'post'
-            });
         },
         removeItem(_route) {
             if (_route !== null) {
@@ -173,7 +184,21 @@ export default {
                 this.$data.routeDestroy = null;
             }
         },
-
+        handleToggle(index, row) {
+            router.visit(row.toggle, {
+                method: 'post'
+            });
+        },
+        handleUp(index, row) {
+            router.visit(row.up, {
+                method: 'post'
+            });
+        },
+        handleDown(index, row) {
+            router.visit(row.down, {
+                method: 'post'
+            });
+        },
     }
 }
 </script>

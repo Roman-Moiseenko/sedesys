@@ -4,6 +4,7 @@ namespace App\Modules\Employee\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Employee\Requests\EmployeeRequest;
 use App\Modules\Employee\Repository\EmployeeRepository;
 use App\Modules\Employee\Service\EmployeeService;
@@ -26,7 +27,6 @@ class EmployeeController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index(Request $request)
     {
         $employees = $this->repository->getIndex($request, $filters);
@@ -40,9 +40,11 @@ class EmployeeController extends Controller
 
     public function create(Request $request)
     {
+        $specializations = $this->repository->getSpecializations();
         return Inertia::render('Employee/Employee/Create', [
             'route' => route('admin.employee.employee.store'),
             'chat_id' => route('admin.notification.telegram.chat-id'),
+            'specializations' => $specializations,
         ]);
     }
 
@@ -60,18 +62,27 @@ class EmployeeController extends Controller
         return Inertia::render('Employee/Employee/Show', [
                 'employee' => $employee,
                 'edit' => route('admin.employee.employee.edit', $employee),
-                'photo' => !empty($employee->photo) ? $employee->photo->getUploadUrl() : null,
+                'photo' => $employee->getImage(),
+                'specializations' => $employee->specializations()->get()->map(function (Specialization $specialization) {
+                    return [
+                        'name' => $specialization->name,
+                        'icon' => $specialization->getIcon('thumb'),
+                    ];
+                })->toArray(),
             ]
         );
     }
 
     public function edit(Employee $employee)
     {
+        $specializations = $this->repository->getSpecializations($employee);
+
         return Inertia::render('Employee/Employee/Edit', [
             'employee' => $employee,
             'route' => route('admin.employee.employee.update', $employee),
-            'photo' => !empty($employee->photo) ? $employee->photo->getUploadUrl() : null,
+            'photo' => $employee->getImage(),
             'chat_id' => route('admin.notification.telegram.chat-id'),
+            'specializations' => $specializations,
         ]);
     }
 
@@ -99,5 +110,11 @@ class EmployeeController extends Controller
             $employee->blocked();
         }
         return redirect()->back();
+    }
+
+    public function attach(Request $request,Employee $employee)
+    {
+        $this->service->attach($employee, $request);
+        return redirect()->back()->with('success', 'Сохранено');
     }
 }

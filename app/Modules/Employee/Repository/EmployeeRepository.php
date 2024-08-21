@@ -2,6 +2,7 @@
 
 namespace App\Modules\Employee\Repository;
 
+use App\Modules\Employee\Entity\Specialization;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use App\Modules\Employee\Entity\Employee;
@@ -50,4 +51,21 @@ class EmployeeRepository
     {
         return Employee::where('telegram_user_id', $telegram_id)->first();
     }
+
+    public function getSpecializations(Employee $employee = null)
+    {
+        $ids = is_null($employee) ? [] : $employee->specializations()->get()->map(function ($item) {
+            return $item->id;
+        })->toArray();
+
+        return Specialization::get()->map(function (Specialization $specialization) use ($ids) {
+            return [
+                'id' => $specialization->id,
+                'name' => $specialization->name,
+                'image' => $specialization->getImage('thumb'),
+                'checked' => in_array($specialization->id, $ids),
+            ];
+        })->toArray();
+    }
+
 }

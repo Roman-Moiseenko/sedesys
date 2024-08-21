@@ -2,7 +2,8 @@
 @php
 /**
 * Поддерживается интерфейс WidgetData
-* getImage()
+* getImage($thumbs = '') // Варианты thumb, catalog, card
+* getIcon($thumbs = '') // Варианты thumb, catalog, card - Иконка для меню
 * getUrl()
 * getCaption()
 * getText()

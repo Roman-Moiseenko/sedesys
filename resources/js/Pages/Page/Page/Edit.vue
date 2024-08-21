@@ -31,11 +31,11 @@
                         <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
                     <el-form-item label="Заголовок">
-                        <el-input v-model="form.title" placeholder="Meta-Title"/>
+                        <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
                         <div v-if="errors.title" class="text-red-700">{{ errors.title }}</div>
                     </el-form-item>
                     <el-form-item label="Описание">
-                        <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea"/>
+                        <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
                 </div>
@@ -130,6 +130,7 @@ if (props.photo !== null) {
         url: props.photo,
     }];
 }
+
 const fileList = ref<UploadFile>(_default);
 
 const form = reactive({

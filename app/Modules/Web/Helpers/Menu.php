@@ -43,8 +43,6 @@ class Menu
                 'icon' => '',
                 'image' => '',
                 'name' => 'О нас',
-
-                //'route' => 'web.home',
                 'submenu' => [
                     'page31' => [
                         'icon' => '',

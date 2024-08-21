@@ -52,7 +52,7 @@ class StaffController extends Controller
     {
         return Inertia::render('Admin/Staff/Show', [
             'staff' => $staff,
-            'photo' => !empty($staff->photo) ? $staff->photo->getUploadUrl() : null,
+            'photo' => $staff->getImage(),
             'edit' => route('admin.staff.edit', $staff),
             'password' => route('admin.staff.password', $staff),
         ]);
@@ -63,7 +63,7 @@ class StaffController extends Controller
         return Inertia::render('Admin/Staff/Edit', [
             'roles' => $this->repository->roles(),
             'staff' => $staff,
-            'photo' => !empty($staff->photo) ? $staff->photo->getUploadUrl() : null,
+            'photo' => $staff->getImage(),
             'route' => route('admin.staff.update', $staff),
             'chat_id' => route('admin.notification.telegram.chat-id'),
         ]);

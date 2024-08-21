@@ -127,4 +127,11 @@ class Page extends Model
         return $this->belongsTo(Page::class, 'parent_id', 'id');
     }
 
+    public function getImage(string $thumb = ''): ?string
+    {
+        if (is_null($this->photo) || is_null($this->photo->file)) return null;
+        if (empty($thumb)) return $this->photo->getUploadUrl();
+        return $this->photo->getThumbUrl($thumb);
+    }
+
 }

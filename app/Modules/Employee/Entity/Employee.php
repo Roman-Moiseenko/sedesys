@@ -76,15 +76,23 @@ class Employee extends Authenticatable implements WidgetData
         $this->save();
     }
 
+    //RELATIONS
+    public function specializations()
+    {
+        return $this->belongsToMany(Specialization::class, 'employees_specializations', 'employee_id', 'specialization_id')
+            ->withPivot(['sort']);
+    }
+
     public function photo()
     {
         return $this->morphOne(Photo::class, 'imageable');//->withDefault();
     }
 
-    public function getImage(): ?string
+    public function getImage(string $thumb = ''): ?string
     {
-        if (is_null($this->photo)) return null;
-        return $this->photo->getThumbUrl('card');
+        if (is_null($this->photo) || is_null($this->photo->file)) return null;
+        if (empty($thumb)) return $this->photo->getUploadUrl();
+        return $this->photo->getThumbUrl($thumb);
     }
 
     public function getUrl(): string
@@ -100,5 +108,10 @@ class Employee extends Authenticatable implements WidgetData
     public function getText(): string
     {
         return '';
+    }
+
+    public function getIcon(string $thumb = ''): ?string
+    {
+        return null;
     }
 }

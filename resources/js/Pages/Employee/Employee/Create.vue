@@ -66,7 +66,15 @@
                     </el-upload>
                     <!-- End FileUpload -->
                 </div>
-
+                <div class="p-4">
+                    <h2 class="font-medium mb-3">Специализация</h2>
+                    <div v-for="specialization in specializations">
+                        <el-checkbox v-model="form.specializations" :label="specialization.name"
+                                     type="checkbox" :checked="specialization.checked"
+                                     :value="specialization.id"
+                        />
+                    </div>
+                </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
@@ -111,7 +119,8 @@ const props = defineProps({
     title: {
         type: String,
         default: 'Создание Персонала',
-    }
+    },
+    specializations: Array,
 });
 
 const form = reactive({
@@ -123,6 +132,7 @@ const form = reactive({
     firstname: null,
     secondname: null,
     address: null,
+    specializations: [],
     file: null,
 })
 

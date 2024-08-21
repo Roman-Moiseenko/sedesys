@@ -25,7 +25,7 @@
             </div>
 
             <el-form-item label="Сообщение" :rules="{required: true}" class="mt-3">
-                <el-input v-model="form.message" placeholder="Напишите сообщение сотрудникам" @input="handleMaskName" type="textarea" :rows="2"/>
+                <el-input v-model="form.message" placeholder="Напишите сообщение сотрудникам" @input="handleMaskName" type="textarea" :rows="2" maxlength="4096" show-word-limit/>
                 <div v-if="errors.message" class="text-red-700">{{ errors.message }}</div>
             </el-form-item>
             <el-checkbox v-model="form.confirmation" label="Подтверждение получения"

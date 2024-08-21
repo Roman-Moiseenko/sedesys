@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Modules\Page\Entity\Page;
+use Illuminate\Support\Str;
 
 class PageService
 {
@@ -17,8 +18,8 @@ class PageService
          * Создаем объект с базовыми данными
          */
         $page = Page::register(
-            (string)$request->string('name'),
-            (string)$request->string('slug')
+            $request->string('name')->trim()->value(),
+            $request->string('slug')->trim()->value(),
         );
 
         $this->save_fields($page, $request);
@@ -28,10 +29,10 @@ class PageService
 
     public function update(Page $page, Request $request)
     {
-        /**
-         * Сохраняем базовые поля
-         */
-        $page->name = (string)$request->string('name');
+
+        $page->name = $request->string('name')->trim()->value();
+        $slug = $request->string('slug')->trim()->value();
+        $page->slug = empty($slug) ? Str::slug($page->name) : $slug;
         $page->save();
 
         if ($request->boolean('clear_file') && !is_null($page->photo)) {
@@ -46,12 +47,12 @@ class PageService
         /**
          * Сохраняем оставшиеся поля
          */
-        $page->title = (string)$request->string('title');
-        $page->description = (string)$request->string('description');
-        $page->template = (string)$request->string('template');
+        $page->title = $request->string('title')->trim()->value();
+        $page->description = $request->string('description')->trim()->value();
+        $page->template = $request->string('template')->value();
         $page->parent_id = $request->input('parent_id', null);
 
-        $page->text = (string)$request->string('text');
+        $page->text = $request->string('text')->value();
         $page->save();
 
         $this->photo($page, $request->file('file'));
@@ -66,7 +67,7 @@ class PageService
         $page->delete();
     }
 
-    public function photo(Page $page, $file): void
+    private function photo(Page $page, $file): void
     {
         if (empty($file)) return;
         if (!empty($page->photo)) {

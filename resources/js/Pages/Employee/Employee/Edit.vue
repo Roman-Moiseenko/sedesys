@@ -66,7 +66,15 @@
                     </el-upload>
                     <!-- End FileUpload -->
                 </div>
-
+                <div class="p-4">
+                    <h2 class="font-medium mb-3">Специализация</h2>
+                    <div v-for="specialization in $props.specializations">
+                        <el-checkbox v-model="form.specializations" :label="specialization.name"
+                                     type="checkbox" :checked="specialization.checked"
+                                     :value="specialization.id"
+                        />
+                    </div>
+                </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
@@ -117,8 +125,11 @@
         photo: {
             type: String,
             default: null
-        }
+        },
+        specializations: Array,
     });
+
+
 
     /* Загружаем фото назначенное */
     let _default = [];
@@ -139,12 +150,15 @@
         firstname: props.employee.fullname.firstname,
         secondname: props.employee.fullname.secondname,
         address: props.employee.address.address,
+
+        specializations: [],
         file: null,
 
         _method: 'put',
         clear_file: false, //Удалить загруженное ранее фото
     })
 
+    console.log(form.specializations);
     function handleMaskPhone(val) {
         form.phone = func.MaskPhone(val);
     }

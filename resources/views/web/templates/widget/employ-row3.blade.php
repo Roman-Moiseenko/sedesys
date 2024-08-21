@@ -4,7 +4,7 @@
     <div class="">
         @foreach($items as $item)
             <div class="card">
-                <img src="{{ $item->getimage() }}" width="100">
+                <img src="{{ $item->getImage('card') }}" width="100">
                 <a href="{{ $item->getUrl() }}">{{ $item->getCaption() }}</a>
             </div>
      
