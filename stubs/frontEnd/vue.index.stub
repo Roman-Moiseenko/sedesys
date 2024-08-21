@@ -5,7 +5,7 @@
         <!-- Фильтр -->
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить DummyEntitySingular</el-button>
-            <TableFilter :filter="filter" class="ml-auto" :count="this.$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
                 <el-input v-model="filter.name" placeholder="Name"/>
             </TableFilter>
         </div>
