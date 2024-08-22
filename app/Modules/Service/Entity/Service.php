@@ -115,6 +115,11 @@ class Service extends Model implements WidgetData
      * Отношения
      */
 
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'employees_services', 'service_id', 'employee_id');
+    }
+
     public function classification()
     {
         return $this->belongsTo(Classification::class, 'classification_id', 'id');

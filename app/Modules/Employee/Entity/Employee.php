@@ -9,6 +9,7 @@ use App\Modules\Base\Entity\FullName;
 use App\Modules\Base\Entity\GeoAddress;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Page\Entity\WidgetData;
+use App\Modules\Service\Entity\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property GeoAddress $address
  * @property Photo $photo
  * @property Specialization[] $specializations
+ * @property Service[] $services
  */
 class Employee extends Authenticatable implements WidgetData
 {
@@ -58,7 +60,6 @@ class Employee extends Authenticatable implements WidgetData
         ]);
     }
 
-
     public function isBlocked(): bool
     {
         return $this->active == false;
@@ -77,6 +78,12 @@ class Employee extends Authenticatable implements WidgetData
     }
 
     //RELATIONS
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'employees_services', 'employee_id', 'service_id');
+    }
+
     public function specializations()
     {
         return $this->belongsToMany(Specialization::class, 'employees_specializations', 'employee_id', 'specialization_id')
