@@ -28,13 +28,13 @@
                 </div>
             </div>
         </div>
+
         <div class="mt-3 flex flex-row">
             <el-button type="primary" @click="goEdit">Редактировать</el-button>
         </div>
     </div>
 
     <div class="mt-5 p-5 bg-white rounded-lg">
-
         <el-upload
             v-model:file-list="fileList"
             :action="add"
@@ -45,7 +45,6 @@
         >
             <el-icon><Plus /></el-icon>
         </el-upload>
-
         <el-dialog v-model="dialogVisible" width="80%">
             <div class="flex">
                 <div style="width: 80%" class="grid">
@@ -76,7 +75,6 @@
                 </div>
             </div>
         </el-dialog>
-
     </div>
 </template>
 
@@ -118,7 +116,6 @@ const fileList = ref<UploadUserFile[]>(props.photos);
 
 const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
     if (uploadFile.id !== undefined) router.post(props.del, {photo_id: uploadFile.id});
-
 }
 
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
@@ -129,13 +126,13 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
     form.description = uploadFile.description;
     dialogVisible.value = true
 }
+
 function copyBuffer(val) {
     console.log(val);
     dialogCopy.value = true;
     setTimeout(() => {
         dialogCopy.value = false;
     }, 2000);
-//    document.getElementById('copy_buffer')
     navigator.clipboard.writeText(dialogImageUrl.value);
 }
 

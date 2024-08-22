@@ -2,7 +2,7 @@
 
 namespace App\Modules\Employee\Service;
 
-use App\Modules\Base\Entity\Photo;
+use App\Modules\Base\Entity\Meta;
 use Illuminate\Http\Request;
 use App\Modules\Employee\Entity\Specialization;
 use Illuminate\Support\Str;
@@ -19,7 +19,7 @@ class SpecializationService
 
         $this->save_fields($specialization, $request);
 
-        return  $specialization;
+        return $specialization;
     }
 
     public function update(Specialization $specialization, Request $request)
@@ -34,9 +34,7 @@ class SpecializationService
 
     private function save_fields(Specialization $specialization, Request $request)
     {
-        $specialization->caption = $request->string('caption')->trim()->value();
-        $specialization->title = $request->string('title')->trim()->value();
-        $specialization->description = $request->string('description')->trim()->value();
+        $specialization->meta = Meta::fromRequest($request);
         $specialization->save();
 
         if ($request->boolean('clear_image') && !is_null($specialization->image)) {

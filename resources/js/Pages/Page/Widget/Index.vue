@@ -18,7 +18,7 @@
                 <el-table-column sortable prop="template" label="Шаблон" />
                 <el-table-column sortable prop="model" label="Модель"  />
                 <!-- Повторить -->
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
                             size="small"

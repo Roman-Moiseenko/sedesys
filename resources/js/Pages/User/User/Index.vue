@@ -21,7 +21,7 @@
             >
                 <el-table-column label="IMG" width="100">
                     <template #default="scope">
-                        <el-image style="width: 50px; height: 50px" :src="scope.row.avatar" fit="fill" />
+                        <el-image style="min-width: 50px; min-height: 50px" :src="scope.row.avatar" fit="fill" />
                     </template>
                 </el-table-column>
                 <el-table-column sortable prop="phone" label="Телефон" width="140"/>
@@ -33,8 +33,8 @@
                         <span v-for="item in scope.row.oauths">{{ item }} </span>
                     </template>
                 </el-table-column>
-                <!-- Повторить -->
-                <el-table-column label="Действия">
+
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
                             v-if="!scope.row.active"

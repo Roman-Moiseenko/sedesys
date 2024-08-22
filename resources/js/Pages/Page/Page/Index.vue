@@ -18,7 +18,7 @@
                 <el-table-column sortable prop="template" label="Шаблон" />
                 <el-table-column sortable prop="published" label="Дата публикации"/>
                 <!-- Повторить -->
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="scope.row.active"
                                    size="small"

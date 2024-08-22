@@ -2,6 +2,7 @@
 
 namespace DummyRootNamespaceModules\DummySingular\Entity;
 
+use App\Modules\Base\Entity\Photo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,28 +32,42 @@ class DummyEntitySingular extends Model
         ]);
     }
 
+    /**
+     * Ф-ции состояния
+     */
     public function isField(): bool
     {
-        /**
-         * Ф-ции состояния
-         */
         return true;
     }
 
+    /**
+     * Сетеры
+     */
     public function setField($value): void
     {
-        /**
-         * Сетеры
-         */
+
         $this->field = $value;
         $this->save();
     }
 
+    /**
+     * Гетеры
+     */
     public function getField(): mixed
     {
-        /**
-         * Гетеры
-         */
+
         return $this->field;
     }
+
+    /**
+     * Отношения
+     */
+    public function image()
+    {
+        return $this->morphOne(Photo::class, 'imageable', 'id');
+    }
+
+    /**
+     * Хелперы и Интерфейсы
+     */
 }

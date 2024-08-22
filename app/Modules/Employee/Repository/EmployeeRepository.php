@@ -10,32 +10,32 @@ use App\Modules\Employee\Entity\Employee;
 class EmployeeRepository
 {
 
-    public function getIndex(Request $request, &$filter): Arrayable
+    public function getIndex(Request $request, &$filters): Arrayable
     {
         $query = Employee::orderByDesc('created_at');
-        $filter = [];
+        $filters = [];
 
         if ($request->has('user')) {
             $user = $request->string('user')->trim()->value();
-            $filter['user'] = $user;
+            $filters['user'] = $user;
             $query->where(function ($q) use ($user) {
                 $q->orWhere('fullname', 'LIKE', "%$user%")
                     ->orWhere('phone', 'LIKE', "%$user%");
             });
         }
         if ($request->input('draft', 'false') == 'true' ) {
-            $filter['draft'] = 'true';
+            $filters['draft'] = 'true';
             $query->where('active', false);
         }
 
         if ($request->has('specialization')) {
             $specialization = $request->integer('specialization');
-            $filter['specialization'] = $specialization;
+            $filters['specialization'] = $specialization;
             $query->whereHas('specializations', function ($q) use ($specialization) {
                 $q->where('id', $specialization);
             });
         }
-        if (count($filter) > 0) $filter['count'] = count($filter);
+        if (count($filters) > 0) $filters['count'] = count($filters);
 
         return $query->paginate($request->input('size', 20))
             ->withQueryString()

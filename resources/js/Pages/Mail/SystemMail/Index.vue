@@ -24,8 +24,7 @@
                 <el-table-column prop="attachments" label="Вложения" width="120"/>
                 <el-table-column prop="count" label="Отправок"/>
 
-                <!-- Повторить -->
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
                             size="small"

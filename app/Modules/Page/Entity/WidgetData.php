@@ -13,4 +13,6 @@ interface WidgetData
     public function getCaption(): string;
 
     public function getText(): string;
+
+    public function scopeActive($query);
 }

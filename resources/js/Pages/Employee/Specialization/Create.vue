@@ -14,9 +14,9 @@
                         <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
                     </el-form-item>
-                    <el-form-item label="Название страницы">
-                        <el-input v-model="form.caption" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
-                        <div v-if="errors.caption" class="text-red-700">{{ errors.caption }}</div>
+                    <el-form-item label="H1">
+                        <el-input v-model="form.h1" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
+                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
                     </el-form-item>
                     <el-form-item label="Заголовок">
                         <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
@@ -123,7 +123,7 @@
     const form = reactive({
         name: null,
         slug: null,
-        caption: null,
+        h1: null,
         title: null,
         description: null,
         image: null,

@@ -13,16 +13,13 @@ class SpecializationRepository
     public function getIndex(Request $request, &$filters): Arrayable
     {
         $query = Specialization::orderBy('sort');
-        /**
-         * Фильтр, для каждого параметра своя проверка
-         */
+
         $filters = [];
         if ($request->has('name')) {
             $name = $request->string('name')->trim()->value();
             $filters['name'] = $name;
             $query->where('name', 'LIKE', "%$name%");
         }
-
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
 
         return $query->paginate($request->input('size', 20))
@@ -31,11 +28,9 @@ class SpecializationRepository
                 'id' => $specialization->id,
                 'name' => $specialization->name,
                 'slug' => $specialization->slug,
-                'caption' => $specialization->caption,
-                'title' => $specialization->title,
-                'description' => $specialization->description,
-                'image' => $specialization->getImage('thumb'),
-                'icon' => $specialization->getIcon('thumb'),
+                'meta' => $specialization->meta,
+                'image' => $specialization->getImage('mini'),
+                'icon' => $specialization->getIcon('mini'),
                 'employees' => $specialization->employees()->count(),
                 'active' => $specialization->isActive(),
 

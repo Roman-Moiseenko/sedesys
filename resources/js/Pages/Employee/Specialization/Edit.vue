@@ -3,7 +3,6 @@
     <h1 class="font-medium text-xl">Редактировать {{ specialization.name }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto">
-
             <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                 <div class="p-4">
                     <!-- Повторить поля -->
@@ -15,9 +14,9 @@
                         <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
                     </el-form-item>
-                    <el-form-item label="Название страницы">
-                        <el-input v-model="form.caption" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
-                        <div v-if="errors.caption" class="text-red-700">{{ errors.caption }}</div>
+                    <el-form-item label="H1">
+                        <el-input v-model="form.h1" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
+                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
                     </el-form-item>
                     <el-form-item label="Заголовок">
                         <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
@@ -85,8 +84,6 @@
                     <!-- End FileUpload -->
                 </div>
             </div>
-
-
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
         </el-form>
@@ -132,9 +129,9 @@
     const form = reactive({
         name: props.specialization.name,
         slug: props.specialization.slug,
-        caption: props.specialization.caption,
-        title: props.specialization.title,
-        description: props.specialization.description,
+        h1: props.specialization.meta.h1,
+        title: props.specialization.meta.title,
+        description: props.specialization.meta.description,
         image: null,
         icon: null,
         _method: 'put',
@@ -158,6 +155,10 @@
     const handleRemoveIcons = (file: UploadFile) => {
         Icons.value.splice(0, 1);
         form.clear_icon = true;
+    }
+    const handlePictureCardPreview = (file: UploadFile) => {
+        dialogImageUrl.value = file.url!
+        dialogVisible.value = true
     }
 </script>
 <script lang="ts">

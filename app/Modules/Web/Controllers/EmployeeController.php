@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace App\Modules\Web\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Web\Repository\WebRepository;
 
-class EmployeeController
+class EmployeeController extends Controller
 {
     private WebRepository $repository;
 
@@ -23,6 +24,7 @@ class EmployeeController
 
     public function view(Employee $employee)
     {
+        //TODO Переделать на slug ??
         return view('web.employee.show', compact('employee'));
     }
 }

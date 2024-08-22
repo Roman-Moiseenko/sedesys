@@ -6,8 +6,6 @@
 * @property int $parent_id
 * @property string $name
 * @property string $slug
-* @property string $title
-* @property string $description
 * @property string $template
 * @property string $text
 * @property bool $published
@@ -17,6 +15,7 @@
 * @property Carbon $published_at
 * @property Photo $photo
 * @property Page $parent
+* @property Meta $meta
 */
 @endphp
 
@@ -26,12 +25,12 @@
 pages container-xl
 @endsection
 
-@section('title', $page->title)
-@section('description', $page->description)
+@section('title', $page->meta->title)
+@section('description', $page->meta->description)
 
 @section('content')
 <!--template:dummyParamsName-->
-<h1 class="my-4">{{ $page->name }}</h1>
+<h1 class="my-4">{{ $page->meta->h1 }}</h1>
 <div class="mt-4">
     {!! $page->text !!}
 </div>

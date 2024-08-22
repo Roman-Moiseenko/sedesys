@@ -3,6 +3,7 @@
 namespace App\Modules\Page\Service;
 
 use App\Modules\Page\Entity\Page;
+use App\Modules\Page\Entity\Template;
 use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Repository\TemplateRepository;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class TemplateService
         $type = $request->string('type')->value();
         $template = $request->string('template')->trim()->value();
         $name = $request->string('name')->trim()->value();
-        $file = $this->repository->getPath($type) . $template . '.blade.php';
+        $file = Template::File($type, $template);
         //Заменяем данные в шаблоне
         //Возможно расширение параметров, для версии 0.2 dummyParamsName = Имя шаблона
         $content = str_replace([
@@ -31,7 +32,7 @@ class TemplateService
         ], [
             $name,
         ],
-            file_get_contents(resource_path('views/web/templates/base/'. $type . '.stub'))
+            file_get_contents(Template::Base($type))
         );
 
         file_put_contents($file, $content);
@@ -42,7 +43,7 @@ class TemplateService
 
     public function destroy(string $type, string $template)
     {
-        $file = $this->repository->getPath($type) . $template . '.blade.php';
+        $file = Template::File($type, $template);
 
         $isset = null;
         if ($type == 'widget') {
@@ -65,7 +66,7 @@ class TemplateService
         $content = $request->string('content')->value();
         $type = $request->string('type')->value();
         $template = $request->string('template')->value();
-        $file = $this->repository->getPath($type) . $template . '.blade.php';
+        $file = Template::File($type, $template);
 
         file_put_contents($file, $content);
     }

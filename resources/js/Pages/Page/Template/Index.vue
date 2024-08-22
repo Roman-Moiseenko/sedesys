@@ -2,8 +2,14 @@
     <Head><title>{{ title }}</title></Head>
 
     <h1 class="font-medium text-xl">Шаблоны</h1>
-    <el-button type="primary" class="p-4 my-3" @click="dialogFormVisible = true">Создать Шаблон</el-button>
-
+    <div class="flex">
+        <el-button type="primary" class="p-4 my-3" @click="dialogFormVisible = true">Создать Шаблон</el-button>
+        <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
+            <el-select v-model="filter.type" placeholder="Вид шаблона" class="mt-1">
+                <el-option v-for="item in $props.types" :key="item.value" :label="item.label" :value="item.value"/>
+            </el-select>
+        </TableFilter>
+    </div>
     <div class="mt-2 p-5 bg-white rounded-md">
         <el-table
             :data="tableData"
@@ -16,8 +22,7 @@
             <el-table-column sortable prop="type" label="Вид" width="100"/>
             <el-table-column prop="file" label="Путь"/>
 
-            <!-- Повторить -->
-            <el-table-column label="Действия">
+            <el-table-column label="Действия" align="right">
                 <template #default="scope">
                     <el-button
                         size="small"
@@ -59,8 +64,7 @@
             </el-form-item>
             <el-form-item label="Тип шаблона">
                 <el-select v-model="form.type" placeholder="Выберите тип">
-                    <el-option label="Виджет" value="widget"/>
-                    <el-option label="Страницы" value="page"/>
+                    <el-option v-for="item in $props.types" :label="item.label" :value="item.value" :key="item.value"/>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -81,11 +85,13 @@ import Layout from '@/Components/Layout.vue'
 import {router} from '@inertiajs/vue3'
 import {Head, Link} from '@inertiajs/vue3'
 import {func} from "/resources/js/func.js"
+import TableFilter from '@/Components/TableFilter.vue'
 
 export default {
     components: {
         Head,
         Link,
+        TableFilter,
     },
     layout: Layout,
 
@@ -101,6 +107,10 @@ export default {
                 template: null,
                 type: null,
             },
+            filter: {
+                type: this.$props.filters.type,
+
+            },
         }
     },
     props: {
@@ -109,7 +119,9 @@ export default {
             type: String,
             default: 'Список Шаблонов',
         },
-        store: String
+        store: String,
+        types: Array,
+        filters: Array,
     },
 
     methods: {

@@ -12,6 +12,7 @@
                 <el-checkbox v-model="filter.draft" label="Заблокированные" :checked="filter.draft"/>
             </TableFilter>
         </div>
+
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
@@ -26,7 +27,7 @@
                 <el-table-column sortable prop="address" label="Адрес"/>
 
                 <!-- Повторить -->
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="scope.row.active"
                                    size="small"

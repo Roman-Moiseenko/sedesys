@@ -28,8 +28,8 @@
                 <el-table-column prop="message" label="Сообщение" />
                 <el-table-column sortable prop="created_at" label="Создано" width="200" />
                 <el-table-column sortable prop="read_at" label="Прочитано" width="200" />
-                <!-- Повторить -->
-                <el-table-column label="Действия">
+
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="scope.read_at === null"
                             size="small"

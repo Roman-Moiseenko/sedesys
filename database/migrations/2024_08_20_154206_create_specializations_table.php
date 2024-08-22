@@ -13,9 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->string('caption')->default('');
-            $table->string('title')->default('');
-            $table->string('description')->default('');
+            $table->json('meta');
             $table->boolean('active')->default(false);
             $table->integer('sort')->default(0);
             $table->timestamps();

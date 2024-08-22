@@ -24,10 +24,12 @@ class TemplateController extends Controller
 
     public function index(Request $request)
     {
-        $templates = $this->repository->getIndex($request);
+        $templates = $this->repository->getIndex($request, $filters);
         return Inertia::render('Page/Template/Index', [
                 'templates' => $templates,
-                'store' => route('admin.page.template.store')
+                'store' => route('admin.page.template.store'),
+                'types' => array_select(Template::TEMPLATES),
+                'filters' => $filters,
             ]
         );
     }
@@ -54,7 +56,7 @@ class TemplateController extends Controller
 
     public function show($type, $template)
     {
-        $file = $this->repository->getPath($type) . $template . '.blade.php';
+        $file = Template::File($type, $template);
 
         return Inertia::render('Page/Template/Show', [
                 'content' => file_get_contents($file),

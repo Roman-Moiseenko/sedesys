@@ -27,7 +27,7 @@
                 <el-table-column prop="attachments" label="Вложения" width="120"/>
                 <el-table-column  prop="created_at" label="Создано"/>
                 <el-table-column  prop="sent_at" label="Отправлено"/>
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="!scope.row.sent"
                             size="small"

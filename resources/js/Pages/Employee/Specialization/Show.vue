@@ -13,13 +13,13 @@
                         Ссылка&nbsp;<span class="font-medium ml-6">{{ $props.specialization.slug}}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Страница (H1)&nbsp;<span class="font-medium ml-6">{{ $props.specialization.caption}}</span>
+                        Страница (H1)&nbsp;<span class="font-medium ml-6">{{ $props.specialization.meta.h1}}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.specialization.title}}</span>
+                        Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.specialization.meta.title}}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Описание&nbsp;<span class="font-medium ml-6">{{ $props.specialization.description}}</span>
+                        Описание&nbsp;<span class="font-medium ml-6">{{ $props.specialization.meta.description}}</span>
                     </div>
                 </div>
             </div>

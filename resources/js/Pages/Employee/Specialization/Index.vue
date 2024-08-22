@@ -21,26 +21,26 @@
                 <!-- Повторить поля -->
                 <el-table-column label="IMG" width="100">
                     <template #default="scope">
-                        <el-image style="width: 50px; height: 50px" :src="scope.row.image" fit="fill"/>
+                        <el-image style="min-width: 50px; min-height: 50px" :src="scope.row.image" fit="fill"/>
                     </template>
                 </el-table-column>
                 <el-table-column label="ICON" width="100">
                     <template #default="scope">
-                        <el-image style="width: 50px; height: 50px" :src="scope.row.icon" fit="fill"/>
+                        <el-image style="min-width: 50px; min-height: 50px" :src="scope.row.icon" fit="fill"/>
                     </template>
                 </el-table-column>
                 <el-table-column sortable prop="name" label="Название" width="160"/>
                 <el-table-column prop="slug" label="Ссылка" width="160"/>
                 <el-table-column prop="employees" label="Специалистов" width="120"/>
-                <el-table-column prop="description" label="Описание">
+                <el-table-column label="Описание" show-overflow-tooltip width="250">
                     <template #default="scope">
-                        <div class=""><span class="font-medium">H1: </span><span>{{ scope.row.caption }}</span></div>
-                        <div class=""><span class="font-medium">Meta-Title: </span><span>{{ scope.row.title }}</span></div>
-                        <div class=""><span class="font-medium">Met-Description: </span><span>{{ scope.row.description }}</span></div>
+                        <div class=""><span class="font-medium">H1: </span><span>{{ scope.row.meta.h1 }}</span></div>
+                        <div class=""><span class="font-medium">Meta-Title: </span><span>{{ scope.row.meta.title }}</span></div>
+                        <div class=""><span class="font-medium">Met-Description: </span><span>{{ scope.row.meta.description }}</span></div>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
                             size="small"

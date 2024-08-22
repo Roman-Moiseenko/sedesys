@@ -2,6 +2,7 @@
 
 namespace App\Modules\Page\Service;
 
+use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,8 +48,8 @@ class PageService
         /**
          * Сохраняем оставшиеся поля
          */
-        $page->title = $request->string('title')->trim()->value();
-        $page->description = $request->string('description')->trim()->value();
+        $page->meta = Meta::fromRequest($request);
+
         $page->template = $request->string('template')->value();
         $page->parent_id = $request->input('parent_id', null);
 

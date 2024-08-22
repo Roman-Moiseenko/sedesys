@@ -114,4 +114,9 @@ class Employee extends Authenticatable implements WidgetData
     {
         return null;
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
 }

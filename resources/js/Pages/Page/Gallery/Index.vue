@@ -18,7 +18,7 @@
                 <el-table-column prop="count" label="Изображений" align="center" width="150"/>
                 <el-table-column prop="description" label="Описание" />
                 <!-- Повторить -->
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
                             size="small"

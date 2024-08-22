@@ -20,10 +20,13 @@
                         Родительская страница&nbsp;<span class="font-medium ml-6">{{ $props.parent }}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.page.title}}</span>
+                        H1&nbsp;<span class="font-medium ml-6">{{ $props.page.meta.h1}}</span>
                     </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Описание&nbsp;<span class="font-medium ml-6">{{ $props.page.description}}</span>
+                        Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.page.meta.title}}</span>
+                    </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
+                        Описание&nbsp;<span class="font-medium ml-6">{{ $props.page.meta.description}}</span>
                     </div>
                 </div>
             </div>

@@ -30,6 +30,10 @@
                         </el-select>
                         <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
+                    <el-form-item label="Публикуемое название">
+                        <el-input v-model="form.h1" placeholder="H1" maxlength="160" show-word-limit/>
+                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
+                    </el-form-item>
                     <el-form-item label="Заголовок">
                         <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
                         <div v-if="errors.title" class="text-red-700">{{ errors.title }}</div>
@@ -137,8 +141,11 @@ const form = reactive({
     name: props.page.name,
     slug: props.page.slug,
     parent_id: props.page.parent_id,
-    title: props.page.title,
-    description: props.page.description,
+    //meta
+    h1: props.page.meta.h1,
+    title: props.page.meta.title,
+    description: props.page.meta.description,
+
     template: props.page.template,
     text: props.page.text,
     file: null,

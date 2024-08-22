@@ -2,6 +2,8 @@
 
 namespace App\Modules\Employee\Entity;
 
+use App\Modules\Base\Casts\MetaCast;
+use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Page\Entity\WidgetData;
 use Carbon\Carbon;
@@ -13,9 +15,6 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property string $caption //Заголовок h1
- * @property string $title //Заголовок мета
- * @property string $description
  * @property bool $active
  * @property int $sort
  * @property Carbon $created_at
@@ -23,6 +22,7 @@ use Illuminate\Support\Str;
  * @property Photo $image
  * @property Photo $icon
  * @property Employee[] $employees
+ * @property Meta $meta
  */
 class Specialization extends Model implements WidgetData
 {
@@ -31,6 +31,7 @@ class Specialization extends Model implements WidgetData
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'meta' => MetaCast::class,
     ];
     protected $fillable = [
         'name',
@@ -104,16 +105,21 @@ class Specialization extends Model implements WidgetData
 
     public function getUrl(): string
     {
-        return route('web.specialization.view');
+        return route('web.specialization.view', $this->slug);
     }
 
     public function getCaption(): string
     {
-        return $this->name;
+        return empty($this->meta->h1) ? $this->name : $this->meta->h1;
     }
 
     public function getText(): string
     {
-        return $this->description;
+        return $this->meta->description;
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
     }
 }

@@ -17,8 +17,7 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable();
             $table->boolean('published')->default(false);
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('title')->default('');
-            $table->text('description');
+            $table->json('meta');
             $table->string('template')->default('text');
             $table->longText('text');
         });

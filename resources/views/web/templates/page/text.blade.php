@@ -4,12 +4,12 @@
     pages container-xl
 @endsection
 
-@section('title', $title)
-@section('description', $description)
+@section('title', $page->meta->title)
+@section('description', $page->meta->description)
 
 @section('content')
-    <!--template:Текстовая страница без форматирования2-->
-    <h1 class="my-4">{{ $page->name }}</h1>
+    <!--template:Базовый текстовый, без форматирования -->
+    <h1 class="my-4">{{ $page->meta->h1 }}</h1>
     <div class="mt-4">
         {!! $page->text !!}
     </div>

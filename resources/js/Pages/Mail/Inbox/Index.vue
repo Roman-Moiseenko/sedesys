@@ -29,7 +29,7 @@
                 <el-table-column sortable prop="read_at" label="Прочитано" width="160" />
                 <el-table-column sortable prop="box" label="Почта" width="100"/>
 
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
                             size="small"

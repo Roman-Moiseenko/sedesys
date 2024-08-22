@@ -4,6 +4,8 @@ namespace App\Modules\Page\Entity;
 
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
+use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Entity\Service;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,11 +23,14 @@ use Illuminate\Database\Eloquent\Model;
 class Widget extends Model
 {
     use HasFactory;
+
     const PATH_TEMPLATES = 'web.templates.widget.';
 
     const WIDGET_MODELS = [
         Employee::class => 'Персонал',
-        Specialization::class => 'Специализация'
+        Specialization::class => 'Специализация',
+        Service::class => 'Услуги',
+        Classification::class => 'Классификация (услуг)',
     ];
 
     protected $attributes = [
@@ -52,10 +57,10 @@ class Widget extends Model
 
     public function view(): string
     {
-       // $dataItem = $this->DataWidget();
+        // $dataItem = $this->DataWidget();
 
         if (!empty($this->model)) {
-            $items = $this->model::where('active', true)->getModels();
+            $items = $this->model::active()->getModels();
             return view(self::PATH_TEMPLATES . $this->template, ['items' => $items, 'options' => $this->options])->render();
         } else {
             return view(self::PATH_TEMPLATES . $this->template, ['data' => $this->data, 'options' => $this->options])->render();

@@ -30,7 +30,7 @@
                 <el-table-column sortable prop="fullname" label="ФИО" />
                 <el-table-column prop="post" label="Должность" />
                 <el-table-column sortable prop="role" label="Роль" />
-                <el-table-column label="Действия">
+                <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="scope.row.active"
                             size="small"

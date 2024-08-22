@@ -9,18 +9,28 @@ use App\Modules\Page\Entity\Template;
 class TemplateRepository
 {
 
-    public function getIndex(Request $request)
+    public function getIndex(Request $request, &$filters)
     {
-        return collect(array_merge(
-            $this->getDataArray('page'),
-            $this->getDataArray('widget'),
-        ));
+        $result = [];
+
+        if ($request->has('type')) {
+            $type = $request->string('type')->value();
+            $result = $this->getDataArray($type);
+            $filters['type'] = $type;
+            $filters['count'] = 1;
+        } else {
+            $filters = [];
+            foreach (Template::TEMPLATES as $key => $value) {
+                $result = array_merge($result, $this->getDataArray($key));
+            }
+        }
+        return collect($result);
     }
 
 
     public function getDataArray(string $type): array
     {
-        $path = $this->getPath($type);
+        $path = Template::Path($type);
 
         $files = glob($path . '*.blade.php');
 
@@ -42,11 +52,6 @@ class TemplateRepository
             ];
         }
         return $result;
-    }
-
-    public function getPath(string $type): string
-    {
-        return resource_path() . '/views/web/templates/' . $type . '/';
     }
 
 }

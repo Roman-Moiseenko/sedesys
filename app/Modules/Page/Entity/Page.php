@@ -2,6 +2,8 @@
 
 namespace App\Modules\Page\Entity;
 
+use App\Modules\Base\Casts\MetaCast;
+use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +26,7 @@ use Illuminate\Support\Str;
  * @property Carbon $published_at
  * @property Photo $photo
  * @property Page $parent
+ * @property Meta $meta
  */
 
 class Page extends Model
@@ -34,6 +37,7 @@ class Page extends Model
     protected $attributes = [
         'description' => '',
         'text' => '',
+        'meta' => '{}',
     ];
 
     const PAGES_TEMPLATES = [
@@ -47,6 +51,7 @@ class Page extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'published_at' => 'datetime',
+        'meta' => MetaCast::class,
     ];
     protected $fillable = [
         'parent_id',
@@ -111,8 +116,9 @@ class Page extends Model
         return view(self::PATH_TEMPLATES . $this->template,
             [
                 'page' => $this,
-                'title' => $this->title,
-                'description' => $this->description,
+                'h1' => $this->meta->h1,
+                'title' => $this->meta->title,
+                'description' => $this->meta->description,
             ]
         )->render();
     }

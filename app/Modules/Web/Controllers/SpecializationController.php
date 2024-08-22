@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace App\Modules\Web\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Web\Repository\WebRepository;
 
-class SpecializationController
+class SpecializationController extends Controller
 {
     private WebRepository $repository;
 
@@ -22,8 +23,10 @@ class SpecializationController
         return view('web.specialization.index', compact('specializations'));
     }
 
-    public function view(Specialization $specialization)
+    public function view($slug)
     {
+        $specialization = Specialization::where('slug', $slug)->first();
+        if (is_null($specialization)) return abort(404);
         return view('web.specialization.show', compact('specialization'));
     }
 }
