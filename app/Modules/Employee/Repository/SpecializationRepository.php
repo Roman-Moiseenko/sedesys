@@ -31,8 +31,20 @@ class SpecializationRepository
                 'meta' => $specialization->meta,
                 'image' => $specialization->getImage('mini'),
                 'icon' => $specialization->getIcon('mini'),
-                'employees' => $specialization->employees()->count(),
+                'count_employees' => $specialization->employees()->count(),
                 'active' => $specialization->isActive(),
+                'employees' => $specialization->employees()->get()->map(
+                    function (Employee $employee) use($specialization)  {
+                        return [
+                            'id' => $employee->id,
+                            'fullname' => $employee->fullname->getFullName(),
+                            'phone' => $employee->phone,
+                            'photo' => $employee->getImage('mini'),
+                            'detach' => route('admin.employee.specialization.detach', $specialization),
+                            'url' => route('admin.employee.employee.show', $employee),
+                        ];
+                    }
+                )->toArray(),
 
                 'url' => route('admin.employee.specialization.show', $specialization),
                 'edit' => route('admin.employee.specialization.edit', $specialization),
@@ -44,21 +56,25 @@ class SpecializationRepository
     }
 
 
-    public function getEmployees(Specialization $specialization)
+    public function getEmployees(Specialization $specialization = null)
     {
-
-        $ids = $specialization->employees()->get()->map(function ($item) {
-            return $item->id;
-        })->toArray();
-
+        if (is_null($specialization)) {
+            $ids = [];
+        } else {
+            $ids = $specialization->employees()->get()->map(function ($item) {
+                return $item->id;
+            })->toArray();
+        }
         return Employee::get()->map(function (Employee $employee) use ($ids) {
             return [
                 'id' => $employee->id,
                 'fullname' => $employee->fullname->getFullName(),
                 'phone' => $employee->phone,
-                'photo' => $employee->getImage('thumb'),
+                'photo' => $employee->getImage('mini'),
                 'checked' => in_array($employee->id, $ids),
             ];
         })->toArray();
     }
+
+
 }

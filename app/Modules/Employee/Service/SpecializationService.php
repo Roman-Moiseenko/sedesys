@@ -37,6 +37,8 @@ class SpecializationService
         $specialization->meta = Meta::fromRequest($request);
         $specialization->save();
 
+        $this->attach($specialization, $request);
+
         if ($request->boolean('clear_image') && !is_null($specialization->image)) {
             $specialization->image->delete();
         }
@@ -103,5 +105,11 @@ class SpecializationService
         foreach ($employees as $employee) {
             $specialization->employees()->attach($employee);
         }
+    }
+
+    public function detach(Specialization $specialization, Request $request)
+    {
+        //dd($request->integer('employee_id'));
+        $specialization->employees()->detach($request->integer('employee_id'));
     }
 }

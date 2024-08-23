@@ -74,6 +74,11 @@
                                      :value="specialization.id"
                         />
                     </div>
+                    <el-divider/>
+                    <el-form-item label="Стаж с какого года" :rules="{required: true}">
+                        <el-input v-model="form.experience_year"  min="1950" @input="handleYear" width="60"/>
+                        <div v-if="errors.experience_year" class="text-red-700">{{ errors.experience_year }}</div>
+                    </el-form-item>
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
@@ -150,7 +155,7 @@
         firstname: props.employee.fullname.firstname,
         secondname: props.employee.fullname.secondname,
         address: props.employee.address.address,
-
+        experience_year: props.employee.experience_year,
         specializations: [],
         file: null,
 
@@ -175,6 +180,9 @@
     const handleRemove= (file: UploadFile) => {
         fileList.value.splice(0, 1);
         form.clear_file = true;
+    }
+    function handleYear(val) {
+        form.experience_year = func.MaskInteger(val);
     }
     const handlePictureCardPreview = (file: UploadFile) => {
         dialogImageUrl.value = file.url!

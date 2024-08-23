@@ -54,8 +54,6 @@
                         </template>
                     </el-upload>
                     <!-- End FileUpload -->
-                </div>
-                <div class="p-4">
                     <h2 class="font-medium mb-3">Иконка для меню</h2>
                     <!-- FileUpload -->
                     <el-upload action="#" list-type="picture-card"
@@ -82,6 +80,17 @@
                         </template>
                     </el-upload>
                     <!-- End FileUpload -->
+                </div>
+                <div class="p-4">
+
+                    <h2 class="font-medium text-lg mb-3">Специалисты:</h2>
+                    <div v-for="employee in employees">
+                        <el-checkbox v-model="form.employees" :label="employee.fullname"
+                                     type="checkbox" :checked="employee.checked"
+                                     :value="employee.id"
+                        />
+                    </div>
+
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
@@ -120,6 +129,7 @@
         },
         image: String,
         icon: String,
+        employees: Array,
     });
 
     if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
@@ -137,6 +147,7 @@
         _method: 'put',
         clear_image: false,
         clear_icon: false,
+        employees: [],
     })
 
     function handleMaskSlug(val)

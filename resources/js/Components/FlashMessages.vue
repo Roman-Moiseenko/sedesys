@@ -25,17 +25,56 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import 'element-plus/es/components/message/style/css'; // this is only needed if the page also used ElMessage
+import 'element-plus/es/components/message-box/style/css';
+import { ElMessage } from 'element-plus'
+
 export default {
+    components: {
+        ElMessage,
+    },
+    methods: {
+        open1() {
+            if (this.$page.props.flash.success)
+                ElMessage({
+                    message: this.$page.props.flash.success,
+                    type: 'success',
+                    plain: true,
+                    showClose: true,
+                    //duration: 3000,
+                    center: true,
+                });
+            if (this.$page.props.flash.error || Object.keys(this.$page.props.errors).length > 0) {
+                let _mes_;
+                if (this.$page.props.flash.error) {
+                    _mes_ = this.$page.props.flash.error;
+                } else if (Object.keys(this.$page.props.errors).length === 1) {
+                    _mes_ = 'Есть ошибки в форме.';
+                } else {
+                    _mes_ = 'Обнаружено ' + Object.keys(this.$page.props.errors).length + ' ошибки(ок) в форме.';
+                }
+                ElMessage({
+                    message: _mes_,
+                    type: 'error',
+                    plain: true,
+                    showClose: true,
+                    duration: 7000,
+                    center: true,
+                });
+            }
+        }
+    },
     data() {
         return {
-            show: true,
+            show: false,
         }
     },
     watch: {
         '$page.props.flash': {
             handler() {
-                this.show = true
+                //this.show = true;
+                this.open1();
             },
             deep: true,
         },

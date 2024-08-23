@@ -117,7 +117,7 @@ class Service extends Model implements WidgetData
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'employees_services', 'service_id', 'employee_id');
+        return $this->belongsToMany(Employee::class, 'employees_services', 'service_id', 'employee_id')->withPivot(['extra_cost']);
     }
 
     public function classification()

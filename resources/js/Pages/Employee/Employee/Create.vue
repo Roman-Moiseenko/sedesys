@@ -74,6 +74,11 @@
                                      :value="specialization.id"
                         />
                     </div>
+                    <el-divider/>
+                    <el-form-item label="Имя" :rules="{required: true}">
+                        <el-input v-model="form.experience_year"/>
+                        <div v-if="errors.experience_year" class="text-red-700">{{ errors.experience_year }}</div>
+                    </el-form-item>
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
@@ -134,6 +139,7 @@ const form = reactive({
     address: null,
     specializations: [],
     file: null,
+    experience_year: null,
 })
 
 function handleMaskPhone(val) {

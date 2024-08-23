@@ -4,6 +4,7 @@ namespace App\Modules\Service\Service;
 
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Employee\Entity\Employee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -117,5 +118,20 @@ class ServiceService
                 ]);
             }
         }
+    }
+
+    public function attach_employee(Service $service, Request $request)
+    {
+        $employee = Employee::find($request->integer('employee_id'));
+        $extra_cost = $request->integer('extra_cost');
+        $service->employees()->attach($employee->id, ['extra_cost' => $extra_cost]);
+        return $employee;
+    }
+
+    public function detach_employee(Service $service, Request $request)
+    {
+        $employee = Employee::find($request->integer('employee_id'));
+        $service->employees()->detach($employee->id);
+        return $employee;
     }
 }

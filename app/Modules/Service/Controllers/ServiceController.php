@@ -71,7 +71,9 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-        $service = Service::where('id', $service->id)->with('classification')->first();
+
+        $service = $this->repository->getShow($service->id);
+        $out_employees = $this->repository->outEmployees($service);
 
         return Inertia::render('Service/Service/Show', [
                 'service' => $service,
@@ -82,7 +84,10 @@ class ServiceController extends Controller
                 'add' => route('admin.service.service.add', $service),
                 'del' => route('admin.service.service.del', $service),
                 'set' => route('admin.service.service.set', $service),
+                'attach' => route('admin.service.service.attach', $service),
+                'detach' => route('admin.service.service.detach', $service),
                 'gallery' => $this->repository->getGallery($service),
+                'out_employees' => $out_employees,
             ]
         );
     }
@@ -145,5 +150,17 @@ class ServiceController extends Controller
     {
         $this->service->setAlt($service, $request);
         return redirect()->back();
+    }
+
+    public function attach(Request $request, Service $service)
+    {
+        $employee = $this->service->attach_employee($service, $request);
+        return redirect()->back()->with('success', $employee->fullname->getShortName() . ' добавлен к оказанию услуги.');
+    }
+
+    public function detach(Request $request, Service $service)
+    {
+        $employee = $this->service->detach_employee($service, $request);
+        return redirect()->back()->with('success', $employee->fullname->getShortName() . ' больше не оказывает услугу!');
     }
 }

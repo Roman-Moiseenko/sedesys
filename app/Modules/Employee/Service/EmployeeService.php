@@ -49,6 +49,7 @@ class EmployeeService
             (string)$request->string('firstname'),
             (string)$request->string('secondname')
         );
+        $employee->experience_year = $request->input('experience_year');
         $employee->save();
         $employee->address->address = (string)$request->string('address');
 

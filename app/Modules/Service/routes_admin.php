@@ -29,6 +29,8 @@ Route::group(
                 Route::post('/{service}/add', 'ServiceController@add')->name('add');
                 Route::post('/{service}/del', 'ServiceController@del')->name('del');
                 Route::post('/{service}/set', 'ServiceController@set')->name('set');
+                Route::post('/{service}/attach', 'ServiceController@attach')->name('attach');
+                Route::post('/{service}/detach', 'ServiceController@detach')->name('detach');
             }
         );
 

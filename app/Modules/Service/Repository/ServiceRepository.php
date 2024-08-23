@@ -2,6 +2,7 @@
 
 namespace App\Modules\Service\Repository;
 
+use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Repository\TemplateRepository;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -94,5 +95,21 @@ class ServiceRepository
             ];
         }
         return $result;
+    }
+
+    public function getShow(int $id)
+    {
+        return  Service::where('id', $id)
+            ->with('classification')
+            ->with('employees')
+            ->with('employees.specializations')
+            ->first();
+    }
+
+    public function outEmployees(Service $service)
+    {
+        $ids = $service->employees()->pluck('id')->toArray();
+
+        return Employee::whereNotIn('id', $ids)->getModels();
     }
 }

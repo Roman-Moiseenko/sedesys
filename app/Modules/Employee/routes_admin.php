@@ -22,6 +22,7 @@ Route::group(
             Route::post('/{specialization}/attach', 'SpecializationController@attach')->name('attach');
             Route::post('/{specialization}/up', 'SpecializationController@up')->name('up');
             Route::post('/{specialization}/down', 'SpecializationController@down')->name('down');
+            Route::post('/{specialization}/detach', 'SpecializationController@detach')->name('detach');
         });
     }
 );

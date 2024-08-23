@@ -31,7 +31,7 @@ Breadcrumbs::for('admin.employee.specialization.index', function (BreadcrumbTrai
     $trail->push('Специализация', route('admin.employee.specialization.index'));
 });
 Breadcrumbs::for('admin.employee.specialization.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('admin.employee.employee.index');
+    $trail->parent('admin.employee.specialization.index');
     $trail->push('Добавить Специализацию', route('admin.employee.specialization.create'));
 });
 

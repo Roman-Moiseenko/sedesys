@@ -35,9 +35,10 @@ class SpecializationController extends Controller
 
     public function create(Request $request)
     {
+        $employees = $this->repository->getEmployees();
         return Inertia::render('Employee/Specialization/Create', [
             'route' => route('admin.employee.specialization.store'),
-
+            'employees' => $employees,
         ]);
     }
 
@@ -45,6 +46,8 @@ class SpecializationController extends Controller
     {
         $request->validated();
         $specialization = $this->service->create($request);
+
+
         return redirect()
             ->route('admin.employee.specialization.show', $specialization)
             ->with('success', 'Новый specialization добавлен');
@@ -52,8 +55,8 @@ class SpecializationController extends Controller
 
     public function show(Specialization $specialization)
     {
-        $employees = $this->repository->getEmployees($specialization);
 
+        $specialization = Specialization::where('id', $specialization->id)->with('employees')->first();
         return Inertia::render('Employee/Specialization/Show', [
                 'specialization' => $specialization,
                 'edit' => route('admin.employee.specialization.edit', $specialization),
@@ -61,18 +64,20 @@ class SpecializationController extends Controller
                 'icon' => $specialization->getIcon(),
                 'toggle' => route('admin.employee.specialization.toggle', $specialization),
                 'attach' => route('admin.employee.specialization.attach', $specialization),
-                'employees' => $employees,
             ]
         );
     }
 
     public function edit(Specialization $specialization)
     {
+        $employees = $this->repository->getEmployees($specialization);
+
         return Inertia::render('Employee/Specialization/Edit', [
             'specialization' => $specialization,
             'route' => route('admin.employee.specialization.update', $specialization),
             'image' => $specialization->getImage('thumb'),
             'icon' => $specialization->getIcon('thumb'),
+            'employees' => $employees,
         ]);
     }
 
@@ -116,5 +121,11 @@ class SpecializationController extends Controller
     {
         $this->service->attach($specialization, $request);
         return redirect()->back()->with('success', 'Сохранено');
+    }
+
+    public function detach(Request $request,Specialization $specialization)
+    {
+        $this->service->detach($specialization, $request);
+        return redirect()->back()->with('success', 'Изменения сохранены');
     }
 }

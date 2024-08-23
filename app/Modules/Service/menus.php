@@ -14,7 +14,7 @@ return [
             ],
             'classification' => [
                 'icon' => 'Memo',
-                'title' => 'Спецификация',
+                'title' => 'Классификация',
                 'route' => route('admin.service.classification.index', [], false),
             ],
         ],

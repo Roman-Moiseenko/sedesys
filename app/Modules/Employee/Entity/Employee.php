@@ -23,6 +23,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property bool $active //Не заблокирован
  * @property int $telegram_user_id
  * @property float $rating
+ * @property int $experience_year
  * @property FullName $fullname
  * @property GeoAddress $address
  * @property Photo $photo
@@ -81,7 +82,7 @@ class Employee extends Authenticatable implements WidgetData
 
     public function services()
     {
-        return $this->belongsToMany(Service::class, 'employees_services', 'employee_id', 'service_id');
+        return $this->belongsToMany(Service::class, 'employees_services', 'employee_id', 'service_id')->withPivot(['extra_cost']);
     }
 
     public function specializations()

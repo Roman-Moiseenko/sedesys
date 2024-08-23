@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('rating')->default(0);
             $table->timestamps();
             $table->integer('telegram_user_id')->nullable();
+            $table->integer('experience_year')->nullable();
             $table->json('fullname');
             $table->json('address');
         });

@@ -35,8 +35,10 @@ class ClassificationRepository
         $classifications = Classification::orderBy('_lft')->where('parent_id', $parent_id)->getModels();
         /** @var Classification $classification */
         foreach ($classifications as $classification) {
+            $count = '';
             if (count($classification->children) > 0) {
                 $children = $this->tree($classification->id);
+                $count = ' [' . $this->getCountChildren($classification) . ']';
             }
             $result[] = [
                 'id' => $classification->id,
@@ -45,8 +47,7 @@ class ClassificationRepository
                 'meta' => $classification->meta,
                 'image' => $classification->getImage('mini'),
                 'icon' => $classification->getIcon('mini'),
-                'services' => -1, //$classification->services()->count(),
-
+                'services' => $classification->services()->count() . $count,
 
                 'url' => route('admin.service.classification.show', $classification),
                 'edit' => route('admin.service.classification.edit', $classification),
@@ -54,12 +55,21 @@ class ClassificationRepository
                 'up' => route('admin.service.classification.up', $classification),
                 'down' => route('admin.service.classification.down', $classification),
 
-
                 'children' => $children ?? null,
             ];
         }
-
         return $result;
 
+    }
+
+    private function getCountChildren(Classification $classification): int
+    {
+        $count = 0;
+        $classifications = Classification::where('_lft', '>', $classification->_lft)->where('_rgt', '<', $classification->_rgt)->get();
+        /** @var Classification $item */
+        foreach ($classifications as $item) {
+            $count += $item->services()->count();
+        }
+        return $count;
     }
 }

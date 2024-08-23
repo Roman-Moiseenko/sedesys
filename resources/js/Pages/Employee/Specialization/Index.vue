@@ -19,6 +19,31 @@
                 v-loading="store.getLoading"
             >
                 <!-- Повторить поля -->
+
+                <el-table-column type="expand">
+
+                    <template #default="props">
+                        <h3 class="font-medium text-lg">Специалисты:</h3>
+                        <el-table :data="props.row.employees" @row-click="routeClickEmployee">
+                            <el-table-column  label="" width="100"/>
+                            <el-table-column prop="fullname" label="ФИО"  width="250"/>
+                            <el-table-column prop="phone" label="Телефон" width="160" />
+                            <el-table-column label="Действия">
+
+                                <template #default="scope">
+                                    <el-button
+                                        size="small"
+                                        type="warning"
+                                        @click.stop="handleDetach(scope.$index, scope.row)">
+                                        Detach
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+
+                        </el-table>
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="IMG" width="100">
                     <template #default="scope">
                         <el-image style="min-width: 50px; min-height: 50px" :src="scope.row.image" fit="fill"/>
@@ -31,7 +56,7 @@
                 </el-table-column>
                 <el-table-column sortable prop="name" label="Название" width="160"/>
                 <el-table-column prop="slug" label="Ссылка" width="160"/>
-                <el-table-column prop="employees" label="Специалистов" width="120"/>
+                <el-table-column prop="count_employees" label="Специалистов" width="120"/>
                 <el-table-column label="Описание" show-overflow-tooltip width="250">
                     <template #default="scope">
                         <div class=""><span class="font-medium">H1: </span><span>{{ scope.row.meta.h1 }}</span></div>
@@ -104,7 +129,7 @@
         <template #footer>
             <div class="dialog-footer">
                 <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
+                <el-button type="danger" @click.stop="removeItem($data.routeDestroy)">
                     Удалить
                 </el-button>
             </div>
@@ -176,7 +201,6 @@ export default {
         handleEdit(index, row) {
             router.get(row.edit);
         },
-
         handleDelete(index, row) {
             this.$data.dialogDelete = true;
             this.$data.routeDestroy = row.destroy;
@@ -204,6 +228,18 @@ export default {
             router.visit(row.down, {
                 method: 'post'
             });
+        },
+        handleDetach(index, row) {
+            router.visit(row.detach, {
+                method: 'post',
+                data: {
+                    employee_id: row.id,
+                },
+            });
+
+        },
+        routeClickEmployee(row) {
+            router.get(row.url)
         },
     }
 }

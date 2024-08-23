@@ -78,9 +78,7 @@ class Classification extends Model implements WidgetData
 
     public function services()
     {
-        //TODO После создания Service
-
-        return 0;
+       return $this->hasMany(Service::class, 'classification_id', 'id');
     }
 
     public function image()

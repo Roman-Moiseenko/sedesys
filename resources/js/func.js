@@ -51,4 +51,23 @@ export const func = {
         }
         return val;
     },
+    fullName: (val) => {
+        return val.surname + ' ' + val.firstname + ' ' + val.secondname;
+    },
+    price: (val) => {
+        if (val === null || val === '' || val === 0) return '';
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + '  ₽';
+    },
+    experience: (val) => {
+        if (val === null || val === 0) return '';
+        let year = new Date().getFullYear() - val;
+        let div = year % 10;
+        if (year === 0) return 'менее 1 года';
+        if (year > 10 && year < 20) return year + ' лет';
+        if (div === 1) return year + ' год';
+
+        if (year > 1 && year < 5) return year + ' года';
+
+        return year + ' лет';
+    },
 }

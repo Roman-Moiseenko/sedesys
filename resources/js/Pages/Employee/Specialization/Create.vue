@@ -54,8 +54,6 @@
                         </template>
                     </el-upload>
                     <!-- End FileUpload -->
-                </div>
-                <div class="p-4">
                     <h2 class="font-medium mb-3">Иконка для меню</h2>
                     <!-- FileUpload -->
                     <el-upload action="#" list-type="picture-card"
@@ -82,6 +80,15 @@
                         </template>
                     </el-upload>
                     <!-- End FileUpload -->
+                </div>
+                <div class="p-4">
+                    <h2 class="font-medium text-lg mb-3">Специалисты:</h2>
+                    <div v-for="employee in employees">
+                        <el-checkbox v-model="form.employees" :label="employee.fullname"
+                                     type="checkbox" :checked="employee.checked"
+                                     :value="employee.id"
+                        />
+                    </div>
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
@@ -118,6 +125,7 @@
             type: String,
             default: 'Создание новой специальности',
         },
+        employees: Array,
     });
 
     const form = reactive({
@@ -128,6 +136,7 @@
         description: null,
         image: null,
         icon: null,
+        employees: [],
 
     })
     function handleMaskSlug(val)
