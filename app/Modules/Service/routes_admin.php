@@ -18,7 +18,6 @@ Route::group(
                 Route::post('/{classification}/down', 'ClassificationController@down')->name('down');
             }
         );
-
         Route::group(
             [
                 'prefix' => 'service',
@@ -33,9 +32,23 @@ Route::group(
                 Route::post('/{service}/detach', 'ServiceController@detach')->name('detach');
             }
         );
+        Route::group(
+            [
+                'prefix' => 'example',
+                'as' => 'example.'
+            ],
+            function () {
+                Route::post('/{example}/toggle', 'ExampleController@toggle')->name('toggle');
+                Route::post('/{example}/add', 'ExampleController@add')->name('add');
+                Route::post('/{example}/del', 'ExampleController@del')->name('del');
+                Route::post('/{example}/set', 'ExampleController@set')->name('set');
+                Route::post('/{example}/attach', 'ExampleController@attach')->name('attach');
+                Route::post('/{example}/detach', 'ExampleController@detach')->name('detach');
+            }
+        );
 
         Route::Resource('service', 'ServiceController');
         Route::Resource('classification', 'ClassificationController');
-
+        Route::Resource('example', 'ExampleController');
     }
 );

@@ -17,6 +17,11 @@ return [
                 'title' => 'Классификация',
                 'route' => route('admin.service.classification.index', [], false),
             ],
+            'example' => [
+                'icon' => 'Help',
+                'title' => 'Примеры работ',
+                'route' => route('admin.service.example.index', [], false),
+            ],
         ],
     ],
 ];

@@ -88,18 +88,18 @@ class GalleryController extends Controller
     public function add(Request $request, Gallery $gallery)
     {
         $this->service->addPhoto($gallery, $request);
-        return redirect()->route('admin.page.gallery.show', $gallery);
+        return redirect()->route('admin.page.gallery.show', $gallery)->with('success', 'Сохранено');
     }
 
     public function del(Request $request, Gallery $gallery)
     {
         $this->service->delPhoto($gallery, $request);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 
     public function set(Request $request, Gallery $gallery)
     {
         $this->service->setAlt($gallery, $request);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 }

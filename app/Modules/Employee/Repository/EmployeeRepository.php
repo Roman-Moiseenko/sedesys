@@ -3,6 +3,7 @@
 namespace App\Modules\Employee\Repository;
 
 use App\Modules\Employee\Entity\Specialization;
+use App\Modules\Service\Entity\Service;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use App\Modules\Employee\Entity\Employee;
@@ -83,6 +84,28 @@ class EmployeeRepository
                 'label' => $specialization->name,
             ];
         })->toArray();
+    }
+
+    public function getActive()
+    {
+        return Employee::orderBy('fullname')->active()->get();
+    }
+
+    public function forFilter()
+    {
+        return Employee::orderBy('fullname')->get()->map(function (Employee $employee) {
+            return [
+                'value' => $employee->id,
+                'label' => $employee->fullname->getFullName(),
+            ];
+        })->toArray();
+    }
+
+    public function outServices(Employee $employee)
+    {
+        $ids = $employee->services()->pluck('id')->toArray();
+
+        return Service::whereNotIn('id', $ids)->getModels();
     }
 
 }

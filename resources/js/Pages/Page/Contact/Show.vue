@@ -5,23 +5,18 @@
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid grid-cols-2 divide-x">
         <div class="p-2">
-            <div class="truncate sm:whitespace-normal flex items-center">
-                Название&nbsp;<span class="font-medium ml-6">{{ $props.contact.name}}</span>
-            </div>
-            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                Описание при наведении курсора&nbsp;<span class="font-medium ml-6">{{ $props.contact.title}}</span>
-            </div>
-            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                Иконка FontAwesome&nbsp;<span class="font-medium ml-6">{{ $props.contact.icon}}</span>
-            </div>
-            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                Ссылка&nbsp;<span class="font-medium ml-6">{{ $props.contact.url}}</span>
-            </div>
-            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                Цвет&nbsp;<span class="font-medium ml-6">{{ $props.contact.color}}
-                <span class="w-4 h-4 p-5 ml-3" v-bind:style="{ 'background-color': $props.contact.color }"
-            ></span></span>
-            </div>
+            <el-descriptions :column="1" border>
+                <el-descriptions-item label="Название">{{ contact.name }}</el-descriptions-item>
+
+                <el-descriptions-item label="Описание при наведении курсора">{{ contact.title }}</el-descriptions-item>
+                <el-descriptions-item label="Иконка FontAwesome">{{ contact.icon }}</el-descriptions-item>
+                <el-descriptions-item label="Ссылка">{{ contact.url }}</el-descriptions-item>
+                <el-descriptions-item label="Цвет">
+                    {{ contact.color }} <span class="py-2 px-4 ml-3" v-bind:style="{ 'background-color': contact.color }"></span>
+                </el-descriptions-item>
+
+
+            </el-descriptions>
         </div>
         </div>
         <div class="mt-3 flex flex-row">

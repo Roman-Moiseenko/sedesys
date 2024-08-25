@@ -68,7 +68,6 @@ class TemplateController extends Controller
         );
     }
 
-
     public function destroy($type, $template)
     {
         $this->service->destroy($type, $template);

@@ -1,75 +1,236 @@
 <template>
     <Head><title>{{ $props.title }}</title></Head>
     <h1 class="font-medium text-xl">  {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}  </h1>
-    <div class="mt-3 p-3 bg-white rounded-lg ">
-        <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-            <div class="p-2">
-                <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
-                    <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
-                        <el-image
-                            style="width: 100px; height: 100px"
-                            :src="$props.photo"
-                            :zoom-rate="1.2"
-                            :max-scale="7"
-                            :min-scale="0.2"
-                            :preview-src-list="[$props.photo]"
-                            :initial-index="0"
-                            fit="cover"
-                        />
-                    </div>
-                    <div class="ml-5">
-                        <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">
-                            {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}
+    <div class="mt-3 p-3 bg-white rounded-lg">
+        <el-tabs type="border-card" class="">
+            <!-- Панель Общая информация -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <el-icon><Memo/></el-icon>
+                        <span> Общая информация</span>
+                    </span>
+                </template>
+                <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
+                    <div class="p-2">
+                        <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
+                                <el-image
+                                    style="width: 100px; height: 100px"
+                                    :src="$props.photo"
+                                    :zoom-rate="1.2"
+                                    :max-scale="7"
+                                    :min-scale="0.2"
+                                    :preview-src-list="[$props.photo]"
+                                    :initial-index="0"
+                                    fit="cover"
+                                />
+                            </div>
+                            <div class="ml-5">
+                                <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">
+                                    {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}
+                                </div>
+                                <div class="text-slate-500">{{ '' }}</div>
+                            </div>
                         </div>
-                        <div class="text-slate-500">{{ '' }}</div>
+                    </div>
+                    <div class="p-2">
+                        <el-descriptions :column="1" border title="Персональные данные">
+                            <el-descriptions-item>
+                                <template #label>
+                                    <div class="items-center flex">
+                                        <el-icon><iphone  /></el-icon>&nbsp;Телефон
+                                    </div>
+                                </template>
+                                {{ employee.phone }}
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template #label>
+                                    <div class="items-center flex">
+                                        <el-icon><Promotion /></el-icon>&nbsp;Телеграм ID
+                                    </div>
+                                </template>
+                                {{ employee.telegram_user_id }}
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template #label>
+                                    <div class="items-center flex">
+                                        <el-icon><Location /></el-icon>&nbsp;Адрес
+                                    </div>
+                                </template>
+                                {{ employee.address.address }}
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template #label>
+                                    <div class="items-center flex">
+                                        <el-icon><Calendar /></el-icon>&nbsp;Стаж с
+                                    </div>
+                                </template>
+                                {{ employee.experience_year }} г
+                            </el-descriptions-item>
+                        </el-descriptions>
+                    </div>
+                    <div class="p-2">
+                        <h2 class="font-medium">Специализация</h2>
+
+                        <div v-for="specialization in specializations" class="flex mt-1">
+                            <el-image :src="specialization.icon" class="w-8 h-8"/>
+                            <span class="ml-2 my-auto">{{ specialization.name }}</span>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-            <div class="p-2">
-                <h2 class="font-medium text-center lg:text-left lg:mt-3">Персональные данные</h2>
-                <div class="flex flex-col justify-center items-center lg:items-start mt-4">
-                    <div class="truncate sm:whitespace-normal flex items-center text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" class="lucide lucide-user stroke-1.5 w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        &nbsp;{{ }}
-                    </div>
-
-                    <div class="truncate sm:whitespace-normal flex items-center text-sm mt-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="phone" class="lucide lucide-phone stroke-1.5 w-4 h-4"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        &nbsp;{{ employee.phone}}
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center text-sm mt-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" class="lucide lucide-send stroke-1.5 w-4 h-4"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
-                        &nbsp;{{ employee.telegram_user_id }}
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center text-sm mt-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="key-round" class="lucide lucide-key-round stroke-1.5 w-4 h-4"><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"></path><circle cx="16.5" cy="7.5" r=".5"></circle></svg>
-                        &nbsp;{{ employee.address.address }}
-                    </div>
+            </el-tab-pane>
+            <!-- Панель Услуги -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <el-icon><SuitcaseLine /></el-icon>
+                        <span> Услуги</span>
+                    </span>
+                </template>
+                <div class="mb-5">
+                    <el-table
+                    :data="services"
+                    style="width: 100%; cursor: pointer;"
+                    @row-click="routeClick"
+                >
+                    <!-- Повторить поля -->
+                    <el-table-column sortable prop="name" label="Услуга" width="250" show-overflow-tooltip/>
+                    <el-table-column sortable prop="classification" label="Классификация"  width="250"/>
+                    <el-table-column prop="price" label="Базовая стоимость" width="100" />
+                        <el-table-column prop="extra_cost" label="Доп. наценка" width="100" >
+                            <template #default="scope">
+                                {{ func.price(scope.row.extra_cost) }}
+                            </template>
+                        </el-table-column>
+                    <el-table-column label="Расх.материалы (₽)" width="160" />
+                    <el-table-column label="Действия" align="right">
+                        <template #default="scope">
+                            <el-button
+                                size="small"
+                                type="danger"
+                                @click.stop="detachService(scope.row)"
+                            >
+                                Detach
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
                 </div>
-            </div>
-            <div class="p-2">
-                <h2 class="font-medium">Специализация</h2>
+                <el-button type="success" plain @click="dialogService = true">
+                    <el-icon><SuitcaseLine /></el-icon>&nbsp;Добавить Услугу
+                </el-button>
+                <!--Dialog-->
+                <el-dialog v-model="dialogService" width="400" class="p-4" center>
+                    <el-form :model="formService" class="mt-3">
+                        <el-form-item label="Персонал">
+                            <el-select v-model="formService.service_id">
+                                <el-option v-for="item in out_services" :value="item.id" :key="item.id"
+                                           :label="item.name"/>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="Дополнительная наценка" class="mb-3">
+                            <el-input v-model="formService.extra_cost" @input="handleExtraCost" placeholder=""
+                                      class="mb-3">
+                                <template #append>₽</template>
+                            </el-input>
+                        </el-form-item>
+                        <el-button type="info" plain @click="dialogService = false">
+                            Отмена
+                        </el-button>
+                        <el-button type="primary" @click="attachService">Сохранить</el-button>
+                        <span v-if="dialogSave" class="text-lime-500 text-sm ml-3">Сохранено</span>
+                    </el-form>
+                </el-dialog>
+            </el-tab-pane>
+            <!-- Панель Примеры -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                      <el-icon><Help/></el-icon>
+                      <span> Примеры работы</span>
+                    </span>
+                </template>
+                <div class="mb-5">
+                    <el-table :data="examples"
+                              style="width: 100%; cursor: pointer;"
+                              @row-click="routeClick"
+                    >
+                        <el-table-column label="Дата" prop="date"  width="120" />
+                        <el-table-column label="Заголовок" prop="title" width="250"/>
 
-                <div v-for="specialization in specializations" class="flex mt-1">
-                    <el-image :src="specialization.icon" class="w-8 h-8"/>
-                    <span class="ml-2 my-auto">{{ specialization.name }}</span>
+                        <el-table-column label="Исполнители" width="250">
+                            <template #default="scope">
+                                <el-tag class="mr-1" v-for="item in scope.row.employees">
+                                    {{ func.fullName(item.fullname) }}
+                                </el-tag>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column label="Стоимость" prop="cost"  width="120" />
+                        <el-table-column label="Изображения" prop="gallery_count"  width="120" />
+                        <el-table-column label="Описание" prop="description" show-overflow-tooltip/>
+                        <el-table-column label="Действия" width="250">
+                            <template #default="scope">
+                                <el-button v-if="scope.row.active"
+                                           size="small"
+                                           type="warning"
+                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
+                                    Hide
+                                </el-button>
+                                <el-button v-if="!scope.row.active"
+                                           size="small"
+                                           type="success"
+                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
+                                    Show
+                                </el-button>
+                                <el-button
+                                    size="small"
+                                    @click.stop="handleEditRow(scope.$index, scope.row)">
+                                    Edit
+                                </el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
                 </div>
+                <el-button @click="newExample">Новый пример</el-button>
+            </el-tab-pane>
+            <!-- Панель Отзывы -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                      <el-icon><ChatLineSquare/></el-icon>
+                      <span> Отзывы</span>
+                    </span>
+                </template>
+                Список + рейтинг + пагинация с подгрузгой
+            </el-tab-pane>
+        </el-tabs>
 
-            </div>
-        </div>
-        <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goEdit">Редактировать</el-button>
-        </div>
+
     </div>
+    <div class="mt-3 p-3 bg-white rounded-lg">
+        <el-button type="primary" @click="goEdit">Редактировать</el-button>
+        <el-button v-if="!employee.active" type="success" @click="handleToggle">Разблокировать
+        </el-button>
+        <el-button v-if="employee.active" type="warning" @click="handleToggle">Заблокировать
+        </el-button>
+    </div>
+
     <div class="mt-5 p-3 bg-white rounded-lg ">
         Dashboard Персонала - графики, клиенты, записи и т.п.
     </div>
 </template>
 
 <script lang="ts" setup>
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {router} from "@inertiajs/vue3";
+import {func} from '@/func.js'
 
+const dialogService = ref(false)
+const dialogSave = ref(false)
 
 const props = defineProps({
     employee: Object,
@@ -83,10 +244,42 @@ const props = defineProps({
         default: 'Карточка Персонала',
     },
     attach: String,
+    detach: String,
+    new_example: String,
     specializations:  Object,
-
+    services: Array,
+    examples: Array,
+    out_services: Array,
+    toggle: String,
 
 });
+
+console.log(props.services);
+const formService = reactive({
+    service_id: null,
+    extra_cost: null
+});
+
+function handleToggle() {
+    router.post(props.toggle);
+}
+function newExample() {
+    router.get(props.new_example);
+}
+function handleExtraCost(val) {
+    formService.extra_cost = func.MaskInteger(val);
+}
+function attachService() {
+    if (formService.service_id === null) return;
+    router.post(props.attach, formService);
+    dialogService.value = false;
+}
+
+function detachService(row) {
+    router.post(props.detach, {
+        service_id: row.id
+    });
+}
 
 </script>
 
@@ -102,6 +295,9 @@ const props = defineProps({
         methods: {
             goEdit() {
                 router.get(this.$props.edit);
+            },
+            routeClick(row) {
+                router.get(row.url)
             },
         },
     }

@@ -25,19 +25,25 @@ class DummyEntitySingularRepository
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
         $dummyVariableEntityPlural = $query->paginate($request->input('size', 20))
             ->withQueryString()
-            ->through(fn(DummyEntitySingular $dummyVariableEntitySingular) => [
-                'id' => $dummyVariableEntitySingular->id,
-                'name' => $dummyVariableEntitySingular->name,
-                /**
-
-                 */
-
-                'url' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular),
-                'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
-                'destroy' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.destroy', $dummyVariableEntitySingular),
-
-            ]);
+            ->through(fn(DummyEntitySingular $dummyVariableEntitySingular) => $this->DummyEntitySingularToArray($dummyVariableEntitySingular));
 
         return $dummyVariableEntityPlural;
+    }
+
+
+    public function DummyEntitySingularToArray(DummyEntitySingular $dummyVariableEntitySingular): array
+    {
+        return [
+            'id' => $dummyVariableEntitySingular->id,
+            'name' => $dummyVariableEntitySingular->name,
+            /**
+
+             */
+
+            'url' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular),
+            'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
+            'destroy' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.destroy', $dummyVariableEntitySingular),
+
+        ];
     }
 }

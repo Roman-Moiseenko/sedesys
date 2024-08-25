@@ -9,6 +9,7 @@ use App\Modules\Base\Entity\FullName;
 use App\Modules\Base\Entity\GeoAddress;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Page\Entity\WidgetData;
+use App\Modules\Service\Entity\Example;
 use App\Modules\Service\Entity\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,6 +30,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Photo $photo
  * @property Specialization[] $specializations
  * @property Service[] $services
+ * @property Example[] $examples
  */
 class Employee extends Authenticatable implements WidgetData
 {
@@ -79,6 +81,11 @@ class Employee extends Authenticatable implements WidgetData
     }
 
     //RELATIONS
+
+    public function examples()
+    {
+        return $this->belongsToMany(Example::class, 'employees_examples', 'employee_id', 'example_id');
+    }
 
     public function services()
     {

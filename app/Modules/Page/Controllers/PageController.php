@@ -25,7 +25,6 @@ class PageController extends Controller
         $this->tiny_api = config('sedesys.tinymce');
     }
 
-
     public function index(Request $request)
     {
         $pages = $this->repository->getIndex($request);
@@ -99,9 +98,11 @@ class PageController extends Controller
     {
         if ($page->isPublished()) {
             $page->draft();
+            $success = 'Страница убрана из показа';
         } else {
             $page->published();
+            $success = 'Страница показывается на сайте';
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', $success);
     }
 }

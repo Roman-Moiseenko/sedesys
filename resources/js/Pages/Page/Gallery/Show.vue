@@ -5,15 +5,11 @@
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-2 grid-cols-1 divide-x">
             <div class="p-4">
-                <div class="truncate sm:whitespace-normal flex items-center">
-                    Галерея&nbsp;<span class="font-medium ml-6">{{ gallery.name}}</span>
-                </div>
-            <div class="truncate sm:whitespace-normal flex items-center">
-                Ссылка&nbsp;<span class="font-medium ml-6">{{ gallery.slug}}</span>
-            </div>
-            <div class="font-medium mt-1">
-                {{ gallery.description }}
-            </div>
+                <el-descriptions :column="1" border>
+                    <el-descriptions-item label="Галерея">{{ gallery.name }}</el-descriptions-item>
+                    <el-descriptions-item label="Ссылка">{{ gallery.slug }}</el-descriptions-item>
+                    <el-descriptions-item label="Описание">{{ gallery.description }}</el-descriptions-item>
+                </el-descriptions>
             </div>
             <div class="p-4">
                 <div class="p-3 rounded-lg bg-sky-100 border border-sky-600">

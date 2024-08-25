@@ -5,25 +5,23 @@
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
             <div class="p-2">
-                <div class="font-medium">От кого:</div>
-                <div class="ml-2">{{ $props.inbox.from }}</div>
-                <div class="ml-2">{{ $props.inbox.email }}</div>
-                <div class="font-medium mt-1">Тема:</div>
-                <div class="">{{ $props.inbox.subject }}</div>
-            </div>
-            <div class="p-2">
-                <div>
-                    <span class="font-medium">Получено:</span> <span>{{ $props.inbox.created_at }}</span>
-                </div>
-                <div class="mt-2">
-                    <span class="font-medium">Прочитано:</span> <span
-                    v-if="$props.inbox.read">{{ $props.inbox.read_at }}</span>
-                </div>
+                <el-descriptions :column="1" border>
+                    <el-descriptions-item label="От кого">
+                        <el-tag type="info">{{ inbox.from }}</el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="Тема">{{ inbox.subject }}</el-descriptions-item>
+                    <el-descriptions-item label="Получено">{{ inbox.created_at }}</el-descriptions-item>
+                    <el-descriptions-item label="Прочитано">
+                        <span v-if="$props.inbox.read">{{ inbox.read_at }}</span>
+                    </el-descriptions-item>
+                </el-descriptions>
             </div>
             <div class="p-2">
                 <div class="font-medium mb-2">Вложенные файлы:</div>
                 <div v-for="(item, index) in $props.inbox.attachments" class="ml-1 mt-1">
-                    <span class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">{{ index }}</span>
+                    <el-tag type="primary"  class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">
+                        {{ index }}&nbsp;<el-icon><Download /></el-icon>
+                    </el-tag>
                 </div>
             </div>
         </div>

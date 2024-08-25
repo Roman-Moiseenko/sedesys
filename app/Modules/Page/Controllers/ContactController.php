@@ -22,7 +22,6 @@ class ContactController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index(Request $request)
     {
         $contacts = $this->repository->getIndex($request);
@@ -84,18 +83,22 @@ class ContactController extends Controller
 
     public function toggle(Contact $contact)
     {
-        $this->service->toggle($contact);
-        return redirect()->back();
+        if ($this->service->toggle($contact)) {
+            $success = 'Контакт добавлен в меню сайта';
+        } else {
+            $success = 'Контакт убран из показа';
+        }
+        return redirect()->back()->with('success', $success);
     }
 
     public function up(Contact $contact)
     {
         $this->service->up($contact);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
     public function down(Contact $contact)
     {
         $this->service->down($contact);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 }

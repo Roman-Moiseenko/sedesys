@@ -22,7 +22,6 @@ class InboxController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index(Request $request)
     {
         $inboxes = $this->repository->getIndex($request, $filters);
@@ -35,7 +34,6 @@ class InboxController extends Controller
             ]
         );
     }
-
 
     public function show(Inbox $inbox)
     {
@@ -51,9 +49,9 @@ class InboxController extends Controller
 
     public function reply(Inbox $inbox)
     {
-        return redirect()->route('admin.mail.outbox.create', ['email' => $inbox->email, 'subject' => 'Re: ' . $inbox->subject]);
+        return redirect()
+            ->route('admin.mail.outbox.create', ['email' => $inbox->email, 'subject' => 'Re: ' . $inbox->subject]);
     }
-
 
     public function load()
     {

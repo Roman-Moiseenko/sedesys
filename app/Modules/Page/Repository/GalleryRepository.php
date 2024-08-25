@@ -2,6 +2,7 @@
 
 namespace App\Modules\Page\Repository;
 
+use App\Modules\Base\Entity\Photo;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use App\Modules\Page\Entity\Gallery;
@@ -41,4 +42,21 @@ class GalleryRepository
         }
         return $result;
     }
+
+    public function getShowByExample($example): array
+    {
+        $result = [];
+        foreach ($example->gallery as $photo) {
+            $result[] = [
+                'id' => $photo->id,
+                'name' => $photo->file,
+                'url' => $photo->getThumbUrl('original'),
+                'alt' => $photo->alt,
+                'title' => $photo->title,
+                'description' => $photo->description,
+            ];
+        }
+        return $result;
+    }
+
 }

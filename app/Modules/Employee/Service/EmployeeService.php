@@ -4,6 +4,7 @@ namespace App\Modules\Employee\Service;
 
 use App\Modules\Base\Entity\FullName;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Service\Entity\Service;
 use Illuminate\Http\Request;
 use App\Modules\Employee\Entity\Employee;
 use Illuminate\Support\Facades\Hash;
@@ -91,12 +92,23 @@ class EmployeeService
         $employee->save();
     }
 
-    public function attach(Employee $employee, Request $request)
+    public function attach_service(Employee $employee, Request $request)
     {
-        $employee->specializations()->detach();
-        $specializations = $request->input('specializations', []);
-        foreach ($specializations as $specialization) {
-            $employee->specializations()->attach($specialization);
-        }
+        //TODO Проверить есть уже или нет.
+        $service = Service::find($request->integer('service_id'));
+        $employee->services()
+            ->attach(
+                $service->id,
+                ['extra_cost' => $request->integer('extra_cost', null)]
+            );
+        return $service;
+    }
+
+    public function detach_service(Employee $employee, Request $request)
+    {
+
+        $service = Service::find($request->integer('service_id'));
+        $employee->services()->detach($service->id);
+        return $service;
     }
 }

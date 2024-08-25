@@ -4,6 +4,7 @@ namespace App\Modules\Service\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Repository\ServiceRepository;
 use App\Modules\Service\Requests\ClassificationRequest;
 use App\Modules\Service\Repository\ClassificationRepository;
 use App\Modules\Service\Service\ClassificationService;
@@ -15,11 +16,17 @@ class ClassificationController extends Controller
 
     private ClassificationService $service;
     private ClassificationRepository $repository;
+    private ServiceRepository $serviceRepository;
 
-    public function __construct(ClassificationService $service, ClassificationRepository $repository)
+    public function __construct(
+        ClassificationService $service,
+        ClassificationRepository $repository,
+        ServiceRepository $serviceRepository,
+    )
     {
         $this->service = $service;
         $this->repository = $repository;
+        $this->serviceRepository = $serviceRepository;
     }
 
     public function index(Request $request)
@@ -52,11 +59,14 @@ class ClassificationController extends Controller
 
     public function show(Classification $classification)
     {
+        $services = $this->serviceRepository->getShowByClassification($classification);
+
         return Inertia::render('Service/Classification/Show', [
                 'classification' => $classification,
                 'edit' => route('admin.service.classification.edit', $classification),
                 'image' => $classification->getImage(),
                 'icon' => $classification->getIcon(),
+                'services' => $services,
             ]
         );
     }
@@ -92,12 +102,12 @@ class ClassificationController extends Controller
     public function up(Classification $classification)
     {
         $classification->up();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 
     public function down(Classification $classification)
     {
         $classification->down();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 }

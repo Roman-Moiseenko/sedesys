@@ -34,7 +34,7 @@ class SpecializationRepository
                 'count_employees' => $specialization->employees()->count(),
                 'active' => $specialization->isActive(),
                 'employees' => $specialization->employees()->get()->map(
-                    function (Employee $employee) use($specialization)  {
+                    function (Employee $employee) use ($specialization) {
                         return [
                             'id' => $employee->id,
                             'fullname' => $employee->fullname->getFullName(),
@@ -72,6 +72,16 @@ class SpecializationRepository
                 'phone' => $employee->phone,
                 'photo' => $employee->getImage('mini'),
                 'checked' => in_array($employee->id, $ids),
+            ];
+        })->toArray();
+    }
+
+    public function getShowByEmployee(Employee $employee): array
+    {
+        return $employee->specializations()->get()->map(function (Specialization $specialization) {
+            return [
+                'name' => $specialization->name,
+                'icon' => $specialization->getIcon('thumb'),
             ];
         })->toArray();
     }

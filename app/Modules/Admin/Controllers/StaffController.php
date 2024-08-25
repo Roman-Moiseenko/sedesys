@@ -96,9 +96,11 @@ class StaffController extends Controller
     {
         if ($staff->isBlocked()) {
             $staff->activated();
+            $success = 'Сотруднику предоставлен доступ';
         } else {
             $staff->blocked();
+            $success = 'Сотрудник заблокирован';
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', $success);
     }
 }

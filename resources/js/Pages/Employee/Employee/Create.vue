@@ -75,7 +75,7 @@
                         />
                     </div>
                     <el-divider/>
-                    <el-form-item label="Имя" :rules="{required: true}">
+                    <el-form-item label="Стаж с какого года" :rules="{required: true}">
                         <el-input v-model="form.experience_year"/>
                         <div v-if="errors.experience_year" class="text-red-700">{{ errors.experience_year }}</div>
                     </el-form-item>

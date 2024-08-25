@@ -5,22 +5,13 @@
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-2 grid-cols-1 divide-x">
             <div class="p-2">
-                <div class="truncate sm:whitespace-normal flex items-center">
-                    Название&nbsp;<span class="font-medium ml-6">{{ $props.widget.name}}</span>
-                </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Шаблон&nbsp;<span class="font-medium ml-6">{{ $props.widget.template}}</span>
-                </div>
-
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Модель&nbsp;<span class="font-medium ml-6">{{ $props.widget.model}}</span>
-                </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Данные&nbsp;<span class="font-medium ml-6">{{ $props.widget.data}}</span>
-                </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Опции&nbsp;<span class="font-medium ml-6">{{ $props.widget.options}}</span>
-                </div>
+                <el-descriptions :column="1" border>
+                    <el-descriptions-item label="Название">{{ widget.name }}</el-descriptions-item>
+                    <el-descriptions-item label="Шаблон">{{ widget.template }}</el-descriptions-item>
+                    <el-descriptions-item label="Модель">{{ widget.model }}</el-descriptions-item>
+                    <el-descriptions-item label="Данные">{{ widget.data }}</el-descriptions-item>
+                    <el-descriptions-item label="Опции">{{ widget.options }}</el-descriptions-item>
+                </el-descriptions>
             </div>
         </div>
         <div class="mt-3 flex flex-row">

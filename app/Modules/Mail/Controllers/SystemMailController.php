@@ -22,7 +22,6 @@ class SystemMailController extends Controller
         $this->service = $service;
     }
 
-
     public function index(Request $request)
     {
         $systemMails = $this->repository->getIndex($request, $filters);

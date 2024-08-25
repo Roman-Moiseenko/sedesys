@@ -27,7 +27,6 @@ class OutboxController extends Controller
         $this->tiny_api = config('sedesys.tinymce');
     }
 
-
     public function index(Request $request)
     {
         $outboxes = $this->repository->getIndex($request, $filters);

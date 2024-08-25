@@ -1,64 +1,46 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl">  {{ service.name }}  </h1>
+    <h1 class="font-medium text-xl"> {{ service.name }} </h1>
 
     <div class="mt-3 p-3 bg-white rounded-lg">
-        <el-tabs type="border-card" class="demo-tabs">
+        <el-tabs type="border-card" class="">
             <!-- Панель Общая информация -->
             <el-tab-pane>
                 <template #label>
                     <span class="custom-tabs-label">
-                        <el-icon><Memo /></el-icon>
+                        <el-icon><Memo/></el-icon>
                         <span> Общая информация</span>
                     </span>
                 </template>
-                <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-                    <div class="p-4">
-                        <div class="flex flex-col justify-center items-center lg:items-start mt-4">
-                            <div class="truncate sm:whitespace-normal flex items-center" v-if="$props.service.classification_id !== null">
-                                Классификация&nbsp;<span class="font-medium ml-6">{{ $props.service.classification.name}}</span>
-                            </div>
-                            <div class="truncate sm:whitespace-normal flex items-center">
-                                Услуга&nbsp;<span class="font-medium ml-6">{{ $props.service.name}}</span>
-                            </div>
-                            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                                Шаблон&nbsp;<span class="font-medium ml-6">{{ $props.service.template }}</span>
-                            </div>
-                            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                                Ссылка&nbsp;<span class="font-medium ml-6">{{ $props.service.slug}}</span>
-                            </div>
-                            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                                Страница (H1)&nbsp;<span class="font-medium ml-6">{{ $props.service.meta.h1}}</span>
-                            </div>
-                            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                                Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.service.meta.title}}</span>
-                            </div>
-                            <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                                Описание&nbsp;<span class="font-medium ml-6">{{ $props.service.meta.description}}</span>
-                            </div>
-                        </div>
+                <div class="grid lg:grid-cols-6 grid-cols-1 divide-x">
+                    <div class="p-4 col-span-4">
+                        <el-descriptions :column="2" border>
+                            <el-descriptions-item label="Классификация" v-if="service.classification_id !== null">
+                                {{ service.classification.name }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="Услуга">{{ service.name }}</el-descriptions-item>
+                            <el-descriptions-item label="Цена">{{ service.price }} ₽</el-descriptions-item>
+                            <el-descriptions-item label="Длительность">{{ service.duration }} мин</el-descriptions-item>
+                            <el-descriptions-item label="Данные">{{ service.data }}</el-descriptions-item>
+                            <el-descriptions-item label="Шаблон">{{ service.template }}</el-descriptions-item>
+                            <el-descriptions-item label="Ссылка">{{ service.slug }}</el-descriptions-item>
+                            <el-descriptions-item label="Страница (H1)">{{ service.meta.h1 }}</el-descriptions-item>
+                            <el-descriptions-item label="Заголовок">{{ service.meta.title }}</el-descriptions-item>
+                            <el-descriptions-item label="Описание">{{ service.meta.description }}</el-descriptions-item>
+                        </el-descriptions>
+
                     </div>
-                    <div class="p-4">
-                        <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                            Цена&nbsp;<span class="font-medium ml-6">{{ $props.service.price }} ₽</span>
-                        </div>
-                        <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                            Длительность&nbsp;<span class="font-medium ml-6">{{ $props.service.duration }} мин</span>
-                        </div>
-                        <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                            Данные&nbsp;<span class="font-medium ml-6">{{ $props.service.data}}</span>
-                        </div>
-                    </div>
-                    <div class="p-4 flex">
+
+                    <div class="p-4 col-span-2 flex">
                         <div>
                             <h2 class="font-medium mb-3">Изображение для каталога</h2>
                             <div class="lg:w-56 lg:h-56 image-fit relative">
                                 <el-image
-                                    :src="$props.image"
+                                    :src="image"
                                     :zoom-rate="1.2"
                                     :max-scale="3"
                                     :min-scale="0.2"
-                                    :preview-src-list="[$props.image]"
+                                    :preview-src-list="[image]"
                                     :initial-index="0"
                                     fit="cover"
                                 />
@@ -68,11 +50,11 @@
                             <h2 class="font-medium mb-3">Иконка для меню</h2>
                             <div class="lg:w-56 lg:h-56 image-fit relative">
                                 <el-image
-                                    :src="$props.icon"
+                                    :src="icon"
                                     :zoom-rate="1.2"
                                     :max-scale="1"
                                     :min-scale="0.2"
-                                    :preview-src-list="[$props.icon]"
+                                    :preview-src-list="[icon]"
                                     :initial-index="0"
                                     fit="cover"
                                 />
@@ -81,13 +63,12 @@
 
                     </div>
                 </div>
-
             </el-tab-pane>
             <!-- Панель Описание -->
             <el-tab-pane>
                 <template #label>
                     <span class="custom-tabs-label">
-                      <el-icon><Document /></el-icon>
+                      <el-icon><Document/></el-icon>
                       <span> Описание</span>
                     </span>
                 </template>
@@ -97,7 +78,7 @@
             <el-tab-pane>
                 <template #label>
                     <span class="custom-tabs-label">
-                      <el-icon><Picture /></el-icon>
+                      <el-icon><Picture/></el-icon>
                       <span> Галерея</span>
                     </span>
                 </template>
@@ -111,7 +92,9 @@
                         :on-remove="handleRemove"
                         :headers="{'X-CSRF-TOKEN': csrf}"
                     >
-                        <el-icon><Plus /></el-icon>
+                        <el-icon>
+                            <Plus/>
+                        </el-icon>
                     </el-upload>
                     <el-dialog v-model="dialogGallery" width="80%">
                         <div class="flex">
@@ -121,23 +104,26 @@
                             <div class="bg-gray-100 p-2 border border-gray-300" style="width: 20%">
                                 <el-form :model="form" label-width="auto">
                                     <el-form-item label="ID фото">
-                                        <el-input v-model="form.photo_id"  readonly />
+                                        <el-input v-model="form.photo_id" readonly/>
                                     </el-form-item>
                                     <el-form-item label="Alt для фото" label-position="top">
-                                        <el-input v-model="form.alt" placeholder="Напишите Alt для SEO" />
+                                        <el-input v-model="form.alt" placeholder="Напишите Alt для SEO"/>
                                     </el-form-item>
                                     <el-form-item label="Заголовок" label-position="top">
-                                        <el-input v-model="form.title" placeholder="Заголовок" />
+                                        <el-input v-model="form.title" placeholder="Заголовок"/>
                                     </el-form-item>
                                     <el-form-item label="Описание" label-position="top">
-                                        <el-input v-model="form.description" placeholder="Описание" type="textarea" :rows="3"/>
+                                        <el-input v-model="form.description" placeholder="Описание" type="textarea"
+                                                  :rows="3"/>
                                     </el-form-item>
                                     <el-button type="primary" @click="onSubmit">Сохранить</el-button>
                                     <span v-if="dialogSave" class="text-lime-500 text-sm ml-3">Сохранено</span>
                                 </el-form>
                                 <div class="mt-5">
-                                    <el-input v-model="dialogImageUrl"  readonly />
-                                    <el-button id="copy_buffer" type="success" class="text-sm mt-2" @click="copyBuffer" plain>Скопировать Url</el-button>
+                                    <el-input v-model="dialogImageUrl" readonly/>
+                                    <el-button id="copy_buffer" type="success" class="text-sm mt-2" @click="copyBuffer"
+                                               plain>Скопировать Url
+                                    </el-button>
                                     <span v-if="dialogCopy" class="text-lime-500 text-sm ml-3">Скопировано</span>
                                 </div>
                             </div>
@@ -149,38 +135,37 @@
             <el-tab-pane>
                 <template #label>
                     <span class="custom-tabs-label">
-                      <el-icon><Service /></el-icon>
+                      <el-icon><Service/></el-icon>
                       <span> Персонал</span>
                     </span>
                 </template>
                 <div class="mb-5">
                     <el-table :data="service.employees"
-                        style="width: 100%;"
-
+                              style="width: 100%;"
                     >
-                        <el-table-column label="Персонал" width="250" >
+                        <el-table-column label="Персонал" width="250">
                             <template #default="scope">
-                                {{ func.fullName(scope.row.fullname)}}
+                                {{ func.fullName(scope.row.fullname) }}
                             </template>
                         </el-table-column>
-                        <el-table-column label="Специализация" width="250" >
+                        <el-table-column label="Специализация" width="250">
                             <template #default="scope">
-                                | <span v-for="item in scope.row.specializations">{{ item.name }} | </span>
+                                <el-tag class="mr-1" v-for="item in scope.row.specializations">{{ item.name }}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column label="Стаж" width="250" >
+                        <el-table-column label="Стаж" width="250">
                             <template #default="scope">
-                                {{ func.experience(scope.row.experience_year)}}
+                                {{ func.experience(scope.row.experience_year) }}
                             </template>
                         </el-table-column>
-                        <el-table-column label="Доп.сбор" width="250" >
+                        <el-table-column label="Доп. наценка" width="250">
                             <template #default="scope">
                                 {{ func.price(scope.row.pivot.extra_cost) }}
                             </template>
                         </el-table-column>
-                        <el-table-column label="Действия" width="250" >
+                        <el-table-column label="Действия" width="250">
                             <template #default="scope">
-                                <el-button type="warning" @click.stop="handleDetach(scope.row.id)" >Detach</el-button>
+                                <el-button type="warning" @click.stop="handleDetach(scope.row.id)">Detach</el-button>
                             </template>
                         </el-table-column>
 
@@ -188,18 +173,23 @@
                 </div>
 
                 <el-button type="success" plain @click="dialogEmployee = true">
-                    <el-icon><Service /></el-icon> Добавить Персонал
+                    <el-icon>
+                        <Service/>
+                    </el-icon>&nbsp;
+                    Добавить Персонал
                 </el-button>
                 <!--Dialog-->
                 <el-dialog v-model="dialogEmployee" width="400" class="p-4" center>
                     <el-form :model="formEmployee" class="mt-3">
                         <el-form-item label="Персонал">
                             <el-select v-model="formEmployee.employee_id">
-                                <el-option v-for="item in $page.props.out_employees" :value="item.id" :key="item.id" :label="func.fullName(item.fullname)"/>
+                                <el-option v-for="item in $page.props.out_employees" :value="item.id" :key="item.id"
+                                           :label="func.fullName(item.fullname)"/>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="Дополнительная наценка" class="mb-3">
-                            <el-input v-model="formEmployee.extra_cost" @input="handleExtraCost" placeholder="" class="mb-3">
+                            <el-input v-model="formEmployee.extra_cost" @input="handleExtraCost" placeholder=""
+                                      class="mb-3">
                                 <template #append>₽</template>
                             </el-input>
                         </el-form-item>
@@ -211,26 +201,78 @@
                     </el-form>
                 </el-dialog>
             </el-tab-pane>
-
-            <!-- Панель Отзывы -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><ChatLineSquare /></el-icon>
-                      <span> Отзывы</span>
-                    </span>
-                </template>
-                Список + рейтинг + пагинация с подгрузгой
-            </el-tab-pane>
             <!-- Панель Расходники -->
             <el-tab-pane>
                 <template #label>
                     <span class="custom-tabs-label">
-                      <el-icon><TakeawayBox /></el-icon>
+                      <el-icon><TakeawayBox/></el-icon>
                       <span> Расходники</span>
                     </span>
                 </template>
                 Список материала + кол-во + цена за 1 шт.
+            </el-tab-pane>
+            <!-- Панель Примеры работ -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                      <el-icon><Help/></el-icon>
+                      <span> Примеры работы</span>
+                    </span>
+                </template>
+                <div class="mb-5">
+                    <el-table :data="examples"
+                              style="width: 100%; cursor: pointer;"
+                              @row-click="routeClick"
+                    >
+                        <el-table-column label="Дата" prop="date"  width="120" />
+                        <el-table-column label="Заголовок" prop="title" width="250"/>
+
+                        <el-table-column label="Исполнители" width="250">
+                            <template #default="scope">
+                                <el-tag class="mr-1" v-for="item in scope.row.employees">
+                                    {{ func.fullName(item.fullname) }}
+                                </el-tag>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column label="Стоимость" prop="cost"  width="120" />
+                        <el-table-column label="Изображения" prop="gallery_count"  width="120" />
+                        <el-table-column label="Описание" prop="description" show-overflow-tooltip/>
+                        <el-table-column label="Действия" width="250">
+                            <template #default="scope">
+                                <el-button v-if="scope.row.active"
+                                           size="small"
+                                           type="warning"
+                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
+                                    Hide
+                                </el-button>
+                                <el-button v-if="!scope.row.active"
+                                           size="small"
+                                           type="success"
+                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
+                                    Show
+                                </el-button>
+                                <el-button
+                                    size="small"
+                                    @click.stop="handleEditRow(scope.$index, scope.row)">
+                                    Edit
+                                </el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                </div>
+                <el-button @click="newExample">Новый пример</el-button>
+            </el-tab-pane>
+            <!-- Панель Отзывы -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                      <el-icon><ChatLineSquare/></el-icon>
+                      <span> Отзывы</span>
+                    </span>
+                </template>
+                Список + рейтинг + пагинация с подгрузгой
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -241,123 +283,142 @@
             <el-button v-if="!$props.service.active" type="success" @click="handleToggle">Показывать</el-button>
             <el-button v-if="$props.service.active" type="warning" @click="handleToggle">Скрыть из показа</el-button>
         </div>
-
     </div>
-
 
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link } from '@inertiajs/vue3'
-    import {reactive, ref} from 'vue'
-    import { Plus } from '@element-plus/icons-vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from '@/func.js'
-    import type { UploadProps, UploadUserFile, UploadRawFile  } from 'element-plus'
+import {Head, Link} from '@inertiajs/vue3'
+import {reactive, ref} from 'vue'
+import {Plus} from '@element-plus/icons-vue'
+import {router} from "@inertiajs/vue3";
+import {func} from '@/func.js'
+import type {UploadProps, UploadUserFile, UploadRawFile} from 'element-plus'
 
-    const dialogImageUrl = ref('')
-    const dialogGallery = ref(false)
-    const dialogEmployee = ref(false)
-    const dialogCopy = ref(false)
-    const dialogSave = ref(false)
-    const imageAlt = ref('')
-    const imageId = ref('')
+const dialogImageUrl = ref('')
+const dialogGallery = ref(false)
+const dialogEmployee = ref(false)
+const dialogCopy = ref(false)
+const dialogSave = ref(false)
+const imageAlt = ref('')
+const imageId = ref('')
 
-    const props = defineProps({
-        service: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Карточка услуги',
-        },
-        gallery: Array,
-        image: String,
-        icon: String,
-        add: String,
-        del: String,
-        set: String,
-        attach: String,
-        detach: String,
-        toggle: String,
-        class_name: String,
-        out_employees: Object,
+const props = defineProps({
+    service: Object,
+    edit: String,
+    title: {
+        type: String,
+        default: 'Карточка услуги',
+    },
+    gallery: Array,
+    image: String,
+    icon: String,
+    add: String,
+    del: String,
+    set: String,
+    attach: String,
+    detach: String,
+    toggle: String,
+    class_name: String,
+    out_employees: Object,
+    examples: Array,
+    new_example: String,
+});
+console.log(props.examples)
+const form = reactive({
+    photo_id: null,
+    alt: null,
+    title: null,
+    description: null,
+})
+const formEmployee = reactive({
+    employee_id: null,
+    extra_cost: null
+});
+
+const fileList = ref<UploadUserFile[]>(props.gallery);
+
+const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
+    if (uploadFile.id !== undefined) router.post(props.del, {photo_id: uploadFile.id});
+}
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
+    dialogImageUrl.value = uploadFile.url!
+    form.photo_id = uploadFile.id;
+    form.alt = uploadFile.alt;
+    form.title = uploadFile.title;
+    form.description = uploadFile.description;
+    dialogGallery.value = true
+}
+
+function copyBuffer(val) {
+    dialogCopy.value = true;
+    setTimeout(() => {
+        dialogCopy.value = false;
+    }, 2000);
+    navigator.clipboard.writeText(dialogImageUrl.value);
+}
+
+function onSubmit() {
+    dialogSave.value = true;
+    setTimeout(() => {
+        dialogSave.value = false;
+    }, 2000);
+    router.post(props.set, form);
+}
+
+function attachEmployee() {
+    if (formEmployee.employee_id === null) return;
+    router.post(props.attach, formEmployee);
+    dialogEmployee.value = false;
+}
+
+function detachEmployee(row) {
+    router.post(props.detach, {
+        employee_id: row.id
     });
-
-    const form = reactive({
-        photo_id: null,
-        alt: null,
-        title: null,
-        description: null,
-    })
-    const formEmployee = reactive({
-        employee_id: null,
-        extra_cost: null
-    });
-
-    const fileList = ref<UploadUserFile[]>(props.gallery);
-
-    const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
-        if (uploadFile.id !== undefined) router.post(props.del, {photo_id: uploadFile.id});
-    }
-    const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
-        dialogImageUrl.value = uploadFile.url!
-        form.photo_id = uploadFile.id;
-        form.alt = uploadFile.alt;
-        form.title = uploadFile.title;
-        form.description = uploadFile.description;
-        dialogGallery.value = true
-    }
-
-    function onSubmit() {
-        dialogSave.value = true;
-        setTimeout(() => {
-            dialogSave.value = false;
-        }, 2000);
-        router.post(props.set, form);
-    }
-    function attachEmployee() {
-        if (formEmployee.employee_id === null) return;
-        router.post(props.attach, formEmployee);
-        dialogEmployee.value = false;
-    }
-    function detachEmployee(row) {
-        router.post(props.detach, {
-            employee_id: row.id
-        });
-    }
-    function handleExtraCost(val) {
-        formEmployee.extra_cost = func.MaskInteger(val);
-    }
-    function routeClick(row) {
-        router.get(row.url)
-    }
-    function handleDetach(val) {
-        router.post(props.detach, {employee_id: val})
-    }
+}
+function handleExtraCost(val) {
+    formEmployee.extra_cost = func.MaskInteger(val);
+}
+function handleDetach(val) {
+    router.post(props.detach, {employee_id: val})
+}
+function handleToggle() {
+    router.post(props.toggle);
+}
+function newExample() {
+    router.get(props.new_example);
+}
 
 </script>
 
 <script lang="ts">
-import { Head, Link, router } from '@inertiajs/vue3'
+import {Head, Link, router} from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
 import {ref} from "vue";
 
-    export default {
-        layout: Layout,
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-            handleToggle(val) {
-                router.post(this.$props.toggle);
-            }
+export default {
+    layout: Layout,
+    methods: {
+        goEdit() {
+            router.get(this.$props.edit);
         },
-        data() {
-            return {
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            }
+        handleToggleRow(index, row) {
+            router.post(row.toggle);
         },
-    }
+        handleEditRow(index, row) {
+            router.get(row.edit);
+        },
+        routeClick(row) {
+            router.get(row.url)
+        },
+    },
+    data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        }
+    },
+}
 
 </script>
 

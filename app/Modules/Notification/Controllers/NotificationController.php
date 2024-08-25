@@ -47,7 +47,7 @@ class NotificationController extends Controller
     public function read(DatabaseNotification $notification)
     {
         $notification->markAsRead();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Прочитано');
     }
 
     public function create(Request $request)

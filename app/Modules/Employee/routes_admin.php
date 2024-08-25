@@ -10,9 +10,14 @@ Route::group(
     function() {
         Route::resource('employee', 'EmployeeController');
         Route::Resource('specialization', 'SpecializationController');
-
-        Route::post('/employee/{employee}/toggle', 'EmployeeController@toggle')->name('employee.toggle');
-        //Route::post('/employee/{employee}/attach', 'EmployeeController@attach')->name('employee.attach');
+        Route::group([
+            'prefix' => 'employee',
+            'as' => 'employee.'
+        ], function() {
+            Route::post('/{employee}/toggle', 'EmployeeController@toggle')->name('toggle');
+            Route::post('/{employee}/attach-service', 'EmployeeController@attach')->name('attach-service');
+            Route::post('/{employee}/detach-service', 'EmployeeController@detach')->name('detach-service');
+        });
 
         Route::group([
             'prefix' => 'specialization',

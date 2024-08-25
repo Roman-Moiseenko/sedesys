@@ -46,7 +46,7 @@ class TemplateRepository
                 'file' => $file,
                 'template' => $template[1],
                 'name' => empty($name) ? $template[1] : $name[1],
-                'type' => $type,
+                'type' => Template::TEMPLATES[$type],
                 'url' => route('admin.page.template.show', ['type' => $type, 'template' => $template[1]]),
                 'destroy' => route('admin.page.template.destroy', ['type' => $type, 'template' => $template[1]]),
             ];

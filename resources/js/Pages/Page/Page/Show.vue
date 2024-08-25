@@ -5,30 +5,16 @@
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-2 grid-cols-1 divide-x">
             <div class="p-2">
-                <div class="flex flex-col justify-center items-center lg:items-start mt-4">
-                    <div class="truncate sm:whitespace-normal flex items-center">
-                        Страница&nbsp;<span class="font-medium ml-6">{{ $props.page.name}}</span>
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Ссылка&nbsp;<span class="font-medium ml-6">{{ $props.page.slug}}</span>
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Шаблон&nbsp;<span class="font-medium ml-6">{{ $props.page.template}}</span>
-                    </div>
+                <el-descriptions :column="1" border>
+                    <el-descriptions-item label="Страница">{{ page.name }}</el-descriptions-item>
+                    <el-descriptions-item label="Ссылка">{{ page.slug }}</el-descriptions-item>
+                    <el-descriptions-item label="Шаблон">{{ page.template }}</el-descriptions-item>
+                    <el-descriptions-item label="Родительская страница">{{ page.parent }}</el-descriptions-item>
+                    <el-descriptions-item label="Страница (H1)">{{ page.meta.h1 }}</el-descriptions-item>
+                    <el-descriptions-item label="Заголовок">{{ page.meta.title }}</el-descriptions-item>
+                    <el-descriptions-item label="Описание">{{ page.meta.description }}</el-descriptions-item>
+                </el-descriptions>
 
-                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Родительская страница&nbsp;<span class="font-medium ml-6">{{ $props.parent }}</span>
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        H1&nbsp;<span class="font-medium ml-6">{{ $props.page.meta.h1}}</span>
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Заголовок&nbsp;<span class="font-medium ml-6">{{ $props.page.meta.title}}</span>
-                    </div>
-                    <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                        Описание&nbsp;<span class="font-medium ml-6">{{ $props.page.meta.description}}</span>
-                    </div>
-                </div>
             </div>
             <div class="p-2">
                 <div class="lg:w-56 lg:h-56 image-fit relative">

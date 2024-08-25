@@ -85,6 +85,6 @@ class UserController extends Controller
     public function verify(User $user)
     {
         $user->verify();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Пользователь верифицирован');
     }
 }

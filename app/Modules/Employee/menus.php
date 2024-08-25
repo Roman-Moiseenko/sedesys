@@ -9,7 +9,7 @@ return [
         'submenu' => [
             'users' => [
                 'icon' => 'List',
-                'title' => 'Список',
+                'title' => 'Персонал',
                 'route' => route('admin.employee.employee.index', [], false),
             ],
             'specialization' => [

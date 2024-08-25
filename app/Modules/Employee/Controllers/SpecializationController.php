@@ -47,7 +47,6 @@ class SpecializationController extends Controller
         $request->validated();
         $specialization = $this->service->create($request);
 
-
         return redirect()
             ->route('admin.employee.specialization.show', $specialization)
             ->with('success', 'Новый specialization добавлен');
@@ -101,21 +100,23 @@ class SpecializationController extends Controller
     {
         if ($specialization->isActive()) {
             $specialization->draft();
+            $success = 'Специализация убрана из показа';
         } else {
             $specialization->activated();
+            $success = 'Специализация добавлена для показа';
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', $success);
     }
 
     public function up(Specialization $specialization)
     {
         $this->service->up($specialization);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
     public function down(Specialization $specialization)
     {
         $this->service->down($specialization);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
     public function attach(Request $request,Specialization $specialization)
     {

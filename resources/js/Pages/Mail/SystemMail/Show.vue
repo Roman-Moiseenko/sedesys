@@ -5,24 +5,20 @@
     <div class="mt-3 p-3 bg-white rounded-lg">
         <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
             <div class="p-2">
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Служба&nbsp;<span class="font-medium ml-6">{{ mail.mailable }}</span>
-                </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Заголовок&nbsp;<span class="font-medium ml-6">{{ mail.title }}</span>
-                </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Получатель&nbsp;<span class="font-medium ml-6">{{ mail.user }}</span>
-                </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-2">
-                    Отправлено&nbsp;<span class="font-medium ml-6">{{ mail.created_at }}</span>
-                </div>
+                <el-descriptions :column="1" border>
+                    <el-descriptions-item label="Служба">{{ mail.mailable }}</el-descriptions-item>
+                    <el-descriptions-item label="Заголовок">{{ mail.title }}</el-descriptions-item>
+                    <el-descriptions-item label="Получатель">{{ mail.user }}</el-descriptions-item>
+                    <el-descriptions-item label="Отправлено">{{ mail.created_at }}</el-descriptions-item>
+                </el-descriptions>
             </div>
             <div class="p-2">
                 <div class="truncate sm:whitespace-normal items-center mt-2">
                     Вложения:&nbsp;
                     <div v-for="(item, index) in mail.attachments" class="ml-1 mt-1">
-                        <span class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">{{ index }}</span>
+                        <el-tag type="primary"  class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">
+                            {{ index }}&nbsp;<el-icon><Download /></el-icon>
+                        </el-tag>
                     </div>
                 </div>
             </div>

@@ -5,9 +5,12 @@ namespace App\Modules\Employee\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
+use App\Modules\Employee\Repository\SpecializationRepository;
 use App\Modules\Employee\Requests\EmployeeRequest;
 use App\Modules\Employee\Repository\EmployeeRepository;
 use App\Modules\Employee\Service\EmployeeService;
+use App\Modules\Service\Repository\ExampleRepository;
+use App\Modules\Service\Repository\ServiceRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -20,11 +23,25 @@ class EmployeeController extends Controller
 
     private EmployeeService $service;
     private EmployeeRepository $repository;
+    private SpecializationRepository $specializations;
+    private ExampleRepository $examples;
+    private ServiceRepository $services;
 
-    public function __construct(EmployeeService $service, EmployeeRepository $repository)
+
+    public function __construct(
+        EmployeeService          $service,
+        EmployeeRepository       $repository,
+        SpecializationRepository $specializations,
+        ExampleRepository        $examples,
+        ServiceRepository        $services
+    )
     {
         $this->service = $service;
         $this->repository = $repository;
+
+        $this->specializations = $specializations;
+        $this->examples = $examples;
+        $this->services = $services;
     }
 
     public function index(Request $request)
@@ -61,16 +78,24 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
+        $specializations = $this->specializations->getShowByEmployee($employee);
+
+        $out_services = $this->repository->outServices($employee);
+        $examples = $this->examples->getShowByEmployee($employee);
+        $services = $this->services->getShowByEmployee($employee);
+
         return Inertia::render('Employee/Employee/Show', [
                 'employee' => $employee,
                 'edit' => route('admin.employee.employee.edit', $employee),
+                'toggle' => route('admin.employee.employee.toggle', $employee),
+                'attach' => route('admin.employee.employee.attach-service', $employee),
+                'detach' => route('admin.employee.employee.detach-service', $employee),
+                'new_example' => route('admin.service.example.create', ['employee_id' => $employee->id]),
                 'photo' => $employee->getImage(),
-                'specializations' => $employee->specializations()->get()->map(function (Specialization $specialization) {
-                    return [
-                        'name' => $specialization->name,
-                        'icon' => $specialization->getIcon('thumb'),
-                    ];
-                })->toArray(),
+                'specializations' => $specializations,
+                'services' => $services,
+                'out_services' => $out_services,
+                'examples' => $examples,
             ]
         );
     }
@@ -108,15 +133,23 @@ class EmployeeController extends Controller
     {
         if ($employee->isBlocked()) {
             $employee->activated();
+            $success = 'Работник добавлен на сайт';
         } else {
             $employee->blocked();
+            $success = 'Работник убран из показа';
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', $success);
     }
 
-    public function attach(Request $request,Employee $employee)
+    public function attach(Request $request, Employee $employee)
     {
-        $this->service->attach($employee, $request);
-        return redirect()->back()->with('success', 'Сохранено');
+        $service = $this->service->attach_service($employee, $request);
+        return redirect()->back()->with('success', 'Услуга ' . $service->name . ' добавлена.');
+    }
+
+    public function detach(Request $request, Employee $employee)
+    {
+        $service = $this->service->detach_service($employee, $request);
+        return redirect()->back()->with('success', 'Услуга ' . $service->name . ' убрана.');
     }
 }

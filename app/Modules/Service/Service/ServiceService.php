@@ -122,6 +122,8 @@ class ServiceService
 
     public function attach_employee(Service $service, Request $request)
     {
+        //TODO Проверить есть уже или нет.
+
         $employee = Employee::find($request->integer('employee_id'));
         $extra_cost = $request->integer('extra_cost');
         $service->employees()->attach($employee->id, ['extra_cost' => $extra_cost]);

@@ -5,24 +5,21 @@
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
             <div class="p-2">
-                <div class="font-medium">Получатели:</div>
-                <div v-for="item in $props.outbox.emails">{{ item }}</div>
-                <div class="font-medium mt-1">Тема:</div>
-                <div class="">{{ $props.outbox.subject }}</div>
-            </div>
-            <div class="p-2">
-                <div>
-                    <span class="font-medium">Создано:</span> <span>{{ $props.outbox.created_at }}</span>
-                </div>
-                <div class="mt-2">
-                    <span class="font-medium">Отправлено:</span> <span
-                    v-if="$props.outbox.sent">{{ $props.outbox.sent_at }}</span>
-                </div>
+                <el-descriptions :column="1" border>
+                    <el-descriptions-item label="Получатели">
+                        <el-tag type="info" class="mr-1" v-for="item in outbox.emails">{{ item }}</el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="Тема">{{ outbox.subject }}</el-descriptions-item>
+                    <el-descriptions-item label="Создано">{{ outbox.created_at }}</el-descriptions-item>
+                    <el-descriptions-item label="Отправлено">{{ outbox.sent_at }}</el-descriptions-item>
+                </el-descriptions>
             </div>
             <div class="p-2">
                 <div class="font-medium mb-2">Вложенные файлы:</div>
                 <div v-for="(item, index) in $props.outbox.attachments" class="ml-1 mt-1">
-                    <span class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">{{ index }}</span>
+                    <el-tag type="primary" class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">
+                        {{ index }}&nbsp;<el-icon><Download /></el-icon>
+                    </el-tag>
                 </div>
             </div>
         </div>

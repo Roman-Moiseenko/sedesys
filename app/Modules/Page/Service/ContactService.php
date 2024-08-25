@@ -44,13 +44,15 @@ class ContactService
         $contact->delete();
     }
 
-    public function toggle(Contact $contact)
+    public function toggle(Contact $contact): bool
     {
         if ($contact->isActive()) {
             $contact->draft();
         } else {
             $contact->activated();
         }
+        $contact->refresh();
+        return $contact->isActive();
     }
 
     public function up(Contact $contact)

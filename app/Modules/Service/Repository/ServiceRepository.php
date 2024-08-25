@@ -4,6 +4,7 @@ namespace App\Modules\Service\Repository;
 
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Repository\TemplateRepository;
+use App\Modules\Service\Entity\Classification;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use App\Modules\Service\Entity\Service;
@@ -42,29 +43,9 @@ class ServiceRepository
         }
 
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
-        $services = $query->paginate($request->input('size', 20))
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
-            ->through(fn(Service $service) => [
-                'id' => $service->id,
-                'name' => $service->name,
-                'price' => price($service->price),
-                'duration' => $service->getDurationText(),
-                'active' => $service->isActive(),
-                'classification' => $service->getClassificationName(),
-
-                /**
-
-                 */
-                'employees' => -1,
-
-                'url' => route('admin.service.service.show', $service),
-                'edit' => route('admin.service.service.edit', $service),
-                'destroy' => route('admin.service.service.destroy', $service),
-                'toggle' => route('admin.service.service.toggle', $service),
-
-            ]);
-
-        return $services;
+            ->through(fn(Service $service) => $this->ServiceToArray($service));
     }
 
     public function getTemplates(): array
@@ -77,7 +58,6 @@ class ServiceRepository
                 'label' => $item['name'],
             ];
         }
-
         return $result;
     }
 
@@ -103,6 +83,7 @@ class ServiceRepository
             ->with('classification')
             ->with('employees')
             ->with('employees.specializations')
+            ->with('examples')
             ->first();
     }
 
@@ -111,5 +92,54 @@ class ServiceRepository
         $ids = $service->employees()->pluck('id')->toArray();
 
         return Employee::whereNotIn('id', $ids)->getModels();
+    }
+
+    public function getActive()
+    {
+        return Service::orderBy('name')->active()->getModels();
+    }
+
+    public function forFilter()
+    {
+        return Service::orderBy('name')->get()->map(function (Service $service) {
+            return [
+                'value' => $service->id,
+                'label' => $service->name,
+            ];
+        })->toArray();
+    }
+
+    public function getShowByClassification(Classification $classification): array
+    {
+        return $classification->services()->get()->map(function (Service $service) {
+            return $this->ServiceToArray($service);
+        })->toArray();
+    }
+
+    public function getShowByEmployee(Employee $employee): array
+    {
+        return $employee->services()->get()->map(function (Service $service) use ($employee) {
+            $array = $this->ServiceToArray($service);
+            $array['extra_cost'] = $service->pivot->extra_cost;
+            return  $array;
+        })->toArray();
+    }
+
+    public function ServiceToArray(Service $service): array
+    {
+        return [
+            'id' => $service->id,
+            'name' => $service->name,
+            'price' => price($service->price),
+            'duration' => $service->getDurationText(),
+            'active' => $service->isActive(),
+            'classification' => $service->getClassificationName(),
+            'count_employees' => $service->employees()->count(),
+
+            'url' => route('admin.service.service.show', $service),
+            'edit' => route('admin.service.service.edit', $service),
+            'destroy' => route('admin.service.service.destroy', $service),
+            'toggle' => route('admin.service.service.toggle', $service),
+        ];
     }
 }

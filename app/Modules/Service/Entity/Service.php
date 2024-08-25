@@ -33,6 +33,7 @@ use Illuminate\Support\Str;
  * @property Meta $meta
  * @property Photo[] $gallery //Галерея изображений
  * @property Employee[] $employees
+ * @property Example[] $examples
  *
  */
 class Service extends Model implements WidgetData
@@ -103,7 +104,14 @@ class Service extends Model implements WidgetData
     {
         $hour = intdiv($this->duration, 60);
         $minute = $this->duration % 60;
-        return "$hour\ч $minute\мин";
+        $result = '';
+        if ($hour > 8) {
+            $result = intdiv($hour, 8) . " дн.";
+            $hour = $hour % 8;
+        }
+        if ($hour > 0) $result .= $hour ."ч ";
+        if ($minute > 0) $result .= $minute ."мин";
+        return $result;
     }
 
     public function getClassificationName(): string
@@ -114,6 +122,11 @@ class Service extends Model implements WidgetData
     /**
      * Отношения
      */
+
+    public function examples()
+    {
+        return $this->hasMany(Example::class, 'service_id', 'id');
+    }
 
     public function employees()
     {

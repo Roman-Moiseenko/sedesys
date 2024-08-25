@@ -5,6 +5,7 @@ namespace App\Modules\Service\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Service\Entity\Service;
 use App\Modules\Service\Repository\ClassificationRepository;
+use App\Modules\Service\Repository\ExampleRepository;
 use App\Modules\Service\Requests\ServiceRequest;
 use App\Modules\Service\Repository\ServiceRepository;
 use App\Modules\Service\Service\ServiceService;
@@ -18,16 +19,20 @@ class ServiceController extends Controller
     private ServiceRepository $repository;
     private ClassificationRepository $classifications;
     private string $tiny_api;
+    private ExampleRepository $exampleRepository;
 
     public function __construct(
         ServiceService $service,
         ServiceRepository $repository,
-        ClassificationRepository $classifications)
+        ClassificationRepository $classifications,
+        ExampleRepository $exampleRepository,
+    )
     {
         $this->service = $service;
         $this->repository = $repository;
         $this->classifications = $classifications;
         $this->tiny_api = config('sedesys.tinymce');
+        $this->exampleRepository = $exampleRepository;
     }
 
 
@@ -88,6 +93,8 @@ class ServiceController extends Controller
                 'detach' => route('admin.service.service.detach', $service),
                 'gallery' => $this->repository->getGallery($service),
                 'out_employees' => $out_employees,
+                'examples' => $this->exampleRepository->getShowByService($service),
+                'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
             ]
         );
     }
@@ -128,28 +135,30 @@ class ServiceController extends Controller
     {
         if ($service->isActive()) {
             $service->draft();
+            $success = 'Услуга отправлена в черновик';
         } else {
             $service->activated();
+            $success = 'Услуга доступна на сайте';
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', $success);
     }
 
     public function add(Request $request, Service $service)
     {
         $this->service->addPhoto($service, $request);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 
     public function del(Request $request, Service $service)
     {
         $this->service->delPhoto($service, $request);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 
     public function set(Request $request, Service $service)
     {
         $this->service->setAlt($service, $request);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Сохранено');
     }
 
     public function attach(Request $request, Service $service)
