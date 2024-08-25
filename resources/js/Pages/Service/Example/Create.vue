@@ -83,7 +83,7 @@
         service_id: Number,
         employee_id: Number,
     });
-    console.log(props.service_id);
+
     const form = reactive({
         title: null,
         description: null,

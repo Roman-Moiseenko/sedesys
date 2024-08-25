@@ -36,7 +36,7 @@
                                 <el-icon><Key /></el-icon>&nbsp;OAuth
                             </div>
                         </template>
-                        <el-tag type="info" v-for="item in user.oauths">{{ item }} </el-tag>
+                        <el-tag type="info" v-for="item in user.oauths">{{ item.network }} </el-tag>
                     </el-descriptions-item>
                 </el-descriptions>
             </div>

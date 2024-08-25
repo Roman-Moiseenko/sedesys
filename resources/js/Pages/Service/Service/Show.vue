@@ -324,7 +324,7 @@ const props = defineProps({
     examples: Array,
     new_example: String,
 });
-console.log(props.examples)
+
 const form = reactive({
     photo_id: null,
     alt: null,

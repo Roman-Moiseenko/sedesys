@@ -73,7 +73,6 @@ export default {
             this.form.close = val;
             this.formChange = false;
             router.put(this.route, this.form);
-            console.log(this.form);
         }
     },
 }

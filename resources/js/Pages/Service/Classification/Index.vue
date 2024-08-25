@@ -140,9 +140,6 @@ export default {
 
         }
     },
-    mounted() {
-        console.log(this.$props.classifications)
-    },
     methods: {
         createButton() {
             router.get('/admin/service/classification/create')

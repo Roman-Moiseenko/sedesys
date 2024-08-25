@@ -98,7 +98,7 @@
             url: props.outbox.attachments[key],
         });
     }
-    //console.log(fileList);
+
     const form = reactive({
         emails: props.outbox.emails,
         subject: props.outbox.subject,

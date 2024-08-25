@@ -19,8 +19,6 @@
 import { router } from '@inertiajs/vue3'
 import { useStore } from "/resources/js/store.js"
 
-//console.log(setup())
-
 export default {
     props: {
         current_page: Number,

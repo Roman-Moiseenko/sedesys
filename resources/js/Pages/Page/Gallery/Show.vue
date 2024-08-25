@@ -124,7 +124,6 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
 }
 
 function copyBuffer(val) {
-    console.log(val);
     dialogCopy.value = true;
     setTimeout(() => {
         dialogCopy.value = false;

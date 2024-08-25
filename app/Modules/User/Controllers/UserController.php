@@ -51,6 +51,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user = User::where('id', $user->id)->with('oauths')->first();
         return Inertia::render('User/User/Show', [
                 'user' => $user,
                 'edit' => route('admin.user.user.edit', $user),

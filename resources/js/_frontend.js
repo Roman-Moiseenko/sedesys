@@ -55,7 +55,7 @@ window.$ = jQuery;
                     let passwordError = $('#password-error');
                     tokenError.hide();
                     passwordError.hide();
-                    console.log(data);
+
                     if (data.token === true) tokenError.show(); //неверный токен
                     if (data.verification === true || data.register === true) { //требуется верификация
                         inputEmail.prop('disabled', true);

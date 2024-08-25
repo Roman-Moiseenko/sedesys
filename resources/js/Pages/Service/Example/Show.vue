@@ -120,7 +120,6 @@ import {Head, Link, router} from '@inertiajs/vue3'
         dialogGallery.value = true
     }
     function copyBuffer(val) {
-    console.log(val);
     dialogCopy.value = true;
     setTimeout(() => {
         dialogCopy.value = false;

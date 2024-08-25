@@ -163,7 +163,6 @@
         clear_file: false, //Удалить загруженное ранее фото
     })
 
-    console.log(form.specializations);
     function handleMaskPhone(val) {
         form.phone = func.MaskPhone(val);
     }

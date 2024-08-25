@@ -56,7 +56,7 @@
             default: 'Новое уведомление',
         },
     });
-    //console.log(props.staffs);
+
     const form = reactive({
         staffs: [],
         employees: [],

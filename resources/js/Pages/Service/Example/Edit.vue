@@ -83,7 +83,7 @@
         services: Array,
         employees: Array,
     });
-    console.log(props.example.employees)
+
     const form = reactive({
         name: props.example.name,
 
@@ -96,9 +96,6 @@
         employees: props.example.employees.map(item => item.id),
     })
 
-   /* let r = props.example.employees.map(item => item.id);
-
-    console.log(r);*/
     function handleCost(val) {
         form.cost = func.MaskInteger(val)
     }

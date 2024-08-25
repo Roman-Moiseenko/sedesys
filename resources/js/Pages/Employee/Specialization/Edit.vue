@@ -135,7 +135,6 @@
     if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
     if (props.icon !== null) Icons.value.push({name: 'default', url: props.icon,});
 
-    console.log(props.image, props.icon)
     const form = reactive({
         name: props.specialization.name,
         slug: props.specialization.slug,

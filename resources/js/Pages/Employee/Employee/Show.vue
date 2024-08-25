@@ -254,7 +254,6 @@ const props = defineProps({
 
 });
 
-console.log(props.services);
 const formService = reactive({
     service_id: null,
     extra_cost: null
