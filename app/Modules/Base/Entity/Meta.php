@@ -29,9 +29,9 @@ class Meta
     public function __construct(string $h1 = '', string $title = '', string $description = '', array $params = [])
     {
         if (!empty($params)) {
-            $this->h1 = $params['h1'];
-            $this->title = $params['title'];
-            $this->description = $params['description'];
+            $this->h1 = $params['h1'] ?? '';
+            $this->title = $params['title'] ?? '';
+            $this->description = $params['description'] ?? '';
         } else {
             $this->h1 = $h1;
             $this->title = $title;

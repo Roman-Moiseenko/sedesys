@@ -4,11 +4,11 @@
     service container-xl
 @endsection
 
-@section('title', $service->title . ' - ')
-@section('description', $service->description)
+@section('title', $meta->title)
+@section('description', $meta->description)
 
 @section('content')
-    <h1 class="my-4">{{ $service->caption }}</h1>
+    <h1 class="my-4">{{ $meta->h1 }}</h1>
     <div class="mt-4">
         ****
     </div>

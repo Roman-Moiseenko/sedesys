@@ -25,9 +25,7 @@ class SpecializationController extends Controller
     public function index()
     {
         $specializations = $this->repository->getSpecializations();
-        //TODO Перенести в настройки
         $meta = new Meta(params:$this->web->employees);
-
         return view('web.specialization.index', compact('specializations', 'meta'));
     }
 

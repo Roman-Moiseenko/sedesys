@@ -8,6 +8,7 @@ use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Page\Entity\Contact;
 use App\Modules\Page\Entity\Page;
 use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Entity\Service;
 
 class WebRepository
 {
@@ -35,20 +36,24 @@ class WebRepository
     //Модуль Персонал
     public function getEmployees()
     {
-        return Employee::orderBy('created_at')->where('active', true)->get();
+        return Employee::orderBy('created_at')->active()->get();
     }
 
     public function getSpecializations()
     {
-        return Specialization::orderBy('sort')->where('active', true)->get();
+        return Specialization::orderBy('sort')->active()->get();
     }
 
     //Модуль Услуги
     public function getRootClassifications()
     {
-        return Classification::where('parent_id', null)->orderBy('_lft')->get();
+        return Classification::active()->where('parent_id', null)->orderBy('_lft')->get();
     }
 
+    public function getServices()
+    {
+        return Service::active()->orderBy('name')->get();
+    }
 
 
 }

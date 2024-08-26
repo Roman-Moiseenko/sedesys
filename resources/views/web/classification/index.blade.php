@@ -4,11 +4,11 @@
     classifications container-xl
 @endsection
 
-@section('title', 'Услуги')
-@section('description', '***')
+@section('title', $meta->title)
+@section('description', $meta->description)
 
 @section('content')
-    <h1 class="my-4">Наши услуги</h1>
+    <h1 class="my-4">{{ $meta->h1 }}</h1>
     <div class="mt-4">
         @foreach($classifications as $classification)
             <div>
