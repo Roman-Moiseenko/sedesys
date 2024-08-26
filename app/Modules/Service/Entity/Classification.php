@@ -30,6 +30,10 @@ class Classification extends Model implements WidgetData
 {
     use HasFactory, NodeTrait;
 
+    protected $attributes = [
+        'meta' => '{}',
+    ];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

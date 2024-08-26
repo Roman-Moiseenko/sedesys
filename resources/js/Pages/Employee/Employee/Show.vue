@@ -66,13 +66,12 @@
                                         <el-icon><Calendar /></el-icon>&nbsp;Стаж с
                                     </div>
                                 </template>
-                                {{ employee.experience_year }} г
+                                <span v-if="employee.experience_year">{{ employee.experience_year }} г</span>
                             </el-descriptions-item>
                         </el-descriptions>
                     </div>
                     <div class="p-2">
                         <h2 class="font-medium">Специализация</h2>
-
                         <div v-for="specialization in specializations" class="flex mt-1">
                             <el-image :src="specialization.icon" class="w-8 h-8"/>
                             <span class="ml-2 my-auto">{{ specialization.name }}</span>

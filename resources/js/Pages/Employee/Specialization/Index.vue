@@ -19,9 +19,7 @@
                 v-loading="store.getLoading"
             >
                 <!-- Повторить поля -->
-
                 <el-table-column type="expand">
-
                     <template #default="props">
                         <h3 class="font-medium text-lg">Специалисты:</h3>
                         <el-table :data="props.row.employees" @row-click="routeClickEmployee">

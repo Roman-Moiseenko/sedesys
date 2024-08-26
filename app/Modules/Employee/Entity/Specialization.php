@@ -27,6 +27,9 @@ use Illuminate\Support\Str;
 class Specialization extends Model implements WidgetData
 {
     use HasFactory;
+    protected $attributes = [
+        'meta' => '{}',
+    ];
 
     protected $casts = [
         'created_at' => 'datetime',

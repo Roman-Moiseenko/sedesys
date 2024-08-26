@@ -28,7 +28,6 @@ class EmployeeRepository
             $filters['draft'] = 'true';
             $query->where('active', false);
         }
-
         if ($request->has('specialization')) {
             $specialization = $request->integer('specialization');
             $filters['specialization'] = $specialization;
@@ -47,6 +46,7 @@ class EmployeeRepository
                 'shortname' => $employee->fullname->getShortname(),
                 'active' => $employee->active,
                 'address' => $employee->address->address,
+                'photo' => $employee->getImage('mini'),
 
                 'url' => route('admin.employee.employee.show', $employee),
                 'edit' => route('admin.employee.employee.edit', $employee),
