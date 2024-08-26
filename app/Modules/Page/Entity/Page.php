@@ -16,8 +16,6 @@ use Kalnoy\Nestedset\NodeTrait;
  * @property int $parent_id
  * @property string $name
  * @property string $slug
- * @property string $title
- * @property string $description
  * @property string $template
  * @property string $text
  * @property bool $published
@@ -25,22 +23,16 @@ use Kalnoy\Nestedset\NodeTrait;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $published_at
- * @property Photo $photo
- * @property Page $parent
+ * @property Photo $image
+ * @property Photo $icon
+// * @property Page $parent
  * @property Meta $meta
  */
 
-class Page extends Model
+class Page extends Model implements WidgetData
 {
     use HasFactory, NodeTrait;
     const PATH_TEMPLATES = 'web.templates.page.';
-
-    protected $attributes = [
-        'description' => '',
-        'text' => '',
-        'meta' => '{}',
-    ];
-
     const PAGES_TEMPLATES = [
         'contact' => 'Контакты',
         'review' => 'Отзывы',
@@ -48,6 +40,10 @@ class Page extends Model
         'text' => 'Текстовая',
     ];
 
+    protected $attributes = [
+        'text' => '',
+        'meta' => '{}',
+    ];
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -59,7 +55,6 @@ class Page extends Model
         'name',
         'slug',
         'title',
-        'description',
         'template',
         'sort',
     ];
@@ -72,6 +67,7 @@ class Page extends Model
             'slug' => empty($slug) ? Str::slug($name) : $slug,
             'published' => false,
             'text' => '',
+            'parent_id' => null,
         ]);
     }
 
@@ -122,21 +118,52 @@ class Page extends Model
         )->render();
     }
 
-    public function photo()
+    public function image()
     {
-        return $this->morphOne(Photo::class, 'imageable');//->withDefault();
+        return $this->morphOne(Photo::class, 'imageable')->where('type','image')->withDefault();
     }
 
+    public function icon()
+    {
+        return $this->morphOne(Photo::class, 'imageable')->where('type', 'icon')->withDefault();
+    }
+/*
     public function parent()
     {
         return $this->belongsTo(Page::class, 'parent_id', 'id');
     }
-
+*/
     public function getImage(string $thumb = ''): ?string
     {
-        if (is_null($this->photo) || is_null($this->photo->file)) return null;
-        if (empty($thumb)) return $this->photo->getUploadUrl();
-        return $this->photo->getThumbUrl($thumb);
+        if (is_null($this->image) || is_null($this->image->file)) return null;
+        if (empty($thumb)) return $this->image->getUploadUrl();
+        return $this->image->getThumbUrl($thumb);
     }
 
+    public function getIcon(string $thumb = ''): ?string
+    {
+        if (is_null($this->icon) || is_null($this->icon->file)) return null;
+        if (empty($thumb)) return $this->icon->getUploadUrl();
+        return $this->icon->getThumbUrl($thumb);
+    }
+
+    public function getUrl(): string
+    {
+        return route('web.page.view', $this->slug);
+    }
+
+    public function getCaption(): string
+    {
+        return empty($this->meta->h1) ? $this->name : $this->meta->h1;
+    }
+
+    public function getText(): string
+    {
+        return $this->meta->description;
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('published', true);
+    }
 }

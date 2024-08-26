@@ -114,19 +114,19 @@ class MenuRepository
         return $result;
     }
 
-    public function pages(string $parent_slug = null): array
+    public function pages(int $parent_id = null): array
     {
         $pages = Page::orderBy('_lft')->where('parent_id', $parent_id)->active()->get();
         $result = [];
-        foreach ($classifications as $classification) {
-            $result[$classification->id] = [
-                'image' => $classification->getIcon('mini'),
+        foreach ($pages as $page) {
+            $result[$page->id] = [
+                'image' => $page->getIcon('mini'),
                 //'icon' => '',
-                'name' => $classification->name,
-                'url' => route('web.classification.view', $classification->slug),
+                'name' => $page->name,
+                'url' => route('web.page.view', $page->slug),
             ];
-            if ($classification->children()->count() > 0)
-                $result[$classification->id]['submenu'] = $this->classifications($classification->id);
+            if ($page->children()->count() > 0)
+                $result[$page->id]['submenu'] = $this->pages($page->id);
         }
         return $result;
     }

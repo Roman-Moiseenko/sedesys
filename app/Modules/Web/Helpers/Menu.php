@@ -51,22 +51,7 @@ class Menu
                 'icon' => '',
                 'image' => '',
                 'name' => 'О нас',
-                'submenu' => [
-                    'page31' => [
-                        'icon' => '',
-                        'image' => '',
-                        'name' => 'Контакты',
-                        'url' => route('web.page.view', 'kontakty'),
-                        //'route' => 'web.page.view',
-                        //'item' => ,
-                    ],
-                    'page32' => [
-                        'icon' => '',
-                        'image' => '',
-                        'name' => 'О Компании',
-                        'url' => route('web.home'),
-                    ],
-                ]
+                'submenu' => $menu->pages(3),
             ],
         ];
     }

@@ -37,10 +37,12 @@ class PageController extends Controller
 
     public function create(Request $request)
     {
+        $pages = $this->repository->getPages();
+
         return Inertia::render('Page/Page/Create', [
             'route' => route('admin.page.page.store'),
             'templates' => $this->repository->getTemplates(),
-            'pages' => $this->repository->getPages(),
+            'pages' => $pages,
             'tiny_api' => $this->tiny_api,
         ]);
     }
@@ -56,11 +58,15 @@ class PageController extends Controller
 
     public function show(Page $page)
     {
+
+        $parent_name = $this->repository->getParentName($page);
+
         return Inertia::render('Page/Page/Show', [
                 'page' => $page,
-                'parent' => is_null($page->parent_id) ? '-' : $page->parent->name,
+                'parent' => $parent_name,
                 'edit' => route('admin.page.page.edit', $page),
-                'photo' => $page->getImage(),
+                'image' => $page->getImage(),
+                'icon' => $page->getIcon(),
                 'toggle' => route('admin.page.page.toggle', $page),
             ]
         );
@@ -68,12 +74,15 @@ class PageController extends Controller
 
     public function edit(Page $page)
     {
+        $pages = $this->repository->getPages();
+
         return Inertia::render('Page/Page/Edit', [
             'page' => $page,
             'route' => route('admin.page.page.update', $page),
             'templates' => $this->repository->getTemplates(),
-            'pages' => $this->repository->getPages($page->id),
-            'photo' => $page->getImage(),
+            'pages' => $pages,
+            'image' => $page->getImage(),
+            'icon' => $page->getIcon(),
             'tiny_api' => $this->tiny_api,
         ]);
     }

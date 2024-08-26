@@ -149,19 +149,10 @@
         clear_icon: false,
     })
 
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
     function onSubmit() {
         router.post(props.route, form)
     }
-    function handleMaskSlug(val)
-    {
+    function handleMaskSlug(val) {
         form.slug = func.MaskSlug(val);
     }
     const handleRemoveImages = (file: UploadFile) => {

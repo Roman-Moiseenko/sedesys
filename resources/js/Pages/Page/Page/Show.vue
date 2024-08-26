@@ -4,29 +4,46 @@
 
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-2 grid-cols-1 divide-x">
-            <div class="p-2">
+            <div class="p-4">
                 <el-descriptions :column="1" border>
                     <el-descriptions-item label="Страница">{{ page.name }}</el-descriptions-item>
                     <el-descriptions-item label="Ссылка">{{ page.slug }}</el-descriptions-item>
                     <el-descriptions-item label="Шаблон">{{ page.template }}</el-descriptions-item>
-                    <el-descriptions-item label="Родительская страница">{{ page.parent }}</el-descriptions-item>
+                    <el-descriptions-item label="Родительская страница">{{ parent }}</el-descriptions-item>
                     <el-descriptions-item label="Страница (H1)">{{ page.meta.h1 }}</el-descriptions-item>
                     <el-descriptions-item label="Заголовок">{{ page.meta.title }}</el-descriptions-item>
                     <el-descriptions-item label="Описание">{{ page.meta.description }}</el-descriptions-item>
                 </el-descriptions>
 
             </div>
-            <div class="p-2">
-                <div class="lg:w-56 lg:h-56 image-fit relative">
-                    <el-image
-                        :src="$props.photo"
-                        :zoom-rate="1.2"
-                        :max-scale="7"
-                        :min-scale="0.2"
-                        :preview-src-list="[$props.photo]"
-                        :initial-index="0"
-                        fit="cover"
-                    />
+            <div class="p-4 flex">
+                <div>
+                    <h2 class="font-medium mb-3">Изображение для каталога</h2>
+                    <div class="lg:w-48 lg:h-48 image-fit relative">
+                        <el-image
+                            :src="$props.image"
+                            :zoom-rate="1.2"
+                            :max-scale="3"
+                            :min-scale="0.2"
+                            :preview-src-list="[$props.image]"
+                            :initial-index="0"
+                            fit="cover"
+                        />
+                    </div>
+                </div>
+                <div>
+                    <h2 class="font-medium mb-3">Иконка для меню</h2>
+                    <div class="lg:w-48 lg:h-48 image-fit relative">
+                        <el-image
+                            :src="$props.icon"
+                            :zoom-rate="1.2"
+                            :max-scale="1"
+                            :min-scale="0.2"
+                            :preview-src-list="[$props.icon]"
+                            :initial-index="0"
+                            fit="cover"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,10 +74,8 @@
                 type: String,
                 default: 'Карточка Страницы',
             },
-            photo: {
-                type: String,
-                default: null,
-            },
+            image: String,
+            icon: String,
             parent: String
         },
         methods: {

@@ -9,15 +9,16 @@
                 :data="tableData"
                 :max-height="$data.tableHeight"
                 style="width: 100%; cursor: pointer;"
+                row-key="id"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
-                v-loading="store.getLoading"
+                default-expand-all
             >
                 <el-table-column sortable prop="name" label="Название" />
                 <el-table-column sortable prop="slug" label="Ссылка"  />
                 <el-table-column sortable prop="template" label="Шаблон" />
                 <el-table-column sortable prop="published" label="Дата публикации"/>
-                <!-- Повторить -->
+
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="scope.row.active"
@@ -49,16 +50,11 @@
             </el-table>
         </div>
 
-        <pagination
-            :current_page="$page.props.pages.current_page"
-            :per_page="$page.props.pages.per_page"
-            :total="$page.props.pages.total"
-        />
     </el-config-provider>
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить page?
+            Вы уверены, что хотите удалить страницу?
         </div>
         <div class="text-red-600 text-md mt-2">
             Восстановить данные будет невозможно!
@@ -112,12 +108,15 @@ export default {
     },
     data() {
         return {
-            tableData: [...this.pages.data],
+            tableData: [...this.pages],
             tableHeight: '600',
             Loading: false,
             dialogDelete: false,
             routeDestroy: null,
         }
+    },
+    mounted() {
+        console.log(this.$props.pages);
     },
     methods: {
         createButton() {

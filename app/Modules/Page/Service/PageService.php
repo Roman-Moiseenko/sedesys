@@ -36,27 +36,28 @@ class PageService
         $page->slug = empty($slug) ? Str::slug($page->name) : $slug;
         $page->save();
 
-        if ($request->boolean('clear_file') && !is_null($page->photo)) {
-            $page->photo->delete();
-        }
-
         $this->save_fields($page, $request);
     }
 
     private function save_fields(Page $page, Request $request)
     {
-        /**
-         * Сохраняем оставшиеся поля
-         */
         $page->meta = Meta::fromRequest($request);
 
         $page->template = $request->string('template')->value();
-        $page->parent_id = $request->input('parent_id', null);
+        $page->parent_id = $request->integer('parent_id', null);
 
         $page->text = $request->string('text')->value();
         $page->save();
 
-        $this->photo($page, $request->file('file'));
+        if ($request->boolean('clear_image') && !is_null($page->image)) {
+            $page->image->delete();
+        }
+        if ($request->boolean('clear_icon') && !is_null($page->icon)) {
+            $page->icon->delete();
+        }
+        $this->image($page, $request->file('image'));
+        $this->icon($page, $request->file('icon'));
+
     }
 
 
@@ -68,14 +69,17 @@ class PageService
         $page->delete();
     }
 
-    private function photo(Page $page, $file): void
+    private function image(Page $page, $file): void
     {
         if (empty($file)) return;
-        if (!empty($page->photo)) {
-            $page->photo->newUploadFile($file);
-        } else {
-            $page->photo()->save(Photo::upload($file));
-        }
+        $page->image->newUploadFile($file, 'image');
+        $page->refresh();
+    }
+
+    private function icon(Page $page, $file): void
+    {
+        if (empty($file)) return;
+        $page->icon->newUploadFile($file, 'icon');
         $page->refresh();
     }
 }

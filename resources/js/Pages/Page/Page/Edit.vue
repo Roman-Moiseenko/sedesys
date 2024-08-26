@@ -44,35 +44,62 @@
                     </el-form-item>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Изображение страницы</h2>
-                    <!-- FileUpload -->
-                    <el-upload action="#" list-type="picture-card"
-                               :limit="1"
-                               :auto-upload="false"
-                               v-model:fileList="fileList"
-                               @input="form.file = $event.target.files[0]" :on-remove="handleRemove"
-                               class="file-uploader-one"
-                               ref="template"
-                    >
-                        <el-icon>
-                            <Plus/>
-                        </el-icon>
-                        <template #file="{ file }">
-                            <div>
-                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
-                                <span class="el-upload-list__item-actions">
+                    <div>
+                        <h2 class="font-medium mb-3">Изображение для каталога</h2>
+                        <!-- FileUpload -->
+                        <el-upload action="#" list-type="picture-card"
+                                   :limit="1"
+                                   :auto-upload="false"
+                                   v-model:fileList="Images"
+                                   @input="form.image = $event.target.files[0]" :on-remove="handleRemoveImages"
+                                   class="file-uploader-one"
+                                   ref="template"
+                        >
+                            <el-icon><Plus/></el-icon>
+                            <template #file="{ file }">
+                                <div>
+                                    <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                                    <span class="el-upload-list__item-actions">
+                                      <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                                        <el-icon><zoom-in/></el-icon>
+                                      </span>
+                                      <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveImages(file)">
+                                        <el-icon><Delete/></el-icon>
+                                      </span>
+                                  </span>
+                                </div>
+                            </template>
+                        </el-upload>
+                        <!-- End FileUpload -->
+                    </div>
+                    <div>
+                        <h2 class="font-medium mb-3">Иконка для меню</h2>
+                        <!-- FileUpload -->
+                        <el-upload action="#" list-type="picture-card"
+                                   :limit="1"
+                                   :auto-upload="false"
+                                   v-model:fileList="Icons"
+                                   @input="form.icon = $event.target.files[0]" :on-remove="handleRemoveIcons"
+                                   class="file-uploader-one"
+                                   ref="template"
+                        >
+                            <el-icon><Plus/></el-icon>
+                            <template #file="{ file }">
+                                <div>
+                                    <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                                    <span class="el-upload-list__item-actions">
                                   <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)">
+                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveIcons(file)">
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
-                            </div>
-                        </template>
-                    </el-upload>
-                    <!-- End FileUpload -->
+                                </div>
+                            </template>
+                        </el-upload>
+                        <!-- End FileUpload -->
+                    </div>
                 </div>
             </div>
             <div class="w-full mt-3 mb-5">
@@ -108,6 +135,9 @@ const store = useStore();
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const disabled = ref(false)
+const Images = ref<UploadFile>([]);
+const Icons = ref<UploadFile>([]);
+
 
 const props = defineProps({
     errors: Object,
@@ -117,25 +147,16 @@ const props = defineProps({
         type: String,
         default: 'Редактирование page',
     },
-    photo: {
-        type: String,
-        default: null
-    },
+    image: String,
+    icon: String,
     templates: Array,
     pages: Array,
     tiny_api: String,
 });
 
-/* Загружаем фото назначенное */
-let _default = [];
-if (props.photo !== null) {
-    _default = [{
-        name: 'default',
-        url: props.photo,
-    }];
-}
+if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
+if (props.icon !== null) Icons.value.push({name: 'default', url: props.icon,});
 
-const fileList = ref<UploadFile>(_default);
 
 const form = reactive({
     name: props.page.name,
@@ -148,9 +169,11 @@ const form = reactive({
 
     template: props.page.template,
     text: props.page.text,
-    file: null,
+    image: null,
+    icon: null,
     _method: 'put',
-    clear_file: false,
+    clear_image: false,
+    clear_icon: false,
 })
 
 function handleMaskName(val) {
@@ -164,9 +187,13 @@ function onSubmit() {
     router.post(props.route, form)
 }
 
-const handleRemove = (file: UploadFile) => {
-    fileList.value.splice(0, 1);
-    form.clear_file = true;
+const handleRemoveImages = (file: UploadFile) => {
+    Images.value.splice(0, 1);
+    form.clear_image = true;
+}
+const handleRemoveIcons = (file: UploadFile) => {
+    Icons.value.splice(0, 1);
+    form.clear_icon = true;
 }
 const handlePictureCardPreview = (file: UploadFile) => {
     dialogImageUrl.value = file.url!
