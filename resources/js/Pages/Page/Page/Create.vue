@@ -137,7 +137,6 @@
     const Images = ref<UploadFile>();
     const Icons = ref<UploadFile>();
 
-
     const props = defineProps({
         errors: Object,
         route: String,

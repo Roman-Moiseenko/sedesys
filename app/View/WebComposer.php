@@ -10,6 +10,7 @@ use App\Modules\Web\Helpers\Schema;
 use App\Modules\Web\Repository\WebRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use JetBrains\PhpStorm\ArrayShape;
 
 class WebComposer
 {
@@ -27,6 +28,8 @@ class WebComposer
         //dd($this->repository->getContacts());
         if (!is_null(request()->route())) {
             $pageName = request()->route()->getName();
+            $url = request()->url();
+
             if ($pageName == null) {
                 $layout = 'admin';
             } else {
@@ -42,7 +45,8 @@ class WebComposer
                 $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());
                 $view->with('menu_mobile', Menu::menuMobile(!is_null($user)));
-                $view->with('active_menu', $this->activeMenu($pageName));
+                //$view->with('active_menu', $this->activeMenu($pageName));
+                $view->with('active_menu', $this->activeMenuByUrl($url));
             }
         }
     }
@@ -89,6 +93,49 @@ class WebComposer
     {
         if (isset($menu['action'])) return $menu['route'] == $pageName;
         return $this->clearAction($menu['route']) == $this->clearAction($pageName);
+    }
+
+    #[ArrayShape(['first' => "int|string", 'second' => "int|string", 'third' => "int|string"])]
+    private function activeMenuByUrl($currentUrl): array
+    {
+        $firstLevelActiveIndex = '';
+        $secondLevelActiveIndex = '';
+        $thirdLevelActiveIndex = '';
+
+        foreach (Menu::menuTop() as $menuKey => $menu) {
+            if ($menu !== 'divider' && isset($menu['url']) && $this->checkUrl($menu, $currentUrl) && empty($firstPageName)) {
+                $firstLevelActiveIndex = $menuKey;
+            }
+
+            if (isset($menu['submenu'])) {
+                foreach ($menu['submenu'] as $subMenuKey => $subMenu) {
+                    if (isset($subMenu['url']) && $this->checkUrl($subMenu, $currentUrl) && $menuKey != 'menu-layout' && empty($secondPageName)) {
+                        $firstLevelActiveIndex = $menuKey;
+                        $secondLevelActiveIndex = $subMenuKey;
+                    }
+
+                    if (isset($subMenu['submenu'])) {
+                        foreach ($subMenu['submenu'] as $lastSubMenuKey => $lastSubMenu) {
+                            if (isset($lastSubMenu['url']) && $this->checkUrl($lastSubMenu, $currentUrl)) {
+                                $firstLevelActiveIndex = $menuKey;
+                                $secondLevelActiveIndex = $subMenuKey;
+                                $thirdLevelActiveIndex = $lastSubMenuKey;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return [
+            'first' => $firstLevelActiveIndex,
+            'second' => $secondLevelActiveIndex,
+            'third' => $thirdLevelActiveIndex
+        ];
+    }
+
+    private function checkUrl($menu, $currentUrl): bool
+    {
+        return $menu['url'] == $currentUrl;
     }
 
     private function clearAction($str): string

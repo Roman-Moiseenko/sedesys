@@ -105,7 +105,7 @@ class Page extends Model implements WidgetData
         foreach ($widget_ids as $key => $widget_id) {
             $text = str_replace(
                 $replaces[$key],
-                Widget::findView($widget_id),
+                Widget::findView((int)$widget_id),
                 $text);
         }
         $this->text = $text;

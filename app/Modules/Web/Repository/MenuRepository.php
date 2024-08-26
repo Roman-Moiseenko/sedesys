@@ -17,14 +17,15 @@ class MenuRepository
         $classifications = Classification::orderBy('_lft')->where('parent_id', $parent_id)->active()->get();
         $result = [];
         foreach ($classifications as $classification) {
-            $result[$classification->id] = [
+            $key = 'class_' . $classification->id;
+            $result[$key] = [
                 'image' => $classification->getIcon('mini'),
                 //'icon' => '',
                 'name' => $classification->name,
                 'url' => route('web.classification.view', $classification->slug),
             ];
             if ($classification->children()->count() > 0)
-                $result[$classification->id]['submenu'] = $this->classifications($classification->id);
+                $result[$key]['submenu'] = $this->classifications($classification->id);
         }
         return $result;
     }
@@ -36,7 +37,8 @@ class MenuRepository
         $services = $query->get();
         $result = [];
         foreach ($services as $service) {
-            $result[$service->id] = [
+            $key = 'service_' . $service->id;
+            $result[$key] = [
                 'image' => $service->getIcon('mini'),
                 //'icon' => '',
                 'name' => $service->name,
@@ -52,14 +54,15 @@ class MenuRepository
         $classifications = Classification::orderBy('_lft')->where('parent_id', null)->active()->get();
         $result = [];
         foreach ($classifications as $classification) {
-            $result[$classification->id] = [
+            $key = 'class_service_' . $classification->id;
+            $result[$key] = [
                 'image' => $classification->getIcon('mini'),
                 //'icon' => '',
                 'name' => $classification->name,
                 'url' => route('web.classification.view', $classification->slug),
             ];
             if ($classification->services()->count() > 0)
-                $result[$classification->id]['submenu'] = $this->services($classification->id);
+                $result[$key]['submenu'] = $this->services($classification->id);
         }
         return $result;
     }
@@ -73,7 +76,8 @@ class MenuRepository
         $employees = $query->get();
         $result = [];
         foreach ($employees as $employee) {
-            $result[$employee->id] = [
+            $key = 'employee' . $employee->id;
+            $result[$key] = [
                 'image' => $employee->getIcon('mini'),
                 //'icon' => '',
                 'name' => $employee->fullname->getFullName(),
@@ -88,7 +92,8 @@ class MenuRepository
         $specializations = Specialization::orderBy('sort')->active()->get();
         $result = [];
         foreach ($specializations as $specialization) {
-            $result[$specialization->id] = [
+            $key = 'special_' . $specialization->id;
+            $result[$key] = [
                 'image' => $specialization->getIcon('mini'),
                 //'icon' => '',
                 'name' => $specialization->name,
@@ -103,7 +108,8 @@ class MenuRepository
         $specializations = Specialization::orderBy('sort')->active()->get();
         $result = [];
         foreach ($specializations as $specialization) {
-            $result[$specialization->id] = [
+            $key = 'special_employee_' . $specialization->id;
+            $result[$key] = [
                 'image' => $specialization->getIcon('mini'),
                 //'icon' => '',
                 'name' => $specialization->name,
@@ -119,14 +125,15 @@ class MenuRepository
         $pages = Page::orderBy('_lft')->where('parent_id', $parent_id)->active()->get();
         $result = [];
         foreach ($pages as $page) {
-            $result[$page->id] = [
+            $key = 'page_' . $page->id;
+            $result[$key] = [
                 'image' => $page->getIcon('mini'),
                 //'icon' => '',
                 'name' => $page->name,
                 'url' => route('web.page.view', $page->slug),
             ];
             if ($page->children()->count() > 0)
-                $result[$page->id]['submenu'] = $this->pages($page->id);
+                $result[$key]['submenu'] = $this->pages($page->id);
         }
         return $result;
     }

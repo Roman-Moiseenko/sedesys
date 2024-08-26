@@ -157,7 +157,6 @@ const props = defineProps({
 if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
 if (props.icon !== null) Icons.value.push({name: 'default', url: props.icon,});
 
-
 const form = reactive({
     name: props.page.name,
     slug: props.page.slug,
