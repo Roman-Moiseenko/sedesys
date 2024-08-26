@@ -25,6 +25,7 @@ class EmployeeController extends Controller
     public function view(Employee $employee)
     {
         //TODO Переделать на slug ??
+
         return view('web.employee.show', compact('employee'));
     }
 }

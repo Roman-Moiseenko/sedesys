@@ -20,6 +20,7 @@ class SpecializationController extends Controller
     public function index()
     {
         $specializations = $this->repository->getSpecializations();
+
         return view('web.specialization.index', compact('specializations'));
     }
 
@@ -27,6 +28,7 @@ class SpecializationController extends Controller
     {
         $specialization = Specialization::where('slug', $slug)->first();
         if (is_null($specialization)) return abort(404);
-        return view('web.specialization.show', compact('specialization'));
+        $meta = $specialization->meta;
+        return view('web.specialization.show', compact('specialization', 'meta'));
     }
 }

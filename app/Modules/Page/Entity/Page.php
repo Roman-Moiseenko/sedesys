@@ -116,9 +116,7 @@ class Page extends Model
         return view(self::PATH_TEMPLATES . $this->template,
             [
                 'page' => $this,
-                'h1' => $this->meta->h1,
-                'title' => $this->meta->title,
-                'description' => $this->meta->description,
+                'meta' => $this->meta,
             ]
         )->render();
     }

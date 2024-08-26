@@ -27,11 +27,12 @@ class ClassificationController extends Controller
     {
         $classification = Classification::where('slug', $slug)->first();
         if (is_null($classification)) return abort(404);
+        $meta = $classification->meta;
 
-        if (count($classification->children) > 0) return view('web.classification.show', compact('classification'));
+        if (count($classification->children) > 0)
+            return view('web.classification.show', compact('classification', 'meta'));
 
         $services = $classification->services;
-
-        return view('web.service.index', compact('services'));
+        return view('web.service.index', compact('services', 'meta'));
     }
 }

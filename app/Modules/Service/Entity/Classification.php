@@ -25,6 +25,7 @@ use Kalnoy\Nestedset\NodeTrait;
  * @property Photo $image
  * @property Photo $icon
  * @property Meta $meta
+ * @property Service[] $services
  */
 class Classification extends Model implements WidgetData
 {

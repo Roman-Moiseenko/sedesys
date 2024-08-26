@@ -22,7 +22,6 @@ class MenuRepository
             ];
 
             if ($classification->children()->count() > 0) {
-               // dd($classification);
                 $result[$classification->id]['submenu'] = $this->classifications($classification->id);
             } else {
                 $result[$classification->id]['url'] = route('web.classification.view', $classification->slug);
@@ -31,9 +30,11 @@ class MenuRepository
         return $result;
     }
 
-    public function services(): array
+    public function services(int $classification_id = null): array
     {
-        $services = Service::orderBy('name')->active()->get();
+        $query = Service::orderBy('name')->active();
+        if (!is_null($classification_id)) $query->where('classification_id', $classification_id);
+        $services = $query->get();
         $result = [];
         foreach ($services as $service) {
             $result[$service->id] = [
@@ -42,6 +43,29 @@ class MenuRepository
                 'name' => $service->name,
                 'url' =>  route('web.service.view', $service->slug),
             ];
+        }
+        return $result;
+    }
+
+    public function classification_services(): array
+    {
+        /** @var Classification[] $classifications */
+        $classifications = Classification::orderBy('_lft')->where('parent_id', null)->active()->get();
+        $result = [];
+        foreach ($classifications as $classification) {
+
+            $result[$classification->id] = [
+                'icon' => $classification->getIcon('mini'),
+                //'image' => '',
+                'name' => $classification->name,
+            ];
+
+            if ($classification->services()->count() > 0) {
+                //dd($classification->services);
+                $result[$classification->id]['submenu'] = $this->services($classification->id);
+            } else {
+                $result[$classification->id]['url'] = route('web.classification.view', $classification->slug);
+            }
         }
         return $result;
     }

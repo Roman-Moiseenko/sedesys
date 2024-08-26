@@ -4,11 +4,11 @@
     classification container-xl
 @endsection
 
-@section('title', $classification->title . ' - ')
-@section('description', $classification->description)
+@section('title', $meta->title . ' - ')
+@section('description', $meta->description)
 
 @section('content')
-    <h1 class="my-4">{{ $classification->caption }}</h1>
+    <h1 class="my-4">{{ $meta->h1 }}</h1>
     <div class="mt-4">
         ****
     </div>

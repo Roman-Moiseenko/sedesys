@@ -12,10 +12,6 @@ Breadcrumbs::for('web.home', function (BreadcrumbTrail $trail) {
     $trail->push('<i class="fa-light fa-house"></i>', route('web.home'));
 });
 
-Breadcrumbs::for('web.services', function (BreadcrumbTrail $trail) {
-    $trail->parent('web.home');
-    $trail->push('Услуги', route('web.services'));
-});
 
 
 Breadcrumbs::for('web.page.view', function (BreadcrumbTrail $trail, $slug) {
@@ -40,10 +36,27 @@ Breadcrumbs::for('web.specialization.index', function (BreadcrumbTrail $trail) {
     $trail->push('Специалисты', route('web.specialization.index'));
 });
 // <= ?????
+//УСЛУГИ
+///БЕЗ КЛАССИФИКАЦИИ
+Breadcrumbs::for('web.service.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('web.home');
+    $trail->push('Услуги', route('web.service.index'));
+});
+Breadcrumbs::for('web.service.view', function (BreadcrumbTrail $trail, $slug) {
+    $service = \App\Modules\Service\Entity\Service::where('slug', $slug)->first();
+    $trail->parent('web.service.index'); //$trail->parent('web.specialization.index');
+    $trail->push($service->name, route('web.service.view', $slug));
+});
 
+///С КЛАССИФИКАЦИЕЙ
+Breadcrumbs::for('web.classification.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('web.home'); //$trail->parent('web.specialization.index');
+    $trail->push('Услуги', route('web.classification.index'));
+});
 Breadcrumbs::for('web.classification.view', function (BreadcrumbTrail $trail, $slug) {
-    $trail->parent('web.employee.index'); //$trail->parent('web.specialization.index');
-    $trail->push($slug, route('web.classification.view', $slug));
+    $classification = \App\Modules\Service\Entity\Classification::where('slug', $slug)->first();
+    $trail->parent('web.classification.index'); //$trail->parent('web.specialization.index');
+    $trail->push($classification->name, route('web.classification.view', $slug));
 });
 
 Breadcrumbs::for('web.specialization.view', function (BreadcrumbTrail $trail, Specialization $specialization) {

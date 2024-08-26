@@ -4,11 +4,11 @@
     specialization container-xl
 @endsection
 
-@section('title', $specialization->title)
-@section('description', $specialization->description)
+@section('title', $meta->title)
+@section('description', $meta->description)
 
 @section('content')
-    <h1 class="my-4">{{ $specialization->caption }}</h1>
+    <h1 class="my-4">{{ $meta->h1 }}</h1>
     <div class="mt-4">
         @foreach($specialization->employees as $employee)
             <div>
