@@ -12,7 +12,7 @@
     <div class="mt-4">
         @foreach($classifications as $classification)
             <div>
-                <a href="{{ route('web.classifications.view', $classifications) }}">{{ $classifications->name }} </a>
+                <a href="{{ route('web.classification.view', $classification->slug) }}">{{ $classification->name }} </a>
             </div>
         @endforeach
     </div>

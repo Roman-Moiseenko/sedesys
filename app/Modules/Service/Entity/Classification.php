@@ -55,32 +55,6 @@ class Classification extends Model implements WidgetData
         ]);
     }
 
-    public function isField(): bool
-    {
-        /**
-         * Ф-ции состояния
-         */
-        return true;
-    }
-
-    public function setField($value): void
-    {
-        /**
-         * Сетеры
-         */
-        $this->field = $value;
-        $this->save();
-    }
-
-    public function getField(): mixed
-    {
-        /**
-         * Гетеры
-         */
-        return $this->field;
-    }
-
-
     public function services()
     {
        return $this->hasMany(Service::class, 'classification_id', 'id');

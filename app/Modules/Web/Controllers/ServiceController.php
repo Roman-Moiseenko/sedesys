@@ -26,7 +26,7 @@ class ServiceController extends Controller
     public function index()
     {
         $services = $this->repository->getServices();
-        $meta = new Meta(params:$this->web->employees);
+        $meta = new Meta(params:$this->web->services);
         return view('web.service.index', compact('services', 'meta'));
     }
 

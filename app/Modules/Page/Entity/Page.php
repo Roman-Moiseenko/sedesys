@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Kalnoy\Nestedset\NodeTrait;
 
 /**
  * @property int $id
@@ -31,7 +32,7 @@ use Illuminate\Support\Str;
 
 class Page extends Model
 {
-    use HasFactory;
+    use HasFactory, NodeTrait;
     const PATH_TEMPLATES = 'web.templates.page.';
 
     protected $attributes = [

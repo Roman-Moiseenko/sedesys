@@ -10,7 +10,6 @@
         </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light hide-mobile ">
-
         <div class="container">
             <a class="navbar-brand" href="{{ route('web.home') }}"><img src="{{Vite::asset('resources/images/logo.png')}}" alt="{{ 'SeDeSys' }}" class="img-fluid img-logo"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +66,6 @@
                     </a>
                 </li>
             @endforeach
-
         </ul>
     </nav>
 </header>

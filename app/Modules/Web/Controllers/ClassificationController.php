@@ -24,7 +24,7 @@ class ClassificationController extends Controller
     public function index()
     {
         $classifications = $this->repository->getRootClassifications();
-        $meta = new Meta(params:$this->web->employees);
+        $meta = new Meta(params:$this->web->services);
         return view('web.classification.index', compact('classifications', 'meta'));
     }
 

@@ -5,6 +5,7 @@ namespace App\Modules\Web\Repository;
 
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
+use App\Modules\Page\Entity\Page;
 use App\Modules\Service\Entity\Classification;
 use App\Modules\Service\Entity\Service;
 
@@ -109,6 +110,23 @@ class MenuRepository
                 'url' =>  route('web.specialization.view', $specialization->slug),
                 'submenu' => $this->employees($specialization->id),
             ];
+        }
+        return $result;
+    }
+
+    public function pages(string $parent_slug = null): array
+    {
+        $pages = Page::orderBy('_lft')->where('parent_id', $parent_id)->active()->get();
+        $result = [];
+        foreach ($classifications as $classification) {
+            $result[$classification->id] = [
+                'image' => $classification->getIcon('mini'),
+                //'icon' => '',
+                'name' => $classification->name,
+                'url' => route('web.classification.view', $classification->slug),
+            ];
+            if ($classification->children()->count() > 0)
+                $result[$classification->id]['submenu'] = $this->classifications($classification->id);
         }
         return $result;
     }

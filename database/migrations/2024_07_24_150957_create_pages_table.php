@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Kalnoy\Nestedset\NestedSet;
 
 return new class extends Migration
 {
@@ -16,10 +17,11 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('published_at')->nullable();
             $table->boolean('published')->default(false);
-            $table->unsignedBigInteger('parent_id')->nullable();
+            //$table->unsignedBigInteger('parent_id')->nullable();
             $table->json('meta');
             $table->string('template')->default('text');
             $table->longText('text');
+            NestedSet::columns($table);
         });
     }
 

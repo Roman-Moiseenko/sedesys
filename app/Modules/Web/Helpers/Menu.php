@@ -24,6 +24,7 @@ class Menu
                 'icon' => '',
                 'image' => '',
                 'name' => 'Услуги',
+                'url' => route('web.classification.index'),
                 'submenu' => $menu->classification_services(),
             ],
             'page21' => [
