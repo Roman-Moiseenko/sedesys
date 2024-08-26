@@ -21,12 +21,31 @@
                     @foreach($menu_top as $key => $item)
                         @if(isset($item['submenu']))
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle {{ ($key == $active_menu['first']) ? 'active' : '' }}" href="{{ isset($item['route']) ? route($item['route'], $item['item'] ?? '') : '#' }}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle {{ ($key == $active_menu['first']) ? 'active' : '' }}"
+                                   href="{{ isset($item['route']) ? route($item['route'], $item['item'] ?? '') : '#' }}"
+                                   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ $item['name'] }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @foreach($item['submenu'] as $subkey => $subitem)
-                                    <li><a class="dropdown-item {{ ($subkey == $active_menu['second']) ? 'active' : '' }}" href="{{ route($subitem['route'], $subitem['item'] ?? '') }}">{{ $subitem['name'] }}</a></li>
+                                        @if(isset($subitem['submenu']))
+                                            <li class="dropdown-submenu">
+                                                <a class="dropdown-item" href="#">{{ $subitem['name'] }} <i class="fa-light fa-chevron-right"></i></a>
+                                                <ul class="dropdown-menu">
+                                                @foreach($subitem['submenu'] as $sub2key => $sub2item)
+                                                        <li><a class="dropdown-item" href="{{ $sub2item['url'] }}">{{ $sub2item['name'] }}</a></li>
+                                                @endforeach
+                                                </ul>
+                                            </li>
+                                            @else
+                                            <li>
+                                                <a class="dropdown-item {{ ($subkey == $active_menu['second']) ? 'active' : '' }}"
+                                                   href="{{ $subitem['url'] }}">
+                                                    <!-- Вставляем иконку png -->
+                                                    {{ $subitem['name'] }}
+                                                </a>
+                                            </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </li>

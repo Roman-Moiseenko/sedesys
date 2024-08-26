@@ -1,3 +1,14 @@
+.dropdown:hover >.dropdown-menu{
+    display: block !important;
+}
+.dropdown-submenu:hover > .dropdown-menu{
+    display: block !important;
+    left: 100%;
+    margin-top: -37px;
+}
+
+
+
 @media screen and (min-width: 992px) {
     .menu-mobile {
         display: none;

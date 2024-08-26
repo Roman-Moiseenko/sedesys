@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace App\Modules\Web\Helpers;
 
+use App\Modules\Web\Repository\MenuRepository;
+use JetBrains\PhpStorm\Deprecated;
+
 class Menu
 {
+
 //TODO Временное решение
 // Заменить на Entity или Modules
 
@@ -14,48 +18,62 @@ class Menu
      */
     public static function menuTop(): array
     {
+        $menu = new MenuRepository();
         return [
             'page1' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Услуги',
-                'route' => 'web.home',
+                'submenu' => $menu->services(),
+                'url' => '*****',
+            ],
+            'page1_1' => [
+                'icon' => '',
+                'image' => '',
+                'name' => 'Категории',
+                'submenu' => $menu->classifications(),
+                'url' => '*****',
             ],
             'page2' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Специалисты',
                 'route' => 'web.employee.index',
+                'url' => '*****',
             ],
             'page3' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Цены',
                 'route' => 'web.home',
+                'url' => '*****',
             ],
             'page4' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Записаться',
                 'route' => 'web.home',
+                'url' => '*****',
             ],
             'page5' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'О нас',
+                'url' => '*****',
                 'submenu' => [
                     'page31' => [
                         'icon' => '',
                         'image' => '',
                         'name' => 'Контакты',
-                        'route' => 'web.page.view',
-                        'item' => 'kontakty',
+                        'url' => route('web.page.view', 'kontakty'),
+                        //'route' => 'web.page.view',
+                        //'item' => ,
                     ],
                     'page32' => [
                         'icon' => '',
                         'image' => '',
                         'name' => 'О Компании',
-                        'route' => 'web.home',
+                        'url' => route('web.home'),
                     ],
                 ]
             ],
@@ -103,6 +121,7 @@ class Menu
         return $menu;
     }
 
+    #[Deprecated]
     public static function menuContact(): array
     {
         return [

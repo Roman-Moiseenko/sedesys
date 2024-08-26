@@ -12,6 +12,12 @@ Breadcrumbs::for('web.home', function (BreadcrumbTrail $trail) {
     $trail->push('<i class="fa-light fa-house"></i>', route('web.home'));
 });
 
+Breadcrumbs::for('web.services', function (BreadcrumbTrail $trail) {
+    $trail->parent('web.home');
+    $trail->push('Услуги', route('web.services'));
+});
+
+
 Breadcrumbs::for('web.page.view', function (BreadcrumbTrail $trail, $slug) {
     $page = (new WebRepository())->PageBySlug($slug);
     $trail->parent('web.home');
@@ -35,10 +41,13 @@ Breadcrumbs::for('web.specialization.index', function (BreadcrumbTrail $trail) {
 });
 // <= ?????
 
-
+Breadcrumbs::for('web.classification.view', function (BreadcrumbTrail $trail, $slug) {
+    $trail->parent('web.employee.index'); //$trail->parent('web.specialization.index');
+    $trail->push($slug, route('web.classification.view', $slug));
+});
 
 Breadcrumbs::for('web.specialization.view', function (BreadcrumbTrail $trail, Specialization $specialization) {
-    $trail->parent('web.employee.index'); //$trail->parent('web.specialization.index');
+    $trail->parent('web.services'); //$trail->parent('web.specialization.index');
     $trail->push($specialization->name, route('web.specialization.view', $specialization));
 });
 
