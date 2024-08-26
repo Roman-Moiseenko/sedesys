@@ -20,53 +20,56 @@ class Menu
     {
         $menu = new MenuRepository();
         return [
-            'page1' => [
-                'icon' => '',
-                'image' => '',
-                'name' => 'Услуги',
-                'submenu' => $menu->services(),
-                'url' => '*****',
-            ],
             'page1_1' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Категории',
                 'submenu' => $menu->classifications(),
-                'url' => '*****',
             ],
             'page1_2' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Категории и Услуги',
                 'submenu' => $menu->classification_services(),
-                'url' => '*****',
             ],
             'page2' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Специалисты',
-                'route' => route('web.employee.index'),
-                'url' => '*****',
+                'url' => route('web.employee.index'),
+                'submenu' => $menu->employees(),
             ],
+            'page21' => [
+                'icon' => '',
+                'image' => '',
+                'name' => 'Специализация',
+                //'url' => route('web.employee.index'),
+                'submenu' => $menu->specializations(),
+            ],
+            'page22' => [
+                'icon' => '',
+                'image' => '',
+                'name' => 'Категория и Специалисты',
+                'url' => route('web.employee.index'),
+                'submenu' => $menu->specialization_employees(),
+            ],
+
             'page3' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Цены',
-                'route' => route('web.home'),
-                'url' => '*****',
+                'url' => route('web.home'),
             ],
             'page4' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'Записаться',
-                'route' => route('web.home'),
-                'url' => '*****',
+                'url' => route('web.home'),
             ],
             'page5' => [
                 'icon' => '',
                 'image' => '',
                 'name' => 'О нас',
-                'url' => '*****',
                 'submenu' => [
                     'page31' => [
                         'icon' => '',
