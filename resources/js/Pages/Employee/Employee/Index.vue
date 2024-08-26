@@ -30,7 +30,11 @@
                 <el-table-column prop="phone" label="Телефон" width="120"/>
                 <el-table-column sortable prop="fullname" label="ФИО"/>
                 <el-table-column sortable prop="address" label="Адрес"/>
-
+                <el-table-column sortable prop="address" label="Стаж">
+                    <template #default="scope">
+                        {{ func.experience(scope.row.experience_year)}}
+                    </template>
+                </el-table-column>
                 <!-- Повторить -->
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
@@ -91,6 +95,7 @@
 <script lang="ts" setup>
 import {useStore} from "/resources/js/store.js"
 import TableFilter from '@/Components/TableFilter.vue'
+import { func } from '@/func.js'
 
 const store = useStore();
 

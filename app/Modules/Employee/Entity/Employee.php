@@ -80,6 +80,13 @@ class Employee extends Authenticatable implements WidgetData
         $this->save();
     }
 
+    //TODO расчет годов/лет от текущей даты
+/*
+
+    public function getExperience()
+    {
+        return is_null($this->experience_year) ? '' : (now()->year - $this->experience_year)
+    }*/
     //RELATIONS
 
     public function examples()
@@ -134,4 +141,5 @@ class Employee extends Authenticatable implements WidgetData
     {
         return $query->where('active', true);
     }
+
 }

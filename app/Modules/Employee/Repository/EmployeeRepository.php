@@ -47,6 +47,7 @@ class EmployeeRepository
                 'active' => $employee->active,
                 'address' => $employee->address->address,
                 'photo' => $employee->getImage('mini'),
+                'experience_year' => $employee->experience_year,
 
                 'url' => route('admin.employee.employee.show', $employee),
                 'edit' => route('admin.employee.employee.edit', $employee),
