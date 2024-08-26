@@ -24,10 +24,7 @@ Breadcrumbs::for('web.page.view', function (BreadcrumbTrail $trail, $slug) {
 
 
 //????? =>
-Breadcrumbs::for('web.specialization.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('web.home');
-    $trail->push('Специалисты', route('web.specialization.index'));
-});
+
 // <= ?????
 //УСЛУГИ
 ///БЕЗ КЛАССИФИКАЦИИ
@@ -72,6 +69,7 @@ Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, Employee
 
 
 ///БЕЗ СПЕЦИАЛИЗАЦИИ
+/*
 Breadcrumbs::for('web.employee.index', function (BreadcrumbTrail $trail) {
     $trail->parent('web.home');
     $trail->push('Специалисты', route('web.employee.index'));
@@ -81,7 +79,7 @@ Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, Employee
     $trail->parent('web.employee.index');
     $trail->push($employee->fullname->getShortname(), route('web.employee.view', $employee));
 });
-
+*/
 
 Breadcrumbs::for('web.test', function (BreadcrumbTrail $trail) {
     $trail->push('<i class="fa-light fa-house"></i>', route('web.test'));

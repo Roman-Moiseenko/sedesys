@@ -20,11 +20,23 @@ class Meta
         );
     }
 
-    public function __construct(string $h1 = '', string $title = '', string $description = '')
+    /**
+     * @param string $h1
+     * @param string $title
+     * @param string $description
+     * @param array $params - Альтернативный способ заполнения ['h1' => '', 'title' => '', 'description' => '']
+     */
+    public function __construct(string $h1 = '', string $title = '', string $description = '', array $params = [])
     {
-        $this->h1 = $h1;
-        $this->title = $title;
-        $this->description = $description;
+        if (!empty($params)) {
+            $this->h1 = $params['h1'];
+            $this->title = $params['title'];
+            $this->description = $params['description'];
+        } else {
+            $this->h1 = $h1;
+            $this->title = $title;
+            $this->description = $description;
+        }
     }
 
     public static function fromArray(?array $params): self
