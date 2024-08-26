@@ -52,8 +52,8 @@ class MenuRepository
         $result = [];
         foreach ($classifications as $classification) {
             $result[$classification->id] = [
-                'icon' => $classification->getIcon('mini'),
-                //'image' => '',
+                'image' => $classification->getIcon('mini'),
+                //'icon' => '',
                 'name' => $classification->name,
                 'url' => route('web.classification.view', $classification->slug),
             ];
@@ -66,7 +66,9 @@ class MenuRepository
     public function employees(int $specialization_id = null):array
     {
         $query = Employee::orderBy('created_at')->active();
-        if (!is_null($specialization_id)) $query->where('specialization_id', $specialization_id);
+        if (!is_null($specialization_id)) $query->whereHas('specializations', function ($q) use($specialization_id) {
+            $q->where('specialization_id', $specialization_id);
+        });
         $employees = $query->get();
         $result = [];
         foreach ($employees as $employee) {

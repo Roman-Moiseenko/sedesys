@@ -20,38 +20,18 @@ class Menu
     {
         $menu = new MenuRepository();
         return [
-            'page1_1' => [
-                'icon' => '',
-                'image' => '',
-                'name' => 'Категории',
-                'submenu' => $menu->classifications(),
-            ],
             'page1_2' => [
                 'icon' => '',
                 'image' => '',
-                'name' => 'Категории и Услуги',
+                'name' => 'Услуги',
                 'submenu' => $menu->classification_services(),
-            ],
-            'page2' => [
-                'icon' => '',
-                'image' => '',
-                'name' => 'Специалисты',
-                'url' => route('web.employee.index'),
-                'submenu' => $menu->employees(),
             ],
             'page21' => [
                 'icon' => '',
                 'image' => '',
-                'name' => 'Специализация',
-                //'url' => route('web.employee.index'),
+                'name' => 'Наша команда',
+                'url' => route('web.specialization.index'),
                 'submenu' => $menu->specializations(),
-            ],
-            'page22' => [
-                'icon' => '',
-                'image' => '',
-                'name' => 'Категория и Специалисты',
-                'url' => route('web.employee.index'),
-                'submenu' => $menu->specialization_employees(),
             ],
 
             'page3' => [
