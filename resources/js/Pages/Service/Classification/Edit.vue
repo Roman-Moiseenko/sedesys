@@ -33,6 +33,10 @@
                         <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
+                    <el-form-item label="Font Awesome" class="mt-2">
+                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="200" show-word-limit/>
+                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
+                    </el-form-item>
                 </div>
                 <div class="p-4">
                     <h2 class="font-medium mb-3">Изображение для каталога</h2>
@@ -142,6 +146,7 @@
         h1: props.classification.meta.h1,
         title: props.classification.meta.title,
         description: props.classification.meta.description,
+        awesome: props.classification.awesome,
         image: null,
         icon: null,
         _method: 'put',

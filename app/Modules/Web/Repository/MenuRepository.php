@@ -20,7 +20,7 @@ class MenuRepository
             $key = 'class_' . $classification->id;
             $result[$key] = [
                 'image' => $classification->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $classification->getAwesome(),
                 'name' => $classification->name,
                 'url' => route('web.classification.view', $classification->slug),
             ];
@@ -40,7 +40,7 @@ class MenuRepository
             $key = 'service_' . $service->id;
             $result[$key] = [
                 'image' => $service->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $service->getAwesome(),
                 'name' => $service->name,
                 'url' =>  route('web.service.view', $service->slug),
             ];
@@ -57,7 +57,7 @@ class MenuRepository
             $key = 'class_service_' . $classification->id;
             $result[$key] = [
                 'image' => $classification->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $classification->getAwesome(),
                 'name' => $classification->name,
                 'url' => route('web.classification.view', $classification->slug),
             ];
@@ -79,7 +79,7 @@ class MenuRepository
             $key = 'employee' . $employee->id;
             $result[$key] = [
                 'image' => $employee->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $employee->getAwesome(),
                 'name' => $employee->fullname->getFullName(),
                 'url' =>  route('web.employee.view', $employee),
             ];
@@ -95,7 +95,7 @@ class MenuRepository
             $key = 'special_' . $specialization->id;
             $result[$key] = [
                 'image' => $specialization->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $specialization->getAwesome(),
                 'name' => $specialization->name,
                 'url' =>  route('web.specialization.view', $specialization->slug),
             ];
@@ -111,7 +111,7 @@ class MenuRepository
             $key = 'special_employee_' . $specialization->id;
             $result[$key] = [
                 'image' => $specialization->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $specialization->getAwesome(),
                 'name' => $specialization->name,
                 'url' =>  route('web.specialization.view', $specialization->slug),
                 'submenu' => $this->employees($specialization->id),
@@ -128,7 +128,7 @@ class MenuRepository
             $key = 'page_' . $page->id;
             $result[$key] = [
                 'image' => $page->getIcon('mini'),
-                //'icon' => '',
+                'icon' => $page->getAwesome(),
                 'name' => $page->name,
                 'url' => route('web.page.view', $page->slug),
             ];

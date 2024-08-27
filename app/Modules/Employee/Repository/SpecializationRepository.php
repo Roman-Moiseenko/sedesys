@@ -86,5 +86,10 @@ class SpecializationRepository
         })->toArray();
     }
 
+    public function getShow(int $id): Specialization
+    {
+        return Specialization::where('id', $id)->with('employees')->first();
+    }
+
 
 }

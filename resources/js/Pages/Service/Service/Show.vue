@@ -27,6 +27,7 @@
                             <el-descriptions-item label="Страница (H1)">{{ service.meta.h1 }}</el-descriptions-item>
                             <el-descriptions-item label="Заголовок">{{ service.meta.title }}</el-descriptions-item>
                             <el-descriptions-item label="Описание">{{ service.meta.description }}</el-descriptions-item>
+                            <el-descriptions-item label="Font Awesome">{{ service.awesome }}</el-descriptions-item>
                         </el-descriptions>
 
                     </div>

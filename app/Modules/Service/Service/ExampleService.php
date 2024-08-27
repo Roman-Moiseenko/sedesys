@@ -10,7 +10,6 @@ use App\Modules\Service\Entity\Example;
 
 class ExampleService
 {
-
     public function create(Request $request): Example
     {
         $example = Example::register(

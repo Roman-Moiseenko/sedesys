@@ -33,19 +33,10 @@ class SpecializationService
 
     private function save_fields(Specialization $specialization, Request $request)
     {
-        $specialization->meta = Meta::fromRequest($request);
-        $specialization->save();
+        $specialization->saveDisplayed($request);
 
         $this->attach($specialization, $request);
 
-        $specialization->saveImage(
-            $request->file('image'),
-            $request->boolean('clear_image')
-        );
-        $specialization->saveIcon(
-            $request->file('icon'),
-            $request->boolean('clear_icon')
-        );
     }
 
     public function destroy(Specialization $specialization)

@@ -76,7 +76,6 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-
         $service = $this->repository->getShow($service->id);
         $out_employees = $this->repository->outEmployees($service);
 
@@ -86,15 +85,17 @@ class ServiceController extends Controller
                 'toggle' => route('admin.service.service.toggle', $service),
                 'image' => $service->getImage(),
                 'icon' => $service->getIcon(),
+
                 'add' => route('admin.service.service.add', $service),
                 'del' => route('admin.service.service.del', $service),
                 'set' => route('admin.service.service.set', $service),
                 'attach' => route('admin.service.service.attach', $service),
                 'detach' => route('admin.service.service.detach', $service),
+                'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
+
                 'gallery' => $this->repository->getGallery($service),
                 'out_employees' => $out_employees,
                 'examples' => $this->exampleRepository->getShowByService($service),
-                'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
             ]
         );
     }

@@ -7,11 +7,12 @@
             <div class="p-4">
                 <div class="flex flex-col justify-center items-center lg:items-start mt-4">
                     <el-descriptions :column="1" border>
-                        <el-descriptions-item label="Специализация">{{ $props.specialization.name }}</el-descriptions-item>
-                        <el-descriptions-item label="Ссылка">{{ $props.specialization.slug }}</el-descriptions-item>
-                        <el-descriptions-item label="Страница (H1)">{{ $props.specialization.meta.h1 }}</el-descriptions-item>
-                        <el-descriptions-item label="Заголовок">{{ $props.specialization.meta.title }}</el-descriptions-item>
-                        <el-descriptions-item label="Описание">{{ $props.specialization.meta.description }}</el-descriptions-item>
+                        <el-descriptions-item label="Специализация">{{ specialization.name }}</el-descriptions-item>
+                        <el-descriptions-item label="Ссылка">{{ specialization.slug }}</el-descriptions-item>
+                        <el-descriptions-item label="Страница (H1)">{{ specialization.meta.h1 }}</el-descriptions-item>
+                        <el-descriptions-item label="Заголовок">{{ specialization.meta.title }}</el-descriptions-item>
+                        <el-descriptions-item label="Описание">{{ specialization.meta.description }}</el-descriptions-item>
+                        <el-descriptions-item label="Font Awesome">{{ specialization.awesome }}</el-descriptions-item>
                     </el-descriptions>
                 </div>
             </div>

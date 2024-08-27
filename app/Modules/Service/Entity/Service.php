@@ -15,27 +15,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * @property int $id
  * @property int $classification_id
- * @property string $name
- * @property string $slug
  * @property string $text
- * @property bool $active
  * @property int $price // В рублях
  * @property int $duration // В минутах
  * @property string $template //Шаблон, либо общий, либо для каждой услуги свой
  * @property string $data // json данных, можно использовать в шаблоне
- * @property Carbon $created_at
- * @property Carbon $updated_at
  *
  * @property Classification $classification
- * @property Photo $image //Главное фото на карточку
- * @property Photo $icon //Иконка в меню, в список и т.п.
- * @property Meta $meta
  * @property Photo[] $gallery //Галерея изображений
  * @property Employee[] $employees
  * @property Example[] $examples
- *
  */
 class Service extends DisplayedModel implements WidgetData
 {
@@ -43,55 +33,14 @@ class Service extends DisplayedModel implements WidgetData
 
     protected $attributes = [
         'text' => '',
-       // 'meta' => '{}',
         'data' => '{}',
-
     ];
     protected $casts = [
-     //   'created_at' => 'datetime',
-    //    'updated_at' => 'datetime',
-       // 'meta' => MetaCast::class,
         'data' => 'json',
     ];
-    protected $fillable = [
-      //  'name',
-     //   'slug',
-     //   'classification_id',
-     //   'active',
-    ];
 
-   /* public static function register(string $name, int $classification_id = null, string $slug = ''): self
-    {
-        return self::create([
-            'name' => $name,
-            'classification_id' => $classification_id,
-            'slug' => empty($slug) ? Str::slug($name) : $slug,
-            'active' => false,
-        ]);
-    }*/
-/*
-    public function isActive(): bool
-    {
-        return $this->active == true;
-    }
-
-    public function activated()
-    {
-        $this->active = true;
-        $this->save();
-    }
-
-    public function draft()
-    {
-        $this->active = false;
-        $this->save();
-    }
-*/
     public function setPrice($price): void
     {
-        /**
-         * Сетеры
-         */
         $this->price = $price;
         $this->save();
     }
@@ -99,7 +48,6 @@ class Service extends DisplayedModel implements WidgetData
     /**
      * Гетеры
      */
-
 
     public function getDurationText(): string
     {
@@ -143,31 +91,8 @@ class Service extends DisplayedModel implements WidgetData
     {
         return $this->morphMany(Photo::class, 'imageable')->where('type','gallery');
     }
-/*
-    public function image()
-    {
-        return $this->morphOne(Photo::class, 'imageable')->where('type','image')->withDefault();
-    }
 
-    public function icon()
-    {
-        return $this->morphOne(Photo::class, 'imageable')->where('type', 'icon')->withDefault();
-    }
-
-    public function getImage(string $thumb = ''): ?string
-    {
-        if (is_null($this->image) || is_null($this->image->file)) return null;
-        if (empty($thumb)) return $this->image->getUploadUrl();
-        return $this->image->getThumbUrl($thumb);
-    }
-
-    public function getIcon(string $thumb = ''): ?string
-    {
-        if (is_null($this->icon) || is_null($this->icon->file)) return null;
-        if (empty($thumb)) return $this->icon->getUploadUrl();
-        return $this->icon->getThumbUrl($thumb);
-    }
-*/
+    //Interface
     public function getUrl(): string
     {
         return route('web.service.view', $this->slug);
@@ -183,8 +108,4 @@ class Service extends DisplayedModel implements WidgetData
         return $this->meta->description;
     }
 
-    public function scopeActive($query)
-    {
-        return $query->where('active', true);
-    }
 }

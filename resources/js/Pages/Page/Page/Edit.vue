@@ -42,6 +42,10 @@
                         <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
+                    <el-form-item label="Font Awesome" class="mt-2">
+                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="200" show-word-limit/>
+                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
+                    </el-form-item>
                 </div>
                 <div class="p-4">
                     <div>
@@ -165,7 +169,7 @@ const form = reactive({
     h1: props.page.meta.h1,
     title: props.page.meta.title,
     description: props.page.meta.description,
-
+    awesome: props.page.awesome,
     template: props.page.template,
     text: props.page.text,
     image: null,
@@ -175,11 +179,8 @@ const form = reactive({
     clear_icon: false,
 })
 
-function handleMaskName(val) {
-    /**
-     * Функции маски ввода
-     * Например, form.phone = func.MaskPhone(val);
-     */
+function handleMaskSlug(val) {
+    form.slug = func.MaskSlug(val);
 }
 
 function onSubmit() {

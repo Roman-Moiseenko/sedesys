@@ -38,6 +38,10 @@
                         <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
+                    <el-form-item label="Font Awesome" class="mt-2">
+                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="200" show-word-limit/>
+                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
+                    </el-form-item>
                 </div>
                 <div class="p-4">
                     <el-form-item label="Цена">
@@ -171,6 +175,7 @@
         h1: null,
         title: null,
         description: null,
+        awesome: null,
         image: null,
         icon: null,
         price: null,
@@ -178,7 +183,6 @@
         template: null,
         data: null,
         text: null,
-
     })
 
     function handleMaskSlug(val) {

@@ -38,9 +38,8 @@ class ServiceService
 
     private function save_fields(Service $service, Request $request)
     {
-        /**
-         * Сохраняем оставшиеся поля
-         */
+        $service->saveDisplayed($request);
+
         $service->template = $request->string('template')->value();
         $service->price = $request->integer('price', null);
         $service->duration = $request->integer('duration', null);
@@ -48,19 +47,8 @@ class ServiceService
         $service->text = $request->string('text')->trim()->value();
         $service->data = $request->string('data')->trim()->value();
 
-        $service->meta = Meta::fromRequest($request);
         $service->classification_id = $request->integer('classification_id', null);
         $service->save();
-
-        $service->saveImage(
-            $request->file('image'),
-            $request->boolean('clear_image')
-        );
-        $service->saveIcon(
-            $request->file('icon'),
-            $request->boolean('clear_icon')
-        );
-
     }
 
 

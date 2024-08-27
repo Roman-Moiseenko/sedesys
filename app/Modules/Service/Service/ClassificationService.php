@@ -45,19 +45,10 @@ class ClassificationService
 
     private function save_fields(Classification $classification, Request $request)
     {
-        $classification->meta = Meta::fromRequest($request);
+        $classification->saveDisplayed($request);
+
         $classification->parent_id = $request->integer('parent_id', null);
-
         $classification->save();
-
-        $classification->saveImage(
-            $request->file('image'),
-            $request->boolean('clear_image')
-        );
-        $classification->saveIcon(
-            $request->file('icon'),
-            $request->boolean('clear_icon')
-        );
     }
 
 }

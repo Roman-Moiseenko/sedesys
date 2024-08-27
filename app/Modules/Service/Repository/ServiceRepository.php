@@ -77,7 +77,7 @@ class ServiceRepository
         return $result;
     }
 
-    public function getShow(int $id)
+    public function getShow(int $id): Service
     {
         return  Service::where('id', $id)
             ->with('classification')

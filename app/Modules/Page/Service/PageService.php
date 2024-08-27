@@ -39,22 +39,12 @@ class PageService
 
     private function save_fields(Page $page, Request $request)
     {
-        $page->meta = Meta::fromRequest($request);
+        $page->saveDisplayed($request);
 
         $page->template = $request->string('template')->value();
         $page->parent_id = $request->integer('parent_id', null);
-
         $page->text = $request->string('text')->value();
         $page->save();
-
-        $page->saveImage(
-            $request->file('image'),
-            $request->boolean('clear_image')
-        );
-        $page->saveIcon(
-            $request->file('icon'),
-            $request->boolean('clear_icon')
-        );
     }
 
     public function destroy(Page $page)

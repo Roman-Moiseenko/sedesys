@@ -54,8 +54,8 @@ class SpecializationController extends Controller
 
     public function show(Specialization $specialization)
     {
+        $specialization = $this->repository->getShow($specialization->id);
 
-        $specialization = Specialization::where('id', $specialization->id)->with('employees')->first();
         return Inertia::render('Employee/Specialization/Show', [
                 'specialization' => $specialization,
                 'edit' => route('admin.employee.specialization.edit', $specialization),

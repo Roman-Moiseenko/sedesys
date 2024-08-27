@@ -13,6 +13,7 @@
                     <el-descriptions-item label="Страница (H1)">{{ page.meta.h1 }}</el-descriptions-item>
                     <el-descriptions-item label="Заголовок">{{ page.meta.title }}</el-descriptions-item>
                     <el-descriptions-item label="Описание">{{ page.meta.description }}</el-descriptions-item>
+                    <el-descriptions-item label="Font Awesome">{{ page.awesome }}</el-descriptions-item>
                 </el-descriptions>
 
             </div>
