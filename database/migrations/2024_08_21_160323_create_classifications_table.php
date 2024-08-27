@@ -14,6 +14,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->string('awesome')->nullable();
+            $table->boolean('active')->default(false);
+            $table->timestamp('activated_at')->nullable();
             $table->json('meta');
             $table->timestamps();
             NestedSet::columns($table);

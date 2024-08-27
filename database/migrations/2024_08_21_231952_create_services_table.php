@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->boolean('active')->default(false);
+            $table->string('awesome')->nullable();
+            $table->timestamp('activated_at')->nullable();
             $table->longText('text');
             $table->integer('price')->nullable();
             $table->integer('duration')->nullable();

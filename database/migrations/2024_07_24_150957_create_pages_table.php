@@ -15,9 +15,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->timestamps();
-            $table->timestamp('published_at')->nullable();
-            $table->boolean('published')->default(false);
-            //$table->unsignedBigInteger('parent_id')->nullable();
+            $table->timestamp('activated_at')->nullable();
+            $table->boolean('active')->default(false);
+            $table->string('awesome')->nullable();
             $table->json('meta');
             $table->string('template')->default('text');
             $table->longText('text');

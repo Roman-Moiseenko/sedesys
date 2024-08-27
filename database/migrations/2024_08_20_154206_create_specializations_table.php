@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('slug');
             $table->json('meta');
             $table->boolean('active')->default(false);
+            $table->string('awesome')->nullable();
+            $table->timestamp('activated_at')->nullable();
             $table->integer('sort')->default(0);
             $table->timestamps();
         });
