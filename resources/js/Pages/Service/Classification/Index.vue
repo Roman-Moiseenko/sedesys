@@ -55,6 +55,18 @@
                                 <Bottom/>
                             </el-icon>
                         </el-button>
+                        <el-button v-if="scope.row.active"
+                                   size="small"
+                                   type="warning"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Hide
+                        </el-button>
+                        <el-button v-if="!scope.row.active"
+                                   size="small"
+                                   type="success"
+                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                            Show
+                        </el-button>
                         <el-button
                             size="small"
                             @click.stop="handleEdit(scope.$index, scope.row)">
@@ -102,9 +114,6 @@
     const store = useStore();
 
     interface IRow {
-        /**
-         * Статусы
-        */
         active: number
     }
     const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
@@ -171,6 +180,11 @@ export default {
         },
         handleDown(index, row) {
             router.visit(row.down, {
+                method: 'post'
+            });
+        },
+        handleToggle(index, row) {
+            router.visit(row.toggle, {
                 method: 'post'
             });
         },

@@ -25,8 +25,7 @@ class SpecializationService
     public function update(Specialization $specialization, Request $request)
     {
         $specialization->name = $request->string('name')->trim()->value();
-        $slug = $request->string('slug')->trim()->value();
-        $specialization->slug = empty($slug) ? Str::slug($specialization->name) : $slug;
+        $specialization->setSlug($request->string('slug')->trim()->value());
         $specialization->save();
 
         $this->save_fields($specialization, $request);
@@ -39,35 +38,19 @@ class SpecializationService
 
         $this->attach($specialization, $request);
 
-        if ($request->boolean('clear_image') && !is_null($specialization->image)) {
-            $specialization->image->delete();
-        }
-        if ($request->boolean('clear_icon') && !is_null($specialization->icon)) {
-            $specialization->icon->delete();
-        }
-
-        $this->image($specialization, $request->file('image'));
-        $this->icon($specialization, $request->file('icon'));
+        $specialization->saveImage(
+            $request->file('image'),
+            $request->boolean('clear_image')
+        );
+        $specialization->saveIcon(
+            $request->file('icon'),
+            $request->boolean('clear_icon')
+        );
     }
 
     public function destroy(Specialization $specialization)
     {
         $specialization->delete();
-    }
-
-
-    private function image(Specialization $specialization, $file): void
-    {
-        if (empty($file)) return;
-        $specialization->image->newUploadFile($file, 'image');
-        $specialization->refresh();
-    }
-
-    private function icon(Specialization $specialization, $file): void
-    {
-        if (empty($file)) return;
-        $specialization->icon->newUploadFile($file, 'icon');
-        $specialization->refresh();
     }
 
     public function up(Specialization $specialization)
@@ -109,7 +92,6 @@ class SpecializationService
 
     public function detach(Specialization $specialization, Request $request)
     {
-        //dd($request->integer('employee_id'));
         $specialization->employees()->detach($request->integer('employee_id'));
     }
 }

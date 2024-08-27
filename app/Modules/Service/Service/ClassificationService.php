@@ -20,7 +20,6 @@ class ClassificationService
         //dd($request->all());
         $classification = Classification::register(
             $request->string('name')->trim()->value(),
-            $request->integer('parent_id', null),
             $request->string('slug')->trim()->value(),
         );
 
@@ -32,14 +31,11 @@ class ClassificationService
     public function update(Classification $classification, Request $request)
     {
         $classification->name = $request->string('name')->trim()->value();
-        $classification->parent_id = $request->integer('parent_id', null);
-        $slug = $request->string('slug')->trim()->value();
-        $classification->slug = empty($slug) ? Str::slug($classification->name) : $slug;
+        $classification->setSlug($request->string('slug')->trim()->value());
         $classification->save();
 
         $this->save_fields($classification, $request);
     }
-
 
 
     public function destroy(Classification $classification)
@@ -47,34 +43,21 @@ class ClassificationService
         $classification->delete();
     }
 
-    //TODO Перенести в Trait ModelPage Интерфейс ()
     private function save_fields(Classification $classification, Request $request)
     {
         $classification->meta = Meta::fromRequest($request);
+        $classification->parent_id = $request->integer('parent_id', null);
+
         $classification->save();
 
-        if ($request->boolean('clear_image') && !is_null($classification->image)) {
-            $classification->image->delete();
-        }
-        if ($request->boolean('clear_icon') && !is_null($classification->icon)) {
-            $classification->icon->delete();
-        }
-
-        $this->image($classification, $request->file('image'));
-        $this->icon($classification, $request->file('icon'));
+        $classification->saveImage(
+            $request->file('image'),
+            $request->boolean('clear_image')
+        );
+        $classification->saveIcon(
+            $request->file('icon'),
+            $request->boolean('clear_icon')
+        );
     }
 
-    private function image(Classification $classification, $file): void
-    {
-        if (empty($file)) return;
-        $classification->image->newUploadFile($file, 'image');
-        $classification->refresh();
-    }
-
-    private function icon(Classification $classification, $file): void
-    {
-        if (empty($file)) return;
-        $classification->icon->newUploadFile($file, 'icon');
-        $classification->refresh();
-    }
 }

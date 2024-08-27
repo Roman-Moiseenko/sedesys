@@ -105,11 +105,11 @@ class PageController extends Controller
 
     public function toggle(Page $page)
     {
-        if ($page->isPublished()) {
+        if ($page->isActive()) {
             $page->draft();
             $success = 'Страница убрана из показа';
         } else {
-            $page->published();
+            $page->activated();
             $success = 'Страница показывается на сайте';
         }
         return redirect()->back()->with('success', $success);

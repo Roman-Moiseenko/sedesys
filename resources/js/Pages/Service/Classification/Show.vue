@@ -44,6 +44,8 @@
         </div>
         <div class="mt-3 flex flex-row">
             <el-button type="primary" @click="goEdit">Редактировать</el-button>
+            <el-button v-if="!classification.active" type="success" @click="handleToggle">Показывать</el-button>
+            <el-button v-if="classification.active" type="warning" @click="handleToggle">Скрыть из показа</el-button>
         </div>
     </div>
     <div class="mt-3 p-3 bg-white rounded-lg">
@@ -64,13 +66,13 @@
                     <el-button v-if="scope.row.active"
                                size="small"
                                type="warning"
-                               @click.stop="handleToggle(scope.$index, scope.row)">
+                               @click.stop="handleToggleRow(scope.$index, scope.row)">
                         Hide
                     </el-button>
                     <el-button v-if="!scope.row.active"
                                size="small"
                                type="success"
-                               @click.stop="handleToggle(scope.$index, scope.row)">
+                               @click.stop="handleToggleRow(scope.$index, scope.row)">
                         Show
                     </el-button>
                     <el-button
@@ -86,7 +88,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link } from '@inertiajs/vue3'
+import {Head, Link, router} from '@inertiajs/vue3'
     interface IRow {
         active: number
     }
@@ -105,13 +107,16 @@
         },
         image: String,
         icon: String,
+        toggle: String,
         services: Array,
     });
 
     /**
      * Методы
      */
-
+    function handleToggle() {
+        router.post(props.toggle);
+    }
 
 </script>
 <script lang="ts">
@@ -127,7 +132,7 @@
             routeClick(row) {
                 router.get(row.url)
             },
-            handleToggle(index, row) {
+            handleToggleRow(index, row) {
                 router.visit(row.toggle, {
                     method: 'post'
                 });

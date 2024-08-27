@@ -33,7 +33,7 @@ class SitemapXmlController extends Controller
                 'date' => $product->updated_at->format('c'),
                 'changefreq' => 'weekly'
             ];
-        }, Service::where('published', true)->getModels());
+        }, Service::active()->getModels());
     }*/
 /*
     private function products(): array
@@ -67,7 +67,7 @@ class SitemapXmlController extends Controller
                 'date' => $page->updated_at->format('c'),
                 'changefreq' => 'weekly'
             ];
-        }, Page::where('published', true)->getModels());
+        }, Page::active()->getModels());
     }
 
     private function static(): array
@@ -89,7 +89,7 @@ class SitemapXmlController extends Controller
                 'date' => $promotion->start_at->format('c'),
                 'changefreq' => 'weekly'
             ];
-        }, Promotion::where('published', true)->where('active', true)->getModels());
+        }, Promotion::active()->where('active', true)->getModels());
     }
 */
 }

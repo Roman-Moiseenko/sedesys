@@ -64,6 +64,7 @@ class ClassificationController extends Controller
         return Inertia::render('Service/Classification/Show', [
                 'classification' => $classification,
                 'edit' => route('admin.service.classification.edit', $classification),
+                'toggle' => route('admin.service.classification.toggle', $classification),
                 'image' => $classification->getImage(),
                 'icon' => $classification->getIcon(),
                 'services' => $services,
@@ -109,5 +110,17 @@ class ClassificationController extends Controller
     {
         $classification->down();
         return redirect()->back()->with('success', 'Сохранено');
+    }
+
+    public function toggle(Classification $classification)
+    {
+        if ($classification->isActive()) {
+            $classification->draft();
+            $success = 'Классификация убрана из показа';
+        } else {
+            $classification->activated();
+            $success = 'Классификация доступна на сайте';
+        }
+        return redirect()->back()->with('success', $success);
     }
 }

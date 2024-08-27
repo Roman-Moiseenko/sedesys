@@ -19,7 +19,6 @@ class ServiceService
 
         $service = Service::register(
             $request->string('name')->trim()->value(),
-            $request->input('classification_id', null),
             $request->string('slug')->trim()->value(),
         );
 
@@ -31,9 +30,7 @@ class ServiceService
     public function update(Service $service, Request $request)
     {
         $service->name = $request->string('name')->trim()->value();
-        $service->classification_id = $request->integer('classification_id', null);
-        $slug = $request->string('slug')->trim()->value();
-        $service->slug = empty($slug) ? Str::slug($service->name) : $slug;
+        $service->setSlug($request->string('slug')->trim()->value());
         $service->save();
 
         $this->save_fields($service, $request);
@@ -52,18 +49,18 @@ class ServiceService
         $service->data = $request->string('data')->trim()->value();
 
         $service->meta = Meta::fromRequest($request);
-
+        $service->classification_id = $request->integer('classification_id', null);
         $service->save();
 
-        if ($request->boolean('clear_image') && !is_null($service->image)) {
-            $service->image->delete();
-        }
-        if ($request->boolean('clear_icon') && !is_null($service->icon)) {
-            $service->icon->delete();
-        }
+        $service->saveImage(
+            $request->file('image'),
+            $request->boolean('clear_image')
+        );
+        $service->saveIcon(
+            $request->file('icon'),
+            $request->boolean('clear_icon')
+        );
 
-        $this->image($service, $request->file('image'));
-        $this->icon($service, $request->file('icon'));
     }
 
 
@@ -75,19 +72,6 @@ class ServiceService
         $service->delete();
     }
 
-    private function image(Service $service, $file): void
-    {
-        if (empty($file)) return;
-        $service->image->newUploadFile($file, 'image');
-        $service->refresh();
-    }
-
-    private function icon(Service $service, $file): void
-    {
-        if (empty($file)) return;
-        $service->icon->newUploadFile($file, 'icon');
-        $service->refresh();
-    }
 
     public function addPhoto(Service $service, Request $request)
     {

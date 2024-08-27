@@ -132,11 +132,6 @@ class Employee extends Authenticatable implements WidgetData
         return '';
     }
 
-    public function getIcon(string $thumb = ''): ?string
-    {
-        return null;
-    }
-
     public function scopeActive($query)
     {
         return $query->where('active', true);

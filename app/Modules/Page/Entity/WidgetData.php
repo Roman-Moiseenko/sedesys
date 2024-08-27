@@ -5,14 +5,12 @@ namespace App\Modules\Page\Entity;
 
 interface WidgetData
 {
-    public function getImage(string $thumb = ''): ?string;
-    public function getIcon(string $thumb = ''): ?string;
+    //public function getImage(string $thumb = ''): ?string;
+    //public function getIcon(string $thumb = ''): ?string;
 
     public function getUrl(): string;
-
     public function getCaption(): string;
-
     public function getText(): string;
 
-    public function scopeActive($query);
+    //public function scopeActive($query); //TODO Можно убрать
 }

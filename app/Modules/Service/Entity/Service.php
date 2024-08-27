@@ -3,6 +3,7 @@
 namespace App\Modules\Service\Entity;
 
 use App\Modules\Base\Casts\MetaCast;
+use App\Modules\Base\Entity\DisplayedModel;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Employee\Entity\Employee;
@@ -36,30 +37,30 @@ use Illuminate\Support\Str;
  * @property Example[] $examples
  *
  */
-class Service extends Model implements WidgetData
+class Service extends DisplayedModel implements WidgetData
 {
     use HasFactory;
 
     protected $attributes = [
         'text' => '',
-        'meta' => '{}',
+       // 'meta' => '{}',
         'data' => '{}',
 
     ];
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'meta' => MetaCast::class,
+     //   'created_at' => 'datetime',
+    //    'updated_at' => 'datetime',
+       // 'meta' => MetaCast::class,
         'data' => 'json',
     ];
     protected $fillable = [
-        'name',
-        'slug',
-        'classification_id',
-        'active',
+      //  'name',
+     //   'slug',
+     //   'classification_id',
+     //   'active',
     ];
 
-    public static function register(string $name, int $classification_id = null, string $slug = ''): self
+   /* public static function register(string $name, int $classification_id = null, string $slug = ''): self
     {
         return self::create([
             'name' => $name,
@@ -67,8 +68,8 @@ class Service extends Model implements WidgetData
             'slug' => empty($slug) ? Str::slug($name) : $slug,
             'active' => false,
         ]);
-    }
-
+    }*/
+/*
     public function isActive(): bool
     {
         return $this->active == true;
@@ -85,7 +86,7 @@ class Service extends Model implements WidgetData
         $this->active = false;
         $this->save();
     }
-
+*/
     public function setPrice($price): void
     {
         /**
@@ -142,7 +143,7 @@ class Service extends Model implements WidgetData
     {
         return $this->morphMany(Photo::class, 'imageable')->where('type','gallery');
     }
-
+/*
     public function image()
     {
         return $this->morphOne(Photo::class, 'imageable')->where('type','image')->withDefault();
@@ -166,7 +167,7 @@ class Service extends Model implements WidgetData
         if (empty($thumb)) return $this->icon->getUploadUrl();
         return $this->icon->getThumbUrl($thumb);
     }
-
+*/
     public function getUrl(): string
     {
         return route('web.service.view', $this->slug);

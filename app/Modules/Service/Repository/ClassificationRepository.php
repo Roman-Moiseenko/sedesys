@@ -45,6 +45,7 @@ class ClassificationRepository
                 'name' => $classification->name,
                 'slug' => $classification->slug,
                 'meta' => $classification->meta,
+                'active' => $classification->isActive(),
                 'image' => $classification->getImage('mini'),
                 'icon' => $classification->getIcon('mini'),
                 'services' => $classification->services()->count() . $count,
@@ -54,6 +55,7 @@ class ClassificationRepository
                 'destroy' => route('admin.service.classification.destroy', $classification),
                 'up' => route('admin.service.classification.up', $classification),
                 'down' => route('admin.service.classification.down', $classification),
+                'toggle' => route('admin.service.classification.toggle', $classification),
 
                 'children' => $children ?? null,
             ];

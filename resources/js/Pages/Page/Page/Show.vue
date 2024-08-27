@@ -49,8 +49,8 @@
         </div>
         <div class="mt-3 flex flex-row">
             <el-button type="primary" @click="goEdit">Редактировать</el-button>
-            <el-button v-if="!$props.page.published" type="success" @click="handleToggle">Опубликовать</el-button>
-            <el-button v-if="$props.page.published" type="warning" @click="handleToggle">В черновик</el-button>
+            <el-button v-if="!$props.page.active" type="success" @click="handleToggle">Опубликовать</el-button>
+            <el-button v-if="$props.page.active" type="warning" @click="handleToggle">В черновик</el-button>
         </div>
     </div>
 

@@ -12,7 +12,7 @@ class WebController extends Controller
 
     public function home()
     {
-        if (!is_null($page = Page::where('slug', 'home')->where('published', true)->first())) {
+        if (!is_null($page = Page::where('slug', 'home')->active()->first())) {
             return $page->view();
         } else {
             return view('web.home');
@@ -21,7 +21,7 @@ class WebController extends Controller
 
     public function page(string $slug)
     {
-        if (!is_null($page = Page::where('slug', $slug)->where('published', true)->first())) {
+        if (!is_null($page = Page::where('slug', $slug)->active()->first())) {
             return $page->view();
         } else {
             abort(404, 'Страница не найдена');

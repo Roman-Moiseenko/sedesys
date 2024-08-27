@@ -16,6 +16,7 @@ Route::group(
             function () {
                 Route::post('/{classification}/up', 'ClassificationController@up')->name('up');
                 Route::post('/{classification}/down', 'ClassificationController@down')->name('down');
+                Route::post('/{classification}/toggle', 'ClassificationController@toggle')->name('toggle');
             }
         );
         Route::group(

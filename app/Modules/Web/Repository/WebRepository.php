@@ -30,7 +30,7 @@ class WebRepository
 
     public function PageBySlug(string $slug): Page
     {
-        return Page::where('slug', $slug)->where('published', true)->firstOrFail();
+        return Page::where('slug', $slug)->active()->firstOrFail();
     }
 
     //Модуль Персонал

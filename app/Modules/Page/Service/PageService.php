@@ -30,10 +30,8 @@ class PageService
 
     public function update(Page $page, Request $request)
     {
-
         $page->name = $request->string('name')->trim()->value();
-        $slug = $request->string('slug')->trim()->value();
-        $page->slug = empty($slug) ? Str::slug($page->name) : $slug;
+        $page->setSlug($request->string('slug')->trim()->value());
         $page->save();
 
         $this->save_fields($page, $request);
@@ -49,17 +47,15 @@ class PageService
         $page->text = $request->string('text')->value();
         $page->save();
 
-        if ($request->boolean('clear_image') && !is_null($page->image)) {
-            $page->image->delete();
-        }
-        if ($request->boolean('clear_icon') && !is_null($page->icon)) {
-            $page->icon->delete();
-        }
-        $this->image($page, $request->file('image'));
-        $this->icon($page, $request->file('icon'));
-
+        $page->saveImage(
+            $request->file('image'),
+            $request->boolean('clear_image')
+        );
+        $page->saveIcon(
+            $request->file('icon'),
+            $request->boolean('clear_icon')
+        );
     }
-
 
     public function destroy(Page $page)
     {
@@ -67,19 +63,5 @@ class PageService
          * Проверить на возможность удаления
          */
         $page->delete();
-    }
-
-    private function image(Page $page, $file): void
-    {
-        if (empty($file)) return;
-        $page->image->newUploadFile($file, 'image');
-        $page->refresh();
-    }
-
-    private function icon(Page $page, $file): void
-    {
-        if (empty($file)) return;
-        $page->icon->newUploadFile($file, 'icon');
-        $page->refresh();
     }
 }
