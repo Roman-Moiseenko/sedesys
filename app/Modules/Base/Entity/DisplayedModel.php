@@ -7,12 +7,14 @@ use App\Modules\Base\Casts\MetaCast;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Page\Entity\Page;
-use App\Modules\Page\Entity\WidgetData;
 use App\Modules\Service\Entity\Classification;
 use App\Modules\Service\Entity\Service;
+use App\Modules\Web\Helpers\CacheHelper;
+use App\Modules\Web\Helpers\Menu;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -148,6 +150,14 @@ abstract class DisplayedModel extends Model implements DisplayedData
             $request->boolean('clear_icon')
         );
 
+        Cache::put(CacheHelper::MENU_TOP, Menu::menuTop());
+        //TODO Продумать Событие
+        //Произошло изменение страниц для меню.
+        //Создать Кеш
+
+        //event(new CacheHasChange('menu_top', Menu::menuTop()));
+        //$cache = new CacheRepository();
+        //$cache->setCache('menu_top', Menu::menuTop());
     }
 
     /**

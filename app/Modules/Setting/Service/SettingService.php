@@ -3,10 +3,11 @@
 namespace App\Modules\Setting\Service;
 
 use App\Modules\Setting\Repository\SettingRepository;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Modules\Web\Helpers\CacheHelper;
+use App\Modules\Web\Helpers\Menu;
 use Illuminate\Http\Request;
 use App\Modules\Setting\Entity\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class SettingService
 {
@@ -31,6 +32,7 @@ class SettingService
 
         if ($slug == 'notification') $this->saveTelegramToken();
         if ($slug == 'mail') $this->saveMailBoxes();
+        if ($slug == 'web') $this->saveCache();
     }
 
     private function saveTelegramToken()
@@ -59,5 +61,10 @@ class SettingService
             "{$key}={$value}",
             file_get_contents($path)
         ));
+    }
+
+    private function saveCache()
+    {
+        Cache::put(CacheHelper::MENU_TOP, Menu::menuTop());
     }
 }

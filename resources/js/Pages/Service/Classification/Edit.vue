@@ -34,7 +34,7 @@
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
                     <el-form-item label="Font Awesome" class="mt-2">
-                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="200" show-word-limit/>
+                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="50" show-word-limit/>
                         <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
                     </el-form-item>
                 </div>

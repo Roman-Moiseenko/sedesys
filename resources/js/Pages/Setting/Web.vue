@@ -19,6 +19,13 @@
                     <el-form-item label="Авторизация по телефону">
                         <el-checkbox v-model="form.auth_phone"/>
                     </el-form-item>
+                    <el-form-item label="Иконки в меню">
+                        <el-radio-group v-model="form.menu_icon" label="">
+                            <el-radio-button label="Нет" value="none" />
+                            <el-radio-button label="Картинка" value="icon" />
+                            <el-radio-button label="SVG иконка" value="awesome" />
+                        </el-radio-group>
+                    </el-form-item>
                 </div>
                 <div class="p-4">
                     <h2 class="font-medium text-lg mb-3">Мета данные для узловых страниц</h2>
@@ -98,6 +105,7 @@ const form = reactive({
     short_name: props.web.short_name,
     auth: props.web.auth,
     auth_phone: props.web.auth_phone,
+    menu_icon: props.web.menu_icon,
    // specializations: props.web.specializations,
     employees: props.web.employees,
    // classifications: props.web.classifications,

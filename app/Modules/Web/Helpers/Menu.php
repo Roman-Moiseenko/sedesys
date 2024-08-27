@@ -8,10 +8,6 @@ use JetBrains\PhpStorm\Deprecated;
 
 class Menu
 {
-
-//TODO Временное решение
-// Заменить на Entity или Modules
-
     /**
      * Определ
      * @return array
@@ -19,17 +15,17 @@ class Menu
     public static function menuTop(): array
     {
         $menu = new MenuRepository();
+        //TODO Временное решение
+        // В дальнейшем брать из базы структуру
         return [
-            'page1_2' => [
+            'page1' => [
                 'icon' => '',
-                'image' => '',
                 'name' => 'Услуги',
                 'url' => route('web.classification.index'),
                 'submenu' => $menu->classification_services(),
             ],
-            'page21' => [
+            'page2' => [
                 'icon' => '',
-                'image' => '',
                 'name' => 'Наша команда',
                 'url' => route('web.specialization.index'),
                 'submenu' => $menu->specializations(),
@@ -37,22 +33,15 @@ class Menu
 
             'page3' => [
                 'icon' => '',
-                'image' => '',
                 'name' => 'Цены',
                 'url' => route('web.home'),
             ],
             'page4' => [
                 'icon' => '',
-                'image' => '',
                 'name' => 'Записаться',
                 'url' => route('web.home'),
             ],
-            'page5' => [
-                'icon' => '',
-                'image' => '',
-                'name' => 'О нас',
-                'submenu' => $menu->pages(3),
-            ],
+            'page5' => $menu->page(3),
         ];
     }
 

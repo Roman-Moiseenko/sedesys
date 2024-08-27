@@ -12,6 +12,7 @@ class Web extends AbstractSetting
     public string $short_name = '';
     public bool $auth = false;
     public bool $auth_phone = false;
+    public string $menu_icon = 'none'; //icon, awesome
 
     //public array $specializations = self::META;
     public array $employees = self::META;

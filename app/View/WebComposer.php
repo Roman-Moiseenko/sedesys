@@ -5,10 +5,11 @@ namespace App\View;
 
 use App\Modules\Setting\Entity\Web;
 use App\Modules\Setting\Repository\SettingRepository;
+use App\Modules\Web\Helpers\CacheHelper;
 use App\Modules\Web\Helpers\Menu;
-use App\Modules\Web\Helpers\Schema;
 use App\Modules\Web\Repository\WebRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -16,11 +17,16 @@ class WebComposer
 {
     private WebRepository $repository;
     private Web $web;
+    /**
+     * @var array[]
+     */
+    private array $topMenu;
 
     public function __construct(WebRepository $repository, SettingRepository $settings)
     {
         $this->repository = $repository;
         $this->web = $settings->getWeb();
+        $this->topMenu = Cache::get(CacheHelper::MENU_TOP); //$cache->getCache('menu_top'); //Menu::menuTop();
     }
 
     public function compose(View $view): void
@@ -41,7 +47,7 @@ class WebComposer
                 $schema = app()->make('\App\Modules\Web\Helpers\Schema');
                 $view->with('schema', $schema);
                 $view->with('web', $this->web);
-                $view->with('menu_top', Menu::menuTop());
+                $view->with('menu_top', $this->topMenu);
                 $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());
                 $view->with('menu_mobile', Menu::menuMobile(!is_null($user)));
@@ -57,7 +63,7 @@ class WebComposer
         $secondLevelActiveIndex = '';
         $thirdLevelActiveIndex = '';
 
-        foreach (Menu::menuTop() as $menuKey => $menu) {
+        foreach ($this->topMenu as $menuKey => $menu) {
             if ($menu !== 'divider' && isset($menu['route']) && $this->checkRouteName($menu, $pageName) && empty($firstPageName)) {
                 $firstLevelActiveIndex = $menuKey;
             }
@@ -102,7 +108,7 @@ class WebComposer
         $secondLevelActiveIndex = '';
         $thirdLevelActiveIndex = '';
 
-        foreach (Menu::menuTop() as $menuKey => $menu) {
+        foreach ($this->topMenu as $menuKey => $menu) {
             if ($menu !== 'divider' && isset($menu['url']) && $this->checkUrl($menu, $currentUrl) && empty($firstPageName)) {
                 $firstLevelActiveIndex = $menuKey;
             }
