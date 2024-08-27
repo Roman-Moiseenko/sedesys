@@ -26,7 +26,8 @@ class WebComposer
     {
         $this->repository = $repository;
         $this->web = $settings->getWeb();
-        $this->topMenu = Cache::get(CacheHelper::MENU_TOP); //$cache->getCache('menu_top'); //Menu::menuTop();
+        $this->topMenu = [];
+         //$cache->getCache('menu_top'); //Menu::menuTop();
     }
 
     public function compose(View $view): void
@@ -42,6 +43,7 @@ class WebComposer
                 $layout = (str_contains($pageName, '.')) ? substr($pageName, 0, strpos($pageName, '.')) : 'web';
             }
             if ($layout == 'web') {
+                $this->topMenu = Cache::get(CacheHelper::MENU_TOP);
                 $user = (Auth::guard('user')->check()) ? Auth::guard('user')->user() : null;
                 $view->with('user', $user);
                 $schema = app()->make('\App\Modules\Web\Helpers\Schema');

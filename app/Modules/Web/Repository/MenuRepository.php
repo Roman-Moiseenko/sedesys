@@ -58,10 +58,10 @@ class MenuRepository
         return $result;
     }
 
-    public function classification_services(): array
+    public function classification_services($parent_id = null): array
     {
         /** @var Classification[] $classifications */
-        $classifications = Classification::orderBy('_lft')->where('parent_id', null)->active()->get();
+        $classifications = Classification::orderBy('_lft')->where('parent_id', $parent_id)->active()->get();
         $result = [];
         foreach ($classifications as $classification) {
             $key = 'class_service_' . $classification->id;
@@ -70,7 +70,10 @@ class MenuRepository
                 'name' => $classification->name,
                 'url' => route('web.classification.view', $classification->slug),
             ];
-            if ($classification->services()->count() > 0)
+
+            if ($classification->children()->count() > 0) {
+                $result[$key]['submenu'] = $this->classification_services($classification->id);
+            } elseif ($classification->services()->count() > 0)
                 $result[$key]['submenu'] = $this->services($classification->id);
         }
         return $result;
@@ -159,8 +162,10 @@ class MenuRepository
     private function icon(DisplayedModel $model): string
     {
 
-        if ($this->web->menu_icon == 'icon')
-            return '<img src="' . $model->getIcon('mini') . '" class="top-menu-icon" />';
+        if ($this->web->menu_icon == 'icon') {
+            $src = $model->getIcon('mini');
+            return empty($src) ? '' : '<img src="' . $src . '" class="top-menu-icon" />';
+        }
         if ($this->web->menu_icon == 'awesome')
             return $model->getAwesome();
 
