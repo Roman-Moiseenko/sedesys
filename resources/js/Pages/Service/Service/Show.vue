@@ -24,44 +24,12 @@
                             <el-descriptions-item label="Данные">{{ service.data }}</el-descriptions-item>
                             <el-descriptions-item label="Шаблон">{{ service.template }}</el-descriptions-item>
                             <el-descriptions-item label="Ссылка">{{ service.slug }}</el-descriptions-item>
-                            <el-descriptions-item label="Страница (H1)">{{ service.meta.h1 }}</el-descriptions-item>
-                            <el-descriptions-item label="Заголовок">{{ service.meta.title }}</el-descriptions-item>
-                            <el-descriptions-item label="Описание">{{ service.meta.description }}</el-descriptions-item>
-                            <el-descriptions-item label="Font Awesome">{{ service.awesome }}</el-descriptions-item>
                         </el-descriptions>
-
+                        <DisplayedShow :displayed="service" />
                     </div>
 
                     <div class="p-4 col-span-2 flex">
-                        <div>
-                            <h2 class="font-medium mb-3">Изображение для каталога</h2>
-                            <div class="lg:w-56 lg:h-56 image-fit relative">
-                                <el-image
-                                    :src="image"
-                                    :zoom-rate="1.2"
-                                    :max-scale="3"
-                                    :min-scale="0.2"
-                                    :preview-src-list="[image]"
-                                    :initial-index="0"
-                                    fit="cover"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-medium mb-3">Иконка для меню</h2>
-                            <div class="lg:w-56 lg:h-56 image-fit relative">
-                                <el-image
-                                    :src="icon"
-                                    :zoom-rate="1.2"
-                                    :max-scale="1"
-                                    :min-scale="0.2"
-                                    :preview-src-list="[icon]"
-                                    :initial-index="0"
-                                    fit="cover"
-                                />
-                            </div>
-                        </div>
-
+                        <DisplayedImage :image="$props.image" :icon="$props.icon" />
                     </div>
                 </div>
             </el-tab-pane>
@@ -295,6 +263,9 @@ import {Plus} from '@element-plus/icons-vue'
 import {router} from "@inertiajs/vue3";
 import {func} from '@/func.js'
 import type {UploadProps, UploadUserFile, UploadRawFile} from 'element-plus'
+import DisplayedShow from '@/Components/DisplayedShow.vue'
+import DisplayedImage from '@/Components/DisplayedImage.vue'
+
 
 const dialogImageUrl = ref('')
 const dialogGallery = ref(false)

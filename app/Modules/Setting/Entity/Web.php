@@ -13,11 +13,14 @@ class Web extends AbstractSetting
     public bool $auth = false;
     public bool $auth_phone = false;
     public string $menu_icon = 'none'; //icon, awesome
+    public int $default_breadcrumb_image = 0;
 
     //public array $specializations = self::META;
     public array $employees = self::META;
+    public int $employees_breadcrumb_image = 0;
     //public array $classifications = self::META;
     public array $services = self::META;
+    public int $services_breadcrumb_image = 0;
 
     //['h1' => '', 'title' => '', 'description' => ''];
 }

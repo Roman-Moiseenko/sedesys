@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->json('meta');
+            $table->json('breadcrumb');
             $table->boolean('active')->default(false);
             $table->string('awesome')->nullable();
             $table->timestamp('activated_at')->nullable();

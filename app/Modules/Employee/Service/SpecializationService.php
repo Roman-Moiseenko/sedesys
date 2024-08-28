@@ -33,6 +33,7 @@ class SpecializationService
 
     private function save_fields(Specialization $specialization, Request $request)
     {
+
         $specialization->saveDisplayed($request);
 
         $this->attach($specialization, $request);

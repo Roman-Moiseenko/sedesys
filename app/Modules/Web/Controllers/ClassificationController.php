@@ -33,7 +33,7 @@ class ClassificationController extends Controller
         $classification = Classification::where('slug', $slug)->first();
         if (is_null($classification)) return abort(404);
         $meta = $classification->meta;
-
+        //dd(count($classification->children));
         if (count($classification->children) > 0)
             return view('web.classification.show', compact('classification', 'meta'));
 

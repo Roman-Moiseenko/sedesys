@@ -21,3 +21,9 @@ $font-sizes: (
     7: $font-size-base * 0.9,
     8: $font-size-base * 0.75
 ) !default;
+
+$nb-color: var(--bs-gray-100);
+$nb-color-sticky: var(--bs-gray-900);
+
+//$nb-bg-color: var(--bs-gray-100);
+$nb-bg-color-sticky: var(--bs-gray-100);

@@ -43,7 +43,9 @@ class WebComposer
                 $layout = (str_contains($pageName, '.')) ? substr($pageName, 0, strpos($pageName, '.')) : 'web';
             }
             if ($layout == 'web') {
-                $this->topMenu = Cache::get(CacheHelper::MENU_TOP);
+                $this->topMenu = Cache::get(CacheHelper::MENU_TOP, function () {
+                    return Menu::menuTop();
+                });
                 $user = (Auth::guard('user')->check()) ? Auth::guard('user')->user() : null;
                 $view->with('user', $user);
                 $schema = app()->make('\App\Modules\Web\Helpers\Schema');

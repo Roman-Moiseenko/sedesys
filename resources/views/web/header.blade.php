@@ -9,7 +9,7 @@
             <i class="fa-light fa-location-dot"></i>&nbsp;????
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light hide-mobile ">
+    <nav class="navbar navbar-expand-lg navbar-light hide-mobile absolute transparent">
         <div class="container">
             <a class="navbar-brand" href="{{ route('web.home') }}"><img src="{{Vite::asset('resources/images/logo.png')}}" alt="{{ 'SeDeSys' }}" class="img-fluid img-logo"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
                 @endif
                 <div class="d-flex">
                     @foreach($menu_contact as $item)
-                        <div class="ms-2">
+                        <div class="ms-2 nav-icon">
                             <a href="{{ $item['url'] }}" target="_blank" title="{{ $item['name'] }}">
                                 <i class="{{ $item['icon'] }} fs-3" style="color: {{ $item['color'] }}"></i>
                             </a>

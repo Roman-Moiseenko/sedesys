@@ -83,6 +83,7 @@ class SpecializationController extends Controller
     public function update(SpecializationRequest $request, Specialization $specialization)
     {
         $request->validated();
+
         $this->service->update($specialization, $request);
         return redirect()
             ->route('admin.employee.specialization.show', $specialization)

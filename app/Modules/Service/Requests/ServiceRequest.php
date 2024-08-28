@@ -26,6 +26,9 @@ class ServiceRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
+
+            //'breadcrumb.photo_id' => ['required', 'integer'],
+           // 'breadcrumb.caption' => ['required', 'string'],
         ];
     }
 }

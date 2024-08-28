@@ -20,12 +20,10 @@
 @include('web.header')
 @include('flash::message')
 @section('breadcrumbs')
-    <div class="container-xl">
-        {{ \Diglactic\Breadcrumbs\Breadcrumbs::view('web.breadcrumbs') }}
-    </div>
+    @include('web.breadcrumbs.empty')
 @show
 
-<main class="@yield('main')">
+<main class="@yield('main') container-xl">
     @yield('content')
 </main>
 <!--POP-UP ОКНА-->

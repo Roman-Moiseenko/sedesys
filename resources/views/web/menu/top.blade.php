@@ -23,5 +23,10 @@
         </ul>
     </li>
 @else
-    @include('web.menu.item', ['active' => ($key == $active_menu['first']), '_item' => $item ])
+    <li class="nav-item">
+        <a class="nav-link dropdown-item {{ ($key == $active_menu['first']) ? 'active' : '' }}"
+           href="{{ $item['url'] }}">
+            {{ $item['name'] }}
+        </a>
+    </li>
 @endif

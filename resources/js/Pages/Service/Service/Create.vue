@@ -26,24 +26,6 @@
                         </el-select>
                         <div v-if="errors.template" class="text-red-700">{{ errors.template }}</div>
                     </el-form-item>
-                    <el-form-item label="H1">
-                        <el-input v-model="form.h1" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
-                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
-                    </el-form-item>
-                    <el-form-item label="Заголовок">
-                        <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
-                        <div v-if="errors.title" class="text-red-700">{{ errors.title }}</div>
-                    </el-form-item>
-                    <el-form-item label="Описание">
-                        <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
-                        <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
-                    </el-form-item>
-                    <el-form-item label="Font Awesome" class="mt-2">
-                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="50" show-word-limit/>
-                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
-                    </el-form-item>
-                </div>
-                <div class="p-4">
                     <el-form-item label="Цена">
                         <el-input v-model="form.price" placeholder="В рублях" @input="handleMaskPrice">
                             <template #append>₽</template>
@@ -56,11 +38,20 @@
                         </el-input>
                         <div v-if="errors.duration" class="text-red-700">{{ errors.duration }}</div>
                     </el-form-item>
-
                     <el-form-item label="Опции">
                         <el-input v-model="form.data" placeholder="В формате JSON [{}]" :rows="5" type="textarea"/>
                         <div v-if="errors.data" class="text-red-700">{{ errors.data }}</div>
                     </el-form-item>
+
+
+                </div>
+                <div class="p-4">
+                    <DisplayedFields
+                        :errors="errors"
+                        v-model:meta="form.meta"
+                        v-model:breadcrumb="form.breadcrumb"
+                        v-model:awesome="form.awesome"
+                    />
                 </div>
                 <div class="p-4">
                     <div>
@@ -148,6 +139,7 @@
     import {func} from "/resources/js/func.js"
     import {UploadFile} from "element-plus";
     import {useStore} from '/resources/js/store.js'
+    import DisplayedFields from '@/Components/DisplayedFields.vue'
 
     const store = useStore();
     const dialogImageUrl = ref('')
@@ -172,10 +164,17 @@
         name: null,
         classification_id: null,
         slug: null,
-        h1: null,
-        title: null,
-        description: null,
         awesome: null,
+        meta: {
+            h1: null,
+            title: null,
+            description: null,
+        },
+        breadcrumb: {
+            photo_id: null,
+            caption: null,
+            description: null,
+        },
         image: null,
         icon: null,
         price: null,

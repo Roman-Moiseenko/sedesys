@@ -14,46 +14,39 @@
                         <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
                     <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Название" />
+                        <el-input v-model="form.name" placeholder="Название"/>
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Ссылка">
                         <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
                     </el-form-item>
-                    <el-form-item label="H1">
-                        <el-input v-model="form.h1" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
-                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
-                    </el-form-item>
-                    <el-form-item label="Заголовок">
-                        <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
-                        <div v-if="errors.title" class="text-red-700">{{ errors.title }}</div>
-                    </el-form-item>
-                    <el-form-item label="Описание">
-                        <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
-                        <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
-                    </el-form-item>
-                    <el-form-item label="Font Awesome" class="mt-2">
-                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="50" show-word-limit/>
-                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
-                    </el-form-item>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Изображение для каталога</h2>
-                    <!-- FileUpload -->
-                    <el-upload action="#" list-type="picture-card"
-                               :limit="1"
-                               :auto-upload="false"
-                               v-model:fileList="Images"
-                               @input="form.image = $event.target.files[0]" :on-remove="handleRemoveImages"
-                               class="file-uploader-one"
-                               ref="template"
-                    >
-                        <el-icon><Plus/></el-icon>
-                        <template #file="{ file }">
-                            <div>
-                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
-                                <span class="el-upload-list__item-actions">
+                    <DisplayedFields
+                        :errors="errors"
+                        v-model:meta="form.meta"
+                        v-model:breadcrumb="form.breadcrumb"
+                        v-model:awesome="form.awesome"
+                    />
+                </div>
+                <div class="p-4">
+                    <div>
+                        <h2 class="font-medium mb-3">Изображение для каталога</h2>
+                        <!-- FileUpload -->
+                        <el-upload action="#" list-type="picture-card"
+                                   :limit="1"
+                                   :auto-upload="false"
+                                   v-model:fileList="Images"
+                                   @input="form.image = $event.target.files[0]" :on-remove="handleRemoveImages"
+                                   class="file-uploader-one"
+                                   ref="template"
+                        >
+                            <el-icon><Plus/></el-icon>
+                            <template #file="{ file }">
+                                <div>
+                                    <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                                    <span class="el-upload-list__item-actions">
                                   <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
@@ -61,27 +54,27 @@
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
-                            </div>
-                        </template>
-                    </el-upload>
-                    <!-- End FileUpload -->
-                </div>
-                <div class="p-4">
-                    <h2 class="font-medium mb-3">Иконка для меню</h2>
-                    <!-- FileUpload -->
-                    <el-upload action="#" list-type="picture-card"
-                               :limit="1"
-                               :auto-upload="false"
-                               v-model:fileList="Icons"
-                               @input="form.icon = $event.target.files[0]" :on-remove="handleRemoveIcons"
-                               class="file-uploader-one"
-                               ref="template"
-                    >
-                        <el-icon><Plus/></el-icon>
-                        <template #file="{ file }">
-                            <div>
-                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
-                                <span class="el-upload-list__item-actions">
+                                </div>
+                            </template>
+                        </el-upload>
+                        <!-- End FileUpload -->
+                    </div>
+                    <div>
+                        <h2 class="font-medium mb-3">Иконка для меню</h2>
+                        <!-- FileUpload -->
+                        <el-upload action="#" list-type="picture-card"
+                                   :limit="1"
+                                   :auto-upload="false"
+                                   v-model:fileList="Icons"
+                                   @input="form.icon = $event.target.files[0]" :on-remove="handleRemoveIcons"
+                                   class="file-uploader-one"
+                                   ref="template"
+                        >
+                            <el-icon><Plus/></el-icon>
+                            <template #file="{ file }">
+                                <div>
+                                    <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                                    <span class="el-upload-list__item-actions">
                                   <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
@@ -89,10 +82,11 @@
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
-                            </div>
-                        </template>
-                    </el-upload>
-                    <!-- End FileUpload -->
+                                </div>
+                            </template>
+                        </el-upload>
+                        <!-- End FileUpload -->
+                    </div>
                 </div>
             </div>
 
@@ -115,6 +109,7 @@
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
     import {UploadFile} from "element-plus";
+    import DisplayedFields from '@/Components/DisplayedFields.vue'
 
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
@@ -143,9 +138,8 @@
         parent_id: props.classification.parent_id,
         name: props.classification.name,
         slug: props.classification.slug,
-        h1: props.classification.meta.h1,
-        title: props.classification.meta.title,
-        description: props.classification.meta.description,
+        meta: props.classification.meta,
+        breadcrumb: props.classification.breadcrumb,
         awesome: props.classification.awesome,
         image: null,
         icon: null,

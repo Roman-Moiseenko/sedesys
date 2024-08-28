@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('active')->default(false);
             $table->timestamp('activated_at')->nullable();
             $table->json('meta');
+            $table->json('breadcrumb');
             $table->timestamps();
             NestedSet::columns($table);
         });

@@ -14,22 +14,15 @@
                         <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
                     </el-form-item>
-                    <el-form-item label="H1">
-                        <el-input v-model="form.h1" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
-                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
-                    </el-form-item>
-                    <el-form-item label="Заголовок">
-                        <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
-                        <div v-if="errors.title" class="text-red-700">{{ errors.title }}</div>
-                    </el-form-item>
-                    <el-form-item label="Описание">
-                        <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
-                        <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
-                    </el-form-item>
-                    <el-form-item label="Font Awesome" class="mt-2">
-                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="50" show-word-limit/>
-                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
-                    </el-form-item>
+                </div>
+                <div class="p-4">
+                    <DisplayedFields
+                        :errors="errors"
+                        v-model:meta="form.meta"
+                        v-model:breadcrumb="form.breadcrumb"
+                        v-model:awesome="form.awesome"
+                    />
+
                 </div>
                 <div class="p-4">
                     <h2 class="font-medium mb-3">Изображение для каталога</h2>
@@ -85,14 +78,14 @@
                     </el-upload>
                     <!-- End FileUpload -->
                 </div>
-                <div class="p-4">
-                    <h2 class="font-medium text-lg mb-3">Специалисты:</h2>
-                    <div v-for="employee in employees">
-                        <el-checkbox v-model="form.employees" :label="employee.fullname"
-                                     type="checkbox" :checked="employee.checked"
-                                     :value="employee.id"
-                        />
-                    </div>
+            </div>
+            <div class="mt-3">
+                <h2 class="font-medium text-lg mb-3">Специалисты:</h2>
+                <div v-for="employee in employees">
+                    <el-checkbox v-model="form.employees" :label="employee.fullname"
+                                 type="checkbox" :checked="employee.checked"
+                                 :value="employee.id"
+                    />
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
@@ -114,6 +107,8 @@
     import {func} from "/resources/js/func.js"
     import {UploadFile} from "element-plus";
     import {useStore} from '/resources/js/store.js'
+    import DisplayedFields from '@/Components/DisplayedFields.vue'
+
     const store = useStore();
 
     const dialogImageUrl = ref('')
@@ -135,9 +130,16 @@
     const form = reactive({
         name: null,
         slug: null,
-        h1: null,
-        title: null,
-        description: null,
+        meta: {
+            h1: null,
+            title: null,
+            description: null,
+        },
+        breadcrumb: {
+            photo_id: null,
+            caption: null,
+            description: null,
+        },
         awesome: null,
         image: null,
         icon: null,

@@ -27,24 +27,6 @@
                         </el-select>
                         <div v-if="errors.template" class="text-red-700">{{ errors.template }}</div>
                     </el-form-item>
-                    <el-form-item label="H1">
-                        <el-input v-model="form.h1" placeholder="H1 для вывода на странице" maxlength="160" show-word-limit/>
-                        <div v-if="errors.h1" class="text-red-700">{{ errors.h1 }}</div>
-                    </el-form-item>
-                    <el-form-item label="Заголовок">
-                        <el-input v-model="form.title" placeholder="Meta-Title" maxlength="200" show-word-limit/>
-                        <div v-if="errors.title" class="text-red-700">{{ errors.title }}</div>
-                    </el-form-item>
-                    <el-form-item label="Описание">
-                        <el-input v-model="form.description" placeholder="Meta-Description" :rows="3" type="textarea" maxlength="250" show-word-limit/>
-                        <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
-                    </el-form-item>
-                    <el-form-item label="Font Awesome" class="mt-2">
-                        <el-input v-model="form.awesome" placeholder="fa-light fa-car" maxlength="50" show-word-limit/>
-                        <div v-if="errors.awesome" class="text-red-700">{{ errors.awesome }}</div>
-                    </el-form-item>
-                </div>
-                <div class="p-4">
                     <el-form-item label="Цена">
                         <el-input v-model="form.price" placeholder="В рублях" @input="handleMaskPrice">
                             <template #append>₽</template>
@@ -62,6 +44,14 @@
                         <el-input v-model="form.data" placeholder="В формате JSON [{}]" :rows="5" type="textarea"/>
                         <div v-if="errors.data" class="text-red-700">{{ errors.data }}</div>
                     </el-form-item>
+                </div>
+                <div class="p-4">
+                    <DisplayedFields
+                        :errors="errors"
+                        v-model:meta="form.meta"
+                        v-model:breadcrumb="form.breadcrumb"
+                        v-model:awesome="form.awesome"
+                    />
                 </div>
                 <div class="p-4">
                     <div>
@@ -130,8 +120,6 @@
                 />
                 <div v-if="errors.text" class="text-red-700">{{ errors.text }}</div>
             </div>
-
-
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
         </el-form>
@@ -151,6 +139,7 @@
     import {func} from "/resources/js/func.js"
     import {UploadFile} from "element-plus";
     import {useStore} from '/resources/js/store.js'
+    import DisplayedFields from '@/Components/DisplayedFields.vue'
 
     const store = useStore()
     const dialogImageUrl = ref('')
@@ -180,9 +169,9 @@
         name: props.service.name,
         classification_id: props.service.classification_id,
         slug: props.service.slug,
-        h1: props.service.meta.h1,
-        title: props.service.meta.title,
-        description: props.service.meta.description,
+        meta: props.service.meta,
+        breadcrumb: props.service.breadcrumb,
+
         awesome: props.service.awesome,
         image: null,
         icon: null,
@@ -207,11 +196,22 @@
     function onSubmit() {
         router.post(props.route, form)
     }
+    const handleRemoveImages = (file: UploadFile) => {
+        Images.value.splice(0, 1);
+    }
+    const handleRemoveIcons = (file: UploadFile) => {
+        Icons.value.splice(0, 1);
+    }
+    const handlePictureCardPreview = (file: UploadFile) => {
+        dialogImageUrl.value = file.url!
+        dialogVisible.value = true
+    }
 
 </script>
 <script lang="ts">
     import Layout from '@/Components/Layout.vue'
     import Editor from '@tinymce/tinymce-vue'
+
 
     export default {
         components: {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Entity\Service;
 use App\Modules\Web\Repository\WebRepository;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
@@ -49,7 +50,12 @@ Breadcrumbs::for('web.classification.view', function (BreadcrumbTrail $trail, $s
     $trail->parent('web.classification.index'); //$trail->parent('web.specialization.index');
     $trail->push($classification->name, route('web.classification.view', $slug));
 });
-
+Breadcrumbs::for('web.service.view', function (BreadcrumbTrail $trail, $slug) {
+    /** @var Service $service */
+    $service = Service::where('slug', $slug)->first();
+    $trail->parent('web.classification.view', $service->classification->slug); //$trail->parent('web.specialization.index');
+    $trail->push($service->name, route('web.service.view', $slug));
+});
 //СПЕЦИАЛИСТЫ
 ///СО СПЕЦИАЛИЗАЦИЕЙ
 Breadcrumbs::for('web.specialization.index', function (BreadcrumbTrail $trail) {

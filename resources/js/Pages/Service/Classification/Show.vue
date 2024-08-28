@@ -3,44 +3,16 @@
     <h1 class="font-medium text-xl">  {{ classification.name }}  </h1>
 
     <div class="mt-3 p-3 bg-white rounded-lg">
-        <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-            <div class="p-4">
+        <div class="grid lg:grid-cols-6 grid-cols-1 divide-x">
+            <div class="p-4 col-span-4">
                 <el-descriptions :column="1" border>
                     <el-descriptions-item label="Классификация">{{ classification.name }}</el-descriptions-item>
                     <el-descriptions-item label="Ссылка">{{ classification.slug }}</el-descriptions-item>
-                    <el-descriptions-item label="Страница (H1)">{{ classification.meta.h1 }}</el-descriptions-item>
-                    <el-descriptions-item label="Заголовок">{{ classification.meta.title }}</el-descriptions-item>
-                    <el-descriptions-item label="Описание">{{ classification.meta.description }}</el-descriptions-item>
-                    <el-descriptions-item label="Font Awesome">{{ classification.awesome }}</el-descriptions-item>
                 </el-descriptions>
+                <DisplayedShow :displayed="classification" />
             </div>
-            <div class="p-4">
-                <h2 class="font-medium mb-3">Изображение для каталога</h2>
-                <div class="lg:w-56 lg:h-56 image-fit relative">
-                    <el-image
-                        :src="$props.image"
-                        :zoom-rate="1.2"
-                        :max-scale="3"
-                        :min-scale="0.2"
-                        :preview-src-list="[$props.image]"
-                        :initial-index="0"
-                        fit="cover"
-                    />
-                </div>
-            </div>
-            <div class="p-4">
-                <h2 class="font-medium mb-3">Иконка для меню</h2>
-                <div class="lg:w-56 lg:h-56 image-fit relative">
-                    <el-image
-                        :src="$props.icon"
-                        :zoom-rate="1.2"
-                        :max-scale="1"
-                        :min-scale="0.2"
-                        :preview-src-list="[$props.icon]"
-                        :initial-index="0"
-                        fit="cover"
-                    />
-                </div>
+            <div class="p-4 col-span-2 flex">
+                <DisplayedImage :image="$props.image" :icon="$props.icon" />
             </div>
         </div>
         <div class="mt-3 flex flex-row">
@@ -90,6 +62,9 @@
 
 <script lang="ts" setup>
 import {Head, Link, router} from '@inertiajs/vue3'
+import DisplayedImage from '@/Components/DisplayedImage.vue'
+import DisplayedShow from '@/Components/DisplayedShow.vue'
+
     interface IRow {
         active: number
     }
@@ -123,6 +98,7 @@ import {Head, Link, router} from '@inertiajs/vue3'
 <script lang="ts">
     import { router } from '@inertiajs/vue3'
     import Layout from '@/Components/Layout.vue'
+    import DisplayedShow from '@/Components/DisplayedShow.vue'
 
     export default {
         layout: Layout,

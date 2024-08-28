@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('classification_id')->nullable()->constrained('classifications')->onDelete('set null');
             $table->timestamps();
             $table->json('meta');
+            $table->json('breadcrumb');
             $table->json('data');
         });
     }

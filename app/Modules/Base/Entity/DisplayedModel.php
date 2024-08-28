@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Base\Entity;
 
+use App\Modules\Base\Casts\BreadcrumbInfoCast;
 use App\Modules\Base\Casts\MetaCast;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
@@ -30,6 +31,7 @@ use Illuminate\Support\Str;
  * @property Carbon $activated_at
  * @property Photo $image
  * @property Photo $icon
+ * @property BreadcrumbInfo $breadcrumb
  *
  */
 abstract class DisplayedModel extends Model implements DisplayedData
@@ -59,6 +61,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
             'updated_at' => 'datetime',
             'activated_at' => 'datetime',
             'meta' => MetaCast::class,
+            'breadcrumb' => BreadcrumbInfoCast::class,
         ];
         $fillable = [
             'name',
@@ -67,6 +70,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
         ];
         $attributes = [
             'meta' => '{}',
+            'breadcrumb' => '{}',
         ];
 
         $this->casts = array_merge($this->casts, $casts);
@@ -136,8 +140,10 @@ abstract class DisplayedModel extends Model implements DisplayedData
 
     public function saveDisplayed(Request $request)
     {
-        $this->meta = Meta::fromRequest($request);
+        //$this->meta = Meta::fromRequest($request);
+        $this->meta = new Meta(params: $request->input('meta', []));
         $this->awesome = $request->string('awesome')->trim()->value();
+        $this->breadcrumb = new BreadcrumbInfo(params: $request->input('breadcrumb', []));
         $this->save();
 
         $this->saveImage(
@@ -150,14 +156,12 @@ abstract class DisplayedModel extends Model implements DisplayedData
             $request->boolean('clear_icon')
         );
 
-        Cache::put(CacheHelper::MENU_TOP, Menu::menuTop());
-        //TODO Продумать Событие
+        //$this->breadcrumb = BreadcrumbInfo::fromRequest($request->input('breadcrumb', []));
+
+
         //Произошло изменение страниц для меню.
         //Создать Кеш
-
-        //event(new CacheHasChange('menu_top', Menu::menuTop()));
-        //$cache = new CacheRepository();
-        //$cache->setCache('menu_top', Menu::menuTop());
+        Cache::put(CacheHelper::MENU_TOP, Menu::menuTop());
     }
 
     /**
