@@ -6,9 +6,9 @@
 
 @section('breadcrumbs')
     @include('web.breadcrumbs.background', [
-        'caption' => $meta->h1, /* $service->breadcrumbs->caption */
-        'description' => '', /* $service->breadcrumbs->description */
-        'image' => '/cache/gallery/1/original_64.jpg' /* $service->breadcrumbs->image */
+        'caption' => $meta->h1, /* $service->breadcrumb->caption */
+        'description' => '', /* $service->breadcrumb->description */
+        'image' => $service->breadcrumb->getImage(),
     ])
 @endsection
 
