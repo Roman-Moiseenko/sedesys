@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Web\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Base\Entity\BreadcrumbInfo;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
@@ -25,8 +26,13 @@ class SpecializationController extends Controller
     public function index()
     {
         $specializations = $this->repository->getSpecializations();
-        $meta = new Meta(params:$this->web->employees);
-        return view('web.specialization.index', compact('specializations', 'meta'));
+        $meta = new Meta(params:$this->web->employees_meta);
+        $breadcrumb = $this->repository->selectBreadcrumb(
+            new BreadcrumbInfo(params: $this->web->employees_breadcrumb),
+            $meta->h1,
+        );
+
+        return view('web.specialization.index', compact('specializations', 'meta', 'breadcrumb'));
     }
 
     public function view($slug)
@@ -34,6 +40,8 @@ class SpecializationController extends Controller
         $specialization = Specialization::where('slug', $slug)->first();
         if (is_null($specialization)) return abort(404);
         $meta = $specialization->meta;
-        return view('web.specialization.show', compact('specialization', 'meta'));
+        $breadcrumb = $this->repository->getBreadcrumbModel($specialization);
+
+        return view('web.specialization.show', compact('specialization', 'meta', 'breadcrumb'));
     }
 }

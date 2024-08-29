@@ -8,7 +8,7 @@
         display: block;
         color: #fff;
         background-size: cover;
-        background-image: url({{ $image }});
+        background-image: url({{ $breadcrumb_info['image'] }});
         background-attachment: scroll;
         padding: 100px 0;
     }
@@ -71,8 +71,8 @@
     <div class="container-xl">
         <div id="breadcrumbs-content">
             <div id="breadcrumbs-title">
-                <h1>{{ $caption }}</h1>
-                <div>{{ $description }}</div>
+                <h1>{{ $breadcrumb_info['caption'] }}</h1>
+                <div>{{ $breadcrumb_info['description'] }}</div>
             </div>
             <div id="breadcrumbs-list">
                 {{ \Diglactic\Breadcrumbs\Breadcrumbs::view('web.breadcrumbs._data') }}

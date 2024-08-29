@@ -1,4 +1,5 @@
 <template>
+    <h2 v-if="$props.label">{{ $props.label}}</h2>
     <h3>Мета данные</h3>
     <el-form-item label="H1">
         <el-input
@@ -47,6 +48,10 @@ const props = defineProps({
     meta: Object,
     breadcrumb: Object,
     awesome: String,
+    label: {
+        type: String,
+        default: null,
+    }
 });
 
 </script>

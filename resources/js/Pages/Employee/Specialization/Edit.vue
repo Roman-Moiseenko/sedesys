@@ -121,7 +121,7 @@
         specialization: Object,
         title: {
             type: String,
-            default: 'Редактирование specialization',
+            default: 'Редактирование специализации',
         },
         image: String,
         icon: String,

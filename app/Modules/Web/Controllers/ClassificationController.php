@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Web\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Base\Entity\BreadcrumbInfo;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Service\Entity\Classification;
@@ -24,8 +25,15 @@ class ClassificationController extends Controller
     public function index()
     {
         $classifications = $this->repository->getRootClassifications();
-        $meta = new Meta(params:$this->web->services);
-        return view('web.classification.index', compact('classifications', 'meta'));
+        $meta = new Meta(params: $this->web->services_meta);
+
+
+        $breadcrumb = $this->repository->selectBreadcrumb(
+            new BreadcrumbInfo(params: $this->web->services_breadcrumb),
+            $meta->h1,
+        );
+
+        return view('web.classification.index', compact('classifications', 'meta', 'breadcrumb'));
     }
 
     public function view($slug)
@@ -33,11 +41,15 @@ class ClassificationController extends Controller
         $classification = Classification::where('slug', $slug)->first();
         if (is_null($classification)) return abort(404);
         $meta = $classification->meta;
-        //dd(count($classification->children));
-        if (count($classification->children) > 0)
-            return view('web.classification.show', compact('classification', 'meta'));
+        $breadcrumb = $this->repository->getBreadcrumbModel($classification);
+        if (count($classification->children) > 0) {
 
+            return view('web.classification.show', compact('classification', 'meta', 'breadcrumb'));
+        }
         $services = $classification->services;
-        return view('web.service.index', compact('services', 'meta'));
+
+//        dd($breadcrumb);
+        //TODO Рендерим страницу и кешируем
+        return view('web.service.index', compact('services', 'meta', 'breadcrumb'));
     }
 }

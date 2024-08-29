@@ -5,19 +5,6 @@
         <el-form :model="form" label-width="auto">
             <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                 <div class="p-4">
-                    <el-form-item label="Телефон" :rules="{required: true}">
-                        <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
-                        <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
-                    </el-form-item>
-                    <el-form-item label="Пароль" :rules="{required: true}">
-                        <el-input v-model="form.password" type="password" show-password/>
-                        <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
-                    </el-form-item>
-                    <el-divider/>
-                    <el-form-item label="ID Телеграм-бота">
-                        <el-input v-model="form.telegram_user_id"/>
-                        <div v-if="errors.telegram_user_id" class="text-red-700">{{ errors.telegram_user_id }}</div>
-                    </el-form-item>
                     <el-form-item label="Фамилия" :rules="{required: true}">
                         <el-input v-model="form.surname"/>
                         <div v-if="errors.surname" class="text-red-700">{{ errors.surname }}</div>
@@ -30,25 +17,48 @@
                         <el-input v-model="form.secondname"/>
                         <div v-if="errors.secondname" class="text-red-700">{{ errors.secondname }}</div>
                     </el-form-item>
+                    <el-divider/>
+                    <el-form-item label="Телефон" :rules="{required: true}">
+                        <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
+                        <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
+                    </el-form-item>
+                    <el-form-item label="ID Телеграм-бота">
+                        <el-input v-model="form.telegram_user_id"/>
+                        <div v-if="errors.telegram_user_id" class="text-red-700">{{ errors.telegram_user_id }}</div>
+                    </el-form-item>
                     <el-form-item label="Адрес">
                         <el-input v-model="form.address" placeholder="Адрес"/>
                         <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
                     </el-form-item>
+                    <el-form-item label="Пароль">
+                        <el-input v-model="form.password" type="password" show-password/>
+                        <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
+                    </el-form-item>
+                    <el-form-item label="Стаж с какого года" :rules="{required: true}">
+                        <el-input v-model="form.experience_year"/>
+                        <div v-if="errors.experience_year" class="text-red-700">{{ errors.experience_year }}</div>
+                    </el-form-item>
+                    <el-divider/>
+                    <h2 class="font-medium mb-3">Специализация</h2>
+                    <div v-for="specialization in specializations">
+                        <el-checkbox v-model="form.specializations" :label="specialization.name"
+                                     type="checkbox" :checked="specialization.checked"
+                                     :value="specialization.id"
+                        />
+                    </div>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Фото сотрудника на аватар</h2>
+                    <h2 class="font-medium mb-3">Изображение для каталога</h2>
                     <!-- FileUpload -->
                     <el-upload action="#" list-type="picture-card"
                                :limit="1"
                                :auto-upload="false"
-                               v-model:fileList="fileList"
-                               @input="form.file = $event.target.files[0]" :on-remove="handleRemove"
+                               v-model:fileList="Images"
+                               @input="form.image = $event.target.files[0]" :on-remove="handleRemoveImages"
                                class="file-uploader-one"
                                ref="template"
                     >
-                        <el-icon>
-                            <Plus/>
-                        </el-icon>
+                        <el-icon><Plus/></el-icon>
                         <template #file="{ file }">
                             <div>
                                 <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
@@ -56,8 +66,33 @@
                                   <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <el-icon><zoom-in/></el-icon>
                                   </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)">
+                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveImages(file)">
+                                    <el-icon><Delete/></el-icon>
+                                  </span>
+                              </span>
+                            </div>
+                        </template>
+                    </el-upload>
+                    <!-- End FileUpload -->
+                    <h2 class="font-medium mb-3">Иконка для меню</h2>
+                    <!-- FileUpload -->
+                    <el-upload action="#" list-type="picture-card"
+                               :limit="1"
+                               :auto-upload="false"
+                               v-model:fileList="Icons"
+                               @input="form.icon = $event.target.files[0]" :on-remove="handleRemoveIcons"
+                               class="file-uploader-one"
+                               ref="template"
+                    >
+                        <el-icon><Plus/></el-icon>
+                        <template #file="{ file }">
+                            <div>
+                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+                                <span class="el-upload-list__item-actions">
+                                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                                    <el-icon><zoom-in/></el-icon>
+                                  </span>
+                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveIcons(file)">
                                     <el-icon><Delete/></el-icon>
                                   </span>
                               </span>
@@ -67,18 +102,13 @@
                     <!-- End FileUpload -->
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Специализация</h2>
-                    <div v-for="specialization in specializations">
-                        <el-checkbox v-model="form.specializations" :label="specialization.name"
-                                     type="checkbox" :checked="specialization.checked"
-                                     :value="specialization.id"
-                        />
-                    </div>
-                    <el-divider/>
-                    <el-form-item label="Стаж с какого года" :rules="{required: true}">
-                        <el-input v-model="form.experience_year"/>
-                        <div v-if="errors.experience_year" class="text-red-700">{{ errors.experience_year }}</div>
-                    </el-form-item>
+                    <DisplayedFields
+                        :errors="errors"
+                        v-model:meta="form.meta"
+                        v-model:breadcrumb="form.breadcrumb"
+                        v-model:awesome="form.awesome"
+                    />
+
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
@@ -110,12 +140,14 @@ import {ref} from 'vue'
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import type {UploadFile} from 'element-plus'
 import axios from 'axios'
+import DisplayedFields from '@/Components/DisplayedFields.vue'
 
 const chat_ids = ref([])
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const disabled = ref(false)
-const fileList = ref<UploadFile>();
+const Images = ref<UploadFile>();
+const Icons = ref<UploadFile>();
 
 const props = defineProps({
     errors: Object,
@@ -140,6 +172,19 @@ const form = reactive({
     specializations: [],
     file: null,
     experience_year: null,
+    meta: {
+        h1: null,
+        title: null,
+        description: null,
+    },
+    breadcrumb: {
+        photo_id: null,
+        caption: null,
+        description: null,
+    },
+    awesome: null,
+    image: null,
+    icon: null,
 })
 
 function handleMaskPhone(val) {
@@ -158,6 +203,15 @@ function onGetChatID() {
 const handleRemove= (file: UploadFile) => {
     fileList.value.splice(0, 1);
 }
+const handleRemoveImages = (file: UploadFile) => {
+    Images.value.splice(0, 1);
+}
+
+const handleRemoveIcons = (file: UploadFile) => {
+    Icons.value.splice(0, 1);
+}
+
+
 const handlePictureCardPreview = (file: UploadFile) => {
     dialogImageUrl.value = file.url!
     dialogVisible.value = true

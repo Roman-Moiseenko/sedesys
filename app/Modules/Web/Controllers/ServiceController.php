@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Web\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Base\Entity\BreadcrumbInfo;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Service\Entity\Classification;
@@ -26,8 +27,12 @@ class ServiceController extends Controller
     public function index()
     {
         $services = $this->repository->getServices();
-        $meta = new Meta(params:$this->web->services);
-        return view('web.service.index', compact('services', 'meta'));
+        $meta = new Meta(params:$this->web->services_meta);
+        $breadcrumb = $this->repository->selectBreadcrumb(
+            new BreadcrumbInfo(params: $this->web->services_breadcrumb),
+            $meta->h1,
+        );
+        return view('web.service.index', compact('services', 'meta', 'breadcrumb'));
     }
 
     public function view($slug)
@@ -35,7 +40,7 @@ class ServiceController extends Controller
         $service = Service::where('slug', $slug)->first();
         if (is_null($service)) return abort(404);
         $meta = $service->meta;
-
-        return view('web.service.show', compact('service', 'meta'));
+        $breadcrumb = $this->repository->getBreadcrumbModel($service);
+        return view('web.service.show', compact('service', 'meta', 'breadcrumb'));
     }
 }

@@ -5,11 +5,7 @@
 @section('description', $meta->description)
 
 @section('breadcrumbs')
-    @include('web.breadcrumbs.background', [
-        'caption' => $meta->h1, /* $service->breadcrumb->caption */
-        'description' => '', /* $service->breadcrumb->description */
-        'image' => $service->breadcrumb->getImage(),
-    ])
+    @include('web.breadcrumbs.background', ['breadcrumb_info' => $breadcrumb])
 @endsection
 
 @section('content')

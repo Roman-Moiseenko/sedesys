@@ -49,14 +49,17 @@ class WebComposer
                 $user = (Auth::guard('user')->check()) ? Auth::guard('user')->user() : null;
                 $view->with('user', $user);
                 $schema = app()->make('\App\Modules\Web\Helpers\Schema');
-                $view->with('schema', $schema);
-                $view->with('web', $this->web);
+                $view->with('schema', $schema); //schema.org
+                $view->with('web', $this->web); //Настройка Сайта
+                //Меню сайта
                 $view->with('menu_top', $this->topMenu);
                 $view->with('menu_contact', $this->repository->getContacts());
                 $view->with('menu_footer', Menu::menuFooter());
                 $view->with('menu_mobile', Menu::menuMobile(!is_null($user)));
                 //$view->with('active_menu', $this->activeMenu($pageName));
                 $view->with('active_menu', $this->activeMenuByUrl($url));
+                //Параметры для секции хлебных крошек, BreadcrumbInfo::class
+
             }
         }
     }
@@ -97,7 +100,6 @@ class WebComposer
             'third' => $thirdLevelActiveIndex
         ];
     }
-
 
     private function checkRouteName($menu, $pageName): bool
     {
@@ -155,4 +157,6 @@ class WebComposer
         $str = substr($str, 0, $pos);
         return $str;
     }
+
+
 }

@@ -27,7 +27,7 @@ class EmployeeRequest extends FormRequest
         $rules = [
             'POST' => [
                 'phone' => ['required', 'min:10'],
-                'password' => ['required', 'min:6'],
+                //'password' => ['required', 'min:6'],
                 'surname' => ['required', 'min:2'],
                 'firstname' => ['required', 'min:2'],
             ],

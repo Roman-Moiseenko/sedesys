@@ -91,7 +91,8 @@ class EmployeeController extends Controller
                 'attach' => route('admin.employee.employee.attach-service', $employee),
                 'detach' => route('admin.employee.employee.detach-service', $employee),
                 'new_example' => route('admin.service.example.create', ['employee_id' => $employee->id]),
-                'photo' => $employee->getImage(),
+                'image' => $employee->getImage(),
+                'icon' => $employee->getIcon(),
                 'specializations' => $specializations,
                 'services' => $services,
                 'out_services' => $out_services,
@@ -107,7 +108,8 @@ class EmployeeController extends Controller
         return Inertia::render('Employee/Employee/Edit', [
             'employee' => $employee,
             'route' => route('admin.employee.employee.update', $employee),
-            'photo' => $employee->getImage(),
+            'image' => $employee->getImage('thumb'),
+            'icon' => $employee->getIcon('thumb'),
             'chat_id' => route('admin.notification.telegram.chat-id'),
             'specializations' => $specializations,
         ]);
@@ -125,18 +127,17 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $this->service->destroy($employee);
-
         return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 
     public function toggle(Employee $employee)
     {
-        if ($employee->isBlocked()) {
+        if ($employee->isActive()) {
+            $employee->draft();
+            $success = 'Работник убран из показа';
+        } else {
             $employee->activated();
             $success = 'Работник добавлен на сайт';
-        } else {
-            $employee->blocked();
-            $success = 'Работник убран из показа';
         }
         return redirect()->back()->with('success', $success);
     }

@@ -194,6 +194,10 @@ abstract class DisplayedModel extends Model implements DisplayedData
         return '<i class="' . $this->awesome . '"></i>';
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
     /**
      * Отношения
      */
@@ -212,6 +216,17 @@ abstract class DisplayedModel extends Model implements DisplayedData
     public function scopeActive($query)
     {
         return $query->where('active', true);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::saving(function (DisplayedModel $object) {
+            //TODO Сброс Cache
+            // ?? сохранить новое значение
+        });
+
+
     }
 
 }

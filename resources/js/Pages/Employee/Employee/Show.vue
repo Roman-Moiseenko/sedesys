@@ -13,26 +13,13 @@
                 </template>
                 <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                     <div class="p-2">
-                        <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
-                                <el-image
-                                    style="width: 100px; height: 100px"
-                                    :src="$props.photo"
-                                    :zoom-rate="1.2"
-                                    :max-scale="7"
-                                    :min-scale="0.2"
-                                    :preview-src-list="[$props.photo]"
-                                    :initial-index="0"
-                                    fit="cover"
-                                />
-                            </div>
-                            <div class="ml-5">
-                                <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">
-                                    {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}
-                                </div>
-                                <div class="text-slate-500">{{ '' }}</div>
-                            </div>
+                        <div class="truncate sm:whitespace-normal font-medium text-lg">
+                            {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}
                         </div>
+                        <div class="flex justify-between mt-3">
+                            <DisplayedImage :image="$props.image" :icon="$props.icon" />
+                        </div>
+
                     </div>
                     <div class="p-2">
                         <el-descriptions :column="1" border title="Персональные данные">
@@ -206,6 +193,16 @@
                 </template>
                 Список + рейтинг + пагинация с подгрузгой
             </el-tab-pane>
+            <!-- Панель Meta-данные -->
+            <el-tab-pane>
+                <template #label>
+                    <span class="custom-tabs-label">
+                      <el-icon><Notebook /></el-icon>
+                      <span> Meta-данные</span>
+                    </span>
+                </template>
+                <DisplayedShow :displayed="employee" />
+            </el-tab-pane>
         </el-tabs>
 
 
@@ -227,6 +224,9 @@
 import {reactive, ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import {func} from '@/func.js'
+import DisplayedShow from '@/Components/DisplayedShow.vue'
+import DisplayedImage from '@/Components/DisplayedImage.vue'
+
 
 const dialogService = ref(false)
 const dialogSave = ref(false)
@@ -234,10 +234,8 @@ const dialogSave = ref(false)
 const props = defineProps({
     employee: Object,
     edit: String,
-    photo: {
-        type: String,
-        default: null,
-    },
+    image: String,
+    icon: String,
     title: {
         type: String,
         default: 'Карточка Персонала',
