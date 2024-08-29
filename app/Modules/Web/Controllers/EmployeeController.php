@@ -10,6 +10,7 @@ use App\Modules\Employee\Entity\Employee;
 use App\Modules\Setting\Entity\Web;
 use App\Modules\Setting\Repository\SettingRepository;
 use App\Modules\Web\Repository\WebRepository;
+use Illuminate\Support\Facades\Cache;
 
 class EmployeeController extends Controller
 {
@@ -24,22 +25,25 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = $this->repository->getEmployees();
-        $meta = new Meta(params: $this->web->employees_meta);
+        return Cache::rememberForever('employees', function () {
+            $employees = $this->repository->getEmployees();
+            $meta = new Meta(params: $this->web->employees_meta);
+            $breadcrumb = $this->repository->selectBreadcrumb(
+                new BreadcrumbInfo(params: $this->web->employees_breadcrumb),
+                $meta->h1,
+            );
+            return view('web.employee.index', compact('employees', 'meta', 'breadcrumb'))->render();
+        });
 
-        $breadcrumb = $this->repository->selectBreadcrumb(
-            new BreadcrumbInfo(params: $this->web->employees_breadcrumb),
-            $meta->h1,
-        );
 
-        return view('web.employee.index', compact('employees', 'meta', 'breadcrumb'));
     }
 
     public function view(Employee $employee)
     {
-        //TODO Переделать на DisplayModel slug ??
-        $breadcrumb = $this->repository->getBreadcrumbModel($employee);
-        $meta = $employee->meta;
-        return view('web.employee.show', compact('employee', 'meta', 'breadcrumb'));
+        return Cache::rememberForever('employee-' . $employee->id, function () use ($employee) {
+            $breadcrumb = $this->repository->getBreadcrumbModel($employee);
+            $meta = $employee->meta;
+            return view('web.employee.show', compact('employee', 'meta', 'breadcrumb'))->render();
+        });
     }
 }

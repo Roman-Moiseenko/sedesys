@@ -11,6 +11,7 @@ use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Setting\Entity\Web;
 use App\Modules\Setting\Repository\SettingRepository;
 use App\Modules\Web\Repository\WebRepository;
+use Illuminate\Support\Facades\Cache;
 
 class SpecializationController extends Controller
 {
@@ -25,23 +26,28 @@ class SpecializationController extends Controller
 
     public function index()
     {
-        $specializations = $this->repository->getSpecializations();
-        $meta = new Meta(params:$this->web->employees_meta);
-        $breadcrumb = $this->repository->selectBreadcrumb(
-            new BreadcrumbInfo(params: $this->web->employees_breadcrumb),
-            $meta->h1,
-        );
+        return Cache::rememberForever('specializations', function () {
+            $specializations = $this->repository->getSpecializations();
+            $meta = new Meta(params: $this->web->employees_meta);
+            $breadcrumb = $this->repository->selectBreadcrumb(
+                new BreadcrumbInfo(params: $this->web->employees_breadcrumb),
+                $meta->h1,
+            );
 
-        return view('web.specialization.index', compact('specializations', 'meta', 'breadcrumb'));
+            return view('web.specialization.index', compact('specializations', 'meta', 'breadcrumb'))->render();
+        });
     }
 
     public function view($slug)
     {
         $specialization = Specialization::where('slug', $slug)->first();
+
+        return Cache::rememberForever('specialization-' . $specialization->id, function () use ($specialization) {
         if (is_null($specialization)) return abort(404);
         $meta = $specialization->meta;
         $breadcrumb = $this->repository->getBreadcrumbModel($specialization);
 
-        return view('web.specialization.show', compact('specialization', 'meta', 'breadcrumb'));
+        return view('web.specialization.show', compact('specialization', 'meta', 'breadcrumb'))->render();
+        });
     }
 }

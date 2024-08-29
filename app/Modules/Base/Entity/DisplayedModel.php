@@ -41,8 +41,8 @@ abstract class DisplayedModel extends Model implements DisplayedData
         Service::class => 'Услуги',
         Classification::class => 'Классификация',
         Page::class => 'Страница',
-        //TODO Реализовать
         Employee::class => 'Персонал',
+
         //На будущее
         //Post + Widget
         //Product, Category  + Widget
@@ -88,6 +88,8 @@ abstract class DisplayedModel extends Model implements DisplayedData
         $model->save();
         return $model;
     }
+
+    abstract public function getCacheKeys(): array;
 
     /**
      * Функции состояния
@@ -212,7 +214,6 @@ abstract class DisplayedModel extends Model implements DisplayedData
         return $this->morphOne(Photo::class, 'imageable')->where('type', 'icon')->withDefault();
     }
 
-
     public function scopeActive($query)
     {
         return $query->where('active', true);
@@ -222,6 +223,9 @@ abstract class DisplayedModel extends Model implements DisplayedData
     {
         parent::boot();
         self::saving(function (DisplayedModel $object) {
+            foreach ($object->getCacheKeys() as $cacheKey) {
+                Cache::forget($cacheKey);
+            }
             //TODO Сброс Cache
             // ?? сохранить новое значение
         });

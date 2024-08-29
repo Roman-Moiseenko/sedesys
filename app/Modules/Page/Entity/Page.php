@@ -67,4 +67,12 @@ class Page extends DisplayedModel
             ]
         )->render();
     }
+
+    public function getCacheKeys(): array
+    {
+        return [
+            'pages',
+            'page-' . $this->id
+        ];
+    }
 }

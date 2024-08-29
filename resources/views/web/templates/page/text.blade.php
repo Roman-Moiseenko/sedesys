@@ -1,7 +1,7 @@
 @extends('layouts.web')
 
 @section('main', 'pages')
-@section('title', $meta->title . ' - ')
+@section('title', $meta->title)
 @section('description', $meta->description)
 
 @section('breadcrumbs')

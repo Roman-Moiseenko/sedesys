@@ -60,4 +60,11 @@ class Classification extends DisplayedModel implements WidgetData
         return $this->meta->description;
     }
 
+    public function getCacheKeys(): array
+    {
+        return [
+            'classifications',
+            'classification-' . $this->id
+        ];
+    }
 }

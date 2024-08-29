@@ -5,6 +5,7 @@ namespace App\Modules\Web\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Page\Entity\Page;
+use Illuminate\Support\Facades\Cache;
 use function Ramsey\Uuid\v1;
 
 class WebController extends Controller
@@ -13,8 +14,12 @@ class WebController extends Controller
     public function home()
     {
         if (!is_null($page = Page::where('slug', 'home')->active()->first())) {
-            return $page->view();
+            return Cache::rememberForever('page-' . $page->id, function () use ($page) {
+                return $page->view();
+            });
         } else {
+
+            //TODO Как очищать кеш???
             return view('web.home');
         }
     }
@@ -22,7 +27,9 @@ class WebController extends Controller
     public function page(string $slug)
     {
         if (!is_null($page = Page::where('slug', $slug)->active()->first())) {
-            return $page->view();
+            return Cache::rememberForever('page-' . $page->id, function () use ($page) {
+                return $page->view();
+            });
         } else {
             abort(404, 'Страница не найдена');
         }

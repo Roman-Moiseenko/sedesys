@@ -51,7 +51,7 @@ class Employee extends DisplayedModel implements
     protected string $guard = 'employee';
 
     public $attributes = [
-        'phone'=> '',
+        'phone' => '',
         'address' => '{}',
     ];
     /*
@@ -129,4 +129,15 @@ class Employee extends DisplayedModel implements
         return '';
     }
 
+    public function getCacheKeys(): array
+    {
+        $result = [
+            'employees',
+            'employee-' . $this->id
+        ];
+        foreach ($this->specializations as $specialization) {
+            $result[] = 'specialization-' . $specialization->id;
+        }
+        return $result;
+    }
 }
