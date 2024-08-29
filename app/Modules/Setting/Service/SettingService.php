@@ -65,6 +65,7 @@ class SettingService
 
     private function saveCache()
     {
-        Cache::put(CacheHelper::MENU_TOP, Menu::menuTop());
+        Cache::flush();//Очищаем весь кэш
+        Cache::put(CacheHelper::MENU_TOP, Menu::menuTop()); //Сохраняем меню
     }
 }

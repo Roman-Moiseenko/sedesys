@@ -8,6 +8,7 @@ use App\Modules\Service\Entity\Service;
 use Illuminate\Http\Request;
 use App\Modules\Employee\Entity\Employee;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class EmployeeService
 {
@@ -30,6 +31,7 @@ class EmployeeService
             (string)$request->string('firstname'),
             (string)$request->string('secondname')
         );
+        $employee->slug = Str::slug($employee->fullname->getFullName());
         $employee->save();
 
         $this->save_fields($employee, $request);

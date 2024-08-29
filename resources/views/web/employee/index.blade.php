@@ -12,7 +12,7 @@
     <div class="mt-4">
         @foreach($employees as $employee)
             <div>
-                <a href="{{ route('web.employee.view', $employee) }}">{{ $employee->fullname->getFullName() }} </a>
+                <a href="{{ route('web.employee.view', $employee->slug) }}">{{ $employee->fullname->getFullName() }} </a>
             </div>
         @endforeach
     </div>

@@ -67,7 +67,8 @@ Breadcrumbs::for('web.specialization.view', function (BreadcrumbTrail $trail, $s
     $trail->parent('web.specialization.index'); //$trail->parent('web.specialization.index');
     $trail->push($specialization->name, route('web.specialization.view', $slug));
 });
-Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, Employee $employee) {
+Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, $slug ) {
+    $employee = Employee::where('slug', $slug)->first();
     $specialization = $employee->specializations()->first();
     $trail->parent('web.specialization.view', $specialization->slug);
     $trail->push($employee->fullname->getShortname(), route('web.employee.view', $employee));
