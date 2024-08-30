@@ -1,6 +1,6 @@
 @extends('layouts.web')
 
-@section('main', 'employees')
+@section('main', 'employees container-xl')
 @section('title', $meta->title)
 @section('description', $meta->description)
 

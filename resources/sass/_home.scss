@@ -1,0 +1,32 @@
+#main-image {
+    padding: 100px 0;
+    width: 100%;
+    height: 90vh;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    display: block;
+    color: #fff;
+    background-size: cover;
+    background-attachment: scroll;
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: var(--color-main);
+        z-index: -1;
+        opacity: .5;
+    }
+    >.info-block {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        >.section-title {
+            margin: auto 0;
+        }
+    }
+
+}

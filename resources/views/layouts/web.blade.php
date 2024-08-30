@@ -23,7 +23,7 @@
     @include('web.breadcrumbs.empty')
 @show
 
-<main class="@yield('main') container-xl">
+<main class="@yield('main')">
     @yield('content')
 </main>
 <!--POP-UP ОКНА-->
