@@ -25,6 +25,9 @@ Route::group([
             Route::post('/{gallery}/add', 'GalleryController@add')->name('add');
             Route::post('/{gallery}/del', 'GalleryController@del')->name('del');
             Route::post('/{gallery}/set', 'GalleryController@set')->name('set');
+            Route::post('/get-tree', 'GalleryController@get_tree')->name('get-tree');
+            Route::post('/get-photo', 'GalleryController@get_photo')->name('get-photo');
+
         });
         Route::group([
             'prefix' => 'template',

@@ -200,9 +200,6 @@ function onGetChatID() {
             chat_ids.value = response.data;
         });
 }
-const handleRemove= (file: UploadFile) => {
-    fileList.value.splice(0, 1);
-}
 const handleRemoveImages = (file: UploadFile) => {
     Images.value.splice(0, 1);
 }

@@ -3,6 +3,7 @@
 namespace App\Modules\Page\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Base\Entity\Photo;
 use App\Modules\Page\Entity\Gallery;
 use App\Modules\Page\Requests\GalleryRequest;
 use App\Modules\Page\Repository\GalleryRepository;
@@ -21,7 +22,6 @@ class GalleryController extends Controller
         $this->service = $service;
         $this->repository = $repository;
     }
-
 
     public function index(Request $request)
     {
@@ -102,4 +102,20 @@ class GalleryController extends Controller
         $this->service->setAlt($gallery, $request);
         return redirect()->back()->with('success', 'Сохранено');
     }
+
+    //AJAX
+
+    public function get_tree()
+    {
+        $tree = $this->repository->getTree();
+        return response()->json($tree);
+    }
+
+    public function get_photo(Request $request)
+    {
+        /** @var Photo $photo */
+        $photo = Photo::find($request->integer('photo_id'));
+        return response()->json($photo->getThumbUrl('card'));
+    }
+
 }

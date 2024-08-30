@@ -18,10 +18,15 @@
     </el-form-item>
 
     <h3>Секция хлебных крошек</h3>
-    <el-form-item label="Фон">
+    <ImagesFromGallery
+        v-model:photo_id="$props.breadcrumb.photo_id"
+        :error="errors['breadcrumb.photo_id']"
+        @updatePhotoId="onUpdateParent"
+    />
+    <!--el-form-item label="Фон">
         <el-input-number :controls="false" v-model="$props.breadcrumb.photo_id" placeholder="id картинки из Галереи"/>
         <div v-if="errors['breadcrumb.photo_id']" class="text-red-700">{{ errors['breadcrumb.photo_id'] }}</div>
-    </el-form-item>
+    </el-form-item-->
     <el-form-item label="Заголовок">
         <el-input v-model="$props.breadcrumb.caption" placeholder="Оставьте пустым, если совпадает с H1" maxlength="200"
                   show-word-limit/>
@@ -42,7 +47,9 @@
 
 <script lang="ts" setup>
 import { defineEmits } from 'vue'
-const emit = defineEmits(['update:awesome'])
+import ImagesFromGallery from '@/Components/ImagesFromGallery.vue'
+
+const emitAwesome = defineEmits(['update:awesome'])
 const props = defineProps({
     errors: Object,
     meta: Object,
@@ -54,6 +61,7 @@ const props = defineProps({
     }
 });
 
+
 </script>
 
 <script lang="ts">
@@ -64,7 +72,12 @@ export default {
             breadcrumb: this.$props.breadcrumb,
             awesome: this.$props.awesome,
         }
-    }
+    },
+    methods: {
+        onUpdateParent(val) {
+            this.$data.breadcrumb.photo_id = val.photo_id
+        },
+    },
 }
 
 </script>

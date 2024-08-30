@@ -59,4 +59,31 @@ class GalleryRepository
         return $result;
     }
 
+
+    public function getTree(): array
+    {
+        $result = [];
+        /** @var Gallery $gallery */
+        foreach (Gallery::orderBy('id')->getModels() as $gallery) {
+            $images = [];
+            foreach ($gallery->photos as $photo) {
+                $images[] = [
+                    'id' => $photo->id,
+                    'src' => $photo->getThumbUrl('thumb'),
+                    'alt' => $photo->alt,
+                    'title' => $photo->title,
+                ];
+            }
+            $result[] = [
+                'id' => $gallery->id,
+                'name' => $gallery->name,
+                'slug' => $gallery->slug,
+                'description' => $gallery->description,
+                'images' => $images,
+            ];
+        }
+
+        return $result;
+    }
+
 }
