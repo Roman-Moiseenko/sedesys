@@ -4,7 +4,7 @@
     <el-descriptions-item label="Заголовок (meta)">{{ displayed.meta.title }}</el-descriptions-item>
     <el-descriptions-item label="Описание (meta)">{{ displayed.meta.description }}</el-descriptions-item>
     <el-descriptions-item label="Фон для секции">
-        <div class="" style="width: 32px; height: 32px; min-height: 32px">
+        <div class="" style="height: 32px; display: flex;width: auto;">
             <el-image
                 :src="selectedPhoto"
                 :zoom-rate="1.2"

@@ -1,23 +1,20 @@
 <template>
-
-    <div class="flex">
-        <el-form-item label="Фон">
-            <el-input-number :controls="false" v-model="$props.photo_id" placeholder="id картинки из Галереи"
-                             :disabled="true" style="width: 60px; display: none"/>
-            <el-button round @click="getGallery">Выбрать</el-button>
-            <div class="" style="width: 32px; height: 32px; min-height: 32px">
-                <el-image
-                    :src="selectedPhoto"
-                    :zoom-rate="1.2"
-                    :max-scale="1"
-                    :min-scale="0.2"
-                    :preview-src-list="[selectedPhoto]"
-                    :initial-index="0"
-                    fit="cover"
-                />
-            </div>
-        </el-form-item>
-    </div>
+    <el-form-item label="Фон" class="flex">
+        <el-input-number :controls="false" v-model="$props.photo_id" placeholder="id картинки из Галереи"
+                         :disabled="true" style="width: 60px; display: none"/>
+        <el-button round @click="getGallery">Выбрать</el-button>
+        <div class="" style="width: auto; height: 32px; display: inherit;">
+            <el-image
+                :src="selectedPhoto"
+                :zoom-rate="1.2"
+                :max-scale="1"
+                :min-scale="0.2"
+                :preview-src-list="[selectedPhoto]"
+                :initial-index="0"
+                fit="cover"
+            />
+        </div>
+    </el-form-item>
 
     <el-dialog
         v-model="dialogVisible"
