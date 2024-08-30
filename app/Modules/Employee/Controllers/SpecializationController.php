@@ -74,8 +74,8 @@ class SpecializationController extends Controller
         return Inertia::render('Employee/Specialization/Edit', [
             'specialization' => $specialization,
             'route' => route('admin.employee.specialization.update', $specialization),
-            'image' => $specialization->getImage('thumb'),
-            'icon' => $specialization->getIcon('thumb'),
+            'image' => $specialization->getImage(),
+            'icon' => $specialization->getIcon(),
             'employees' => $employees,
         ]);
     }

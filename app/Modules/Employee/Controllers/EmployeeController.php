@@ -108,8 +108,8 @@ class EmployeeController extends Controller
         return Inertia::render('Employee/Employee/Edit', [
             'employee' => $employee,
             'route' => route('admin.employee.employee.update', $employee),
-            'image' => $employee->getImage('thumb'),
-            'icon' => $employee->getIcon('thumb'),
+            'image' => $employee->getImage(),
+            'icon' => $employee->getIcon(),
             'chat_id' => route('admin.notification.telegram.chat-id'),
             'specializations' => $specializations,
         ]);

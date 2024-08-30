@@ -3,7 +3,7 @@
         <h2 class="font-medium mb-3">Изображение для каталога</h2>
         <div class="lg:w-48 lg:h-48 image-fit relative">
             <el-image
-                :src="$props.image"
+                v-bind:src="$props.image"
                 :zoom-rate="1.2"
                 :max-scale="3"
                 :min-scale="0.2"
@@ -17,7 +17,7 @@
         <h2 class="font-medium mb-3">Иконка для меню</h2>
         <div class="lg:w-48 lg:h-48 image-fit relative">
             <el-image
-                :src="$props.icon"
+                v-bind:src="$props.icon"
                 :zoom-rate="1.2"
                 :max-scale="1"
                 :min-scale="0.2"

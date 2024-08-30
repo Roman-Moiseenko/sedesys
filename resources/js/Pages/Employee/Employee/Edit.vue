@@ -48,58 +48,16 @@
                     </div>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Изображение для каталога</h2>
-                    <!-- FileUpload -->
-                    <el-upload action="#" list-type="picture-card"
-                               :limit="1"
-                               :auto-upload="false"
-                               v-model:fileList="Images"
-                               @input="form.image = $event.target.files[0]" :on-remove="handleRemoveImages"
-                               class="file-uploader-one"
-                               ref="template"
-                    >
-                        <el-icon><Plus/></el-icon>
-                        <template #file="{ file }">
-                            <div>
-                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
-                                <span class="el-upload-list__item-actions">
-                                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                                    <el-icon><zoom-in/></el-icon>
-                                  </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveImages(file)">
-                                    <el-icon><Delete/></el-icon>
-                                  </span>
-                              </span>
-                            </div>
-                        </template>
-                    </el-upload>
-                    <!-- End FileUpload -->
-                    <h2 class="font-medium mb-3">Иконка для меню</h2>
-                    <!-- FileUpload -->
-                    <el-upload action="#" list-type="picture-card"
-                               :limit="1"
-                               :auto-upload="false"
-                               v-model:fileList="Icons"
-                               @input="form.icon = $event.target.files[0]" :on-remove="handleRemoveIcons"
-                               class="file-uploader-one"
-                               ref="template"
-                    >
-                        <el-icon><Plus/></el-icon>
-                        <template #file="{ file }">
-                            <div>
-                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
-                                <span class="el-upload-list__item-actions">
-                                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                                    <el-icon><zoom-in/></el-icon>
-                                  </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveIcons(file)">
-                                    <el-icon><Delete/></el-icon>
-                                  </span>
-                              </span>
-                            </div>
-                        </template>
-                    </el-upload>
-                    <!-- End FileUpload -->
+                    <UploadImageFile
+                        label="Изображение для каталога"
+                        v-model:image="props.image"
+                        @selectImageFile="onSelectImage"
+                    />
+                    <UploadImageFile
+                        label="Иконка для меню"
+                        v-model:image="props.icon"
+                        @selectImageFile="onSelectIcon"
+                    />
                 </div>
                 <div class="p-4">
                     <DisplayedFields
@@ -114,12 +72,7 @@
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">Изменения не сохранены</div>
         </el-form>
-        <!-- File Preview -->
-        <el-dialog v-model="dialogVisible">
-            <img w-full :src="dialogImageUrl" alt="Preview Image"/>
-        </el-dialog>
     </div>
-
     <div class="mt-3 p-3 bg-white rounded-lg">
         <div class="mt-3 mb-2 font-medium text-gray-800">Сотрудники и персонал, подключившиеся к чат-боту телеграм</div>
         <el-button type="success" @click="onGetChatID" class="mb-3">Получить список</el-button>
@@ -133,24 +86,14 @@
 
 
 <script lang="ts" setup>
-    import {reactive} from 'vue'
+    import {reactive, defineProps, ref} from 'vue'
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
-
-    import {ref} from 'vue'
-    import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
-    import type {UploadFile} from 'element-plus'
     import axios from 'axios'
     import DisplayedFields from '@/Components/DisplayedFields.vue'
+    import UploadImageFile from '@/Components/UploadImageFile.vue'
 
     const chat_ids = ref([])
-
-    const dialogImageUrl = ref('')
-    const dialogVisible = ref(false)
-    const disabled = ref(false)
-    const Images = ref<UploadFile>([]);
-    const Icons = ref<UploadFile>([]);
-
     const props = defineProps({
         errors: Object,
         route: String,
@@ -164,10 +107,6 @@
         icon: String,
         specializations: Array,
     });
-
-    if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
-    if (props.icon !== null) Icons.value.push({name: 'default', url: props.icon,});
-
     const form = reactive({
         phone: props.employee.phone,
         email: props.employee.email,
@@ -192,7 +131,6 @@
     function handleMaskPhone(val) {
         form.phone = func.MaskPhone(val);
     }
-
     function onSubmit() {
         router.post(props.route, form)
     }
@@ -202,21 +140,16 @@
                 chat_ids.value = response.data;
             });
     }
-    const handleRemoveImages = (file: UploadFile) => {
-        Images.value.splice(0, 1);
-        form.clear_image = true;
-    }
-
-    const handleRemoveIcons = (file: UploadFile) => {
-        Icons.value.splice(0, 1);
-        form.clear_icon = true;
-    }
     function handleYear(val) {
         form.experience_year = func.MaskInteger(val);
     }
-    const handlePictureCardPreview = (file: UploadFile) => {
-        dialogImageUrl.value = file.url!
-        dialogVisible.value = true
+    function onSelectImage(val) {
+        form.clear_image = val.clear_file;
+        form.image = val.file
+    }
+    function onSelectIcon(val) {
+        form.clear_icon = val.clear_file;
+        form.icon = val.file
     }
 </script>
 <script lang="ts">

@@ -1,6 +1,6 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl">Редактировать {{ staff.name }} </h1>
+    <h1 class="font-medium text-xl">Редактировать {{ staff.fullname.surname }} </h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
 
         <el-form :model="form" label-width="auto">
@@ -48,51 +48,16 @@
                     </el-form-item>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-medium mb-3">Фото сотрудника на аватар</h2>
-                    <!-- FileUpload -->
-                    <el-upload action="#" list-type="picture-card"
-                               :limit="1"
-                               :auto-upload="false"
-                               v-model:fileList="fileList"
-                               @input="form.file = $event.target.files[0]" :on-remove="handleRemove"
-                               class="file-uploader-one"
-                               ref="template"
-
-                    >
-                        <el-icon>
-                            <Plus/>
-                        </el-icon>
-
-                        <template #file="{ file }">
-                            <div>
-                                <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
-                                <span class="el-upload-list__item-actions">
-                                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                                    <el-icon><zoom-in/></el-icon>
-                                  </span>
-
-                                  <span v-if="!disabled" class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)">
-                                    <el-icon><Delete/></el-icon>
-                                  </span>
-                              </span>
-                            </div>
-                        </template>
-                    </el-upload>
-                    <!-- End FileUpload -->
-                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                        {{ form.progress.percentage }}%
-                    </progress>
+                    <UploadImageFile
+                        label="Фото сотрудника на аватар"
+                        v-model:image="props.photo"
+                        @selectImageFile="onSelectImage"
+                    />
                 </div>
             </div>
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
             <div v-if="form.isDirty">There are unsaved form changes.</div>
         </el-form>
-
-        <!-- File Preview -->
-        <el-dialog v-model="dialogVisible">
-            <img w-full :src="dialogImageUrl" alt="Preview Image"/>
-        </el-dialog>
     </div>
 
     <div class="mt-3 p-3 bg-white rounded-lg">
@@ -107,18 +72,14 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive} from 'vue'
+import {reactive, ref} from 'vue'
 import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
-
-import {ref} from 'vue'
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
-import type {UploadFile} from 'element-plus'
 import axios from 'axios'
+import UploadImageFile from '@/Components/UploadImageFile.vue'
 
-const dialogImageUrl = ref('')
-const dialogVisible = ref(false)
-const disabled = ref(false)
+
 const chat_ids = ref([])
 
 const props = defineProps({
@@ -136,15 +97,7 @@ const props = defineProps({
         default: null
     }
 });
-/* Загружаем фото назначенное */
-let _default = [];
-if (props.photo !== null) {
-    _default = [{
-        name: 'default',
-        url: props.photo,
-    }];
-}
-const fileList = ref<UploadFile>(_default);
+
 
 
 const form = reactive({
@@ -183,13 +136,9 @@ function onGetChatID() {
         });
 }
 
-const handleRemove = (file: UploadFile) => {
-    fileList.value.splice(0, 1);
-    form.clear_file = true;
-}
-const handlePictureCardPreview = (file: UploadFile) => {
-    dialogImageUrl.value = file.url!
-    dialogVisible.value = true
+function onSelectImage(val) {
+    form.clear_file = val.clear_file;
+    form.file = val.file
 }
 
 </script>
