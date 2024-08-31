@@ -3,6 +3,7 @@
 namespace App\Modules\Employee\Repository;
 
 use App\Modules\Employee\Entity\Specialization;
+use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -107,6 +108,17 @@ class EmployeeRepository
         $ids = $employee->services()->pluck('id')->toArray();
 
         return Service::whereNotIn('id', $ids)->getModels();
+    }
+
+    public function getReviews(Employee $employee): array
+    {
+        return $employee->reviews()->get()->map(fn(Review $review) => [
+            'from' => $review->getFrom(),
+            'rating' => $review->rating,
+            'text' => $review->text,
+            'service' => $review->service->name,
+            'created_at' => $review->created_at->translatedFormat('j F Y'),
+        ])->toArray();
     }
 
 }

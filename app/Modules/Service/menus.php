@@ -22,6 +22,11 @@ return [
                 'title' => 'Примеры работ',
                 'route' => route('admin.service.example.index', [], false),
             ],
+            'review' => [
+                'icon' => 'ChatLineSquare',
+                'title' => 'Отзывы',
+                'route' => route('admin.service.review.index', [], false),
+            ],
         ],
     ],
 ];

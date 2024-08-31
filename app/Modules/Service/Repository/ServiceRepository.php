@@ -5,6 +5,7 @@ namespace App\Modules\Service\Repository;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Entity\Review;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use App\Modules\Service\Entity\Service;
@@ -141,5 +142,16 @@ class ServiceRepository
             'destroy' => route('admin.service.service.destroy', $service),
             'toggle' => route('admin.service.service.toggle', $service),
         ];
+    }
+
+    public function getReviews(Service $service): array
+    {
+        return $service->reviews()->get()->map(fn(Review $review) => [
+            'from' => $review->getFrom(),
+            'rating' => $review->rating,
+            'text' => $review->text,
+            'employee' => !is_null($review->employee_id) ? $review->employee->fullname->getFullName() : '',
+            'created_at' => $review->created_at->translatedFormat('j F Y'),
+        ])->toArray();
     }
 }

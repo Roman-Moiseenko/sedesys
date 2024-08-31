@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
  * @property Photo[] $gallery //Галерея изображений
  * @property Employee[] $employees
  * @property Example[] $examples
+ * @property Review[] $reviews
  */
 class Service extends DisplayedModel implements WidgetData
 {
@@ -75,6 +76,11 @@ class Service extends DisplayedModel implements WidgetData
     public function examples()
     {
         return $this->hasMany(Example::class, 'service_id', 'id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'service_id', 'id');
     }
 
     public function employees()

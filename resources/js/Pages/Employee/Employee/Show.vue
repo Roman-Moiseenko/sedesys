@@ -191,7 +191,15 @@
                       <span> Отзывы</span>
                     </span>
                 </template>
-                Список + рейтинг + пагинация с подгрузгой
+                <div class="mb-5">
+                    <el-table :data="reviews" style="width: 100%;">
+                        <el-table-column label="Дата" prop="created_at"  width="160" />
+                        <el-table-column label="Клиент" prop="from" width="250"/>
+                        <el-table-column label="Исполнитель" prop="employee" width="250"></el-table-column>
+                        <el-table-column label="Рейтинг" prop="rating"  width="120" />
+                        <el-table-column label="Отзыв" prop="text" show-overflow-tooltip />
+                    </el-table>
+                </div>
             </el-tab-pane>
             <!-- Панель Meta-данные -->
             <el-tab-pane>
@@ -227,7 +235,6 @@ import {func} from '@/func.js'
 import DisplayedShow from '@/Components/DisplayedShow.vue'
 import DisplayedImage from '@/Components/DisplayedImage.vue'
 
-
 const dialogService = ref(false)
 const dialogSave = ref(false)
 
@@ -246,6 +253,7 @@ const props = defineProps({
     specializations:  Object,
     services: Array,
     examples: Array,
+    reviews: Array,
     out_services: Array,
     toggle: String,
 

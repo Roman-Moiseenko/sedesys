@@ -83,6 +83,7 @@ class EmployeeController extends Controller
         $out_services = $this->repository->outServices($employee);
         $examples = $this->examples->getShowByEmployee($employee);
         $services = $this->services->getShowByEmployee($employee);
+        $reviews = $this->repository->getReviews($employee);
 
         return Inertia::render('Employee/Employee/Show', [
                 'employee' => $employee,
@@ -95,6 +96,7 @@ class EmployeeController extends Controller
                 'icon' => $employee->getIcon(),
                 'specializations' => $specializations,
                 'services' => $services,
+                'reviews' => $reviews,
                 'out_services' => $out_services,
                 'examples' => $examples,
             ]

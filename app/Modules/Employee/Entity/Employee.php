@@ -11,6 +11,7 @@ use App\Modules\Base\Entity\GeoAddress;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Page\Entity\WidgetData;
 use App\Modules\Service\Entity\Example;
+use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -38,6 +39,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Specialization[] $specializations
  * @property Service[] $services
  * @property Example[] $examples
+ * @property Review[] $reviews
  */
 class Employee extends DisplayedModel implements
     WidgetData,
@@ -105,6 +107,11 @@ class Employee extends DisplayedModel implements
     public function services()
     {
         return $this->belongsToMany(Service::class, 'employees_services', 'employee_id', 'service_id')->withPivot(['extra_cost']);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'employee_id', 'id');
     }
 
     public function specializations()

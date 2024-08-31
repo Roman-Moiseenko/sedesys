@@ -81,7 +81,6 @@ class ExampleController extends Controller
     public function show(Example $example): Response
     {
         $example = Example::where('id', $example->id)->with('service')->with('employees')->first();
-        //$gallery = $this->galleries->getShowByExample($example);
 
         return Inertia::render('Service/Example/Show', [
                 'example' => $example,

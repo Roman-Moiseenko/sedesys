@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Service\Entity\Example;
+use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
@@ -61,4 +62,28 @@ Breadcrumbs::for('admin.service.example.show', function (BreadcrumbTrail $trail,
 Breadcrumbs::for('admin.service.example.edit', function (BreadcrumbTrail $trail, Example $example) {
     $trail->parent('admin.service.example.show', $example);
     $trail->push('Редактировать', route('admin.service.example.edit', $example));
+});
+
+//REVIEW
+Breadcrumbs::for('admin.service.review.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.home');
+    $trail->push('Отзывы', route('admin.service.review.index'));
+});
+Breadcrumbs::for('admin.service.review.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.service.review.index');
+    $trail->push('Добавить отзыв', route('admin.service.review.create'));
+});
+
+Breadcrumbs::for('admin.service.review.show', function (BreadcrumbTrail $trail, Review $review) {
+    $trail->parent('admin.service.review.index');
+    if (is_null($review->service_id)) {
+        $caption = 'Отзыв на компанию';
+    } else {
+        $caption = 'Отзыв на услугу ' . $review->service->name;
+    }
+    $trail->push($caption, route('admin.service.review.show', $review));
+});
+Breadcrumbs::for('admin.service.review.edit', function (BreadcrumbTrail $trail, Review $review) {
+    $trail->parent('admin.service.review.show', $review);
+    $trail->push('Редактировать', route('admin.service.review.edit', $review));
 });

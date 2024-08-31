@@ -5,7 +5,7 @@ namespace App\Modules\Base\Helpers;
 
 class Version
 {
-    const version = '0.3.2';
+    const version = '0.3.3';
 
     public static function updates(): array
     {

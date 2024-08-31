@@ -2,7 +2,7 @@
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
         <h1 class="font-medium text-xl">Галерея</h1>
-        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Gallery</el-button>
+        <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить Галерею</el-button>
 
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table

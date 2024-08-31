@@ -47,9 +47,19 @@ Route::group(
                 Route::post('/{example}/detach', 'ExampleController@detach')->name('detach');
             }
         );
+        Route::group(
+            [
+                'prefix' => 'review',
+                'as' => 'review.'
+            ],
+            function () {
+                Route::post('/{review}/toggle', 'ReviewController@toggle')->name('toggle');
+            }
+        );
 
         Route::Resource('service', 'ServiceController');
         Route::Resource('classification', 'ClassificationController');
         Route::Resource('example', 'ExampleController');
+        Route::Resource('review', 'ReviewController');
     }
 );

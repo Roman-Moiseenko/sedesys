@@ -3,6 +3,7 @@
 namespace App\Modules\Service\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
 use App\Modules\Service\Repository\ClassificationRepository;
 use App\Modules\Service\Repository\ExampleRepository;
@@ -22,10 +23,10 @@ class ServiceController extends Controller
     private ExampleRepository $exampleRepository;
 
     public function __construct(
-        ServiceService $service,
-        ServiceRepository $repository,
+        ServiceService           $service,
+        ServiceRepository        $repository,
         ClassificationRepository $classifications,
-        ExampleRepository $exampleRepository,
+        ExampleRepository        $exampleRepository,
     )
     {
         $this->service = $service;
@@ -78,6 +79,7 @@ class ServiceController extends Controller
     {
         $service = $this->repository->getShow($service->id);
         $out_employees = $this->repository->outEmployees($service);
+        $reviews = $this->repository->getReviews($service);
 
         return Inertia::render('Service/Service/Show', [
                 'service' => $service,
@@ -94,6 +96,7 @@ class ServiceController extends Controller
                 'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
 
                 'gallery' => $this->repository->getGallery($service),
+                'reviews' => $reviews,
                 'out_employees' => $out_employees,
                 'examples' => $this->exampleRepository->getShowByService($service),
             ]
