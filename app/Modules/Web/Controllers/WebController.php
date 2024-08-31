@@ -18,9 +18,9 @@ class WebController extends Controller
                 return $page->view();
             });
         } else {
-
-            //TODO Как очищать кеш???
-            return view('web.home');
+            return Cache::rememberForever('home', function () {
+                return view('web.home')->render();
+            });
         }
     }
 

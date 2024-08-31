@@ -37,6 +37,7 @@
                                         <el-radio-button label="SVG иконка" value="awesome" />
                                     </el-radio-group>
                                 </el-form-item>
+
                             </div>
                             <div class="p-4">
                                 <DisplayedFields
@@ -90,7 +91,7 @@
 
 
 
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit">Сохранить</el-button> <el-tag type="warning" class="ml-3">Сохранение очистит кеш страниц</el-tag>
             <div v-if="form.isDirty">Изменения не сохранены</div>
         </el-form>
     </div>
@@ -125,17 +126,14 @@ const form = reactive({
     default_breadcrumb: props.web.default_breadcrumb,
     default_awesome: props.web.default_awesome,
 
-
     employees_meta: props.web.employees_meta,
     employees_breadcrumb: props.web.employees_breadcrumb,
     employees_awesome: props.web.employees_awesome,
 
-
-
-
     services_meta: props.web.services_meta,
     services_breadcrumb: props.web.services_breadcrumb,
     services_awesome: props.web.services_awesome,
+
 
     /**
      * Добавить новые поля

@@ -27,7 +27,6 @@ class SettingService
 
         $data = $request->except(['slug']);
         $setting->data = $data;
-
         $setting->save();
 
         if ($slug == 'notification') $this->saveTelegramToken();
@@ -66,6 +65,7 @@ class SettingService
     private function saveCache()
     {
         Cache::flush();//Очищаем весь кэш
+
         Cache::put(CacheHelper::MENU_TOP, Menu::menuTop()); //Сохраняем меню
     }
 }

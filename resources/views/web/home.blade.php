@@ -12,7 +12,7 @@
     <section id="main-image" class="">
         <div class="container-xl info-block">
             <div class="section-title">
-                <h1>Система управления услугами SeDeSys</h1>
+                <h1>Система предоставления услуг SeDeSys</h1>
                 <div class="">
                     CRM / CMS по управлению услугами для малого бизнеса
                 </div>
