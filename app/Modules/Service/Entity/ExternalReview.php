@@ -8,15 +8,43 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class ExternalReview
 {
+
     const AVITO = 'avito';
+    const VK = 'vk';
+    const PRODOCTOROV = 'prodoctorov';
+    const OTZOVIK = 'otzovik';
+    const YANDEX_MAP = 'yandex_map';
+    const IRECOMMEND = 'irecommend';
+    const TWO_GIS = '2gis';
+
     const EXTERNAL_NAME = [
-        self::AVITO => 'Авито'
+        self::AVITO => 'Авито',
+        self::VK => 'ВКонтакте',
+        self::PRODOCTOROV => 'Продокторов',
+        self::OTZOVIK => 'Отзовик',
+        self::YANDEX_MAP => 'Яндекс карты',
+        self::IRECOMMEND => 'Я рекомендую',
+        self::TWO_GIS => '2 ГИС',
     ];
     const EXTERNAL_URL = [
-        self::AVITO => 'https://avito.ru'
+        self::AVITO => 'https://avito.ru',
+        self::VK => 'https://vk.com/',
+        self::PRODOCTOROV => 'https://prodoctorov.ru/',
+        self::OTZOVIK => 'https://otzovik.com/',
+        self::YANDEX_MAP => 'https://yandex.ru/maps',
+        self::IRECOMMEND => 'https://irecommend.ru/',
+        self::TWO_GIS => 'https://2gis.ru/',
+
     ];
     const EXTERNAL_LOGO = [
-        self::AVITO => '/resources/images/external/avito.ru'
+        self::AVITO => '/resources/images/external/avito.jpg',
+        self::VK => '/resources/images/external/vk.jpg',
+        self::PRODOCTOROV => '/resources/images/external/prodoctorov.jpg',
+        self::OTZOVIK => '/resources/images/external/otzovik.jpg',
+        self::YANDEX_MAP => '/resources/images/external/yandex_map.jpg',
+        self::IRECOMMEND => '/resources/images/external/irecommend.jpg',
+        self::TWO_GIS => '/resources/images/external/gis.jpg',
+
     ];
 
     public string $external;
