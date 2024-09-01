@@ -143,7 +143,7 @@ class Service extends DisplayedModel implements WidgetData
 
         return view(self::PATH_TEMPLATES . $this->template,
             [
-                'page' => $this,
+                'service' => $this,
                 'meta' => $meta,
                 'breadcrumb' => $breadcrumb,
             ]

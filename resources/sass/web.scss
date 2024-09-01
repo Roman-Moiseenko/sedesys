@@ -2,7 +2,8 @@
 //Собственные переменные для bootstrap
 @import 'variables';
 @import "../node_modules/bootstrap/scss/bootstrap";
-
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/utilities";
 //Шрифты
 
 @import './resources/sass/fontawesome/fontawesome.scss';
