@@ -2,6 +2,7 @@
 
 namespace App\Modules\Page\Entity;
 
+use App\Modules\Base\Entity\SortModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class Contact extends Model
+class Contact extends Model implements SortModel
 {
     use HasFactory;
 
@@ -42,10 +43,20 @@ class Contact extends Model
         return $this->active == true;
     }
 
+    public function isEqual(SortModel $model): bool
+    {
+        return $model->id == $this->id;
+    }
+
     public function setSort(int $sort): void
     {
         $this->sort = $sort;
         $this->save();
+    }
+
+    public function getSort(): int
+    {
+        return $this->sort;
     }
 
   /*  public function getField(): mixed

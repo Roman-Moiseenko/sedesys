@@ -49,28 +49,14 @@ class SpecializationService
     {
         /** @var Specialization[] $specializations */
         $specializations = Specialization::orderBy('sort')->getModels();
-        for ($i = 1; $i < count($specializations); $i++) {
-            if ($specializations[$i]->id == $specialization->id) {
-                $prev = $specializations[$i - 1]->sort;
-                $next = $specializations[$i]->sort;
-                $specializations[$i]->setSort($prev);
-                $specializations[$i - 1]->setSort($next);
-            }
-        }
+        up($specialization, $specializations);
     }
 
     public function down(Specialization $specialization)
     {
         /** @var Specialization[] $specializations */
         $specializations = Specialization::orderBy('sort')->getModels();
-        for ($i = 0; $i < count($specializations) - 1; $i++) {
-            if ($specializations[$i]->id == $specialization->id) {
-                $prev = $specializations[$i + 1]->sort;
-                $next = $specializations[$i]->sort;
-                $specializations[$i]->setSort($prev);
-                $specializations[$i + 1]->setSort($next);
-            }
-        }
+        down($specialization, $specializations);
     }
 
     public function attach(Specialization $specialization, Request $request)

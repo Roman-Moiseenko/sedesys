@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Service\Entity;
 
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Base\Entity\SortModel;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $awesome
  * @property Photo $icon
  */
-class Extra extends Model
+class Extra extends Model implements SortModel
 {
     protected $table = 'services_extra';
     public $timestamps = false;
@@ -46,6 +47,11 @@ class Extra extends Model
         ]);
     }
 
+    public function isEqual(SortModel $model): bool
+    {
+        return $model->id == $this->id;
+    }
+
     public function isActive(): bool
     {
         return $this->active == true;
@@ -63,6 +69,17 @@ class Extra extends Model
         $this->save();
     }
 
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+        $this->save();
+    }
+
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
+
     public function icon()
     {
         return $this->morphOne(Photo::class, 'imageable')->withDefault();;
@@ -73,12 +90,6 @@ class Extra extends Model
         if (is_null($this->icon) || is_null($this->icon->file)) return null;
         if (empty($thumb)) return $this->icon->getUploadUrl();
         return $this->icon->getThumbUrl($thumb);
-    }
-
-    public function setSort(int $sort)
-    {
-        $this->sort = $sort;
-        $this->save();
     }
 
 

@@ -6,6 +6,7 @@ use App\Modules\Base\Casts\MetaCast;
 use App\Modules\Base\Entity\DisplayedModel;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Base\Entity\SortModel;
 use App\Modules\Page\Entity\WidgetData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ use Illuminate\Support\Str;
  * @property int $sort
  * @property Employee[] $employees
  */
-class Specialization extends DisplayedModel implements WidgetData
+class Specialization extends DisplayedModel implements WidgetData, SortModel
 {
     use HasFactory;
 
@@ -32,12 +33,21 @@ class Specialization extends DisplayedModel implements WidgetData
         return $model;
     }
 
+    public function isEqual(SortModel $model): bool
+    {
+        return $model->id == $this->id;
+    }
+
     public function setSort(int $sort): void
     {
         $this->sort = $sort;
         $this->save();
     }
 
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
     //RELATIONS
 
     public function employees()
@@ -69,4 +79,6 @@ class Specialization extends DisplayedModel implements WidgetData
             'specialization-' . $this->id
         ];
     }
+
+
 }

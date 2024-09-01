@@ -59,27 +59,13 @@ class ContactService
     {
         /** @var Contact[] $contacts */
         $contacts = Contact::orderBy('sort')->getModels();
-        for ($i = 1; $i < count($contacts); $i++) {
-            if ($contacts[$i]->id == $contact->id) {
-                $prev = $contacts[$i - 1]->sort;
-                $next = $contacts[$i]->sort;
-                $contacts[$i]->setSort($prev);
-                $contacts[$i - 1]->setSort($next);
-            }
-        }
+        up($contact, $contacts);
     }
 
     public function down(Contact $contact)
     {
         /** @var Contact[] $contacts */
         $contacts = Contact::orderBy('sort')->getModels();
-        for ($i = 0; $i < count($contacts) - 1; $i++) {
-            if ($contacts[$i]->id == $contact->id) {
-                $prev = $contacts[$i + 1]->sort;
-                $next = $contacts[$i]->sort;
-                $contacts[$i]->setSort($prev);
-                $contacts[$i + 1]->setSort($next);
-            }
-        }
+        down($contact, $contacts);
     }
 }

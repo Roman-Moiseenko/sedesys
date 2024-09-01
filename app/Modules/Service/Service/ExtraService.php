@@ -48,28 +48,14 @@ class ExtraService
     {
         /** @var Extra[] $extras */
         $extras = Extra::where('service_id', $extra->service_id)->orderBy('sort')->getModels();
-        for ($i = 1; $i < count($extras); $i++) {
-            if ($extras[$i]->id == $extra->id) {
-                $prev = $extras[$i - 1]->sort;
-                $next = $extras[$i]->sort;
-                $extras[$i]->setSort($prev);
-                $extras[$i - 1]->setSort($next);
-            }
-        }
+        up($extra, $extras);
     }
 
     public function down(Extra $extra)
     {
         /** @var Extra[] $extras */
         $extras = Extra::where('service_id', $extra->service_id)->orderBy('sort')->getModels();
-        for ($i = 0; $i < count($extras) - 1; $i++) {
-            if ($extras[$i]->id == $extra->id) {
-                $prev = $extras[$i + 1]->sort;
-                $next = $extras[$i]->sort;
-                $extras[$i]->setSort($prev);
-                $extras[$i + 1]->setSort($next);
-            }
-        }
+        down($extra, $extras);
     }
 
     private function saveIcon(Extra $extra, Request $request): void
