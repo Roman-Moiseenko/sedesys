@@ -27,6 +27,7 @@ use Illuminate\Support\Str;
  * @property Employee[] $employees
  * @property Example[] $examples
  * @property Review[] $reviews
+ * @property Extra[] $extras
  */
 class Service extends DisplayedModel implements WidgetData
 {
@@ -50,19 +51,7 @@ class Service extends DisplayedModel implements WidgetData
      * Гетеры
      */
 
-    public function getDurationText(): string
-    {
-        $hour = intdiv($this->duration, 60);
-        $minute = $this->duration % 60;
-        $result = '';
-        if ($hour > 8) {
-            $result = intdiv($hour, 8) . " дн.";
-            $hour = $hour % 8;
-        }
-        if ($hour > 0) $result .= $hour ."ч ";
-        if ($minute > 0) $result .= $minute ."мин";
-        return $result;
-    }
+
 
     public function getClassificationName(): string
     {
@@ -76,6 +65,11 @@ class Service extends DisplayedModel implements WidgetData
     public function examples()
     {
         return $this->hasMany(Example::class, 'service_id', 'id');
+    }
+
+    public function extras()
+    {
+        return $this->hasMany(Extra::class, 'service_id', 'id')->orderBy('sort');
     }
 
     public function reviews()

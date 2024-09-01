@@ -39,7 +39,6 @@ const dialogVisible = ref(false)
 const dialogImageUrl = ref('')
 const disabled = ref(false)
 
-
 const props = defineProps({
     label: String,
     image: {
@@ -50,7 +49,6 @@ const props = defineProps({
 });
 const Images = ref<UploadFile>([]);
 if (props.image !== null) Images.value.push({name: 'default', url: props.image,});
-
 const emit = defineEmits(['selectImageFile']);
 
 const onSelectFile = function (val) {
@@ -66,29 +64,27 @@ const handleRemoveImages = (file: UploadFile) => {
         clear_file: true
     });
 }
-
 const handlePictureCardPreview = (file: UploadFile) => {
     dialogImageUrl.value = file.url!
     dialogVisible.value = true
 }
-
 </script>
 
 <script lang="ts">
 export default {
-    data() {
+    /*data() {
         return {
             photo_id: this.$props.photo_id,
         }
-    },
-    methods: {
+    },*/
+   /* methods: {
         updateParent(val) {
             console.log(val);
             this.$emit('updateImageFile', {
                 photo_id: val,
             })
         }
-    }
+    }*/
 }
 
 </script>

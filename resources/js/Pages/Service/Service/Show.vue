@@ -34,223 +34,38 @@
                 </div>
             </el-tab-pane>
             <!-- Панель Описание -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><Document/></el-icon>
-                      <span> Описание</span>
-                    </span>
-                </template>
-                <div class="mt-5 p-5 bg-white rounded-lg border shadow" v-html="$props.service.text"></div>
-            </el-tab-pane>
+            <DescriptionPanel :text="service.text"/>
             <!-- Панель Галерея -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><Picture/></el-icon>
-                      <span> Галерея</span>
-                    </span>
-                </template>
-                <div class="mt-5 p-5 bg-white rounded-lg">
-                    <h2 class="font-medium text-lg mb-3">Галерея:</h2>
-                    <el-upload
-                        v-model:file-list="fileList"
-                        :action="add"
-                        list-type="picture-card"
-                        :on-preview="handlePictureCardPreview"
-                        :on-remove="handleRemove"
-                        :headers="{'X-CSRF-TOKEN': csrf}"
-                    >
-                        <el-icon>
-                            <Plus/>
-                        </el-icon>
-                    </el-upload>
-                    <el-dialog v-model="dialogGallery" width="80%">
-                        <div class="flex">
-                            <div style="width: 80%" class="grid">
-                                <img w-full :src="dialogImageUrl" alt="Preview Image" class="mx-auto"/>
-                            </div>
-                            <div class="bg-gray-100 p-2 border border-gray-300" style="width: 20%">
-                                <el-form :model="form" label-width="auto">
-                                    <el-form-item label="ID фото">
-                                        <el-input v-model="form.photo_id" readonly/>
-                                    </el-form-item>
-                                    <el-form-item label="Alt для фото" label-position="top">
-                                        <el-input v-model="form.alt" placeholder="Напишите Alt для SEO"/>
-                                    </el-form-item>
-                                    <el-form-item label="Заголовок" label-position="top">
-                                        <el-input v-model="form.title" placeholder="Заголовок"/>
-                                    </el-form-item>
-                                    <el-form-item label="Описание" label-position="top">
-                                        <el-input v-model="form.description" placeholder="Описание" type="textarea"
-                                                  :rows="3"/>
-                                    </el-form-item>
-                                    <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-                                    <span v-if="dialogSave" class="text-lime-500 text-sm ml-3">Сохранено</span>
-                                </el-form>
-                                <div class="mt-5">
-                                    <el-input v-model="dialogImageUrl" readonly/>
-                                    <el-button id="copy_buffer" type="success" class="text-sm mt-2" @click="copyBuffer"
-                                               plain>Скопировать Url
-                                    </el-button>
-                                    <span v-if="dialogCopy" class="text-lime-500 text-sm ml-3">Скопировано</span>
-                                </div>
-                            </div>
-                        </div>
-                    </el-dialog>
-                </div>
-            </el-tab-pane>
+            <GalleryPanel
+                :add="gallery_data.add"
+                :del="gallery_data.del"
+                :set="gallery_data.set"
+                :gallery="gallery_data.gallery"
+            />
             <!-- Панель Персонал -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><Service/></el-icon>
-                      <span> Персонал</span>
-                    </span>
-                </template>
-                <div class="mb-5">
-                    <el-table :data="service.employees"
-                              style="width: 100%;"
-                    >
-                        <el-table-column label="Персонал" width="250">
-                            <template #default="scope">
-                                {{ func.fullName(scope.row.fullname) }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="Специализация" width="250">
-                            <template #default="scope">
-                                <el-tag class="mr-1" v-for="item in scope.row.specializations">{{ item.name }}</el-tag>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="Стаж" width="250">
-                            <template #default="scope">
-                                {{ func.experience(scope.row.experience_year) }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="Доп. наценка" width="250">
-                            <template #default="scope">
-                                {{ func.price(scope.row.pivot.extra_cost) }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="Действия" width="250">
-                            <template #default="scope">
-                                <el-button type="warning" @click.stop="handleDetach(scope.row.id)">Detach</el-button>
-                            </template>
-                        </el-table-column>
-
-                    </el-table>
-                </div>
-
-                <el-button type="success" plain @click="dialogEmployee = true">
-                    <el-icon>
-                        <Service/>
-                    </el-icon>&nbsp;
-                    Добавить Персонал
-                </el-button>
-                <!--Dialog-->
-                <el-dialog v-model="dialogEmployee" width="400" class="p-4" center>
-                    <el-form :model="formEmployee" class="mt-3">
-                        <el-form-item label="Персонал">
-                            <el-select v-model="formEmployee.employee_id">
-                                <el-option v-for="item in $page.props.out_employees" :value="item.id" :key="item.id"
-                                           :label="func.fullName(item.fullname)"/>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Дополнительная наценка" class="mb-3">
-                            <el-input v-model="formEmployee.extra_cost" @input="handleExtraCost" placeholder=""
-                                      class="mb-3">
-                                <template #append>₽</template>
-                            </el-input>
-                        </el-form-item>
-                        <el-button type="info" plain @click="dialogEmployee = false">
-                            Отмена
-                        </el-button>
-                        <el-button type="primary" @click="attachEmployee">Сохранить</el-button>
-                        <span v-if="dialogSave" class="text-lime-500 text-sm ml-3">Сохранено</span>
-                    </el-form>
-                </el-dialog>
-            </el-tab-pane>
+            <EmployeePanel
+                :attach="employee_data.attach"
+                :detach="employee_data.detach"
+                :employees="service.employees"
+                :out_employees="employee_data.out_employees"
+            />
             <!-- Панель Расходники -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><TakeawayBox/></el-icon>
-                      <span> Расходники</span>
-                    </span>
-                </template>
-                Список материала + кол-во + цена за 1 шт.
-            </el-tab-pane>
+            <ConsumablesPanel />
+
             <!-- Панель Примеры работ -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><Help/></el-icon>
-                      <span> Примеры работы</span>
-                    </span>
-                </template>
-                <div class="mb-5">
-                    <el-table :data="examples"
-                              style="width: 100%; cursor: pointer;"
-                              @row-click="routeClick"
-                    >
-                        <el-table-column label="Дата" prop="date"  width="120" />
-                        <el-table-column label="Заголовок" prop="title" width="250"/>
-
-                        <el-table-column label="Исполнители" width="250">
-                            <template #default="scope">
-                                <el-tag class="mr-1" v-for="item in scope.row.employees">
-                                    {{ func.fullName(item.fullname) }}
-                                </el-tag>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column label="Стоимость" prop="cost"  width="120" />
-                        <el-table-column label="Изображения" prop="gallery_count"  width="120" />
-                        <el-table-column label="Описание" prop="description" show-overflow-tooltip/>
-                        <el-table-column label="Действия" width="250">
-                            <template #default="scope">
-                                <el-button v-if="scope.row.active"
-                                           size="small"
-                                           type="warning"
-                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
-                                    Hide
-                                </el-button>
-                                <el-button v-if="!scope.row.active"
-                                           size="small"
-                                           type="success"
-                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
-                                    Show
-                                </el-button>
-                                <el-button
-                                    size="small"
-                                    @click.stop="handleEditRow(scope.$index, scope.row)">
-                                    Edit
-                                </el-button>
-                            </template>
-                        </el-table-column>
-
-                    </el-table>
-                </div>
-                <el-button @click="newExample">Новый пример</el-button>
-            </el-tab-pane>
+            <ExamplesPanel
+                :examples="example_data.examples"
+                :new_example="example_data.new_example"
+            />
             <!-- Панель Отзывы -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><ChatLineSquare/></el-icon>
-                      <span> Отзывы</span>
-                    </span>
-                </template>
-                <div class="mb-5">
-                    <el-table :data="reviews" style="width: 100%;">
-                        <el-table-column label="Дата" prop="created_at"  width="160" />
-                        <el-table-column label="Клиент" prop="from" width="250"/>
-                        <el-table-column label="Исполнитель" prop="employee" width="250"></el-table-column>
-                        <el-table-column label="Рейтинг" prop="rating"  width="120" />
-                        <el-table-column label="Отзыв" prop="text" show-overflow-tooltip />
-                    </el-table>
-                </div>
-            </el-tab-pane>
+            <ReviewPanel :reviews="reviews" />
+            <!-- Панель Доп.услуги -->
+            <ExtraPanel
+                :extras="extra_data.extras"
+                :errors="errors"
+                :add="extra_data.add"
+                :service_id="service.id"
+            />
         </el-tabs>
     </div>
 
@@ -262,6 +77,24 @@
         </div>
     </div>
 
+
+    <!-- Dialog Delete -->
+    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
+        <div class="font-medium text-md mt-2">
+            Вы уверены, что хотите удалить service?
+        </div>
+        <div class="text-red-600 text-md mt-2">
+            Восстановить данные будет невозможно!
+        </div>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
+                <el-button type="danger" @click="removeItem($data.routeDestroy)">
+                    Удалить
+                </el-button>
+            </div>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -274,103 +107,47 @@ import type {UploadProps, UploadUserFile, UploadRawFile} from 'element-plus'
 import DisplayedShow from '@/Components/DisplayedShow.vue'
 import DisplayedImage from '@/Components/DisplayedImage.vue'
 
-
-const dialogImageUrl = ref('')
-const dialogGallery = ref(false)
-const dialogEmployee = ref(false)
-const dialogCopy = ref(false)
-const dialogSave = ref(false)
-const imageAlt = ref('')
-const imageId = ref('')
+///Панели
+import DescriptionPanel from './Panels/Description.vue'
+import GalleryPanel from './Panels/Gallery.vue'
+import EmployeePanel from './Panels/Employee.vue'
+import ConsumablesPanel from './Panels/Consumables.vue'
+import ExamplesPanel from './Panels/Examples.vue'
+import ExtraPanel from './Panels/Extra.vue'
+import ReviewPanel from './Panels/Review.vue'
 
 const props = defineProps({
     service: Object,
     edit: String,
+    image: String,
+    icon: String,
+    errors: Object,
+
     title: {
         type: String,
         default: 'Карточка услуги',
     },
-    gallery: Array,
-    image: String,
-    icon: String,
-    add: String,
-    del: String,
-    set: String,
-    attach: String,
-    detach: String,
+    gallery_data: Array,
+    employee_data: Array,
+
     toggle: String,
     class_name: String,
-    out_employees: Object,
-    examples: Array,
+
+    example_data: Array,
+
     reviews: Array,
-    new_example: String,
+    extra_data: Array,
 });
 
-const form = reactive({
-    photo_id: null,
-    alt: null,
-    title: null,
-    description: null,
-})
-const formEmployee = reactive({
-    employee_id: null,
-    extra_cost: null
-});
 
-const fileList = ref<UploadUserFile[]>(props.gallery);
-
-const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
-    if (uploadFile.id !== undefined) router.post(props.del, {photo_id: uploadFile.id});
-}
-const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
-    dialogImageUrl.value = uploadFile.url!
-    form.photo_id = uploadFile.id;
-    form.alt = uploadFile.alt;
-    form.title = uploadFile.title;
-    form.description = uploadFile.description;
-    dialogGallery.value = true
-}
-
-function copyBuffer(val) {
-    dialogCopy.value = true;
-    setTimeout(() => {
-        dialogCopy.value = false;
-    }, 2000);
-    navigator.clipboard.writeText(dialogImageUrl.value);
-}
-
-function onSubmit() {
-    dialogSave.value = true;
-    setTimeout(() => {
-        dialogSave.value = false;
-    }, 2000);
-    router.post(props.set, form);
-}
-
-function attachEmployee() {
-    if (formEmployee.employee_id === null) return;
-    router.post(props.attach, formEmployee);
-    dialogEmployee.value = false;
-}
-
-function detachEmployee(row) {
-    router.post(props.detach, {
-        employee_id: row.id
-    });
-}
-function handleExtraCost(val) {
-    formEmployee.extra_cost = func.MaskInteger(val);
-}
-function handleDetach(val) {
-    router.post(props.detach, {employee_id: val})
-}
 function handleToggle() {
     router.post(props.toggle);
 }
-function newExample() {
-    router.get(props.new_example);
-}
 
+
+function newExtra() {
+    alert('Добавить');
+}
 </script>
 
 <script lang="ts">
@@ -393,10 +170,25 @@ export default {
         routeClick(row) {
             router.get(row.url)
         },
+        handleDelete(index, row) {
+            this.$data.dialogDelete = true;
+            this.$data.routeDestroy = row.destroy;
+        },
+        removeItem(_route) {
+            if (_route !== null) {
+                router.visit(_route, {
+                    method: 'delete'
+                });
+                this.$data.dialogDelete = false;
+                this.$data.routeDestroy = null;
+            }
+        },
     },
     data() {
         return {
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            //csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            dialogDelete: false,
+            routeDestroy: null,
         }
     },
 }

@@ -27,10 +27,12 @@ Route::group(
             function () {
                 Route::post('/{service}/toggle', 'ServiceController@toggle')->name('toggle');
                 Route::post('/{service}/add', 'ServiceController@add')->name('add');
+
                 Route::post('/{service}/del', 'ServiceController@del')->name('del');
                 Route::post('/{service}/set', 'ServiceController@set')->name('set');
                 Route::post('/{service}/attach', 'ServiceController@attach')->name('attach');
                 Route::post('/{service}/detach', 'ServiceController@detach')->name('detach');
+
             }
         );
         Route::group(
@@ -56,6 +58,18 @@ Route::group(
                 Route::post('/{review}/toggle', 'ReviewController@toggle')->name('toggle');
             }
         );
+        Route::group(
+            [
+                'prefix' => 'extra',
+                'as' => 'extra.'
+            ],
+            function () {
+                Route::post('/{extra}/toggle', 'ExtraController@toggle')->name('toggle');
+                Route::post('/{extra}/up', 'ExtraController@up')->name('up');
+                Route::post('/{extra}/down', 'ExtraController@down')->name('down');
+            }
+        );
+        Route::Resource('extra', 'ExtraController');
 
         Route::Resource('service', 'ServiceController');
         Route::Resource('classification', 'ClassificationController');

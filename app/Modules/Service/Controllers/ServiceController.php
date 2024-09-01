@@ -80,6 +80,7 @@ class ServiceController extends Controller
         $service = $this->repository->getShow($service->id);
         $out_employees = $this->repository->outEmployees($service);
         $reviews = $this->repository->getReviews($service);
+        $extras = $this->repository->getExtras($service);
 
         return Inertia::render('Service/Service/Show', [
                 'service' => $service,
@@ -88,17 +89,28 @@ class ServiceController extends Controller
                 'image' => $service->getImage(),
                 'icon' => $service->getIcon(),
 
-                'add' => route('admin.service.service.add', $service),
-                'del' => route('admin.service.service.del', $service),
-                'set' => route('admin.service.service.set', $service),
-                'attach' => route('admin.service.service.attach', $service),
-                'detach' => route('admin.service.service.detach', $service),
-                'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
 
-                'gallery' => $this->repository->getGallery($service),
+                'gallery_data' => [
+                    'add' => route('admin.service.service.add', $service),
+                    'del' => route('admin.service.service.del', $service),
+                    'set' => route('admin.service.service.set', $service),
+                    'gallery' => $this->repository->getGallery($service),
+                ],
+                'employee_data' => [
+                    'attach' => route('admin.service.service.attach', $service),
+                    'detach' => route('admin.service.service.detach', $service),
+                    'out_employees' => $out_employees,
+                ],
+                'example_data' => [
+                    'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
+                    'examples' => $this->exampleRepository->getShowByService($service),
+
+                ],
                 'reviews' => $reviews,
-                'out_employees' => $out_employees,
-                'examples' => $this->exampleRepository->getShowByService($service),
+                'extra_data' =>[
+                    'add' => route('admin.service.extra.store'),
+                    'extras' => $extras,
+                    ]
             ]
         );
     }

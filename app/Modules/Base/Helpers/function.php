@@ -12,6 +12,25 @@ if (!function_exists('price')) {
     }
 }
 
+if (!function_exists('duration')) {
+    function duration($value): string
+    {
+        if (empty($value) || !is_numeric($value)) return '';
+
+        $hour = intdiv($value, 60);
+        $minute = $value % 60;
+        $result = '';
+        if ($hour > 8) {
+            $result = intdiv($hour, 8) . " дн.";
+            $hour = $hour % 8;
+        }
+        if ($hour > 0) $result .= $hour ."ч ";
+        if ($minute > 0) $result .= $minute ."мин";
+        return $result;
+    }
+}
+
+
 if (!function_exists('phone')) {
     function phone($value): string
     {

@@ -5,6 +5,7 @@ namespace App\Modules\Service\Repository;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Entity\Extra;
 use App\Modules\Service\Entity\Review;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -132,7 +133,7 @@ class ServiceRepository
             'id' => $service->id,
             'name' => $service->name,
             'price' => price($service->price),
-            'duration' => $service->getDurationText(),
+            'duration' => duration($service->duration),
             'active' => $service->isActive(),
             'classification' => $service->getClassificationName(),
             'count_employees' => $service->employees()->count(),
@@ -152,6 +153,25 @@ class ServiceRepository
             'text' => $review->text,
             'employee' => !is_null($review->employee_id) ? $review->employee->fullname->getFullName() : '',
             'created_at' => $review->created_at->translatedFormat('j F Y'),
+        ])->toArray();
+    }
+
+    public function getExtras(Service $service): array
+    {
+        return $service->extras()->get()->map(fn(Extra $extra) => [
+            'name' => $extra->name,
+            'description' => $extra->description,
+            'price' => $extra->price,
+            'duration' => $extra->duration,
+            'awesome' => $extra->awesome,
+            'icon' => $extra->getIcon(),
+            'active' => $extra->isActive(),
+
+            'toggle' => route('admin.service.extra.toggle', $extra),
+            'up' => route('admin.service.extra.up', $extra),
+            'down' => route('admin.service.extra.down', $extra),
+            'update' => route('admin.service.extra.update', $extra),
+            'destroy' => route('admin.service.extra.destroy', $extra),
         ])->toArray();
     }
 }

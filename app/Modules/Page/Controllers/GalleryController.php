@@ -114,8 +114,10 @@ class GalleryController extends Controller
     public function get_photo(Request $request)
     {
         /** @var Photo $photo */
+
         $photo = Photo::find($request->integer('photo_id'));
-        return response()->json($photo->getThumbUrl('original'));
+        if (!is_null($photo)) return response()->json($photo->getThumbUrl('original'));
+        return response()->json(false);
     }
 
 }
