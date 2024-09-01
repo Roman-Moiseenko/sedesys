@@ -19,12 +19,12 @@ class Page extends DisplayedModel
     use HasFactory, NodeTrait;
 
     const PATH_TEMPLATES = 'web.templates.page.';
-    const PAGES_TEMPLATES = [
+ /*   const PAGES_TEMPLATES = [
         'contact' => 'Контакты',
         'review' => 'Отзывы',
         'tariff' => 'Тарифы',
         'text' => 'Текстовая',
-    ];
+    ];*/
 
     protected $attributes = [
         'text' => '',

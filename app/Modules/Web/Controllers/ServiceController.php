@@ -40,12 +40,18 @@ class ServiceController extends Controller
 
     public function view($slug)
     {
+        /** @var Service $service */
         $service = Service::where('slug', $slug)->first();
+        if (is_null($service)) return abort(404);
+
         return Cache::rememberForever('service-' . $service->id, function () use ($service) {
-            if (is_null($service)) return abort(404);
+            //Если у услуги назначен шаблон
+            if (!empty($service->template)) return $service->view();
+
             $meta = $service->meta;
             $breadcrumb = $this->repository->getBreadcrumbModel($service);
             return view('web.service.show', compact('service', 'meta', 'breadcrumb'))->render();
         });
     }
+
 }

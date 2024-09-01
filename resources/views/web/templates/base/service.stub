@@ -25,12 +25,13 @@
 
 @extends('layouts.web')
 
-@section('main')
-service container-xl
-@endsection
+@section('main', 'service container-xl')
+@section('title', $meta->title)
+@section('description', $meta->description)
 
-@section('title', $service->meta->title)
-@section('description', $service->meta->description)
+@section('breadcrumbs')
+@include('web.breadcrumbs.background', ['breadcrumb_info' => $breadcrumb])
+@endsection
 
 @section('content')
 <!--template:dummyParamsName-->
@@ -41,7 +42,7 @@ service container-xl
         Цена за услугу {{ price($service->price) }}
     </div>
     <div>
-        Длительность {{ $service->getDurationText() }}
+        Длительность {{ duration($service->duration) }}
     </div>
     <div class="d-flex">
         @foreach($service->gallery as $image)
@@ -54,20 +55,36 @@ service container-xl
 <div class="mt-4">
     {!! $service->text !!}
 </div>
-<div>
-    Мастера
+
+@if($service->employees()->count() > 0)
+<div class="my-5">
+    <h2>Специалисты</h2>
 </div>
-<div>
-    Отзывы
+@endif
+
+@if($service->reviews()->count() > 0)
+<div class="my-5">
+    <h2>Отзывы</h2>
 </div>
+@endif
+
 <div>
     Используемые материалы
 </div>
-<div>
+
+@if($service->extras()->count() > 0)
+<div class="my-5">
+    <h2>Дополнительные услуги</h2>
     Дополнительные услуги или вариации??
 </div>
+@endif
 
-
+@if($service->examples()->count() > 0)
+<div class="my-5">
+    <h2>Примеры наших работ</h2>
+    Примеры
+</div>
+@endif
 
 
 @endsection

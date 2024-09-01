@@ -93,6 +93,15 @@ class Example extends Model
         return $this->morphMany(Photo::class, 'imageable');
     }
 
+    public function getImage(int $sort, string $thumb = 'card'): string
+    {
+        /** @var Photo[] $images */
+        $images = $this->gallery()->getModels();
+        $count = count($images);
+        $pos = $sort - 1;
+        if ( ($count - 1) < $pos ) $pos = $count - 1;
+        return $images[$pos]->getThumbUrl($thumb);
+    }
 
     /**
      * Хелперы и Интерфейсы

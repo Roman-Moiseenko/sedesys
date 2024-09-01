@@ -7,7 +7,9 @@ use App\Modules\Base\Entity\DisplayedModel;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Entity\WidgetData;
+use App\Modules\Web\Repository\WebRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +34,8 @@ use Illuminate\Support\Str;
 class Service extends DisplayedModel implements WidgetData
 {
     use HasFactory;
+
+    const PATH_TEMPLATES = 'web.templates.service.';
 
     protected $attributes = [
         'text' => '',
@@ -115,5 +119,35 @@ class Service extends DisplayedModel implements WidgetData
             'service-' . $this->id,
             'classification-' . $this->classification_id
         ];
+    }
+
+
+    public function view(): string
+    {
+        $text = $this->text;
+        preg_match_all('/\[widget=\"(.+)\"\]/', $text, $matches);
+        $replaces = $matches[0]; //шот-коды вида [widget="7"] (массив)
+        $widget_ids = $matches[1]; //значение id виджета (массив)
+
+        foreach ($widget_ids as $key => $widget_id) {
+            $text = str_replace(
+                $replaces[$key],
+                Widget::findView((int)$widget_id),
+                $text);
+        }
+        $this->text = $text;
+
+        $repository = app()->make(WebRepository::class);
+        $breadcrumb = $repository->getBreadcrumbModel($this);
+        $meta = $this->meta;
+
+        return view(self::PATH_TEMPLATES . $this->template,
+            [
+                'page' => $this,
+                'meta' => $meta,
+                'breadcrumb' => $breadcrumb,
+            ]
+        )->render();
+
     }
 }

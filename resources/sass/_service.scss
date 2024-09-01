@@ -1,0 +1,13 @@
+.dots-list:after {
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    border-bottom: 0.125rem dotted var(--bs-gray-700);
+}
+.bg-dots-list {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+}

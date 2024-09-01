@@ -111,6 +111,10 @@ class Review extends Model
         return $this->user->fullname->getShortname();
     }
 
+    public function getDate(): string
+    {
+        return $this->created_at->translatedFormat('j F Y');
+    }
     /**
      * Хелперы и Интерфейсы
      */

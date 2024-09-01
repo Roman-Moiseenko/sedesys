@@ -37,13 +37,13 @@ class ExternalReview
 
     ];
     const EXTERNAL_LOGO = [
-        self::AVITO => '/resources/images/external/avito.jpg',
-        self::VK => '/resources/images/external/vk.jpg',
-        self::PRODOCTOROV => '/resources/images/external/prodoctorov.jpg',
-        self::OTZOVIK => '/resources/images/external/otzovik.jpg',
-        self::YANDEX_MAP => '/resources/images/external/yandex_map.jpg',
-        self::IRECOMMEND => '/resources/images/external/irecommend.jpg',
-        self::TWO_GIS => '/resources/images/external/gis.jpg',
+        self::AVITO => '/images/external/avito.jpg',
+        self::VK => '/images/external/vk.jpg',
+        self::PRODOCTOROV => '/images/external/prodoctorov.jpg',
+        self::OTZOVIK => '/images/external/otzovik.jpg',
+        self::YANDEX_MAP => '/images/external/yandex_map.jpg',
+        self::IRECOMMEND => '/images/external/irecommend.jpg',
+        self::TWO_GIS => '/images/external/gis.jpg',
 
     ];
 
