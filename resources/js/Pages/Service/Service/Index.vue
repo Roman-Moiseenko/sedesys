@@ -28,6 +28,16 @@
                 v-loading="store.getLoading"
             >
                 <!-- Повторить поля -->
+                <el-table-column label="IMG" width="100" class-name="img-expend">
+                    <template #default="scope">
+                        <el-image style="min-width: 50px; min-height: 50px" :src="scope.row.image" fit="fill"/>
+                    </template>
+                </el-table-column>
+                <el-table-column label="ICON" width="100">
+                    <template #default="scope">
+                        <el-image style="min-width: 50px; min-height: 50px" :src="scope.row.icon" fit="fill"/>
+                    </template>
+                </el-table-column>
                 <el-table-column sortable prop="name" label="Услуга" width="250" show-overflow-tooltip/>
                 <el-table-column sortable prop="classification" label="Классификация"  width="250"/>
                 <el-table-column prop="price" label="Стоимость" width="100" />

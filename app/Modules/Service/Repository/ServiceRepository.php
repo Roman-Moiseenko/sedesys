@@ -137,6 +137,8 @@ class ServiceRepository
             'active' => $service->isActive(),
             'classification' => $service->getClassificationName(),
             'count_employees' => $service->employees()->count(),
+            'image' => $service->getImage('mini'),
+            'icon' => $service->getIcon('mini'),
 
             'url' => route('admin.service.service.show', $service),
             'edit' => route('admin.service.service.edit', $service),
