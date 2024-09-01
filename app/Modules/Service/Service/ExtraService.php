@@ -48,14 +48,14 @@ class ExtraService
     {
         /** @var Extra[] $extras */
         $extras = Extra::where('service_id', $extra->service_id)->orderBy('sort')->getModels();
-        up($extra, $extras);
+        sort_model_up($extra, $extras);
     }
 
     public function down(Extra $extra)
     {
         /** @var Extra[] $extras */
         $extras = Extra::where('service_id', $extra->service_id)->orderBy('sort')->getModels();
-        down($extra, $extras);
+        sort_model_down($extra, $extras);
     }
 
     private function saveIcon(Extra $extra, Request $request): void

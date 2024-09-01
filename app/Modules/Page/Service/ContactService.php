@@ -59,13 +59,13 @@ class ContactService
     {
         /** @var Contact[] $contacts */
         $contacts = Contact::orderBy('sort')->getModels();
-        up($contact, $contacts);
+        sort_model_up($contact, $contacts);
     }
 
     public function down(Contact $contact)
     {
         /** @var Contact[] $contacts */
         $contacts = Contact::orderBy('sort')->getModels();
-        down($contact, $contacts);
+        sort_model_down($contact, $contacts);
     }
 }

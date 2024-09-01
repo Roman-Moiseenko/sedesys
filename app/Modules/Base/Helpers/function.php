@@ -145,15 +145,14 @@ if (!function_exists('photo_std')) {
     }
 }
 
-
-if (!function_exists('up')) {
+if (!function_exists('sort_model_up')) {
     /**
      * Сортировка - вверх по списку
      * @param SortModel $model
      * @param array<SortModel> $models
      * @return void
      */
-    function up(SortModel $model, array $models) {
+    function sort_model_up(SortModel $model, array $models) {
         for ($i = 1; $i < count($models); $i++) {
             if ($model->isEqual($models[$i])) {
                 $prev = $models[$i - 1]->getSort();
@@ -165,14 +164,14 @@ if (!function_exists('up')) {
     }
 }
 
-if (!function_exists('down')) {
+if (!function_exists('sort_model_down')) {
     /**
      * Сортировка - вниз по списку
      * @param SortModel $model
      * @param array<SortModel>  $models
      * @return void
      */
-    function down(SortModel $model, array $models)
+    function sort_model_down(SortModel $model, array $models)
     {
         for ($i = 0; $i < count($models) - 1; $i++) {
             if ($model->isEqual($models[$i])) {

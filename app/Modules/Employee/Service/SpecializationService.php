@@ -49,14 +49,14 @@ class SpecializationService
     {
         /** @var Specialization[] $specializations */
         $specializations = Specialization::orderBy('sort')->getModels();
-        up($specialization, $specializations);
+        sort_model_up($specialization, $specializations);
     }
 
     public function down(Specialization $specialization)
     {
         /** @var Specialization[] $specializations */
         $specializations = Specialization::orderBy('sort')->getModels();
-        down($specialization, $specializations);
+        sort_model_down($specialization, $specializations);
     }
 
     public function attach(Specialization $specialization, Request $request)
