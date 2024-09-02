@@ -31,15 +31,16 @@
                 <el-input v-model="form.address" placeholder="Адрес"/>
                 <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
             </el-form-item>
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">Изменения не сохранены</div>
+            <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
+            <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
 </template>
 
 
 <script setup>
-    import {reactive} from 'vue'
+import {reactive, ref, watch} from 'vue'
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
 
@@ -62,14 +63,35 @@
         firstname: props.user.fullname.firstname,
         secondname: props.user.fullname.secondname,
         address: props.user.address.address,
+        close: null,
+        _method: 'put',
     })
 
     function handleMaskPhone(val) {
         form.phone = func.MaskPhone(val);
     }
-    function onSubmit() {
-        router.put(props.route, form)
-    }
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({ ...form }),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+function onSubmit(val) {
+    form.close = val
+    router.visit(props.route, {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        },
+    });
+}
+////<=
 </script>
 <script>
     import {Head} from '@inertiajs/vue3'

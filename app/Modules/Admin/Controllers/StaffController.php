@@ -74,7 +74,11 @@ class StaffController extends Controller
         $request->validated();
 
         $this->service->update($staff, $request);
-        return redirect()->route('admin.staff.show', $staff)->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()->route('admin.staff.show', $staff)->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Admin $staff)

@@ -11,7 +11,8 @@
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Ссылка">
-                        <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения" @input="handleMaskSlug"/>
+                        <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения"
+                                  @input="handleMaskSlug"/>
                         <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
                     </el-form-item>
                 </div>
@@ -37,77 +38,102 @@
                     />
                 </div>
             </div>
-            <div class="mt-3">
+            <div class="my-3">
                 <h2 class="font-medium text-lg mb-3">Специалисты:</h2>
-                <div v-for="employee in employees">
-                    <el-checkbox v-model="form.employees" :label="employee.fullname"
-                                 type="checkbox" :checked="employee.checked"
+
+                <el-checkbox-group v-model="form.employees">
+                    <el-checkbox v-for="employee in employees"
+                                 :label="employee.fullname"
                                  :value="employee.id"
+                                 :key="employee.id"
                     />
-                </div>
+                </el-checkbox-group>
             </div>
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">Изменения не сохранены</div>
+            <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
+            <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
 </template>
 
 
 <script lang="ts" setup>
-    import {Head, router} from '@inertiajs/vue3'
-    import {reactive, ref} from 'vue'
-    import {func} from "/resources/js/func.js"
-    import {UploadFile} from "element-plus";
-    import DisplayedFields from '@/Components/DisplayedFields.vue'
-    import UploadImageFile from '@/Components/UploadImageFile.vue'
+import {Head, router} from '@inertiajs/vue3'
+import {reactive, ref, watch} from 'vue'
+import {func} from "/resources/js/func.js"
+import {UploadFile} from "element-plus";
+import DisplayedFields from '@/Components/DisplayedFields.vue'
+import UploadImageFile from '@/Components/UploadImageFile.vue'
 
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        specialization: Object,
-        title: {
-            type: String,
-            default: 'Редактирование специализации',
-        },
-        image: String,
-        icon: String,
-        employees: Array,
+const props = defineProps({
+    errors: Object,
+    route: String,
+    specialization: Object,
+    title: {
+        type: String,
+        default: 'Редактирование специализации',
+    },
+    image: String,
+    icon: String,
+    employees: Array,
+});
+
+const form = reactive({
+    name: props.specialization.name,
+    slug: props.specialization.slug,
+    meta: props.specialization.meta,
+    breadcrumb: props.specialization.breadcrumb,
+    awesome: props.specialization.awesome,
+    image: null,
+    icon: null,
+    _method: 'put',
+    clear_image: false,
+    clear_icon: false,
+    employees: [...props.specialization.employees.map(item => item.id)],
+    close: null,
+})
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+
+function onSubmit(val) {
+    form.close = val
+    router.visit(props.route, {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
     });
+}
+////<=
+function handleMaskSlug(val) {
+    form.slug = func.MaskSlug(val);
+}
 
-    const form = reactive({
-        name: props.specialization.name,
-        slug: props.specialization.slug,
-        meta: props.specialization.meta,
-        breadcrumb: props.specialization.breadcrumb,
-        awesome: props.specialization.awesome,
-        image: null,
-        icon: null,
-        _method: 'put',
-        clear_image: false,
-        clear_icon: false,
-        employees: [],
-    })
+function onSelectImage(val) {
+    form.clear_image = val.clear_file;
+    form.image = val.file
+}
 
-    function handleMaskSlug(val) {
-        form.slug = func.MaskSlug(val);
-    }
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-    function onSelectImage(val) {
-        form.clear_image = val.clear_file;
-        form.image = val.file
-    }
-    function onSelectIcon(val) {
-        form.clear_icon = val.clear_file;
-        form.icon = val.file
-    }
+function onSelectIcon(val) {
+    form.clear_icon = val.clear_file;
+    form.icon = val.file
+}
 </script>
 <script lang="ts">
-    import Layout from '@/Components/Layout.vue'
+import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
+export default {
+    layout: Layout,
+}
 </script>

@@ -73,8 +73,9 @@
                 />
                 <div v-if="errors.text" class="text-red-700">{{ errors.text }}</div>
             </div>
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">Изменения не сохранены</div>
+            <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
+            <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
 </template>
@@ -82,7 +83,7 @@
 
 <script lang="ts" setup>
     import {Head, router} from '@inertiajs/vue3'
-    import {reactive, ref} from 'vue'
+    import {reactive, ref, watch} from 'vue'
     import {func} from "/resources/js/func.js"
     import {UploadFile} from "element-plus";
     import {useStore} from '/resources/js/store.js'
@@ -119,6 +120,7 @@
         template: props.service.template,
         data: props.service.data,
         text: props.service.text,
+        close: null,
         _method: 'put',
         clear_image: false,
         clear_icon: false,
@@ -133,9 +135,28 @@
     function handleMaskDuration(val) {
         form.duration = func.MaskInteger(val);
     }
-    function onSubmit() {
-        router.post(props.route, form)
+    ///Блок сохранения и обновления=>
+    const isUnSave = ref(false)
+    watch(
+        () => ({ ...form }),
+        function (newValue, oldValue) {
+            isUnSave.value = true
+        },
+        {deep: true}
+    );
+    function onSubmit(val) {
+        form.close = val
+        router.visit(props.route, {
+            method: 'post',
+            data: form,
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: page => {
+                isUnSave.value = false
+            }
+        });
     }
+    ////<=
     function onSelectImage(val) {
         form.clear_image = val.clear_file;
         form.image = val.file

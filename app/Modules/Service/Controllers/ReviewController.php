@@ -21,9 +21,9 @@ class ReviewController extends Controller
     private EmployeeRepository $employeeRepository;
 
     public function __construct(
-        ReviewService $service,
-        ReviewRepository $repository,
-        ServiceRepository $serviceRepository,
+        ReviewService      $service,
+        ReviewRepository   $repository,
+        ServiceRepository  $serviceRepository,
         EmployeeRepository $employeeRepository
     )
     {
@@ -104,9 +104,13 @@ class ReviewController extends Controller
     {
         $request->validated();
         $this->service->update($review, $request);
-        return redirect()
-            ->route('admin.service.review.show', $review)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.service.review.show', $review)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Review $review)

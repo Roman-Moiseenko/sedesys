@@ -19,9 +19,9 @@ class ClassificationController extends Controller
     private ServiceRepository $serviceRepository;
 
     public function __construct(
-        ClassificationService $service,
+        ClassificationService    $service,
         ClassificationRepository $repository,
-        ServiceRepository $serviceRepository,
+        ServiceRepository        $serviceRepository,
     )
     {
         $this->service = $service;
@@ -37,6 +37,7 @@ class ClassificationController extends Controller
                 'classifications' => $classifications,
             ]
         );
+
     }
 
     public function create(Request $request)
@@ -89,9 +90,15 @@ class ClassificationController extends Controller
     {
         $request->validated();
         $this->service->update($classification, $request);
-        return redirect()
-            ->route('admin.service.classification.show', $classification)
-            ->with('success', 'Сохранение прошло успешно');
+
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.service.classification.show', $classification)
+                ->with('success', 'Сохранение прошло успешно');
+
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Classification $classification)

@@ -139,6 +139,7 @@ class ServiceRepository
             'count_employees' => $service->employees()->count(),
             'image' => $service->getImage('mini'),
             'icon' => $service->getIcon('mini'),
+            'template' => $service->template,
 
             'url' => route('admin.service.service.show', $service),
             'edit' => route('admin.service.service.edit', $service),

@@ -3,6 +3,7 @@
     <img src="{{ photo(15, 'card') }}">
     <br>
     Шаблон показа карточек сотрудников
+    @if(isset($items) && !is_null($items))
     <div class="row">
         @foreach($items as $item)
             <div class="col-4">
@@ -11,10 +12,11 @@
             </div>
         @endforeach
     </div>
+    @endif
   <p>1</p>
-  
-  
-  
-  
+
+
+
+
   <p>2</p>
 </div>

@@ -91,9 +91,13 @@ class PageController extends Controller
     {
         $request->validated();
         $this->service->update($page, $request);
-        return redirect()
-            ->route('admin.page.page.show', $page)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.page.page.show', $page)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Page $page)

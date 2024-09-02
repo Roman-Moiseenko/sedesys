@@ -65,7 +65,7 @@ class SpecializationRepository
                 return $item->id;
             })->toArray();
         }
-        return Employee::get()->map(function (Employee $employee) use ($ids) {
+        return Employee::orderBy('fullname')->get()->map(function (Employee $employee) use ($ids) {
             return [
                 'id' => $employee->id,
                 'fullname' => $employee->fullname->getFullName(),

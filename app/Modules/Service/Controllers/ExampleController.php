@@ -113,9 +113,13 @@ class ExampleController extends Controller
     {
         $request->validated();
         $this->service->update($example, $request);
-        return redirect()
-            ->route('admin.service.example.show', $example)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.service.example.show', $example)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Example $example): RedirectResponse

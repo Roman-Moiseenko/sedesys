@@ -30,7 +30,7 @@
                         <el-input v-model="form.address" placeholder="Адрес"/>
                         <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
                     </el-form-item>
-                    <el-form-item label="Пароль">
+                    <el-form-item label="Новый пароль">
                         <el-input v-model="form.password" type="password" show-password/>
                         <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
                     </el-form-item>
@@ -40,12 +40,15 @@
                     </el-form-item>
                     <el-divider/>
                     <h2 class="font-medium mb-3">Специализация</h2>
-                    <div v-for="specialization in specializations">
-                        <el-checkbox v-model="form.specializations" :label="specialization.name"
-                                     type="checkbox" :checked="specialization.checked"
+
+                    <el-checkbox-group v-model="form.specializations">
+                        <el-checkbox v-for="(specialization, index) in specializations"
+                                     :label="specialization.name"
                                      :value="specialization.id"
+                                     :key="specialization.id"
                         />
-                    </div>
+                    </el-checkbox-group>
+
                 </div>
                 <div class="p-4">
                     <UploadImageFile
@@ -69,8 +72,9 @@
 
                 </div>
             </div>
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">Изменения не сохранены</div>
+            <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
+            <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
     <div class="mt-3 p-3 bg-white rounded-lg">
@@ -86,79 +90,105 @@
 
 
 <script lang="ts" setup>
-    import {reactive, defineProps, ref} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
-    import axios from 'axios'
-    import DisplayedFields from '@/Components/DisplayedFields.vue'
-    import UploadImageFile from '@/Components/UploadImageFile.vue'
+import {reactive, defineProps, ref, watch} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
+import axios from 'axios'
+import DisplayedFields from '@/Components/DisplayedFields.vue'
+import UploadImageFile from '@/Components/UploadImageFile.vue'
 
-    const chat_ids = ref([])
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        chat_id: String,
-        employee: Object,
-        title: {
-            type: String,
-            default: 'Редактирование Персонала',
-        },
-        image: String,
-        icon: String,
-        specializations: Array,
+const chat_ids = ref([])
+const props = defineProps({
+    errors: Object,
+    route: String,
+    chat_id: String,
+    employee: Object,
+    title: {
+        type: String,
+        default: 'Редактирование Персонала',
+    },
+    image: String,
+    icon: String,
+    specializations: Array,
+});
+const form = reactive({
+    phone: props.employee.phone,
+    email: props.employee.email,
+    password: null,
+    telegram_user_id: props.employee.telegram_user_id,
+    surname: props.employee.fullname.surname,
+    firstname: props.employee.fullname.firstname,
+    secondname: props.employee.fullname.secondname,
+    address: props.employee.address.address,
+    experience_year: props.employee.experience_year,
+    meta: props.employee.meta,
+    breadcrumb: props.employee.breadcrumb,
+    awesome: props.employee.awesome,
+    specializations: [...props.employee.specializations.map(item => item.id)],
+    image: null,
+    icon: null,
+    _method: 'put',
+    clear_image: false,
+    clear_icon: false,
+    close: null,
+})
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+
+function onSubmit(val) {
+    form.close = val
+    router.visit(props.route, {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
     });
-    const form = reactive({
-        phone: props.employee.phone,
-        email: props.employee.email,
-        password: null,
-        telegram_user_id: props.employee.telegram_user_id,
-        surname: props.employee.fullname.surname,
-        firstname: props.employee.fullname.firstname,
-        secondname: props.employee.fullname.secondname,
-        address: props.employee.address.address,
-        experience_year: props.employee.experience_year,
-        meta: props.employee.meta,
-        breadcrumb: props.employee.breadcrumb,
-        awesome: props.employee.awesome,
-        specializations: [],
-        image: null,
-        icon: null,
-        _method: 'put',
-        clear_image: false,
-        clear_icon: false,
-    })
+}
+////<=
 
-    function handleMaskPhone(val) {
-        form.phone = func.MaskPhone(val);
-    }
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-    function onGetChatID() {
-        axios.post(props.chat_id)
-            .then(response => {
-                chat_ids.value = response.data;
-            });
-    }
-    function handleYear(val) {
-        form.experience_year = func.MaskInteger(val);
-    }
-    function onSelectImage(val) {
-        form.clear_image = val.clear_file;
-        form.image = val.file
-    }
-    function onSelectIcon(val) {
-        form.clear_icon = val.clear_file;
-        form.icon = val.file
-    }
+function handleMaskPhone(val) {
+    form.phone = func.MaskPhone(val);
+}
+
+function onGetChatID() {
+    axios.post(props.chat_id)
+        .then(response => {
+            chat_ids.value = response.data;
+        });
+}
+
+function handleYear(val) {
+    form.experience_year = func.MaskInteger(val);
+}
+
+function onSelectImage(val) {
+    form.clear_image = val.clear_file;
+    form.image = val.file
+}
+
+function onSelectIcon(val) {
+    form.clear_icon = val.clear_file;
+    form.icon = val.file
+}
 </script>
 <script lang="ts">
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
+import {Head} from '@inertiajs/vue3'
+import Layout from '@/Components/Layout.vue'
+
+export default {
+    components: {
+        Head,
+    },
+    layout: Layout,
+}
 </script>

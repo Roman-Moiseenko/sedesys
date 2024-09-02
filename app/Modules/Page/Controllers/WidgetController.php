@@ -75,9 +75,13 @@ class WidgetController extends Controller
     {
         $request->validated();
         $this->service->update($widget, $request);
+        if ($request->boolean('close')) {
         return redirect()
             ->route('admin.page.widget.show', $widget)
             ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Widget $widget)

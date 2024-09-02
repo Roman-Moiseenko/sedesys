@@ -71,9 +71,13 @@ class UserController extends Controller
     {
         $request->validated();
         $this->service->update($user, $request);
-        return redirect()
-            ->route('admin.user.user.show', $user)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.user.user.show', $user)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(User $user)

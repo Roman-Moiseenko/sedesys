@@ -39,7 +39,17 @@ class UserService
             $request->string('firstname')->trim()->value(),
             $request->string('secondname')->trim()->value()
         );
-        $user->email = $request->string('email')->trim()->value();
+        $email = $request->string('email')->trim()->value();
+        if (!empty($email) && $user->email !== $email) {
+
+            if (is_null(User::where('email', $email)->first())) {
+                $user->email = $email;
+            } else {
+                throw new \DomainException('Пользователь с таким email уже существует');
+            }
+
+        }
+
         $user->address->address = (string)$request->string('address');
 
         $user->save();

@@ -55,8 +55,10 @@
                     />
                 </div>
             </div>
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">There are unsaved form changes.</div>
+
+            <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
+            <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
 
@@ -72,13 +74,12 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, ref} from 'vue'
+import {reactive, ref, watch, toRefs} from 'vue'
 import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import axios from 'axios'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
-
 
 const chat_ids = ref([])
 
@@ -98,8 +99,6 @@ const props = defineProps({
     }
 });
 
-
-
 const form = reactive({
     name: props.staff.name,
     phone: props.staff.phone,
@@ -112,10 +111,32 @@ const form = reactive({
     firstname: props.staff.fullname.firstname,
     secondname: props.staff.fullname.secondname,
     file: null,
+    close: null,
     _method: 'put',
     clear_file: false, //Удалить загруженное ранее фото
 })
-
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({ ...form }),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+function onSubmit(val) {
+    form.close = val
+    router.visit(props.route, {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
+    });
+}
+////<=
 
 function handleMaskPhone(val) {
     form.phone = func.MaskPhone(val);
@@ -125,9 +146,7 @@ function handleMaskLogin(val) {
     form.name = func.MaskLogin(val);
 }
 
-function onSubmit() {
-    router.post(props.route, form);
-}
+
 
 function onGetChatID() {
     axios.post(props.chat_id)

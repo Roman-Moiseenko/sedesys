@@ -71,9 +71,14 @@ class DummyEntitySingularController extends Controller
     {
         $request->validated();
         $this->service->update($dummyVariableEntitySingular, $request);
-        return redirect()
-            ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
-            ->with('success', 'Сохранение прошло успешно');
+
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(DummyEntitySingular $dummyVariableEntitySingular)

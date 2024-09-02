@@ -1,6 +1,7 @@
 <!--template:Специалист 3 в ряд.-->
 <div>
     Новый Шаблон показа карточек сотрудников
+  @if(isset($items) && !is_null($items))
     <div class="">
         @foreach($items as $item)
             <div class="card">
@@ -10,6 +11,7 @@
      
         @endforeach
     </div>
+  @endif
   <p>1</p>
   
   <p>2</p>

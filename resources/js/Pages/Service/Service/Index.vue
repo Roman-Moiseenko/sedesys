@@ -42,6 +42,7 @@
                 <el-table-column sortable prop="classification" label="Классификация"  width="250"/>
                 <el-table-column prop="price" label="Стоимость" width="100" />
                 <el-table-column prop="count_employees" label="Выполняют" width="120" />
+                <el-table-column prop="template" label="Шаблон" width="120" />
                 <el-table-column label="Расх.материалы (₽)" width="160" />
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">

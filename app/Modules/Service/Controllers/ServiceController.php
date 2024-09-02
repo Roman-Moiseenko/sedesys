@@ -107,10 +107,10 @@ class ServiceController extends Controller
 
                 ],
                 'reviews' => $reviews,
-                'extra_data' =>[
+                'extra_data' => [
                     'add' => route('admin.service.extra.store'),
                     'extras' => $extras,
-                    ]
+                ]
             ]
         );
     }
@@ -135,9 +135,14 @@ class ServiceController extends Controller
     {
         $request->validated();
         $this->service->update($service, $request);
-        return redirect()
-            ->route('admin.service.service.show', $service)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+
+            return redirect()
+                ->route('admin.service.service.show', $service)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Service $service)

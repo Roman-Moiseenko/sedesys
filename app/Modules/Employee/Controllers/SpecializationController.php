@@ -70,6 +70,7 @@ class SpecializationController extends Controller
     public function edit(Specialization $specialization)
     {
         $employees = $this->repository->getEmployees($specialization);
+        $specialization = Specialization::where('id', $specialization->id)->with('employees')->first();
 
         return Inertia::render('Employee/Specialization/Edit', [
             'specialization' => $specialization,
@@ -85,9 +86,13 @@ class SpecializationController extends Controller
         $request->validated();
 
         $this->service->update($specialization, $request);
-        return redirect()
-            ->route('admin.employee.specialization.show', $specialization)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.employee.specialization.show', $specialization)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Specialization $specialization)
@@ -114,18 +119,20 @@ class SpecializationController extends Controller
         $this->service->up($specialization);
         return redirect()->back()->with('success', 'Сохранено');
     }
+
     public function down(Specialization $specialization)
     {
         $this->service->down($specialization);
         return redirect()->back()->with('success', 'Сохранено');
     }
-    public function attach(Request $request,Specialization $specialization)
+
+    public function attach(Request $request, Specialization $specialization)
     {
         $this->service->attach($specialization, $request);
         return redirect()->back()->with('success', 'Сохранено');
     }
 
-    public function detach(Request $request,Specialization $specialization)
+    public function detach(Request $request, Specialization $specialization)
     {
         $this->service->detach($specialization, $request);
         return redirect()->back()->with('success', 'Изменения сохранены');

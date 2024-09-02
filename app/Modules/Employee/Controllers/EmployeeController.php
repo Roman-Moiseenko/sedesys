@@ -107,6 +107,7 @@ class EmployeeController extends Controller
     {
         $specializations = $this->repository->getSpecializations($employee);
 
+        $employee = Employee::where('id', $employee->id)->with('specializations:id')->first();
         return Inertia::render('Employee/Employee/Edit', [
             'employee' => $employee,
             'route' => route('admin.employee.employee.update', $employee),
@@ -121,9 +122,13 @@ class EmployeeController extends Controller
     {
         $request->validated();
         $this->service->update($employee, $request);
-        return redirect()
-            ->route('admin.employee.employee.show', $employee)
-            ->with('success', 'Сохранение прошло успешно');
+        if ($request->boolean('close')) {
+            return redirect()
+                ->route('admin.employee.employee.show', $employee)
+                ->with('success', 'Сохранение прошло успешно');
+        } else {
+            return redirect()->back()->with('success', 'Сохранение прошло успешно');
+        }
     }
 
     public function destroy(Employee $employee)
