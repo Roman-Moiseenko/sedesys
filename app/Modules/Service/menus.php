@@ -2,7 +2,7 @@
 
 return [
     'services' => [
-        'sort' => 35,
+        'sort' => 40,
         'icon' => 'Suitcase',
         'title' => 'Услуги',
         'can' => '',

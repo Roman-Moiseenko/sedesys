@@ -79,7 +79,7 @@
         example: Object,
         title: {
             type: String,
-            default: 'Редактирование example',
+            default: 'Редактирование работы',
         },
         services: Array,
         employees: Array,

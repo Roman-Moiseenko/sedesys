@@ -23,6 +23,11 @@ return [
                 'route' => route('admin.setting.web', [], false),
             ],
             [
+                'icon' => 'Timer',
+                'title' => 'Расписание',
+                'route' => route('admin.setting.schedule', [], false),
+            ],
+            [
                 'icon' => 'Bell',
                 'title' => 'Уведомления',
                 'route' => route('admin.setting.notification', [], false),

@@ -20,7 +20,7 @@ class StaffMessage extends Notification implements ShouldQueue
     protected int $event;
     protected string $message;
     protected string $url;
-    protected ?TelegramParams $params;
+    protected TelegramParams|array|null $params;
     private int $type; ///
     private bool $telegram;
     private bool $database;
@@ -29,7 +29,7 @@ class StaffMessage extends Notification implements ShouldQueue
     public function __construct(
         #[ExpectedValues(valuesFromClass: NotificationHelper::class)] int $event,
         string $message,
-        string $url = '', TelegramParams $params = null,
+        string $url = '', TelegramParams|array $params = null,
         bool $telegram = true, bool $database = false//, bool $mail = false,
     )
     {
@@ -61,8 +61,17 @@ class StaffMessage extends Notification implements ShouldQueue
         $message = TelegramMessage::create()
             ->content($event)
             ->line($this->message);
-        if (!is_null($this->params))
-            $message->buttonWithCallback($this->params->caption, $this->params->toTelegram());
+        if (!empty($this->params)) {
+            if (is_array($this->params)) {
+                foreach ($this->params as $param) {
+                    $message->buttonWithCallback($param->caption, $param->toTelegram());
+                }
+
+            } else {
+                $message->buttonWithCallback($this->params->caption, $this->params->toTelegram());
+            }
+        }
+
         if (!empty($this->url)) $message = $message->button('Перейти по ссылке', $this->url);
 
         return $message;

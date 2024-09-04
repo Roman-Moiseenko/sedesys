@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Modules\Calendar\Events\RecordHasChangeStatus;
+use App\Modules\Calendar\Notification\RecordEmployee;
+use App\Modules\Calendar\Notification\RecordStaff;
+use App\Modules\Calendar\Notification\RecordUser;
+use App\Modules\Calendar\Service\CalendarService;
 use App\Modules\Notification\Events\TelegramHasReceived;
 use App\Modules\Notification\Service\NotificationService;
 use Illuminate\Auth\Events\Registered;
@@ -26,9 +31,17 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         TelegramHasReceived::class => [
-            NotificationService::class,
+            NotificationService::class, //Подтверждение уведомления
+            CalendarService::class, //Подтверждение записи
             //TODO Добавляем классы которые обрабатывают подтверждения из Телеграм
 
+        ],
+
+        //Модуль Календарь
+        RecordHasChangeStatus::class => [
+            RecordEmployee::class,
+            RecordStaff::class,
+            RecordUser::class
         ],
 
         SocialiteWasCalled::class => [

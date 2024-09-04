@@ -1,6 +1,6 @@
 <template>
     <div class="elements">
-        <el-popover :visible="visible" placement="bottom-start" :width="240" v-click-outside="onClickOutside">
+        <el-popover :visible="visible" placement="bottom-start" :width="246" v-click-outside="onClickOutside">
             <el-button @click="visible = false" type="info" class="mb-2" circle>
                 <el-icon><Close /></el-icon>
             </el-button>

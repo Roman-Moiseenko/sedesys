@@ -84,6 +84,19 @@ class User extends Authenticatable
         ]);
     }
 
+    public static function findToRecord(string $phone, string $name): self
+    {
+        if ($user = User::where('phone', $phone)->first()) return $user;
+        /** @var User $user */
+        $user = self::make([
+            'phone' => $phone,
+            'password' => bcrypt(Str::random()),
+            'status' => self::STATUS_ACTIVE,
+        ]);
+        $user->fullname->firstname = $name;
+        $user->save();
+        return $user;
+    }
 
     //*** IS-...
     public function isWait(): bool

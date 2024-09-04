@@ -8,6 +8,8 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { createPinia } from 'pinia'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import 'dayjs/locale/ru';
+
 const pinia = createPinia();
 
 createInertiaApp({

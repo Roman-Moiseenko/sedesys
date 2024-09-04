@@ -7,6 +7,7 @@ use App\Modules\Setting\Repository\SettingRepository;
 use App\Modules\Setting\Service\SettingService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SettingController extends Controller
 {
@@ -75,11 +76,22 @@ class SettingController extends Controller
     }
 
     //Настройки почты
-    public function mail()
+    public function mail(): Response
     {
         $mail = $this->repository->getMail();
         return Inertia::render('Setting/Mail', [
                 'mail' => $mail,
+                'route' => route('admin.setting.update'),
+            ]
+        );
+    }
+
+    //Настройки расписания и график работы
+    public function schedule(): Response
+    {
+        $schedule = $this->repository->getSchedule();
+        return Inertia::render('Setting/Schedule', [
+                'schedule' => $schedule ?? null,
                 'route' => route('admin.setting.update'),
             ]
         );

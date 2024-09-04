@@ -34,3 +34,7 @@ Breadcrumbs::for('admin.setting.mail', function (BreadcrumbTrail $trail) {
     $trail->push('Почта', route('admin.setting.mail'));
 });
 
+Breadcrumbs::for('admin.setting.schedule', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.setting.index');
+    $trail->push('Расписание', route('admin.setting.schedule'));
+});

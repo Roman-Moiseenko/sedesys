@@ -4,7 +4,7 @@ window.$ = jQuery;
 
 (function () {
 
-//TODO Возможно разбить на части
+
 
 
 })();

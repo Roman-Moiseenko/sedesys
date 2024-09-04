@@ -6,6 +6,7 @@ use App\Modules\Setting\Entity\Mail;
 use App\Modules\Setting\Entity\Notification;
 use App\Modules\Setting\Entity\Office;
 use App\Modules\Setting\Entity\Organization;
+use App\Modules\Setting\Entity\Schedule;
 use App\Modules\Setting\Entity\Web;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -57,5 +58,11 @@ class SettingRepository
     {
         $setting = Setting::where('slug', 'mail')->first();
         return new Mail($setting->getData());
+    }
+
+    public function getSchedule()
+    {
+        $setting = Setting::where('slug', 'schedule')->first();
+        return new Schedule($setting->getData());
     }
 }

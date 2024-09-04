@@ -2,7 +2,7 @@
 
 return [
     'mails' => [
-        'sort' => 50,
+        'sort' => 80,
         'icon' => 'MessageBox',
         'title' => 'Почта',
         'can' => '',
