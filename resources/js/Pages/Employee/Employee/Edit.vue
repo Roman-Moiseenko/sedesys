@@ -31,7 +31,7 @@
                         <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
                     </el-form-item>
                     <el-form-item label="Новый пароль">
-                        <el-input v-model="form.password" type="password" show-password/>
+                        <el-input v-model="form.password" type="password" show-password autocomplete="new-password"/>
                         <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
                     </el-form-item>
                     <el-form-item label="Стаж с какого года" :rules="{required: true}">

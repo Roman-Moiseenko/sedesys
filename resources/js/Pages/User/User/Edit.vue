@@ -12,7 +12,7 @@
                 <div v-if="errors.email" class="text-red-700">{{ errors.email }}</div>
             </el-form-item>
             <el-form-item label="Новый пароль">
-                <el-input v-model="form.password" type="password" show-password/>
+                <el-input v-model="form.password" type="password" show-password autocomplete="new-password"/>
                 <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
             </el-form-item>
             <el-form-item label="Фамилия">

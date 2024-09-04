@@ -20,7 +20,9 @@ class RecordEmployee
     public function handle(RecordHasChangeStatus $event): void
     {
         $calendar = $event->calendar;
+        $message = 'Ошибочное сообщение';
 
+        $event = NotificationHelper::EVENT_TEST;
         if ($calendar->isNew()) {
             $params = [
                 new TelegramParams(TelegramParams::OPERATION_RECORD_CONFIRM, $calendar->id),
