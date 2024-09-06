@@ -106,7 +106,7 @@
         start_at: null,
         finish_at: null,
         discount: null,
-        range_at: [],
+        range_at: [null, null],
         /**
          * Добавить новые поля
          */
@@ -136,7 +136,7 @@
 
 
     function onSubmit() {
-        if (form.range_at !== null && form.range_at.length === 2)
+        if (form.range_at !== null && form.range_at.length === 2 && form.range_at[0] !== null)
             form.range_at = form.range_at.map(item => func.date(item));
         //console.log(range_at.value, form.start_at, form.finish_at);
         router.post(props.route, form)
