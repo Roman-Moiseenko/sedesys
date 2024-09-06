@@ -6,6 +6,7 @@ namespace App\Modules\Web\Repository;
 use App\Modules\Base\Entity\BreadcrumbInfo;
 use App\Modules\Base\Entity\DisplayedModel;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Discount\Entity\Promotion;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Page\Entity\Contact;
@@ -59,6 +60,12 @@ class WebRepository
         return Service::active()->orderBy('name')->get();
     }
 
+    //Модель Акции
+    public function getPromotions()
+    {
+        return Promotion::active()->orderBy('name')->get();
+    }
+
     //Создаем массив breadcrumb_info из Модели.
     public function getBreadcrumbModel(DisplayedModel $model): array
     {
@@ -101,4 +108,6 @@ class WebRepository
 
         return $breadcrumb_info;
     }
+
+
 }

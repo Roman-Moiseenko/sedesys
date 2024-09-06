@@ -90,8 +90,8 @@ const form = reactive({
     _method: 'put',
     clear_image: false,
     clear_icon: false,
-    employees: [...props.specialization.employees.map(item => item.id)],
     close: null,
+    employees: [...props.specialization.employees.map(item => item.id)],
 })
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)

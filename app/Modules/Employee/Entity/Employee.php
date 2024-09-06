@@ -55,6 +55,8 @@ class Employee extends DisplayedModel implements
     public $attributes = [
         'phone' => '',
         'address' => '{}',
+        'name' => '',
+        'active' => true,
     ];
     /*
     protected $fillable = [

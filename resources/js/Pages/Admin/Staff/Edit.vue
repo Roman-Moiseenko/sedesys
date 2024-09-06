@@ -80,6 +80,8 @@ import {func} from "/resources/js/func.js"
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import axios from 'axios'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
+import Form from '@/Components/Form.vue'
+
 
 const chat_ids = ref([])
 
@@ -116,6 +118,7 @@ const form = reactive({
     clear_file: false, //Удалить загруженное ранее фото
 })
 ///Блок сохранения и обновления=>
+
 const isUnSave = ref(false)
 watch(
     () => ({ ...form }),

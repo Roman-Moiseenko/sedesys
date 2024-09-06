@@ -60,17 +60,14 @@
                 </el-table-column>
             </el-table>
         </div>
-
         <pagination
             :current_page="$page.props.staffs.current_page"
             :per_page="$page.props.staffs.per_page"
             :total="$page.props.staffs.total"
         />
     </el-config-provider>
-
     <!-- Dialog Delete -->
     <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-
         <div class="font-medium text-md mt-2">
             Вы уверены, что хотите удалить сотрудника?
         </div>

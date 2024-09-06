@@ -88,7 +88,6 @@
     const form = reactive({
         name: null,
         slug: null,
-        parent_id: null,
         meta: {
             h1: null,
             title: null,
@@ -100,10 +99,12 @@
             description: null,
         },
         awesome: null,
-        template: null,
-        text: null,
         image: null,
         icon: null,
+
+        parent_id: null,
+        template: null,
+        text: null,
     })
 
     function handleMaskSlug(val) {

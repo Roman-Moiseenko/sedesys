@@ -14,6 +14,7 @@ use App\Modules\Web\Helpers\CacheHelper;
 use App\Modules\Web\Helpers\Menu;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -24,14 +25,15 @@ use Illuminate\Support\Str;
  * @property string $name
  * @property string $slug
  * @property string $awesome
- * @property Meta $meta
  * @property bool $active
+ * @property Meta $meta
+ * @property BreadcrumbInfo $breadcrumb
+ * @property Carbon $activated_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Carbon $activated_at
+ *
  * @property Photo $image
  * @property Photo $icon
- * @property BreadcrumbInfo $breadcrumb
  *
  */
 abstract class DisplayedModel extends Model implements DisplayedData
@@ -170,9 +172,18 @@ abstract class DisplayedModel extends Model implements DisplayedData
      * Гетеры
      */
 
-    public function getActivatedAt(): string
+    public function getActivatedAt(bool $with_time = false): string
     {
-        return is_null($this->activated_at) ? '' : $this->activated_at->translatedFormat('d F Y');
+        if (is_null($this->activated_at)) return '';
+        if ($with_time) return $this->activated_at->translatedFormat('j F Y H:i');
+
+        return $this->activated_at->translatedFormat('j F Y');
+    }
+
+    public function getCreatedAt(bool $with_time = false): string
+    {
+        if ($with_time) return $this->created_at->translatedFormat('j F Y H:i');
+        return $this->created_at->translatedFormat('j F Y');
     }
 
     public function getImage(string $thumb = ''): ?string
@@ -195,6 +206,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
 
         return '<i class="' . $this->awesome . '"></i>';
     }
+
 
     public function getName()
     {
@@ -229,8 +241,35 @@ abstract class DisplayedModel extends Model implements DisplayedData
             //TODO Сброс Cache
             // ?? сохранить новое значение
         });
-
-
     }
 
+    //Для создания таблиц
+    final public static function columns(Blueprint $table)
+    {
+        $table->string('name');
+        $table->string('slug');
+        $table->string('awesome')->nullable();
+        $table->boolean('active')->default(false);
+        $table->json('meta');
+        $table->json('breadcrumb');
+        $table->timestamp('activated_at')->nullable();
+        $table->timestamps();
+
+        $table->index('slug');
+    }
+
+    final public static function dropColumns(Blueprint $table)
+    {
+        $table->dropIndex('slug');
+
+        $table->dropColumn('name');
+        $table->dropColumn('slug');
+        $table->dropColumn('created_at');
+        $table->dropColumn('updated_at');
+        $table->dropColumn('activated_at');
+        $table->dropColumn('active');
+        $table->dropColumn('awesome');
+        $table->dropColumn('meta');
+        $table->dropColumn('breadcrumb');
+    }
 }

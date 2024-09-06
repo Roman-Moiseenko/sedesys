@@ -81,10 +81,8 @@
     })
 
     function onSubmit() {
-        const __date = new Date(form.begin_x_date);
-        form.begin_x_date = __date.getFullYear() + '-' + (__date.getMonth() + 1) + '-' + __date.getDate();
 
-
+        form.begin_x_date = func.date(form.begin_x_date);
         router.put(props.route, form)
     }
 

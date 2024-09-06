@@ -4,7 +4,7 @@
                          :disabled="true" style="width: 60px; display: none"/>
         <el-button round @click="getGallery">Выбрать</el-button>
         <div class="" style="width: auto; height: 32px; display: inherit;">
-            <el-image
+            <el-image v-if="selectedPhoto"
                 :src="selectedPhoto"
                 :zoom-rate="1.2"
                 :max-scale="1"
@@ -54,6 +54,7 @@ const props = defineProps({
     image: String,
 
 });
+console.log(selectedPhoto)
 const select = reactive({
     id: props.photo_id,
 });

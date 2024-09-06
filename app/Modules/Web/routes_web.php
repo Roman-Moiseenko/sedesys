@@ -22,3 +22,6 @@ Route::get('/classification/{slug}', 'ClassificationController@view')->name('cla
 
 Route::get('/service', 'ServiceController@index')->name('service.index');
 Route::get('/service/{slug}', 'ServiceController@view')->name('service.view');
+
+Route::get('/promotion', 'PromotionController@index')->name('promotion.index');
+Route::get('/promotion/{slug}', 'PromotionController@view')->name('promotion.view');

@@ -42,10 +42,12 @@
     });
 
     const form = reactive({
-        name: props.dummyVariableEntitySingular.name,
+        ...props.dummyVariableEntitySingular,
+        //name: props.dummyVariableEntitySingular.name,
         /**
          * Добавить новые поля
          */
+        _method: 'put',
         close: null,
     })
 

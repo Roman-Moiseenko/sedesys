@@ -70,4 +70,13 @@ export const func = {
 
         return year + ' лет';
     },
+    date: (val) => {
+        const _date_ = new Date(val);
+        let month = _date_.getMonth() + 1;
+        if (month < 10) month = '0' + month;
+        let day = _date_.getDate();
+        if (day < 10) day = '0' + day;
+        return  _date_.getFullYear() + '-' + month + '-' + day;
+    },
+
 }

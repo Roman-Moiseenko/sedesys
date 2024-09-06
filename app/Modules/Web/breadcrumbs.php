@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 
+use App\Modules\Discount\Entity\Promotion;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Service\Entity\Classification;
@@ -87,7 +88,15 @@ Breadcrumbs::for('web.employee.view', function (BreadcrumbTrail $trail, Employee
     $trail->push($employee->fullname->getShortname(), route('web.employee.view', $employee));
 });
 */
-
+Breadcrumbs::for('web.promotion.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('web.home'); //$trail->parent('web.specialization.index');
+    $trail->push('Услуги', route('web.promotion.index'));
+});
+Breadcrumbs::for('web.promotion.view', function (BreadcrumbTrail $trail, $slug) {
+    $promotion = Promotion::where('slug', $slug)->first();
+    $trail->parent('web.promotion.index'); //$trail->parent('web.specialization.index');
+    $trail->push($promotion->name, route('web.promotion.view', $slug));
+});
 Breadcrumbs::for('web.test', function (BreadcrumbTrail $trail) {
     $trail->push('<i class="fa-light fa-house"></i>', route('web.test'));
 });

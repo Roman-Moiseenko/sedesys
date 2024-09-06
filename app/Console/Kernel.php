@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();3
         //Получение почты
         $schedule->command('inbox:load')->hourly();
+        //Запуск и остановка акций
+        $schedule->command('promotion:auto')->daily();
 
         //Верификация клиентов, удаление токена??
     }
