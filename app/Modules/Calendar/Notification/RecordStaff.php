@@ -37,6 +37,7 @@ class RecordStaff
                 $calendar->getDate() . ' ' . $calendar->getTime();
         }
 
+        //TODO После добавления уровня доступа выбирать, тех, кто принимает заявки
         $staffs = Admin::get(); //Выбрать "Администратора Ресепшина"
         foreach($staffs as $staff) {
             $staff->notify(

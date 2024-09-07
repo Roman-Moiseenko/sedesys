@@ -7,6 +7,8 @@ use App\Modules\Calendar\Notification\RecordEmployee;
 use App\Modules\Calendar\Notification\RecordStaff;
 use App\Modules\Calendar\Notification\RecordUser;
 use App\Modules\Calendar\Service\CalendarService;
+use App\Modules\Discount\Events\PromotionHasFinish;
+use App\Modules\Discount\Events\PromotionHasStart;
 use App\Modules\Notification\Events\TelegramHasReceived;
 use App\Modules\Notification\Service\NotificationService;
 use Illuminate\Auth\Events\Registered;
@@ -33,7 +35,9 @@ class EventServiceProvider extends ServiceProvider
         TelegramHasReceived::class => [
             NotificationService::class, //Подтверждение уведомления
             CalendarService::class, //Подтверждение записи
-            //TODO Добавляем классы которые обрабатывают подтверждения из Телеграм
+            /**
+             * Добавляем классы, которые обрабатывают подтверждения из Телеграм.
+             */
 
         ],
 
@@ -44,13 +48,28 @@ class EventServiceProvider extends ServiceProvider
             RecordUser::class
         ],
 
-        SocialiteWasCalled::class => [
+        //Модуль Скидки
+        PromotionHasStart::class => [
+            /**
+             * При необходимости добавить уведомления подписчикам и/или сотрудникам.
+             */
+        ],
+        PromotionHasFinish::class => [
+            /**
+             * При необходимости добавить уведомления подписчикам и/или сотрудникам.
+             */
+        ],
 
+
+        //Аутентификация сторонними сервисами
+        SocialiteWasCalled::class => [
             YandexExtendSocialite::class.'@handle',
             TelegramExtendSocialite::class.'@handle',
             GoogleExtendSocialite::class.'@handle',
             VKontakteExtendSocialite::class.'@handle',
-
+            /**
+             * Добавить при желании клиента
+             */
         ],
     ];
 

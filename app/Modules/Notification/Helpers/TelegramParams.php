@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Notification\Helpers;
 /**
- * Параметры для callback
+ * Параметры для callback от чат-бота Телеграм
  * OPERATION_... - операция произведенная клиентов в чат-боте
  */
 class TelegramParams

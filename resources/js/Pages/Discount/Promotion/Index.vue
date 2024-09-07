@@ -38,7 +38,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="status" label="Статус" width="120"/>
-
+                <el-table-column prop="items" label="Кол-во" width="80" />
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <span v-if="scope.row.current">

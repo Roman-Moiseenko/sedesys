@@ -35,9 +35,7 @@
     </div>
 
     <div class="mt-3 p-3 bg-white rounded-lg">
-
-        <el-select v-model="formAdd.service_id" placeholder="Select" style="width: 240px" filterable multiple>
-            <el-option :value="null" :key="null" label=""/>
+        <el-select v-model="formAdd.service_id" placeholder="Услуга" style="width: 240px" filterable multiple>
             <el-option-group
                 v-for="group in services_data.group_services"
                 :key="group.label"
@@ -52,7 +50,6 @@
             </el-option-group>
         </el-select>
         <el-button type="primary" plain class="ml-3" @click="onAttach">Добавить</el-button>
-
 
         <el-table
             :data="state.attaches"

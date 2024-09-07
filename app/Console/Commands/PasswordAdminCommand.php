@@ -8,8 +8,8 @@ use Illuminate\Console\Command;
 
 class PasswordAdminCommand extends Command
 {
-    protected $signature = 'admin:password {--name= : "Логин для смены пароля}';
-    protected $description = 'Command description';
+    protected $signature = 'admin:password {--name= : "Логин для смены пароля"}';
+    protected $description = 'Смена пароля Администратора сайта';
 
     public function handle()
     {

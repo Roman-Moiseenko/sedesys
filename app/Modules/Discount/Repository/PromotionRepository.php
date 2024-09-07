@@ -49,11 +49,9 @@ class PromotionRepository
                 });
         }
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
-        $promotions = $query->paginate($request->input('size', 20))
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Promotion $promotion) => $this->PromotionToArray($promotion));
-
-        return $promotions;
     }
 
 
@@ -75,6 +73,7 @@ class PromotionRepository
             'start_at' => $promotion->getStartAt(),
             'finish_at' => $promotion->getFinishAt(),
             'discount' => $promotion->discount,
+            'items' => $promotion->items()->count(),
 
             'url' => route('admin.discount.promotion.show', $promotion),
             'edit' => route('admin.discount.promotion.edit', $promotion),

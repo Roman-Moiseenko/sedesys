@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 class CreateAdminCommand extends Command
 {
     protected $signature = 'admin:create {name}';
-    protected $description = 'Command description';
+    protected $description = 'Создание Администратора сайта';
 
     public function handle()
     {

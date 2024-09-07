@@ -47,10 +47,50 @@
 - **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
 
 
-## Contributing
-???
+## События
+###Модуль Calendar
+- Событие "Запись на услугу поменяла статус" - RecordHasChangeStatus слушатели:
+- * RecordEmployee - Уведомление Персоналу на **telegram**, с подтверждением или отказом о записи
+- * RecordStaff - Уведомление Специалисту(по уровню доступа) в **CRM** 
+- * RecordUser - Уведомление клиенту в ВК, GoogleCalendar, WhatsApp, Telegram и др.
+    
+###Модуль Discount
+- Событие "акция была запущена" - PromotionHasStart *(слушатель не назначен)*
+- Событие "акция была остановлена" - PromotionHasFinish *(слушатель не назначен)*
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+###Модуль Notification
+- Событие "Получено обратное сообщение от телеграм" - TelegramHasReceived, слушатели:
+- * NotificationService::class, //Подтверждение уведомления 
+- * CalendarService::class, //Подтверждение записи
+- * ... назначить любых слушателей, и сравнивать тип возвращаемой операции TelegramParams::OPERATION_xxx 
+
+##Публикуемые классы
+###Определение
+
+###Общие свойства
+
+###Дополнительные интерфейсы
+
+###Наследники
+
+
+
+##Шаблоны
+
+##Планировщик и Команды (Cron)
+Планировщик:
+- Автозапуск и остановка акций по времени *(Ежедневно)* promotion:auto - *PromotionCommand*
+- Получение почты *(Ежечасно)* inbox:load  - *InboxCommand*
+
+Команды:
+- Создание Администратора сайта: **admin:create {name}**
+- Смена пароля Администратора сайта: **admin:password {--name= : "Логин для смены пароля"}**
+- Получить id сотрудников, подключивших чат-бот: **telegram:bot**
+- Подключение прослушивания чат-бота Телеграм: **telegram:set-webhook**
+- Отключение прослушивания чат-бота Телеграм: **telegram:del-webhook**
+- Проверка прослушивания чат-бота Телеграм: **telegram:get-webhook**
+
+##Разработанные модули
 
 
 ## License

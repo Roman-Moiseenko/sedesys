@@ -37,7 +37,7 @@ class PromotionService
          * Сохраняем оставшиеся поля
          */
         $promotion->saveDisplayed($request);
-        //dd($request['range_at']);
+
         if (is_null($rang_at = $request->input('range_at'))) {
             $promotion->start_at = null;
             $promotion->finish_at = null;

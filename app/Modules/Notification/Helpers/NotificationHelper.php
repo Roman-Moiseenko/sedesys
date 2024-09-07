@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\Modules\Notification\Helpers;
 
+/**
+ * Тип отправляемого уведомления, используется для текстового и графического обозначения
+ * сообщений в чат-боте телеграма.
+ */
 class NotificationHelper
 {
-
 
     const EVENT_TEST = 1001;
     const EVENT_ERROR = 1002;

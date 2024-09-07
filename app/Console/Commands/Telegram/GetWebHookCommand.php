@@ -10,7 +10,7 @@ class GetWebHookCommand extends Command
 {
     protected $signature = 'telegram:get-webhook';
 
-    protected $description = 'Получение вебхука';
+    protected $description = 'Проверка прослушивания чат-бота Телеграм';
 
     public function handle(TelegramService $service): bool
     {

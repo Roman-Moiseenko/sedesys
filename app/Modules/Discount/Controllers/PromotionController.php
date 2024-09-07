@@ -31,7 +31,6 @@ class PromotionController extends Controller
         $services = $this->services->forFilter();
         $statuses = $this->repository->getStatuses();
 
-
         return Inertia::render('Discount/Promotion/Index', [
                 'promotions' => $promotions,
                 'filters' => $filters,

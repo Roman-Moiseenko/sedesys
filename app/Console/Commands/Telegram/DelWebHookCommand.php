@@ -10,7 +10,7 @@ class DelWebHookCommand extends Command
 {
     protected $signature = 'telegram:del-webhook';
 
-    protected $description = 'Удаление вебхука';
+    protected $description = 'Отключение прослушивания чат-бота Телеграм';
 
     public function handle(TelegramService $service): bool
     {
