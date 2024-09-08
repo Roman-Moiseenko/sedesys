@@ -91,5 +91,12 @@ class SpecializationRepository
         return Specialization::where('id', $id)->with('employees')->first();
     }
 
+    public function outEmployees(Specialization $specialization)
+    {
+        $ids = $specialization->employees()->pluck('id')->toArray();
+
+        return Employee::whereNotIn('id', $ids)->getModels();
+    }
+
 
 }

@@ -61,11 +61,17 @@ class SpecializationService
 
     public function attach(Specialization $specialization, Request $request)
     {
-        $specialization->employees()->detach();
-        $employees = $request->input('employees', []);
-        foreach ($employees as $employee) {
-            $specialization->employees()->attach($employee);
+        if ($request->has('employee_id')) {
+            $specialization->employees()->attach($request->integer('employee_id'));
         }
+        if ($request->has('employees')) {
+            $specialization->employees()->detach();
+            $employees = $request->input('employees', []);
+            foreach ($employees as $employee) {
+                $specialization->employees()->attach($employee);
+            }
+        }
+
     }
 
     public function detach(Specialization $specialization, Request $request)

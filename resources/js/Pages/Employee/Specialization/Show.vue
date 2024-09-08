@@ -4,20 +4,12 @@
 
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-tabs type="border-card" class="mb-4">
-        <el-tab-pane>
-            <template #label>
-            <span class="custom-tabs-label">
-                <el-icon><User/></el-icon>
-                <span> Специалисты</span>
-            </span>
-            </template>
-            !!! *** Таблица с добавлением и отсоединением
-
-            <div v-for="item in $props.specialization.employees">
-                {{ func.fullName(item.fullname) }}
-            </div>
-        </el-tab-pane>
-
+            <EmployeePanel
+                :employees="specialization.employees"
+                :attach="attach"
+                :detach="detach"
+                :out_employees="out_employees"
+            />
         <DisplayedShowPanel
             :model="specialization"
             :image="image"
@@ -40,10 +32,12 @@
 <script lang="ts" setup>
 import {Head, router} from '@inertiajs/vue3'
 import DisplayedShowPanel from '@/Components/Displayed/Show.vue'
+import EmployeePanel from './Panels/Employee.vue'
 import {func} from '@/func.js'
 
 const props = defineProps({
     specialization: Object,
+    out_employees: Array,
     edit: String,
     title: {
         type: String,
@@ -51,6 +45,7 @@ const props = defineProps({
     },
     toggle: String,
     attach: String,
+    detach: String,
     image: String,
     icon: String,
 });

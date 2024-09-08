@@ -2,7 +2,7 @@
     <el-tab-pane>
         <template #label>
                     <span class="custom-tabs-label">
-                        <el-icon><User/></el-icon>
+                        <el-icon><Service/></el-icon>
                         <span> Персональные данные</span>
                     </span>
         </template>

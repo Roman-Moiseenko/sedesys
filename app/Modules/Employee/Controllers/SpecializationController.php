@@ -68,6 +68,7 @@ class SpecializationController extends Controller
     public function show(Specialization $specialization)
     {
         $specialization = $this->repository->getShow($specialization->id);
+        $out_employees = $this->repository->outEmployees($specialization);
 
         return Inertia::render('Employee/Specialization/Show', [
                 'specialization' => $specialization,
@@ -75,7 +76,10 @@ class SpecializationController extends Controller
                 'image' => $specialization->getImage(),
                 'icon' => $specialization->getIcon(),
                 'toggle' => route('admin.employee.specialization.toggle', $specialization),
+
                 'attach' => route('admin.employee.specialization.attach', $specialization),
+                'detach' => route('admin.employee.specialization.detach', $specialization),
+                'out_employees' => $out_employees,
             ]
         );
     }
@@ -145,12 +149,12 @@ class SpecializationController extends Controller
     public function attach(Request $request, Specialization $specialization)
     {
         $this->service->attach($specialization, $request);
-        return redirect()->back()->with('success', 'Сохранено');
+        return redirect()->back()->with('success', 'Персоналу установлена специализация');
     }
 
     public function detach(Request $request, Specialization $specialization)
     {
         $this->service->detach($specialization, $request);
-        return redirect()->back()->with('success', 'Изменения сохранены');
+        return redirect()->back()->with('success', 'Персонал убран из специализации');
     }
 }
