@@ -4,6 +4,7 @@ namespace App\Modules\Page\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Page\Entity\Page;
+use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Page\Requests\PageRequest;
 use App\Modules\Page\Repository\PageRepository;
 use App\Modules\Page\Service\PageService;
@@ -17,12 +18,14 @@ class PageController extends Controller
     private PageService $service;
     private PageRepository $repository;
     private string $tiny_api;
+    private TemplateRepository $templates;
 
-    public function __construct(PageService $service, PageRepository $repository)
+    public function __construct(PageService $service, PageRepository $repository, TemplateRepository $templates)
     {
         $this->service = $service;
         $this->repository = $repository;
         $this->tiny_api = config('sedesys.tinymce');
+        $this->templates = $templates;
     }
 
     public function index(Request $request)
@@ -41,7 +44,7 @@ class PageController extends Controller
 
         return Inertia::render('Page/Page/Create', [
             'route' => route('admin.page.page.store'),
-            'templates' => $this->repository->getTemplates(),
+            'templates' => $this->templates->getTemplates('page'),
             'pages' => $pages,
             'tiny_api' => $this->tiny_api,
         ]);
@@ -79,7 +82,7 @@ class PageController extends Controller
         return Inertia::render('Page/Page/Edit', [
             'page' => $page,
             'route' => route('admin.page.page.update', $page),
-            'templates' => $this->repository->getTemplates(),
+            'templates' => $this->templates->getTemplates('page'),
             'pages' => $pages,
             'image' => $page->getImage(),
             'icon' => $page->getIcon(),

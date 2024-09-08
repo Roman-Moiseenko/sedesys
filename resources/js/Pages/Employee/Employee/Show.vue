@@ -4,216 +4,28 @@
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-tabs type="border-card" class="">
             <!-- Панель Общая информация -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                        <el-icon><Memo/></el-icon>
-                        <span> Общая информация</span>
-                    </span>
-                </template>
-                <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-                    <div class="p-2">
-                        <div class="truncate sm:whitespace-normal font-medium text-lg">
-                            {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}
-                        </div>
-                        <div class="flex justify-between mt-3">
-                            <DisplayedImage :image="$props.image" :icon="$props.icon" />
-                        </div>
-
-                    </div>
-                    <div class="p-2">
-                        <el-descriptions :column="1" border title="Персональные данные">
-                            <el-descriptions-item>
-                                <template #label>
-                                    <div class="items-center flex">
-                                        <el-icon><iphone  /></el-icon>&nbsp;Телефон
-                                    </div>
-                                </template>
-                                {{ employee.phone }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template #label>
-                                    <div class="items-center flex">
-                                        <el-icon><Promotion /></el-icon>&nbsp;Телеграм ID
-                                    </div>
-                                </template>
-                                {{ employee.telegram_user_id }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template #label>
-                                    <div class="items-center flex">
-                                        <el-icon><Location /></el-icon>&nbsp;Адрес
-                                    </div>
-                                </template>
-                                {{ employee.address.address }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template #label>
-                                    <div class="items-center flex">
-                                        <el-icon><Calendar /></el-icon>&nbsp;Стаж с
-                                    </div>
-                                </template>
-                                <span v-if="employee.experience_year">{{ employee.experience_year }} г</span>
-                            </el-descriptions-item>
-                        </el-descriptions>
-                    </div>
-                    <div class="p-2">
-                        <h2 class="font-medium">Специализация</h2>
-                        <div v-for="specialization in specializations" class="flex mt-1">
-                            <el-image :src="specialization.icon" class="w-8 h-8"/>
-                            <span class="ml-2 my-auto">{{ specialization.name }}</span>
-                        </div>
-
-                    </div>
-                </div>
-            </el-tab-pane>
+            <CommonPanel
+                :employee="employee"
+                :specializations="specializations"
+            />
             <!-- Панель Услуги -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                        <el-icon><SuitcaseLine /></el-icon>
-                        <span> Услуги</span>
-                    </span>
-                </template>
-                <div class="mb-5">
-                    <el-table
-                    :data="services"
-                    style="width: 100%; cursor: pointer;"
-                    @row-click="routeClick"
-                >
-                    <!-- Повторить поля -->
-                    <el-table-column sortable prop="name" label="Услуга" width="250" show-overflow-tooltip/>
-                    <el-table-column sortable prop="classification" label="Классификация"  width="250"/>
-                    <el-table-column prop="price" label="Базовая стоимость" width="100" />
-                        <el-table-column prop="extra_cost" label="Доп. наценка" width="100" >
-                            <template #default="scope">
-                                {{ func.price(scope.row.extra_cost) }}
-                            </template>
-                        </el-table-column>
-                    <el-table-column label="Расх.материалы (₽)" width="160" />
-                    <el-table-column label="Действия" align="right">
-                        <template #default="scope">
-                            <el-button
-                                size="small"
-                                type="danger"
-                                @click.stop="detachService(scope.row)"
-                            >
-                                Detach
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                </div>
-                <el-button type="success" plain @click="dialogService = true">
-                    <el-icon><SuitcaseLine /></el-icon>&nbsp;Добавить Услугу
-                </el-button>
-                <!--Dialog-->
-                <el-dialog v-model="dialogService" width="400" class="p-4" center>
-                    <el-form :model="formService" class="mt-3">
-                        <el-form-item label="Персонал">
-                            <el-select v-model="formService.service_id">
-                                <el-option v-for="item in out_services" :value="item.id" :key="item.id"
-                                           :label="item.name"/>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Дополнительная наценка" class="mb-3">
-                            <el-input v-model="formService.extra_cost" @input="handleExtraCost" placeholder=""
-                                      class="mb-3">
-                                <template #append>₽</template>
-                            </el-input>
-                        </el-form-item>
-                        <el-button type="info" plain @click="dialogService = false">
-                            Отмена
-                        </el-button>
-                        <el-button type="primary" @click="attachService">Сохранить</el-button>
-                        <span v-if="dialogSave" class="text-lime-500 text-sm ml-3">Сохранено</span>
-                    </el-form>
-                </el-dialog>
-            </el-tab-pane>
+            <ServicePanel
+                :services_data="services_data"
+            />
             <!-- Панель Примеры -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><Help/></el-icon>
-                      <span> Примеры работы</span>
-                    </span>
-                </template>
-                <div class="mb-5">
-                    <el-table :data="examples"
-                              style="width: 100%; cursor: pointer;"
-                              @row-click="routeClick"
-                    >
-                        <el-table-column label="Дата" prop="date"  width="120" />
-                        <el-table-column label="Заголовок" prop="title" width="250"/>
-
-                        <el-table-column label="Исполнители" width="250">
-                            <template #default="scope">
-                                <el-tag class="mr-1" v-for="item in scope.row.employees">
-                                    {{ func.fullName(item.fullname) }}
-                                </el-tag>
-                            </template>
-                        </el-table-column>
-
-                        <el-table-column label="Стоимость" prop="cost"  width="120" />
-                        <el-table-column label="Изображения" prop="gallery_count"  width="120" />
-                        <el-table-column label="Описание" prop="description" show-overflow-tooltip/>
-                        <el-table-column label="Действия" width="250">
-                            <template #default="scope">
-                                <el-button v-if="scope.row.active"
-                                           size="small"
-                                           type="warning"
-                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
-                                    Hide
-                                </el-button>
-                                <el-button v-if="!scope.row.active"
-                                           size="small"
-                                           type="success"
-                                           @click.stop="handleToggleRow(scope.$index, scope.row)">
-                                    Show
-                                </el-button>
-                                <el-button
-                                    size="small"
-                                    @click.stop="handleEditRow(scope.$index, scope.row)">
-                                    Edit
-                                </el-button>
-                            </template>
-                        </el-table-column>
-
-                    </el-table>
-                </div>
-                <el-button @click="newExample">Новый пример</el-button>
-            </el-tab-pane>
+            <ExamplesPanel
+                :examples="examples"
+                :new_example="new_example"
+            />
             <!-- Панель Отзывы -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><ChatLineSquare/></el-icon>
-                      <span> Отзывы</span>
-                    </span>
-                </template>
-                <div class="mb-5">
-                    <el-table :data="reviews" style="width: 100%;">
-                        <el-table-column label="Дата" prop="created_at"  width="160" />
-                        <el-table-column label="Клиент" prop="from" width="250"/>
-                        <el-table-column label="Исполнитель" prop="employee" width="250"></el-table-column>
-                        <el-table-column label="Рейтинг" prop="rating"  width="120" />
-                        <el-table-column label="Отзыв" prop="text" show-overflow-tooltip />
-                    </el-table>
-                </div>
-            </el-tab-pane>
-            <!-- Панель Meta-данные -->
-            <el-tab-pane>
-                <template #label>
-                    <span class="custom-tabs-label">
-                      <el-icon><Notebook /></el-icon>
-                      <span> Meta-данные</span>
-                    </span>
-                </template>
-                <DisplayedShow :displayed="employee" />
-            </el-tab-pane>
+            <ReviewPanel :reviews="reviews" />
+            <!-- Панель Displayed -->
+            <DisplayedShowPanel
+                :model="employee"
+                :image="image"
+                :icon="icon"
+            />
         </el-tabs>
-
-
     </div>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-button type="primary" @click="goEdit">Редактировать</el-button>
@@ -232,8 +44,14 @@
 import {reactive, ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import {func} from '@/func.js'
-import DisplayedShow from '@/Components/DisplayedShow.vue'
-import DisplayedImage from '@/Components/DisplayedImage.vue'
+
+import DisplayedShowPanel from '@/Components/Displayed/Show.vue'
+
+import CommonPanel from './Panels/Common.vue'
+
+import ReviewPanel from './Panels/Review.vue'
+import ExamplesPanel from './Panels/Examples.vue'
+import ServicePanel from './Panels/Service.vue'
 
 const dialogService = ref(false)
 const dialogSave = ref(false)
@@ -247,14 +65,20 @@ const props = defineProps({
         type: String,
         default: 'Карточка Персонала',
     },
+
     attach: String,
     detach: String,
+    services: Array,
+    out_services: Array,
+
+    services_data: Object,
+
     new_example: String,
     specializations:  Object,
-    services: Array,
+
     examples: Array,
     reviews: Array,
-    out_services: Array,
+
     toggle: String,
 
 });

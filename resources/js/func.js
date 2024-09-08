@@ -79,4 +79,43 @@ export const func = {
         return  _date_.getFullYear() + '-' + month + '-' + day;
     },
 
+    displayedInfo: (model = null, image = null, icon = null) => {
+        if (model === null) return {
+            name: null,
+            slug: null,
+            meta: {
+                h1: null,
+                title: null,
+                description: null,
+            },
+            breadcrumb: {
+                photo_id: null,
+                caption: null,
+                description: null,
+            },
+            awesome: null,
+            template: null,
+            text: null,
+            image: null,
+            icon: null,
+            clear_image: false,
+            clear_icon: false,
+        }
+        return {
+            name: model.name,
+            slug: model.slug,
+            meta: model.meta,
+            breadcrumb: model.breadcrumb,
+            awesome: model.awesome,
+            template: model.template,
+            text: model.text,
+            image: image,
+            icon: icon,
+            clear_image: false,
+            clear_icon: false,
+        };
+    },
+    displayedImage: (model) => {
+
+    }
 }

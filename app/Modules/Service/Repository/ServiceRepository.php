@@ -13,12 +13,6 @@ use App\Modules\Service\Entity\Service;
 
 class ServiceRepository
 {
-    private TemplateRepository $templateRepository;
-
-    public function __construct(TemplateRepository $templateRepository)
-    {
-        $this->templateRepository = $templateRepository;
-    }
 
     public function getIndex(Request $request, &$filters): Arrayable
     {
@@ -48,19 +42,6 @@ class ServiceRepository
         return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Service $service) => $this->ServiceToArray($service));
-    }
-
-    public function getTemplates(): array
-    {
-        $list = $this->templateRepository->getDataArray('service');
-        $result = [];
-        foreach ($list as $item) {
-            $result[] = [
-                'value' => $item['template'],
-                'label' => $item['name'],
-            ];
-        }
-        return $result;
     }
 
     public function getGallery(Service $service): array

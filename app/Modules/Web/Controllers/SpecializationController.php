@@ -41,12 +41,10 @@ class SpecializationController extends Controller
     public function view($slug)
     {
         $specialization = Specialization::where('slug', $slug)->first();
+        if (is_null($specialization)) return abort(404);
 
         return Cache::rememberForever('specialization-' . $specialization->id, function () use ($specialization) {
-            if (is_null($specialization)) return abort(404);
-            $meta = $specialization->meta;
-            $breadcrumb = $this->repository->getBreadcrumbModel($specialization);
-            return view('web.specialization.show', compact('specialization', 'meta', 'breadcrumb'))->render();
+            return $specialization->view();
         });
     }
 }

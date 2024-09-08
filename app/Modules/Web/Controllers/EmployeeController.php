@@ -43,9 +43,7 @@ class EmployeeController extends Controller
         if (is_null($employee = Employee::where('slug', $slug)->first())) abort(404);
 
         return Cache::rememberForever('employee-' . $employee->id, function () use ($employee) {
-            $breadcrumb = $this->repository->getBreadcrumbModel($employee);
-            $meta = $employee->meta;
-            return view('web.employee.show', compact('employee', 'meta', 'breadcrumb'))->render();
+            return $employee->view();
         });
     }
 }

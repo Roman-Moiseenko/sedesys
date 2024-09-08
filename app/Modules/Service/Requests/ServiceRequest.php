@@ -25,7 +25,7 @@ class ServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'displayed.name' => ['required', 'string'],
 
             //'breadcrumb.photo_id' => ['required', 'integer'],
            // 'breadcrumb.caption' => ['required', 'string'],

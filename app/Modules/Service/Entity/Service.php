@@ -18,10 +18,8 @@ use Illuminate\Support\Str;
 
 /**
  * @property int $classification_id
- * @property string $text
  * @property int $price // В рублях
  * @property int $duration // В минутах
- * @property string $template //Шаблон, либо общий, либо для каждой услуги свой
  * @property string $data // json данных, можно использовать в шаблоне
  *
  * @property Classification $classification
@@ -35,10 +33,7 @@ class Service extends DisplayedModel implements WidgetData
 {
     use HasFactory;
 
-    const PATH_TEMPLATES = 'web.templates.service.';
-
     protected $attributes = [
-        'text' => '',
         'data' => '{}',
     ];
     protected $casts = [
@@ -54,8 +49,6 @@ class Service extends DisplayedModel implements WidgetData
     /**
      * Гетеры
      */
-
-
 
     public function getClassificationName(): string
     {
@@ -120,22 +113,11 @@ class Service extends DisplayedModel implements WidgetData
             'classification-' . $this->classification_id
         ];
     }
-
-
+/*
     public function view(): string
     {
-        $text = $this->text;
-        preg_match_all('/\[widget=\"(.+)\"\]/', $text, $matches);
-        $replaces = $matches[0]; //шот-коды вида [widget="7"] (массив)
-        $widget_ids = $matches[1]; //значение id виджета (массив)
 
-        foreach ($widget_ids as $key => $widget_id) {
-            $text = str_replace(
-                $replaces[$key],
-                Widget::findView((int)$widget_id),
-                $text);
-        }
-        $this->text = $text;
+        $this->text = Widget::renderFromText($this->text);
 
         $repository = app()->make(WebRepository::class);
         $breadcrumb = $repository->getBreadcrumbModel($this);
@@ -149,5 +131,5 @@ class Service extends DisplayedModel implements WidgetData
             ]
         )->render();
 
-    }
+    }*/
 }

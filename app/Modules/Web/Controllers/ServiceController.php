@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Base\Entity\BreadcrumbInfo;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Page\Entity\Widget;
 use App\Modules\Service\Entity\Classification;
 use App\Modules\Service\Entity\Service;
 use App\Modules\Setting\Entity\Web;
@@ -45,12 +46,7 @@ class ServiceController extends Controller
         if (is_null($service)) return abort(404);
 
         return Cache::rememberForever('service-' . $service->id, function () use ($service) {
-            //Если у услуги назначен шаблон
-            if (!empty($service->template)) return $service->view();
-
-            $meta = $service->meta;
-            $breadcrumb = $this->repository->getBreadcrumbModel($service);
-            return view('web.service.show', compact('service', 'meta', 'breadcrumb'))->render();
+            return $service->view();
         });
     }
 

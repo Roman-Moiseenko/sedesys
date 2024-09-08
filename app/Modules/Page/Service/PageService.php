@@ -15,12 +15,10 @@ class PageService
 
     public function create(Request $request): Page
     {
-        /**
-         * Создаем объект с базовыми данными
-         */
+
         $page = Page::register(
-            $request->string('name')->trim()->value(),
-            $request->string('slug')->trim()->value(),
+            $request->string('displayed.name')->trim()->value(),
+            $request->string('displayed.slug')->trim()->value(),
         );
 
         $this->save_fields($page, $request);
@@ -30,10 +28,6 @@ class PageService
 
     public function update(Page $page, Request $request)
     {
-        $page->name = $request->string('name')->trim()->value();
-        $page->setSlug($request->string('slug')->trim()->value());
-        $page->save();
-
         $this->save_fields($page, $request);
     }
 
@@ -41,17 +35,12 @@ class PageService
     {
         $page->saveDisplayed($request);
 
-        $page->template = $request->string('template')->value();
         $page->parent_id = $request->integer('parent_id', null);
-        $page->text = $request->string('text')->value();
         $page->save();
     }
 
     public function destroy(Page $page)
     {
-        /**
-         * Проверить на возможность удаления
-         */
         $page->delete();
     }
 }

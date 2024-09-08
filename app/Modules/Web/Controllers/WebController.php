@@ -5,11 +5,23 @@ namespace App\Modules\Web\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Page\Entity\Page;
+use App\Modules\Page\Entity\Widget;
+use App\Modules\Setting\Repository\SettingRepository;
+use App\Modules\Web\Repository\WebRepository;
 use Illuminate\Support\Facades\Cache;
 use function Ramsey\Uuid\v1;
 
 class WebController extends Controller
 {
+
+    private WebRepository $repository;
+    private \App\Modules\Setting\Entity\Web $web;
+
+    public function __construct(WebRepository $repository, SettingRepository $settings)
+    {
+        $this->repository = $repository;
+        $this->web = $settings->getWeb();
+    }
 
     public function home()
     {

@@ -40,11 +40,8 @@ class ServiceService
     {
         $service->saveDisplayed($request);
 
-        $service->template = $request->string('template')->value();
         $service->price = $request->integer('price', null);
         $service->duration = $request->integer('duration', null);
-
-        $service->text = $request->string('text')->trim()->value();
         $service->data = $request->string('data')->trim()->value();
 
         $service->classification_id = $request->integer('classification_id', null);

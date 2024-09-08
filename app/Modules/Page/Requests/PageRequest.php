@@ -25,8 +25,7 @@ class PageRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:33'],
-            'template' => ['required', 'string'],
+            'displayed.name' => ['required', 'max:33'],
         ];
     }
 }

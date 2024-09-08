@@ -8,6 +8,7 @@ use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Employee\Requests\SpecializationRequest;
 use App\Modules\Employee\Repository\SpecializationRepository;
 use App\Modules\Employee\Service\SpecializationService;
+use App\Modules\Page\Repository\TemplateRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,11 +16,19 @@ class SpecializationController extends Controller
 {
     private SpecializationService $service;
     private SpecializationRepository $repository;
+    private TemplateRepository $templates;
+    private string $tiny_api;
 
-    public function __construct(SpecializationService $service, SpecializationRepository $repository)
+    public function __construct(
+        SpecializationService $service,
+        SpecializationRepository $repository,
+        TemplateRepository       $templates,
+    )
     {
         $this->service = $service;
         $this->repository = $repository;
+        $this->templates = $templates;
+        $this->tiny_api = config('sedesys.tinymce');
     }
 
     public function index(Request $request)
@@ -36,9 +45,13 @@ class SpecializationController extends Controller
     public function create(Request $request)
     {
         $employees = $this->repository->getEmployees();
+        $templates = $this->templates->getTemplates('specialization');
+
         return Inertia::render('Employee/Specialization/Create', [
             'route' => route('admin.employee.specialization.store'),
             'employees' => $employees,
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 
@@ -71,6 +84,7 @@ class SpecializationController extends Controller
     {
         $employees = $this->repository->getEmployees($specialization);
         $specialization = Specialization::where('id', $specialization->id)->with('employees')->first();
+        $templates = $this->templates->getTemplates('specialization');
 
         return Inertia::render('Employee/Specialization/Edit', [
             'specialization' => $specialization,
@@ -78,6 +92,8 @@ class SpecializationController extends Controller
             'image' => $specialization->getImage(),
             'icon' => $specialization->getIcon(),
             'employees' => $employees,
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 

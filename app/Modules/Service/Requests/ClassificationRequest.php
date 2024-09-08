@@ -25,7 +25,7 @@ class ClassificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'displayed.name' => ['required', 'string'],
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Modules\Employee\Repository\SpecializationRepository;
 use App\Modules\Employee\Requests\EmployeeRequest;
 use App\Modules\Employee\Repository\EmployeeRepository;
 use App\Modules\Employee\Service\EmployeeService;
+use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Repository\ExampleRepository;
 use App\Modules\Service\Repository\ServiceRepository;
 use Exception;
@@ -26,6 +27,8 @@ class EmployeeController extends Controller
     private SpecializationRepository $specializations;
     private ExampleRepository $examples;
     private ServiceRepository $services;
+    private TemplateRepository $templates;
+    private string $tiny_api;
 
 
     public function __construct(
@@ -33,7 +36,8 @@ class EmployeeController extends Controller
         EmployeeRepository       $repository,
         SpecializationRepository $specializations,
         ExampleRepository        $examples,
-        ServiceRepository        $services
+        ServiceRepository        $services,
+        TemplateRepository       $templates,
     )
     {
         $this->service = $service;
@@ -42,6 +46,8 @@ class EmployeeController extends Controller
         $this->specializations = $specializations;
         $this->examples = $examples;
         $this->services = $services;
+        $this->templates = $templates;
+        $this->tiny_api = config('sedesys.tinymce');
     }
 
     public function index(Request $request)
@@ -60,10 +66,14 @@ class EmployeeController extends Controller
     public function create(Request $request)
     {
         $specializations = $this->repository->getSpecializations();
+        $templates = $this->templates->getTemplates('employee');
+
         return Inertia::render('Employee/Employee/Create', [
             'route' => route('admin.employee.employee.store'),
             'chat_id' => route('admin.notification.telegram.chat-id'),
             'specializations' => $specializations,
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 
@@ -89,16 +99,22 @@ class EmployeeController extends Controller
                 'employee' => $employee,
                 'edit' => route('admin.employee.employee.edit', $employee),
                 'toggle' => route('admin.employee.employee.toggle', $employee),
-                'attach' => route('admin.employee.employee.attach-service', $employee),
-                'detach' => route('admin.employee.employee.detach-service', $employee),
+                'services_data' => [
+                    'attach' => route('admin.employee.employee.attach-service', $employee),
+                    'detach' => route('admin.employee.employee.detach-service', $employee),
+                    'services' => $services,
+                    'out_services' => $out_services,
+                ],
                 'new_example' => route('admin.service.example.create', ['employee_id' => $employee->id]),
+                'examples' => $examples,
+
                 'image' => $employee->getImage(),
                 'icon' => $employee->getIcon(),
                 'specializations' => $specializations,
-                'services' => $services,
+
                 'reviews' => $reviews,
-                'out_services' => $out_services,
-                'examples' => $examples,
+
+
             ]
         );
     }
@@ -106,6 +122,7 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         $specializations = $this->repository->getSpecializations($employee);
+        $templates = $this->templates->getTemplates('employee');
 
         $employee = Employee::where('id', $employee->id)->with('specializations:id')->first();
         return Inertia::render('Employee/Employee/Edit', [
@@ -115,6 +132,8 @@ class EmployeeController extends Controller
             'icon' => $employee->getIcon(),
             'chat_id' => route('admin.notification.telegram.chat-id'),
             'specializations' => $specializations,
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 

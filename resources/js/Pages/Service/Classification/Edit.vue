@@ -3,48 +3,23 @@
     <h1 class="font-medium text-xl">Редактировать {{ classification.name }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto">
-
-            <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-                <div class="p-4">
-                    <!-- Повторить поля -->
+            <el-tabs type="border-card" class="mb-4">
+                <DisplayedFieldsPanel
+                    :errors="errors"
+                    :templates="templates"
+                    :tiny_api="tiny_api"
+                    v-model:displayed="form.displayed"
+                >
+                    <!-- Доп.поля в 1ю секцию 1й панели -->
                     <el-form-item label="Родительская категория" :rules="{required: true}">
                         <el-select v-model="form.parent_id" placeholder="Select" style="width: 240px">
-                            <el-option v-for="item in classifications" :key="item.value" :label="item.label"
-                                       :value="item.value"/>
+                            <el-option v-for="item in classifications" :key="item.value" :label="item.label" :value="item.value"/>
                         </el-select>
                         <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
-                    <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Название"/>
-                        <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
-                    </el-form-item>
-                    <el-form-item label="Ссылка">
-                        <el-input v-model="form.slug" placeholder="Оставьте пустым для автозаполнения"
-                                  @input="handleMaskSlug"/>
-                        <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
-                    </el-form-item>
-                </div>
-                <div class="p-4">
-                    <DisplayedFields
-                        :errors="errors"
-                        v-model:meta="form.meta"
-                        v-model:breadcrumb="form.breadcrumb"
-                        v-model:awesome="form.awesome"
-                    />
-                </div>
-                <div class="p-4">
-                    <UploadImageFile
-                        label="Изображение для каталога"
-                        v-model:image="props.image"
-                        @selectImageFile="onSelectImage"
-                    />
-                    <UploadImageFile
-                        label="Иконка для меню"
-                        v-model:image="props.icon"
-                        @selectImageFile="onSelectIcon"
-                    />
-                </div>
-            </div>
+                </DisplayedFieldsPanel>
+            </el-tabs>
+
             <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
             <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
             <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
@@ -57,8 +32,7 @@
 import {Head, router} from '@inertiajs/vue3'
 import {reactive, ref, watch} from 'vue'
 import {func} from "/resources/js/func.js"
-import DisplayedFields from '@/Components/DisplayedFields.vue'
-import UploadImageFile from '@/Components/UploadImageFile.vue'
+import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
 const props = defineProps({
     errors: Object,
@@ -66,26 +40,21 @@ const props = defineProps({
     classification: Object,
     title: {
         type: String,
-        default: 'Редактирование classification',
+        default: 'Редактирование классификации',
     },
     image: String,
     icon: String,
     classifications: Array,
+    templates: Array,
+    tiny_api: String,
 });
 
 const form = reactive({
+    displayed: func.displayedInfo(props.classification, props.image, props.icon),
+
     parent_id: props.classification.parent_id,
-    name: props.classification.name,
-    slug: props.classification.slug,
-    meta: props.classification.meta,
-    breadcrumb: props.classification.breadcrumb,
-    awesome: props.classification.awesome,
-    image: null,
-    icon: null,
     close: null,
     _method: 'put',
-    clear_image: false,
-    clear_icon: false,
 })
 
 ///Блок сохранения и обновления=>
@@ -111,20 +80,6 @@ function onSubmit(val) {
 }
 ////<=
 
-
-function handleMaskSlug(val) {
-    form.slug = func.MaskSlug(val);
-}
-
-function onSelectImage(val) {
-    form.clear_image = val.clear_file;
-    form.image = val.file
-}
-
-function onSelectIcon(val) {
-    form.clear_icon = val.clear_file;
-    form.icon = val.file
-}
 </script>
 <script lang="ts">
 import Layout from '@/Components/Layout.vue'

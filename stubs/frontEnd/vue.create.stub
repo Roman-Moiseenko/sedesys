@@ -17,8 +17,8 @@
                 <div class="p-4">
                 </div>
             </div>
-            <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">Изменения не сохранены</div>
+            <el-button type="primary" @click="onSubmit" :disabled="!isUnSave">Сохранить</el-button>
+            <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
 </template>
@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
     import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
+    import {reactive, ref} from 'vue'
     import {router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
 
@@ -57,7 +57,15 @@
     function onSubmit() {
         router.post(props.route, form)
     }
-
+    ///Блок сохранения и обновления=>
+    const isUnSave = ref(false)
+    watch(
+        () => ({...form}),
+        function (newValue, oldValue) {
+            isUnSave.value = true
+        },
+        {deep: true}
+    );
 </script>
 <script lang="ts">
     import Layout from '@/Components/Layout.vue'

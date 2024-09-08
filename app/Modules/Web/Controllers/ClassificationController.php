@@ -38,15 +38,16 @@ class ClassificationController extends Controller
 
     public function view($slug)
     {
+        /** @var Classification $classification */
         $classification = Classification::where('slug', $slug)->first();
+        if (is_null($classification)) return abort(404);
 
         return Cache::rememberForever('classification-' . $classification->id, function () use ($classification) {
-            if (is_null($classification)) return abort(404);
+            if (count($classification->children) > 0)
+                return $classification->view();
+
             $meta = $classification->meta;
             $breadcrumb = $this->repository->getBreadcrumbModel($classification);
-            if (count($classification->children) > 0) {
-                return view('web.classification.show', compact('classification', 'meta', 'breadcrumb'))->render();
-            }
             $services = $classification->services;
             return view('web.service.index', compact('services', 'meta', 'breadcrumb'))->render();
         });

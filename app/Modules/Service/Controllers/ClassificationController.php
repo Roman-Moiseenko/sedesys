@@ -3,6 +3,7 @@
 namespace App\Modules\Service\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Entity\Classification;
 use App\Modules\Service\Repository\ServiceRepository;
 use App\Modules\Service\Requests\ClassificationRequest;
@@ -17,16 +18,22 @@ class ClassificationController extends Controller
     private ClassificationService $service;
     private ClassificationRepository $repository;
     private ServiceRepository $serviceRepository;
+    private TemplateRepository $templates;
+    private string $tiny_api;
 
     public function __construct(
         ClassificationService    $service,
         ClassificationRepository $repository,
         ServiceRepository        $serviceRepository,
+        TemplateRepository       $templates,
     )
     {
         $this->service = $service;
         $this->repository = $repository;
         $this->serviceRepository = $serviceRepository;
+        $this->templates = $templates;
+        $this->tiny_api = config('sedesys.tinymce');
+
     }
 
     public function index(Request $request)
@@ -43,9 +50,13 @@ class ClassificationController extends Controller
     public function create(Request $request)
     {
         $classifications = $this->repository->getClassifications();
+        $templates = $this->templates->getTemplates('classification');
+
         return Inertia::render('Service/Classification/Create', [
             'route' => route('admin.service.classification.store'),
             'classifications' => $classifications,
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 
@@ -76,6 +87,7 @@ class ClassificationController extends Controller
     public function edit(Classification $classification)
     {
         $classifications = $this->repository->getClassifications();
+        $templates = $this->templates->getTemplates('classification');
 
         return Inertia::render('Service/Classification/Edit', [
             'classification' => $classification,
@@ -83,6 +95,8 @@ class ClassificationController extends Controller
             'image' => $classification->getImage(),
             'icon' => $classification->getIcon(),
             'classifications' => $classifications,
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 

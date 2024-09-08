@@ -3,6 +3,7 @@
 namespace App\Modules\Service\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
 use App\Modules\Service\Repository\ClassificationRepository;
@@ -21,12 +22,14 @@ class ServiceController extends Controller
     private ClassificationRepository $classifications;
     private string $tiny_api;
     private ExampleRepository $exampleRepository;
+    private TemplateRepository $templates;
 
     public function __construct(
         ServiceService           $service,
         ServiceRepository        $repository,
         ClassificationRepository $classifications,
         ExampleRepository        $exampleRepository,
+        TemplateRepository       $templates,
     )
     {
         $this->service = $service;
@@ -34,13 +37,14 @@ class ServiceController extends Controller
         $this->classifications = $classifications;
         $this->tiny_api = config('sedesys.tinymce');
         $this->exampleRepository = $exampleRepository;
+        $this->templates = $templates;
     }
 
 
     public function index(Request $request)
     {
         $services = $this->repository->getIndex($request, $filters);
-        $templates = $this->repository->getTemplates();
+        $templates = $this->templates->getTemplates('service');
         $classifications = $this->classifications->getClassifications();
 
         return Inertia::render('Service/Service/Index', [
@@ -55,14 +59,13 @@ class ServiceController extends Controller
     public function create(Request $request)
     {
         $classifications = $this->classifications->getClassifications();
-        $templates = $this->repository->getTemplates();
+        $templates = $this->templates->getTemplates('service');
 
         return Inertia::render('Service/Service/Create', [
             'route' => route('admin.service.service.store'),
             'classifications' => $classifications,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,
-
         ]);
     }
 
@@ -118,7 +121,7 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         $classifications = $this->classifications->getClassifications();
-        $templates = $this->repository->getTemplates();
+        $templates = $this->templates->getTemplates('service');
 
         return Inertia::render('Service/Service/Edit', [
             'service' => $service,

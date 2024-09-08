@@ -39,13 +39,9 @@ class PromotionController extends Controller
     public function view($slug)
     {
         $promotion = Promotion::where('slug', $slug)->first();
-
+        if (is_null($promotion)) return abort(404);
         return Cache::rememberForever('promotion-' . $promotion->id, function () use ($promotion) {
-            if (is_null($promotion)) return abort(404);
-            $meta = $promotion->meta;
-            $breadcrumb = $this->repository->getBreadcrumbModel($promotion);
-
-            return view('web.promotion.index', compact('meta', 'breadcrumb'))->render();
+            return $promotion->view();
         });
     }
 }

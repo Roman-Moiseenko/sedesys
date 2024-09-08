@@ -2,6 +2,7 @@
 
 namespace App\Modules\Page\Entity;
 
+use App\Modules\Base\Entity\DisplayedModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,11 +13,32 @@ use JetBrains\PhpStorm\Deprecated;
  */
 class Template
 {
-    const TEMPLATES = [
+   /* const TEMPLATES = [
         'widget' => 'Виджет',
         'page' => 'Страница',
         'service' => 'Услуга',
-    ];
+        'specialization' => 'Специализация',
+        'classification' => 'Классификация',
+        'employee' => 'Персонал',
+    ];*/
+
+    /**
+     * Собираем все шаблоны в один массив
+     * @return array
+     */
+    public static function TEMPLATES(): array
+    {
+        $base['widget'] = 'Виджет';
+        foreach (DisplayedModel::LIST_MODELS as $key => $name) {
+            $base[strtolower(class_basename($key))] = $name;
+        }
+        return $base;
+    }
+
+    public static function TEMPLATE_NAME($type): string
+    {
+        return self::TEMPLATES()[$type];
+    }
 
     /**
      * Папка с шаблонами по виду

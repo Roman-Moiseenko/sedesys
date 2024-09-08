@@ -5,13 +5,16 @@ namespace App\Modules\Base\Entity;
 
 use App\Modules\Base\Casts\BreadcrumbInfoCast;
 use App\Modules\Base\Casts\MetaCast;
+use App\Modules\Discount\Entity\Promotion;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
 use App\Modules\Page\Entity\Page;
+use App\Modules\Page\Entity\Widget;
 use App\Modules\Service\Entity\Classification;
 use App\Modules\Service\Entity\Service;
 use App\Modules\Web\Helpers\CacheHelper;
 use App\Modules\Web\Helpers\Menu;
+use App\Modules\Web\Repository\WebRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
@@ -26,6 +29,8 @@ use Illuminate\Support\Str;
  * @property string $slug
  * @property string $awesome
  * @property bool $active
+ * @property string $template //Шаблон отображения
+ * @property string $text //Текст отображения
  * @property Meta $meta
  * @property BreadcrumbInfo $breadcrumb
  * @property Carbon $activated_at
@@ -39,15 +44,17 @@ use Illuminate\Support\Str;
 abstract class DisplayedModel extends Model implements DisplayedData
 {
     const LIST_MODELS = [
-        Specialization::class => 'Специализация',
-        Service::class => 'Услуги',
-        Classification::class => 'Классификация',
-        Page::class => 'Страница',
-        Employee::class => 'Персонал',
+        Page::class => 'Страница', //create, edit, show, index
+        Service::class => 'Услуга', //* * * * *
+        Specialization::class => 'Специализация', //c
+        Classification::class => 'Классификация', //* *
+        Employee::class => 'Персонал', //c
+        Promotion::class => 'Акция', //c
 
         //На будущее
         //Post + Widget
         //Product, Category  + Widget
+        //Template::TEMPLATES => прописать путь к шаблонам, либо сделать <имя_класса> lowerCase из LIST_MODELS
     ];
 
     /**
@@ -71,6 +78,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
             'active',
         ];
         $attributes = [
+            'text' => '',
             'meta' => '{}',
             'breadcrumb' => '{}',
         ];
@@ -144,24 +152,27 @@ abstract class DisplayedModel extends Model implements DisplayedData
 
     public function saveDisplayed(Request $request)
     {
-        //$this->meta = Meta::fromRequest($request);
-        $this->meta = new Meta(params: $request->input('meta', []));
-        $this->awesome = $request->string('awesome')->trim()->value();
-        $this->breadcrumb = new BreadcrumbInfo(params: $request->input('breadcrumb', []));
+        $this->name = $request->string('displayed.name')->trim()->value();
+        $this->setSlug($request->string('displayed.slug')->trim()->value());
+
+        $this->meta = new Meta(params: $request->input('displayed.meta'));
+        $this->awesome = $request->string('displayed.awesome')->trim()->value();
+        $this->breadcrumb = new BreadcrumbInfo(params: $request->input('displayed.breadcrumb'));
+        $this->template = $request->string('displayed.template');
+
+        $this->text = $request->string('displayed.text')->trim()->value();
+
         $this->save();
 
         $this->saveImage(
-            $request->file('image'),
-            $request->boolean('clear_image')
+            $request->file('displayed.image'),
+            $request->boolean('displayed.clear_image')
         );
 
         $this->saveIcon(
-            $request->file('icon'),
-            $request->boolean('clear_icon')
+            $request->file('displayed.icon'),
+            $request->boolean('displayed.clear_icon')
         );
-
-        //$this->breadcrumb = BreadcrumbInfo::fromRequest($request->input('breadcrumb', []));
-
 
         //Произошло изменение страниц для меню.
         //Создать Кеш
@@ -226,6 +237,29 @@ abstract class DisplayedModel extends Model implements DisplayedData
         return $this->morphOne(Photo::class, 'imageable')->where('type', 'icon')->withDefault();
     }
 
+    public function view(): string
+    {
+        $this->text = Widget::renderFromText($this->text); //Рендерим виджеты в тексте
+
+        $repository = app()->make(WebRepository::class);
+        $breadcrumb = $repository->getBreadcrumbModel($this); //Хлебные крошки - image, текст
+        $class = strtolower(class_basename(static::class)); //Класс вызвавший
+        if (empty($this->template)) {
+            $template = 'web.' .$class . '.show'; //Базовый шаблон системы
+        } else {
+            $template = 'web.templates.' . $class . '.' . $this->template; //Выбранный шаблон
+        }
+
+        //dd($this);
+        return view($template,
+            [
+                $class => $this,
+                'meta' => $this->meta,
+                'breadcrumb' => $breadcrumb,
+            ]
+        )->render();
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', true);
@@ -254,7 +288,8 @@ abstract class DisplayedModel extends Model implements DisplayedData
         $table->json('breadcrumb');
         $table->timestamp('activated_at')->nullable();
         $table->timestamps();
-
+        $table->string('template')->nullable();
+        $table->longText('text')->nullable();
         $table->index('slug');
     }
 
@@ -271,5 +306,8 @@ abstract class DisplayedModel extends Model implements DisplayedData
         $table->dropColumn('awesome');
         $table->dropColumn('meta');
         $table->dropColumn('breadcrumb');
+        $table->dropColumn('template');
+        $table->dropColumn('text');
+
     }
 }

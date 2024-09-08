@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Modules\Page\Entity\Widget;
+use phpseclib3\File\ASN1\Maps\DisplayText;
 
 class WidgetService
 {
@@ -48,7 +49,6 @@ class WidgetService
         $widget->save();
     }
 
-
     public function destroy(Widget $widget)
     {
         /**
@@ -56,4 +56,5 @@ class WidgetService
          */
         $widget->delete();
     }
+
 }

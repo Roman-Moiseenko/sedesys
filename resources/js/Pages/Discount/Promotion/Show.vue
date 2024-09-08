@@ -2,14 +2,21 @@
     <Head><title>{{ title }}</title></Head>
     <h1 class="font-medium text-xl"> {{ promotion.name }} </h1>
 
+
     <div class="mt-3 p-3 bg-white rounded-lg">
-        <div class="grid grid-cols-6 divide-x">
-            <div class="p-4 col-span-4">
+
+        <el-tabs type="border-card" class="mb-4">
+            <el-tab-pane>
+                <template #label>
+                <span class="custom-tabs-label">
+                    <el-icon><Present/></el-icon>
+                    <span> Акция</span>
+                </span>
+                </template>
                 <el-descriptions :column="2" border>
-                    <el-descriptions-item label="Название">{{ promotion.name }}</el-descriptions-item>
-                    <el-descriptions-item label="Ссылка">{{ promotion.slug }}</el-descriptions-item>
-                    <el-descriptions-item label="Ссылка на условия">{{ promotion.condition_url }}</el-descriptions-item>
                     <el-descriptions-item label="Скидка">{{ promotion.discount }} %</el-descriptions-item>
+                    <el-descriptions-item label="Ссылка на условия">{{ promotion.condition_url }}</el-descriptions-item>
+
                     <el-descriptions-item label="Расписание">
                         <span v-if="promotion.start_at">
                             С {{ func.date(promotion.start_at) }} по {{ func.date(promotion.finish_at) }}
@@ -23,12 +30,15 @@
                         }}
                     </el-descriptions-item>
                 </el-descriptions>
-                <DisplayedShow :displayed="promotion"/>
-            </div>
-            <div class="p-4 col-span-2 flex">
-                <DisplayedImage :image="$props.image" :icon="$props.icon"/>
-            </div>
-        </div>
+            </el-tab-pane>
+
+            <DisplayedShowPanel
+                :model="promotion"
+                :image="image"
+                :icon="icon"
+            />
+        </el-tabs>
+
         <div class="mt-3 flex flex-row">
             <el-button type="primary" @click="goEdit">Редактировать</el-button>
         </div>
@@ -52,17 +62,22 @@
         <el-button type="primary" plain class="ml-3" @click="onAttach">Добавить</el-button>
 
         <el-table
-            :data="state.attaches"
+            :data="promotion.services"
         >
             <el-table-column prop="name" label="Акция" width="300" show-overflow-tooltip/>
             <el-table-column label="Скидка" width="200">
                 <template #default="scope">
-                    <el-input-number v-model="scope.row.price" @change="onState(scope.row)" :disabled="scope.row.disabled"/>
+                    <el-input-number v-model="scope.row.pivot.price" @change="onState(scope.row)"
+                                     :disabled="scope.row.disabled"/>
                 </template>
             </el-table-column>
-            <el-table-column label="Действия"  width="200">
+            <el-table-column label="Действия" width="200">
                 <template #default="scope">
-                    <el-button type="danger" @click="onDetach(scope.row)"><el-icon><Delete /></el-icon></el-button>
+                    <el-button type="danger" @click="onDetach(scope.row)">
+                        <el-icon>
+                            <Delete/>
+                        </el-icon>
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -70,11 +85,11 @@
 </template>
 
 <script lang="ts" setup>
-import {Head, Link, router} from '@inertiajs/vue3'
-import DisplayedShow from '@/Components/DisplayedShow.vue'
-import DisplayedImage from '@/Components/DisplayedImage.vue'
+import {Head, router} from '@inertiajs/vue3'
+
 import {func} from '@/func.js'
 import {reactive} from "vue";
+import DisplayedShowPanel from '@/Components/Displayed/Show.vue'
 
 const props = defineProps({
     promotion: Object,
@@ -91,49 +106,21 @@ const props = defineProps({
     services_data: Object,
     group_services: Array,
     attach: String,
-    /**
-     * Задать props
-     */
 });
-// console.log(props.promotion)
 
 const formAdd = reactive({
     service_id: null,
 })
-const state = reactive({
-    attaches: [],
-})
-
-props.promotion.services.forEach(item => {
-    state.attaches.push({
-        id: item.id,
-        name: item.name,
-        price: item.pivot.price,
-        disabled: false,
-    })
-
-})
-console.log(state)
 
 function onAttach() {
-    router.visit(props.services_data.attach, {
-        method: 'post',
-        data: formAdd,
-        preserveScroll: true,
-        preserveState: false,
-    })
+    router.post(props.services_data.attach, formAdd);
 }
 
 function onDetach(item) {
-    router.visit(props.services_data.detach, {
-        method: 'post',
-        data: {service_id: item.id},
-        preserveScroll: true,
-        preserveState: false,
-    })
+    router.post(props.services_data.detach, {service_id: item.id});
 }
 
-function onState(item){
+function onState(item) {
     item.disabled = true
     router.visit(props.services_data.set, {
         method: 'post',
@@ -148,6 +135,7 @@ function onState(item){
         }
     })
 }
+
 /**
  * Методы
  */

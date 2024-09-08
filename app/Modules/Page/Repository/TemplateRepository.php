@@ -20,7 +20,7 @@ class TemplateRepository
             $filters['count'] = 1;
         } else {
             $filters = [];
-            foreach (Template::TEMPLATES as $key => $value) {
+            foreach (Template::TEMPLATES() as $key => $value) {
                 $result = array_merge($result, $this->getDataArray($key));
             }
         }
@@ -46,7 +46,7 @@ class TemplateRepository
                 'file' => $file,
                 'template' => $template[1],
                 'name' => empty($name) ? $template[1] : $name[1],
-                'type' => Template::TEMPLATES[$type],
+                'type' => Template::TEMPLATES()[$type],
                 'url' => route('admin.page.template.show', ['type' => $type, 'template' => $template[1]]),
                 'destroy' => route('admin.page.template.destroy', ['type' => $type, 'template' => $template[1]]),
             ];
@@ -54,4 +54,22 @@ class TemplateRepository
         return $result;
     }
 
+    /**
+     * Список доступных шаблонов для публикуемого класса $type - для фильтра и при создании/обновлении модели
+     * @param string $type
+     * @return array
+     */
+    public function getTemplates(string $type): array
+    {
+        $list = $this->getDataArray($type);
+        $result = [];
+        foreach ($list as $item) {
+            $result[] = [
+                'value' => $item['template'],
+                'label' => $item['name'],
+            ];
+        }
+
+        return $result;
+    }
 }

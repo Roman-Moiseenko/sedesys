@@ -7,6 +7,7 @@ use App\Modules\Discount\Entity\Promotion;
 use App\Modules\Discount\Requests\PromotionRequest;
 use App\Modules\Discount\Repository\PromotionRepository;
 use App\Modules\Discount\Service\PromotionService;
+use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Repository\ServiceRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,12 +18,22 @@ class PromotionController extends Controller
     private PromotionService $service;
     private PromotionRepository $repository;
     private ServiceRepository $services;
+    private TemplateRepository $templates;
+    private string $tiny_api;
 
-    public function __construct(PromotionService $service, PromotionRepository $repository, ServiceRepository $services)
+    public function __construct(
+        PromotionService $service,
+        PromotionRepository $repository,
+        ServiceRepository $services,
+        TemplateRepository       $templates,
+    )
     {
         $this->service = $service;
         $this->repository = $repository;
         $this->services = $services;
+        $this->templates = $templates;
+        $this->tiny_api = config('sedesys.tinymce');
+
     }
 
     public function index(Request $request)
@@ -42,8 +53,12 @@ class PromotionController extends Controller
 
     public function create(Request $request)
     {
+        $templates = $this->templates->getTemplates('promotion');
+
         return Inertia::render('Discount/Promotion/Create', [
             'route' => route('admin.discount.promotion.store'),
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 
@@ -85,11 +100,15 @@ class PromotionController extends Controller
 
     public function edit(Promotion $promotion)
     {
+        $templates = $this->templates->getTemplates('promotion');
+
         return Inertia::render('Discount/Promotion/Edit', [
             'promotion' => $promotion,
             'route' => route('admin.discount.promotion.update', $promotion),
             'image' => $promotion->getImage(),
             'icon' => $promotion->getIcon(),
+            'templates' => $templates,
+            'tiny_api' => $this->tiny_api,
         ]);
     }
 

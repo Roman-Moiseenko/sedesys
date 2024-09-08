@@ -26,7 +26,7 @@ class PromotionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'displayed.name' => ['required', 'string'],
             'start_at' => ['required_with:finish_at',],
             'finish_at' => ['required_with:start_at',],
             'discount' => ['required', 'numeric', 'min:1'],
@@ -37,7 +37,7 @@ class PromotionRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Не указали название акции',
+            'displayed.name.required' => 'Не указали название акции',
             'condition_url.required' => 'Нет ссылки на условия',
             'discount.required' => 'Укажите процент скидки'
         ];

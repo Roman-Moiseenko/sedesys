@@ -28,7 +28,7 @@ class TemplateController extends Controller
         return Inertia::render('Page/Template/Index', [
                 'templates' => $templates,
                 'store' => route('admin.page.template.store'),
-                'types' => array_select(Template::TEMPLATES),
+                'types' => array_select(Template::TEMPLATES()), //Template::TEMPLATES
                 'filters' => $filters,
             ]
         );
@@ -60,7 +60,7 @@ class TemplateController extends Controller
 
         return Inertia::render('Page/Template/Show', [
                 'content' => file_get_contents($file),
-                'title' => 'Шаблон ' . Template::TEMPLATES[$type] . ' / ' . $template,
+                'title' => 'Шаблон ' . Template::TEMPLATES()[$type] . ' / ' . $template,
                 'type' => $type,
                 'template' => $template,
                 'route' => route('admin.page.template.update'),

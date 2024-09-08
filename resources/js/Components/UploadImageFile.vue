@@ -9,18 +9,21 @@
                class="file-uploader-one"
                ref="template"
     >
-        <el-icon><Plus/></el-icon>
+        <el-icon>
+            <Plus/>
+        </el-icon>
         <template #file="{ file }">
             <div>
                 <img class="el-upload-list__item-thumbnail" v-bind:src="file.url" alt=""/>
                 <span class="el-upload-list__item-actions">
-                                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                                    <el-icon><zoom-in/></el-icon>
-                                  </span>
-                                  <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemoveImages(file)">
-                                    <el-icon><Delete/></el-icon>
-                                  </span>
-                              </span>
+                  <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                    <el-icon><zoom-in/></el-icon>
+                  </span>
+                  <span v-if="!disabled" class="el-upload-list__item-delete"
+                        @click="handleRemoveImages(file)">
+                    <el-icon><Delete/></el-icon>
+                  </span>
+              </span>
             </div>
         </template>
     </el-upload>
@@ -77,14 +80,14 @@ export default {
             photo_id: this.$props.photo_id,
         }
     },*/
-   /* methods: {
-        updateParent(val) {
-            console.log(val);
-            this.$emit('updateImageFile', {
-                photo_id: val,
-            })
-        }
-    }*/
+    /* methods: {
+         updateParent(val) {
+             console.log(val);
+             this.$emit('updateImageFile', {
+                 photo_id: val,
+             })
+         }
+     }*/
 }
 
 </script>

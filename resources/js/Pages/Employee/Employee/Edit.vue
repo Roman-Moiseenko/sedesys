@@ -3,75 +3,78 @@
     <h1 class="font-medium text-xl">Редактировать {{ employee.name }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto">
-            <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-                <div class="p-4">
-                    <el-form-item label="Фамилия" :rules="{required: true}">
-                        <el-input v-model="form.surname"/>
-                        <div v-if="errors.surname" class="text-red-700">{{ errors.surname }}</div>
-                    </el-form-item>
-                    <el-form-item label="Имя" :rules="{required: true}">
-                        <el-input v-model="form.firstname"/>
-                        <div v-if="errors.firstname" class="text-red-700">{{ errors.firstname }}</div>
-                    </el-form-item>
-                    <el-form-item label="Отчество">
-                        <el-input v-model="form.secondname"/>
-                        <div v-if="errors.secondname" class="text-red-700">{{ errors.secondname }}</div>
-                    </el-form-item>
-                    <el-divider/>
-                    <el-form-item label="Телефон" :rules="{required: true}">
-                        <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
-                        <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
-                    </el-form-item>
-                    <el-form-item label="ID Телеграм-бота">
-                        <el-input v-model="form.telegram_user_id"/>
-                        <div v-if="errors.telegram_user_id" class="text-red-700">{{ errors.telegram_user_id }}</div>
-                    </el-form-item>
-                    <el-form-item label="Адрес">
-                        <el-input v-model="form.address" placeholder="Адрес"/>
-                        <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
-                    </el-form-item>
-                    <el-form-item label="Новый пароль">
-                        <el-input v-model="form.password" type="password" show-password autocomplete="new-password"/>
-                        <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
-                    </el-form-item>
-                    <el-form-item label="Стаж с какого года" :rules="{required: true}">
-                        <el-input v-model="form.experience_year"/>
-                        <div v-if="errors.experience_year" class="text-red-700">{{ errors.experience_year }}</div>
-                    </el-form-item>
-                    <el-divider/>
-                    <h2 class="font-medium mb-3">Специализация</h2>
+            <el-tabs type="border-card" class="mb-4">
+                <el-tab-pane>
+                    <template #label>
+                    <span class="custom-tabs-label">
+                        <el-icon><User/></el-icon>
+                        <span> Персональные данные</span>
+                    </span>
+                    </template>
+                    <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
+                        <div class="p-4">
+                            <el-form-item label="Фамилия" :rules="{required: true}">
+                                <el-input v-model="form.surname"/>
+                                <div v-if="errors.surname" class="text-red-700">{{ errors.surname }}</div>
+                            </el-form-item>
+                            <el-form-item label="Имя" :rules="{required: true}">
+                                <el-input v-model="form.firstname"/>
+                                <div v-if="errors.firstname" class="text-red-700">{{ errors.firstname }}</div>
+                            </el-form-item>
+                            <el-form-item label="Отчество">
+                                <el-input v-model="form.secondname"/>
+                                <div v-if="errors.secondname" class="text-red-700">{{ errors.secondname }}</div>
+                            </el-form-item>
+                        </div>
+                        <div class="p-4">
+                            <el-form-item label="Телефон" :rules="{required: true}">
+                                <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
+                                <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
+                            </el-form-item>
+                            <el-form-item label="ID Телеграм-бота">
+                                <el-input v-model="form.telegram_user_id"/>
+                                <div v-if="errors.telegram_user_id" class="text-red-700">{{
+                                        errors.telegram_user_id
+                                    }}
+                                </div>
+                            </el-form-item>
+                            <el-form-item label="Адрес">
+                                <el-input v-model="form.address" placeholder="Адрес"/>
+                                <div v-if="errors.address" class="text-red-700">{{ errors.address }}</div>
+                            </el-form-item>
+                            <el-form-item label="Пароль">
+                                <el-input v-model="form.password" type="password" show-password
+                                          autocomplete="new-password"/>
+                                <div v-if="errors.password" class="text-red-700">{{ errors.password }}</div>
+                            </el-form-item>
+                            <el-form-item label="Стаж с какого года" :rules="{required: true}">
+                                <el-input v-model="form.experience_year"/>
+                                <div v-if="errors.experience_year" class="text-red-700">{{
+                                        errors.experience_year
+                                    }}
+                                </div>
+                            </el-form-item>
+                        </div>
+                        <div class="p-4">
+                            <h2 class="font-medium mb-3">Специализация</h2>
+                            <div v-for="specialization in specializations">
+                                <el-checkbox v-model="form.specializations" :label="specialization.name"
+                                             type="checkbox" :key="specialization.id"
+                                             :value="specialization.id"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <DisplayedFieldsPanel
+                    :errors="errors"
+                    :templates="templates"
+                    :tiny_api="tiny_api"
+                    v-model:displayed="form.displayed"
+                >
+                </DisplayedFieldsPanel>
+            </el-tabs>
 
-                    <el-checkbox-group v-model="form.specializations">
-                        <el-checkbox v-for="(specialization, index) in specializations"
-                                     :label="specialization.name"
-                                     :value="specialization.id"
-                                     :key="specialization.id"
-                        />
-                    </el-checkbox-group>
-
-                </div>
-                <div class="p-4">
-                    <UploadImageFile
-                        label="Изображение для каталога"
-                        v-model:image="props.image"
-                        @selectImageFile="onSelectImage"
-                    />
-                    <UploadImageFile
-                        label="Иконка для меню"
-                        v-model:image="props.icon"
-                        @selectImageFile="onSelectIcon"
-                    />
-                </div>
-                <div class="p-4">
-                    <DisplayedFields
-                        :errors="errors"
-                        v-model:meta="form.meta"
-                        v-model:breadcrumb="form.breadcrumb"
-                        v-model:awesome="form.awesome"
-                    />
-
-                </div>
-            </div>
             <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
             <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
             <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
@@ -90,13 +93,17 @@
 
 
 <script lang="ts" setup>
+import {Head} from '@inertiajs/vue3'
 import {reactive, defineProps, ref, watch} from 'vue'
 import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import axios from 'axios'
 import DisplayedFields from '@/Components/DisplayedFields.vue'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
+import {useStore} from '/resources/js/store.js'
+import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
+const store = useStore()
 const chat_ids = ref([])
 const props = defineProps({
     errors: Object,
@@ -110,6 +117,8 @@ const props = defineProps({
     image: String,
     icon: String,
     specializations: Array,
+    templates: Array,
+    tiny_api: String,
 });
 const form = reactive({
     phone: props.employee.phone,
@@ -121,17 +130,12 @@ const form = reactive({
     secondname: props.employee.fullname.secondname,
     address: props.employee.address.address,
     experience_year: props.employee.experience_year,
-    meta: props.employee.meta,
-    breadcrumb: props.employee.breadcrumb,
-    awesome: props.employee.awesome,
+    displayed: func.displayedInfo(props.employee, props.image, props.icon),
     specializations: [...props.employee.specializations.map(item => item.id)],
-    image: null,
-    icon: null,
     _method: 'put',
-    clear_image: false,
-    clear_icon: false,
     close: null,
 })
+console.log(props.employee.specializations, form.specializations)
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)
 watch(
@@ -171,24 +175,11 @@ function handleYear(val) {
     form.experience_year = func.MaskInteger(val);
 }
 
-function onSelectImage(val) {
-    form.clear_image = val.clear_file;
-    form.image = val.file
-}
-
-function onSelectIcon(val) {
-    form.clear_icon = val.clear_file;
-    form.icon = val.file
-}
 </script>
 <script lang="ts">
-import {Head} from '@inertiajs/vue3'
 import Layout from '@/Components/Layout.vue'
 
 export default {
-    components: {
-        Head,
-    },
     layout: Layout,
 }
 </script>
