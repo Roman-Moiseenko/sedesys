@@ -15,9 +15,13 @@ class Web extends AbstractSetting
     public bool $auth = false;
     public bool $auth_phone = false;
     public string $menu_icon = 'none'; //icon, awesome
+    public bool $use_cache = false; //Кеш для страниц
+    public array $use_caches = []; //Кеш для страниц
+    //TODO сделать отдельно для каждого типа
+
+
     public int $default_breadcrumb_image = 0;
 
-    //TODO Переименовать
     public array $employees_meta = self::META;
     public array $employees_breadcrumb = self::BREADCRUMB;
     public array $services_meta = self::META;

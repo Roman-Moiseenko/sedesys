@@ -2,6 +2,8 @@
 
 namespace App\Modules\Setting\Repository;
 
+use App\Modules\Base\Entity\DisplayedModel;
+use App\Modules\Setting\Entity\Discount;
 use App\Modules\Setting\Entity\Mail;
 use App\Modules\Setting\Entity\Notification;
 use App\Modules\Setting\Entity\Office;
@@ -48,7 +50,7 @@ class SettingRepository
         return new Web($setting->getData());
     }
 
-    public function getNotification()
+    public function getNotification(): Notification
     {
         $notification = Setting::where('slug', 'notification')->first();
         return new Notification($notification->getData());
@@ -60,9 +62,27 @@ class SettingRepository
         return new Mail($setting->getData());
     }
 
-    public function getSchedule()
+    public function getSchedule(): Schedule
     {
         $setting = Setting::where('slug', 'schedule')->first();
         return new Schedule($setting->getData());
+    }
+
+    public function getDiscount(): Discount
+    {
+        $setting = Setting::where('slug', 'discount')->first();
+        return new Discount($setting->getData());
+    }
+
+    public function displayedModels(): array
+    {
+        $models = [];
+        foreach (DisplayedModel::LIST_MODELS as $key => $value) {
+            $models[] = [
+                'value' => strtolower(class_basename($key)),
+                'label' => $value,
+            ];
+        }
+        return $models;
     }
 }

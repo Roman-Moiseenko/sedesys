@@ -65,13 +65,8 @@
     import {Head, router} from '@inertiajs/vue3'
     import {reactive, ref, watch} from 'vue'
     import {func} from "/resources/js/func.js"
-    import {UploadFile} from "element-plus";
-    import DisplayedFields from '@/Components/DisplayedFields.vue'
-    import UploadImageFile from '@/Components/UploadImageFile.vue'
-    import {useStore} from '/resources/js/store.js'
     import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
-    const store = useStore();
     const props = defineProps({
         errors: Object,
         route: String,
@@ -85,23 +80,13 @@
     });
 
     const form = reactive({
-        name: null,
         classification_id: null,
-        slug: null,
         displayed: func.displayedInfo(null),
-        image: null,
-        icon: null,
         price: null,
         duration: null,
-        template: null,
-        text: null,
         data: null,
-
     })
 
-    function handleMaskSlug(val) {
-        form.slug = func.MaskSlug(val);
-    }
     function handleMaskPrice(val) {
         form.price = func.MaskInteger(val);
     }
@@ -111,12 +96,7 @@
     function onSubmit() {
         router.post(props.route, form)
     }
-    function onSelectImage(val) {
-        form.image = val.file
-    }
-    function onSelectIcon(val) {
-        form.icon = val.file
-    }
+
     ///Блок сохранения и обновления=>
     const isUnSave = ref(false)
     watch(

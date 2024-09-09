@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="mt-4">
-        @foreach($promotion->item as $item)
+        @foreach($promotion->items as $item)
             <div>
                 {{ $item->name }}
             </div>

@@ -8,6 +8,11 @@ return [
         'can' => '',
         'submenu' => [
             [
+                'icon' => 'Coin',
+                'title' => 'Скидки',
+                'route' => route('admin.setting.discount', [], false),
+            ],
+            [
                 'icon' => 'OfficeBuilding',
                 'title' => 'Организация',
                 'route' => route('admin.setting.organization', [], false),

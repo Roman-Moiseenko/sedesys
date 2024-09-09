@@ -28,7 +28,7 @@ class ServiceController extends Controller
 
     public function index()
     {
-        return Cache::rememberForever('services', function () {
+        $callback = function () {
             $services = $this->repository->getServices();
             $meta = new Meta(params: $this->web->services_meta);
             $breadcrumb = $this->repository->selectBreadcrumb(
@@ -36,7 +36,13 @@ class ServiceController extends Controller
                 $meta->h1,
             );
             return view('web.service.index', compact('services', 'meta', 'breadcrumb'))->render();
-        });
+        };
+
+        if (in_array('service', $this->web->use_caches)) {
+            return Cache::rememberForever('services', $callback);
+        } else {
+            return $callback();
+        }
     }
 
     public function view($slug)
@@ -45,9 +51,16 @@ class ServiceController extends Controller
         $service = Service::where('slug', $slug)->first();
         if (is_null($service)) return abort(404);
 
-        return Cache::rememberForever('service-' . $service->id, function () use ($service) {
+        $callback = function () use ($service) {
             return $service->view();
-        });
+        };
+
+        if (in_array('service', $this->web->use_caches)) {
+            return Cache::rememberForever('service-' . $service->id, $callback);
+        } else {
+            return $callback();
+        }
+
     }
 
 }

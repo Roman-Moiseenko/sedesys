@@ -25,7 +25,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        return Cache::rememberForever('employees', function () {
+        $callback = function () {
             $employees = $this->repository->getEmployees();
             $meta = new Meta(params: $this->web->employees_meta);
             $breadcrumb = $this->repository->selectBreadcrumb(
@@ -33,17 +33,27 @@ class EmployeeController extends Controller
                 $meta->h1,
             );
             return view('web.employee.index', compact('employees', 'meta', 'breadcrumb'))->render();
-        });
+        };
 
-
+        if (in_array('employee', $this->web->use_caches)) {
+            return Cache::rememberForever('employees', $callback);
+        } else {
+            return $callback();
+        }
     }
 
     public function view($slug)
     {
         if (is_null($employee = Employee::where('slug', $slug)->first())) abort(404);
 
-        return Cache::rememberForever('employee-' . $employee->id, function () use ($employee) {
+        $callback = function () use ($employee) {
             return $employee->view();
-        });
+        };
+
+        if (in_array('employee', $this->web->use_caches)) {
+            return Cache::rememberForever('employee-' . $employee->id, $callback);
+        } else {
+            return $callback();
+        }
     }
 }

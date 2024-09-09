@@ -26,7 +26,7 @@ class SpecializationController extends Controller
 
     public function index()
     {
-        return Cache::rememberForever('specializations', function () {
+        $callback = function () {
             $specializations = $this->repository->getSpecializations();
             $meta = new Meta(params: $this->web->employees_meta);
             $breadcrumb = $this->repository->selectBreadcrumb(
@@ -35,7 +35,13 @@ class SpecializationController extends Controller
             );
 
             return view('web.specialization.index', compact('specializations', 'meta', 'breadcrumb'))->render();
-        });
+        };
+
+        if (in_array('specialization', $this->web->use_caches)) {
+            return Cache::rememberForever('specializations', $callback);
+        } else {
+            return $callback();
+        }
     }
 
     public function view($slug)
@@ -43,8 +49,15 @@ class SpecializationController extends Controller
         $specialization = Specialization::where('slug', $slug)->first();
         if (is_null($specialization)) return abort(404);
 
-        return Cache::rememberForever('specialization-' . $specialization->id, function () use ($specialization) {
+        $callback = function () use ($specialization) {
             return $specialization->view();
-        });
+        };
+
+        if (in_array('specialization', $this->web->use_caches)) {
+            return Cache::rememberForever('specialization-' . $specialization->id, $callback);
+        } else {
+            return $callback();
+        }
+
     }
 }

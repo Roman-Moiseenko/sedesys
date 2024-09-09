@@ -26,26 +26,39 @@ class WebController extends Controller
     public function home()
     {
         if (!is_null($page = Page::where('slug', 'home')->active()->first())) {
-            return Cache::rememberForever('page-' . $page->id, function () use ($page) {
+            $callback = function () use ($page) {
                 return $page->view();
-            });
+            };
         } else {
-            return Cache::rememberForever('home', function () {
+            $callback = function () {
                 return view('web.home')->render();
-            });
+            };
+        }
+        if (in_array('page', $this->web->use_caches)) {
+            return Cache::rememberForever('home' . $page->id, $callback);
+        } else {
+            return $callback();
         }
     }
 
     public function page(string $slug)
     {
         if (!is_null($page = Page::where('slug', $slug)->active()->first())) {
-            return Cache::rememberForever('page-' . $page->id, function () use ($page) {
+            $callback = function () use ($page) {
                 return $page->view();
-            });
+            };
+
+            if (in_array('page', $this->web->use_caches)) {
+                return Cache::rememberForever('page-' . $page->id, $callback);
+            } else {
+                return $callback();
+            }
+
         } else {
             abort(404, 'Страница не найдена');
         }
     }
+
     public function test()
     {
         return view('web.test');

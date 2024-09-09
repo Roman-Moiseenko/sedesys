@@ -10,5 +10,6 @@ Route::get('/setting/web', 'SettingController@web')->name('setting.web');
 Route::get('/setting/notification', 'SettingController@notification')->name('setting.notification');
 Route::get('/setting/mail', 'SettingController@mail')->name('setting.mail');
 Route::get('/setting/schedule', 'SettingController@schedule')->name('setting.schedule');
+Route::get('/setting/discount', 'SettingController@discount')->name('setting.discount');
 
 Route::put('/setting', 'SettingController@update')->name('setting.update');

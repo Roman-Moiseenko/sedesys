@@ -37,10 +37,14 @@
                                         <el-radio-button label="SVG иконка" value="awesome" />
                                     </el-radio-group>
                                 </el-form-item>
-
+                                <el-form-item label="Кешируемые страницы">
+                                    <el-checkbox-group v-model="form.use_caches" class="flex flex-col">
+                                        <el-checkbox v-for="item in models" :key="item.value" :value="item.value" :label="item.label" />
+                                    </el-checkbox-group>
+                                </el-form-item>
                             </div>
                             <div class="p-4">
-                                <DisplayedFields
+                                <DisplayedDefault
                                     label="По умолчанию"
                                     :errors="errors"
                                     v-model:meta="form.default_meta"
@@ -63,7 +67,7 @@
                         <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
 
                             <div class="p-4">
-                                <DisplayedFields
+                                <DisplayedDefault
                                     label="Специализация / Персонал"
                                     :errors="errors"
                                     v-model:meta="form.employees_meta"
@@ -72,7 +76,7 @@
                                 />
                             </div>
                             <div class="p-4">
-                                <DisplayedFields
+                                <DisplayedDefault
                                     label="Классификация / Услуги"
                                     :errors="errors"
                                     v-model:meta="form.services_meta"
@@ -102,7 +106,7 @@
 import {reactive} from 'vue'
 import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
-import DisplayedFields from '@/Components/DisplayedFields.vue'
+import DisplayedDefault from '@/Components/Displayed/Default.vue'
 
 const props = defineProps({
     errors: Object,
@@ -111,7 +115,8 @@ const props = defineProps({
     title: {
         type: String,
         default: 'Настройки сайта',
-    }
+    },
+    models: Array,
 });
 
 const form = reactive({
@@ -121,6 +126,7 @@ const form = reactive({
     auth: props.web.auth,
     auth_phone: props.web.auth_phone,
     menu_icon: props.web.menu_icon,
+    use_caches: props.web.use_caches,
 
     default_meta: props.web.default_meta,
     default_breadcrumb: props.web.default_breadcrumb,
@@ -133,6 +139,7 @@ const form = reactive({
     services_meta: props.web.services_meta,
     services_breadcrumb: props.web.services_breadcrumb,
     services_awesome: props.web.services_awesome,
+
 
 
     /**

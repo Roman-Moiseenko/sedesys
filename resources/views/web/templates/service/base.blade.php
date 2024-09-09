@@ -46,7 +46,7 @@
         @if($service->gallery()->count() > 0)
             <div class="d-flex">
                 @foreach($service->gallery as $image)
-                    <img src="{{ $image->getThumb('card') }}" class="mx-1 rounded-2">
+                    <img src="{{ $image->getThumbUrl('card') }}" class="mx-1 rounded-2">
                 @endforeach
             </div>
         @endif

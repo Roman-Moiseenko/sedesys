@@ -25,7 +25,7 @@ class PromotionController extends Controller
 
     public function index()
     {
-        return Cache::rememberForever('promotions', function () {
+        $callback =function () {
             $promotions = $this->repository->getPromotions();
             $meta = new Meta(params: $this->web->services_meta);
             $breadcrumb = $this->repository->selectBreadcrumb(
@@ -33,15 +33,28 @@ class PromotionController extends Controller
                 $meta->h1,
             );
             return view('web.promotion.index', compact('promotions', 'meta', 'breadcrumb'))->render();
-        });
+        };
+
+        if (in_array('promotion', $this->web->use_caches)) {
+            return Cache::rememberForever('promotions', $callback);
+        } else {
+            return $callback();
+        }
     }
 
     public function view($slug)
     {
-        $promotion = Promotion::where('slug', $slug)->first();
+        $promotion = Promotion::where('slug', $slug)->active()->first();
         if (is_null($promotion)) return abort(404);
-        return Cache::rememberForever('promotion-' . $promotion->id, function () use ($promotion) {
+
+        $callback = function () use ($promotion) {
             return $promotion->view();
-        });
+        };
+
+        if (in_array('promotion', $this->web->use_caches)) {
+            return Cache::rememberForever('promotion-' . $promotion->id, $callback);
+        } else {
+            return $callback();
+        }
     }
 }

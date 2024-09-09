@@ -14,8 +14,8 @@ return [
             ],
             [
                 'icon' => 'Scissor',
-                'title' => '*Купоны',
-                'route' =>  route('admin.calendar.calendar.index', [], false),
+                'title' => 'Купоны',
+                'route' =>  route('admin.discount.coupon.index', [], false),
             ],
         ],
     ],

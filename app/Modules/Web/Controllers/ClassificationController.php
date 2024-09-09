@@ -25,7 +25,7 @@ class ClassificationController extends Controller
 
     public function index()
     {
-        return Cache::rememberForever('classifications', function () {
+        $callback = function () {
             $classifications = $this->repository->getRootClassifications();
             $meta = new Meta(params: $this->web->services_meta);
             $breadcrumb = $this->repository->selectBreadcrumb(
@@ -33,7 +33,13 @@ class ClassificationController extends Controller
                 $meta->h1,
             );
             return view('web.classification.index', compact('classifications', 'meta', 'breadcrumb'))->render();
-        });
+        };
+
+        if (in_array('classification', $this->web->use_caches)) {
+            return Cache::rememberForever('classifications', $callback);
+        } else {
+            return $callback();
+        }
     }
 
     public function view($slug)
@@ -42,7 +48,7 @@ class ClassificationController extends Controller
         $classification = Classification::where('slug', $slug)->first();
         if (is_null($classification)) return abort(404);
 
-        return Cache::rememberForever('classification-' . $classification->id, function () use ($classification) {
+        $callback = function () use ($classification) {
             if (count($classification->children) > 0)
                 return $classification->view();
 
@@ -50,6 +56,12 @@ class ClassificationController extends Controller
             $breadcrumb = $this->repository->getBreadcrumbModel($classification);
             $services = $classification->services;
             return view('web.service.index', compact('services', 'meta', 'breadcrumb'))->render();
-        });
+        };
+
+        if (in_array('classification', $this->web->use_caches)) {
+            return Cache::rememberForever('classification-' . $classification->id, $callback);
+        } else {
+            return $callback();
+        }
     }
 }

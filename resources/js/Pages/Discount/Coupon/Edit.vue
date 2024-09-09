@@ -1,6 +1,6 @@
 <template>
-    <Head><title>{{ $props.title }}</title></Head>
-    <h1 class="font-medium text-xl">Добавить новый dummyVariableEntitySingular</h1>
+    <Head><title>{{ title }}</title></Head>
+    <h1 class="font-medium text-xl">Редактировать {{ coupon.name }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto">
             <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
@@ -17,7 +17,9 @@
                 <div class="p-4">
                 </div>
             </div>
-            <el-button type="primary" @click="onSubmit" :disabled="!isUnSave">Сохранить</el-button>
+
+            <el-button type="primary" plain @click="onSubmit(false)" :disabled="!isUnSave">Сохранить</el-button>
+            <el-button type="primary" @click="onSubmit(true)" :disabled="!isUnSave">Сохранить и Закрыть</el-button>
             <div v-if="isUnSave" class="text-red-700">Были внесены изменения, данные не сохранены</div>
         </el-form>
     </div>
@@ -25,25 +27,28 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive, ref, watch, defineProps} from 'vue'
-    import {router} from "@inertiajs/vue3";
+    import {Head, router} from '@inertiajs/vue3'
+    import {reactive, defineProps, watch, ref} from 'vue'
     import {func} from "/resources/js/func.js"
 
     const props = defineProps({
         errors: Object,
         route: String,
+        coupon: Object,
         title: {
             type: String,
-            default: 'Создание dummyVariableEntitySingular',
+            default: 'Редактирование coupon',
         },
     });
 
     const form = reactive({
-        name: null,
+        ...props.coupon,
+        //name: props.coupon.name,
         /**
          * Добавить новые поля
          */
+        _method: 'put',
+        close: null,
     })
 
     function handleMaskName(val)
@@ -54,18 +59,28 @@
          */
     }
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
     ///Блок сохранения и обновления=>
     const isUnSave = ref(false)
     watch(
-        () => ({...form}),
+        () => ({ ...form }),
         function (newValue, oldValue) {
             isUnSave.value = true
         },
         {deep: true}
     );
+    function onSubmit(val) {
+        form.close = val
+        router.visit(props.route, {
+            method: 'post',
+            data: form,
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: page => {
+                isUnSave.value = false
+            }
+        });
+    }
+    ////<=
 </script>
 <script lang="ts">
     import Layout from '@/Components/Layout.vue'

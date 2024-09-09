@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('inbox:load')->hourly();
         //Запуск и остановка акций
         $schedule->command('promotion:auto')->daily();
+        //Блокирование не использованных купонов
+        $schedule->command('coupon:expired')->daily();
 
         //Верификация клиентов, удаление токена??
     }

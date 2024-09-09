@@ -18,5 +18,6 @@ Route::group([
         Route::post('/{promotion}/set', 'PromotionController@set')->name('set');
     });
     Route::Resource('promotion', 'PromotionController');
+    Route::Resource('coupon', 'CouponController')->except(['edit', 'update']);
 });
 

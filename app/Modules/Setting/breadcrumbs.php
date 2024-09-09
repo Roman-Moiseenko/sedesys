@@ -38,3 +38,8 @@ Breadcrumbs::for('admin.setting.schedule', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.setting.index');
     $trail->push('Расписание', route('admin.setting.schedule'));
 });
+
+Breadcrumbs::for('admin.setting.discount', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.setting.index');
+    $trail->push('Скидки', route('admin.setting.discount'));
+});

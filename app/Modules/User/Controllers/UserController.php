@@ -92,4 +92,26 @@ class UserController extends Controller
         $user->verify();
         return redirect()->back()->with('success', 'Пользователь верифицирован');
     }
+
+
+    //Axios
+
+    public function find_phone(Request $request)
+    {
+        try {
+            $phone = $request->integer('phone');
+            $users = User::where('phone', 'LIKE', "%$phone%")->get()->map(function (User $user) {
+                return [
+                    'value' => $user->id,
+                    'label' => $user->phone,
+                ];
+            })->toArray();
+            return response()->json($users);
+
+        } catch (\Throwable $e) {
+            return response()->json([$e->getMessage()]);
+        }
+
+
+    }
 }

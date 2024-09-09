@@ -98,8 +98,6 @@ import {reactive, defineProps, ref, watch} from 'vue'
 import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import axios from 'axios'
-import DisplayedFields from '@/Components/DisplayedFields.vue'
-import UploadImageFile from '@/Components/UploadImageFile.vue'
 import {useStore} from '/resources/js/store.js'
 import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 

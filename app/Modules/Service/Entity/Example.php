@@ -98,6 +98,7 @@ class Example extends Model
         /** @var Photo[] $images */
         $images = $this->gallery()->getModels();
         $count = count($images);
+        if ($count == 0) return '';
         $pos = $sort - 1;
         if ( ($count - 1) < $pos ) $pos = $count - 1;
         return $images[$pos]->getThumbUrl($thumb);
