@@ -100,9 +100,6 @@ import { func } from '@/func.js'
 const store = useStore();
 
 interface IRow {
-    /**
-     * Статусы
-     */
     active: number
 }
 
@@ -112,6 +109,7 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     }
     return ''
 }
+
 </script>
 
 <script lang="ts">

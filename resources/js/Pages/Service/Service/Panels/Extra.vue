@@ -10,6 +10,7 @@
             <el-table #default="mainscope"
                       :data="extras"
                       style="width: 100%; cursor: pointer;"
+                      :row-class-name="tableRowClassName"
                       @row-click="router.get(mainscope.row.url)"
             >
                 <el-table-column label="Иконка" width="120">
@@ -20,7 +21,11 @@
                 <el-table-column label="Название" prop="name"/>
                 <el-table-column label="Цена" prop="price" width="120"/>
                 <el-table-column label="Длительность" prop="duration" width="120"/>
-                <el-table-column label="Стоимость" prop="cost" width="120"/>
+                <el-table-column label="Видимость" width="120">
+                    <template #default="scope">
+                        <Active :active="scope.row.active" />
+                    </template>
+                </el-table-column>
                 <el-table-column label="Описание" prop="description" show-overflow-tooltip/>
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
@@ -140,7 +145,18 @@ import {func} from '/resources/js/func.js'
 import {router} from "@inertiajs/vue3";
 import DialogDeleteEntity from '@/Components/DialogDeleteEntity.vue'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
+import Active from '/resources/js/Components/Elements/Active.vue'
 
+interface IRow {
+    active: number
+}
+
+const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
+    if (row.active === 0) {
+        return 'warning-row'
+    }
+    return ''
+}
 
 const dialogDelete = ref(false)
 const dialogExtra = ref(false)
@@ -245,3 +261,12 @@ function handleDown(row) {
 }
 
 </script>
+<style>
+.el-table tr.warning-row {
+    --el-table-tr-bg-color: var(--el-color-warning-light-7);
+}
+
+.el-table .success-row {
+    --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+</style>

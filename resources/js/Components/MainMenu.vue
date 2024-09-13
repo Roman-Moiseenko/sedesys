@@ -40,11 +40,10 @@
 
 <script>
 import { Link } from '@inertiajs/vue3'
-import Icon from '@/Components/Icon.vue'
+
 
 export default {
     components: {
-        Icon,
         Link,
     },
     props: {

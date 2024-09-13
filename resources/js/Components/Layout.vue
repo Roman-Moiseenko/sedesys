@@ -34,7 +34,8 @@
                                         <span>{{ auth.user.first_name }}</span>
                                         <span class="hidden md:inline">&nbsp;{{ auth.user.last_name }}</span>
                                     </div>
-                                    <icon class="w-5 h-5 fill-gray-50 group-hover:fill-white focus:fill-indigo-600" name="cheveron-down" />
+                                    <el-icon><ArrowDown /></el-icon>
+
                                 </div>
                             </template>
                             <template #dropdown>
@@ -61,7 +62,6 @@
 
 <script>
 import { Link } from '@inertiajs/vue3'
-import Icon from '@/Components/Icon.vue'
 import Logo from '@/Components/Logo.vue'
 import Dropdown from '@/Components/Dropdown.vue'
 import MainMenu from '@/Components/MainMenu.vue'
@@ -74,7 +74,6 @@ export default {
         BreadCrumbs,
         Dropdown,
         FlashMessages,
-        Icon,
         Link,
         Logo,
         MainMenu
