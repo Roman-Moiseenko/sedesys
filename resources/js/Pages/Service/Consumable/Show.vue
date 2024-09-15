@@ -17,6 +17,8 @@
         </el-tabs>
         <div class="mt-3 flex flex-row">
             <el-button type="primary" @click="router.get(consumable.edit)">Редактировать</el-button>
+            <el-button v-if="!consumable.active" type="success" @click="handleToggle">В расчет услуг</el-button>
+            <el-button v-if="consumable.active" type="warning" @click="handleToggle">Убрать из расчета</el-button>
         </div>
     </div>
 
@@ -36,7 +38,9 @@
         },
         out_services: Array,
     });
-
+    function handleToggle() {
+        router.post(props.consumable.toggle);
+    }
 </script>
 <script lang="ts">
     import { router } from '@inertiajs/vue3'

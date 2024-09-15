@@ -100,7 +100,7 @@ const props = defineProps({
     extra_data: Array,
 });
 
-console.log(props.service.consumables)
+
 function handleToggle() {
     router.post(props.toggle);
 }

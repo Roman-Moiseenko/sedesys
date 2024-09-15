@@ -98,7 +98,7 @@ class ConsumableController extends Controller
     {
         if ($consumable->isActive()) {
             $consumable->draft();
-            $success = 'Расходный материал отправлена в черновик';
+            $success = 'Расходный материал отправлен в черновик';
         } else {
             $consumable->activated();
             $success = 'Расходный материал доступен для услуг';
