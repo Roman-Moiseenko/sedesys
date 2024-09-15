@@ -121,7 +121,7 @@ class MakeModuleCommand extends Command
         return $path;
     }
 
-    protected function createFileWithStub($stub, $path)
+    protected function createFileWithStub($stub, $path, bool $append = false)
     {
 
         $this->makeDirectory($path);
@@ -159,6 +159,6 @@ class MakeModuleCommand extends Command
             $stub
         );
 
-        $this->files->put($path, $content);
+        $this->files->put($path, $content,  $append ? FILE_APPEND : false);
     }
 }

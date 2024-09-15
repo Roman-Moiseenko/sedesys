@@ -5,6 +5,8 @@ namespace App\Modules\Base\Entity;
 
 use App\Modules\Base\Casts\BreadcrumbInfoCast;
 use App\Modules\Base\Casts\MetaCast;
+use App\Modules\Base\Traits\IconField;
+use App\Modules\Base\Traits\ImageField;
 use App\Modules\Discount\Entity\Promotion;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Employee\Entity\Specialization;
@@ -37,12 +39,11 @@ use Illuminate\Support\Str;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property Photo $image
- * @property Photo $icon
- *
  */
 abstract class DisplayedModel extends Model implements DisplayedData
 {
+    use ImageField, IconField;
+
     const LIST_MODELS = [
         Page::class => 'Страница', //create, edit, show, index
         Service::class => 'Услуга', //* * * * *
@@ -131,7 +132,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
         $this->active = true;
         $this->save();
     }
-
+/*
     protected function saveImage($file, bool $clear_current = false): void
     {
         if ($clear_current && (!is_null($this->image) || !is_null($this->image->file)))
@@ -149,7 +150,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
         if (empty($file)) return;
         $this->icon->newUploadFile($file, 'icon');
     }
-
+*/
     public function saveDisplayed(Request $request)
     {
         $this->name = $request->string('displayed.name')->trim()->value();
@@ -164,6 +165,9 @@ abstract class DisplayedModel extends Model implements DisplayedData
 
         $this->save();
 
+        /**
+         * Вынесено в Trait
+         */
         $this->saveImage(
             $request->file('displayed.image'),
             $request->boolean('displayed.clear_image')
@@ -196,7 +200,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
         if ($with_time) return $this->created_at->translatedFormat('j F Y H:i');
         return $this->created_at->translatedFormat('j F Y');
     }
-
+/*
     public function getImage(string $thumb = ''): ?string
     {
         if (is_null($this->image) || is_null($this->image->file)) return null;
@@ -210,7 +214,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
         if (empty($thumb)) return $this->icon->getUploadUrl();
         return $this->icon->getThumbUrl($thumb);
     }
-
+*/
     public function getAwesome(): string
     {
         if (empty($this->awesome)) return '';
@@ -226,7 +230,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
     /**
      * Отношения
      */
-
+/*
     public function image()
     {
         return $this->morphOne(Photo::class, 'imageable')->where('type','image')->withDefault();
@@ -236,7 +240,7 @@ abstract class DisplayedModel extends Model implements DisplayedData
     {
         return $this->morphOne(Photo::class, 'imageable')->where('type', 'icon')->withDefault();
     }
-
+*/
     public function view(): string
     {
         $this->text = Widget::renderFromText($this->text); //Рендерим виджеты в тексте

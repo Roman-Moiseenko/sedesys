@@ -5,7 +5,7 @@ return [
         'sort' => 1,
         'icon' => 'office',
         'title' => '',
-        'route' => 'dummyVariablePlural.index',
+        'route' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.index', [], false),
         'can' => '',
     ],
 ];

@@ -9,6 +9,7 @@
         <div class="mb-5">
             <el-table :data="employees"
                       style="width: 100%;"
+
             >
                 <el-table-column label="Персонал" width="250">
                     <template #default="scope">
@@ -55,7 +56,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="Дополнительная наценка" class="mb-3">
-                    <el-input v-model="formEmployee.extra_cost" @input="handleExtraCost" placeholder=""
+                    <el-input v-model="formEmployee.extra_cost" :formatter="(value) => func.MaskInteger(value)" placeholder=""
                               class="mb-3">
                         <template #append>₽</template>
                     </el-input>
@@ -97,9 +98,6 @@ function detachEmployee(val) {
     router.post(props.detach, {employee_id: val})
 }
 
-function handleExtraCost(val) {
-    formEmployee.extra_cost = func.MaskInteger(val);
-}
 
 </script>
 

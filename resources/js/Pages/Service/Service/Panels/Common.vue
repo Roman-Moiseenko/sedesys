@@ -13,7 +13,7 @@
                         {{ service.classification.name }}
                     </el-descriptions-item>
 
-                    <el-descriptions-item label="Цена">{{ service.price }} ₽</el-descriptions-item>
+                    <el-descriptions-item label="Цена">{{ func.price(service.price) }}</el-descriptions-item>
                     <el-descriptions-item label="Длительность">{{ service.duration }} мин</el-descriptions-item>
                     <el-descriptions-item label="Данные">{{ service.data }}</el-descriptions-item>
 

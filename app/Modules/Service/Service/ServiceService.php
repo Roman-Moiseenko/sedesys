@@ -5,6 +5,7 @@ namespace App\Modules\Service\Service;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Service\Entity\Consumable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -60,24 +61,33 @@ class ServiceService
 
     public function addPhoto(Service $service, Request $request)
     {
-        if (empty($file = $request->file('file'))) throw new \DomainException('Нет файла');
+        $service->addImage($request->file('file'));
+      /*  if (empty($file = $request->file('file'))) throw new \DomainException('Нет файла');
 
         $sort = count($service->gallery);
-        $service->gallery()->save(Photo::upload($file, 'gallery', $sort));
+        $service->gallery()->save(Photo::upload($file, 'gallery', $sort));*/
     }
 
     public function delPhoto(Service $service, Request $request)
     {
-        $photo = Photo::find($request->integer('photo_id'));
+        $service->delImage($request->integer('photo_id'));
+       /* $photo = Photo::find($request->integer('photo_id'));
         $photo->delete();
         foreach ($service->gallery as $i => $photo) {
             $photo->update(['sort' => $i]);
-        }
+        }*/
     }
 
     public function setAlt(Service $service, Request $request)
     {
-        $id = $request->integer('photo_id');
+        $service->setAlt(
+            photo_id: $request->integer('photo_id'),
+            alt: $request->string('alt')->trim()->value(),
+            title: $request->string('title')->trim()->value(),
+            description: $request->string('description')->trim()->value(),
+        );
+
+        /*$id = $request->integer('photo_id');
         foreach ($service->gallery as $photo) {
             if ($photo->id === $id) {
                 $photo->update([
@@ -86,7 +96,7 @@ class ServiceService
                     'description' => $request->string('description')->trim()->value(),
                 ]);
             }
-        }
+        }*/
     }
 
     public function attach_employee(Service $service, Request $request)
@@ -104,5 +114,20 @@ class ServiceService
         $employee = Employee::find($request->integer('employee_id'));
         $service->employees()->detach($employee->id);
         return $employee;
+    }
+
+    public function attach_consumable(Service $service, Request $request)
+    {
+        $consumable = Consumable::find($request->integer('consumable_id'));
+        $count = $request->integer('count');
+        $service->consumables()->attach($consumable->id, ['count' => $count]);
+        return $consumable;
+    }
+
+    public function detach_consumable(Service $service, Request $request)
+    {
+        $consumable = Consumable::find($request->integer('consumable_id'));
+        $service->consumables()->detach($consumable->id);
+        return $consumable;
     }
 }

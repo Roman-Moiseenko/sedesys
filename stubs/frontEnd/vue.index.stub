@@ -67,11 +67,11 @@
 
 <script lang="ts" setup>
     import { useStore } from "/resources/js/store.js"
-    import { Head, Link } from '@inertiajs/vue3'
+    import { Head, Link, router } from '@inertiajs/vue3'
     import Pagination from '@/Components/Pagination.vue'
     import ru from 'element-plus/dist/locale/ru.mjs'
     import TableFilter from '@/Components/TableFilter.vue'
-
+    import {func} from "/resources/js/func.js"
     const store = useStore();
 
     interface IRow {
@@ -89,12 +89,9 @@
 </script>
 
 <script lang="ts">
-import Layout from '@/Components/Layout.vue'
 import { router } from '@inertiajs/vue3'
 
 export default {
-
-    layout: Layout,
     props: {
         dummyVariableEntityPlural: Object,
         title: {

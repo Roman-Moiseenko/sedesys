@@ -10,6 +10,7 @@ use Kalnoy\Nestedset\NodeTrait;
 /**
  * @property int $parent_id
  * @property int $sort
+ * @property bool $show
  */
 
 class Page extends DisplayedModel
@@ -18,11 +19,17 @@ class Page extends DisplayedModel
 
     protected $attributes = [
         'parent_id' => null,
+        'show' => true,
     ];
 
     protected $fillable = [
         'parent_id',
     ];
+
+    public function isShow(): bool
+    {
+        return $this->show == true;
+    }
 
     public function getCacheKeys(): array
     {

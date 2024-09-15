@@ -147,6 +147,8 @@ const form = reactive({
      */
 })
 
+console.log(form)
+
 function onSubmit() {
     router.put(props.route, form)
 }

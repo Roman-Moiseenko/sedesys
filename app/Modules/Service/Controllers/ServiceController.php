@@ -7,6 +7,7 @@ use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
 use App\Modules\Service\Repository\ClassificationRepository;
+use App\Modules\Service\Repository\ConsumableRepository;
 use App\Modules\Service\Repository\ExampleRepository;
 use App\Modules\Service\Requests\ServiceRequest;
 use App\Modules\Service\Repository\ServiceRepository;
@@ -23,6 +24,7 @@ class ServiceController extends Controller
     private string $tiny_api;
     private ExampleRepository $exampleRepository;
     private TemplateRepository $templates;
+    private ConsumableRepository $consumables;
 
     public function __construct(
         ServiceService           $service,
@@ -30,6 +32,7 @@ class ServiceController extends Controller
         ClassificationRepository $classifications,
         ExampleRepository        $exampleRepository,
         TemplateRepository       $templates,
+        ConsumableRepository     $consumables,
     )
     {
         $this->service = $service;
@@ -38,6 +41,7 @@ class ServiceController extends Controller
         $this->tiny_api = config('sedesys.tinymce');
         $this->exampleRepository = $exampleRepository;
         $this->templates = $templates;
+        $this->consumables = $consumables;
     }
 
 
@@ -108,6 +112,12 @@ class ServiceController extends Controller
                     'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
                     'examples' => $this->exampleRepository->getShowByService($service),
 
+                ],
+                'consumable_data' => [
+                    'attach' => route('admin.service.service.attach-consumable', $service),
+                    'detach' => route('admin.service.service.detach-consumable', $service),
+                    'out_consumables' => $this->repository->outConsumables($service),
+                    'consumables' => $this->consumables->getShowByService($service),
                 ],
                 'reviews' => $reviews,
                 'extra_data' => [
@@ -196,4 +206,17 @@ class ServiceController extends Controller
         $employee = $this->service->detach_employee($service, $request);
         return redirect()->back()->with('success', $employee->fullname->getShortName() . ' больше не оказывает услугу!');
     }
+
+    public function attach_consumable(Request $request, Service $service)
+    {
+        $consumable = $this->service->attach_consumable($service, $request);
+        return redirect()->back()->with('success', $consumable->name . ' добавлен к услуге.');
+    }
+
+    public function detach_consumable(Request $request, Service $service)
+    {
+        $consumable = $this->service->detach_consumable($service, $request);
+        return redirect()->back()->with('success', $consumable->name . ' убран из услуги!');
+    }
+
 }

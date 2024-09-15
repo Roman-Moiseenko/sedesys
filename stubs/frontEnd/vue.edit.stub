@@ -7,7 +7,7 @@
                 <div class="p-4">
                     <!-- Повторить поля -->
                     <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Название" @input="handleMaskName"/>
+                        <el-input v-model="form.name" placeholder="Название" :formatter="(value) => func.MaskLogin(value)"/>
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
 
@@ -82,10 +82,4 @@
     }
     ////<=
 </script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
-</script>

@@ -16,6 +16,7 @@ return new class extends Migration
             DisplayedModel::columns($table);
             $table->string('template')->default('text');
             $table->longText('text');
+            $table->boolean('show')->default(true);
             NestedSet::columns($table);
 
         });

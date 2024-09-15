@@ -3,6 +3,7 @@
 namespace App\Modules\Service\Entity;
 
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Base\Traits\GalleryField;
 use App\Modules\Employee\Entity\Employee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,13 +20,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $date
- * @property Photo[] $gallery
  * @property Service $service
  * @property Employee[] $employees
  */
 class Example extends Model
 {
-    use HasFactory;
+    use HasFactory, GalleryField;
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -70,10 +70,7 @@ class Example extends Model
     /**
      * Гетеры
      */
-    public function getField(): mixed
-    {
-        return $this->field;
-    }
+
 
     /**
      * Отношения
@@ -87,7 +84,7 @@ class Example extends Model
     {
         return $this->belongsToMany(Employee::class, 'employees_examples', 'example_id', 'employee_id');
     }
-
+/*
     public function gallery()
     {
         return $this->morphMany(Photo::class, 'imageable');
@@ -95,7 +92,7 @@ class Example extends Model
 
     public function getImage(int $sort, string $thumb = 'card'): string
     {
-        /** @var Photo[] $images */
+
         $images = $this->gallery()->getModels();
         $count = count($images);
         if ($count == 0) return '';
@@ -103,7 +100,7 @@ class Example extends Model
         if ( ($count - 1) < $pos ) $pos = $count - 1;
         return $images[$pos]->getThumbUrl($thumb);
     }
-
+*/
     /**
      * Хелперы и Интерфейсы
      */

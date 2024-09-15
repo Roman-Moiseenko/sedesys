@@ -7,9 +7,9 @@
                     </span>
         </template>
         <div class="mb-5">
-            <el-table #default="mainscope" :data="examples"
+            <el-table :data="examples"
                       style="width: 100%; cursor: pointer;"
-                      @row-click="router.get(mainscope.row.url)"
+                      @row-click="rowClick"
             >
                 <el-table-column label="Дата" prop="date"  width="120" />
                 <el-table-column label="Заголовок" prop="title" width="250"/>
@@ -62,7 +62,9 @@ const props = defineProps({
     examples: Array,
     new_example: String,
 })
-
+function rowClick(row) {
+    router.get(row.url)
+}
 
 </script>
 

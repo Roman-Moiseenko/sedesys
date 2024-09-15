@@ -23,7 +23,12 @@
                 :out_employees="employee_data.out_employees"
             />
             <!-- Панель Расходники -->
-            <ConsumablesPanel />
+            <ConsumablesPanel
+                :attach="consumable_data.attach"
+                :detach="consumable_data.detach"
+                :consumables="service.consumables"
+                :out_consumables="consumable_data.out_consumables"
+            />
             <!-- Панель Примеры работ -->
             <ExamplesPanel
                 :examples="example_data.examples"
@@ -61,9 +66,7 @@ import {Head} from '@inertiajs/vue3'
 import {router} from "@inertiajs/vue3";
 import {func} from '@/func.js'
 
-
 ///Панели
-
 import GalleryPanel from './Panels/Gallery.vue'
 import EmployeePanel from './Panels/Employee.vue'
 import ConsumablesPanel from './Panels/Consumables.vue'
@@ -91,12 +94,13 @@ const props = defineProps({
     class_name: String,
 
     example_data: Array,
+    consumable_data: Array,
 
     reviews: Array,
     extra_data: Array,
 });
 
-
+console.log(props.service.consumables)
 function handleToggle() {
     router.post(props.toggle);
 }

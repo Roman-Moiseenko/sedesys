@@ -6,6 +6,7 @@ use App\Modules\Base\Casts\MetaCast;
 use App\Modules\Base\Entity\DisplayedModel;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Base\Traits\GalleryField;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Entity\WidgetData;
@@ -23,15 +24,15 @@ use Illuminate\Support\Str;
  * @property string $data // json данных, можно использовать в шаблоне
  *
  * @property Classification $classification
- * @property Photo[] $gallery //Галерея изображений
  * @property Employee[] $employees
  * @property Example[] $examples
  * @property Review[] $reviews
  * @property Extra[] $extras
+ * @property Consumable[] $consumables
  */
 class Service extends DisplayedModel implements WidgetData
 {
-    use HasFactory;
+    use HasFactory, GalleryField;
 
     protected $attributes = [
         'data' => '{}',
@@ -83,10 +84,16 @@ class Service extends DisplayedModel implements WidgetData
     {
         return $this->belongsTo(Classification::class, 'classification_id', 'id');
     }
-
+/*
     public function gallery()
     {
         return $this->morphMany(Photo::class, 'imageable')->where('type','gallery');
+    }
+*/
+    public function consumables()
+    {
+        return $this->belongsToMany(Consumable::class, 'services_consumables', 'service_id', 'consumable_id')
+            ->withPivot('count');
     }
 
     //Interface

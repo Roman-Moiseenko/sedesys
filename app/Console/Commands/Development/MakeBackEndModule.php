@@ -89,9 +89,7 @@ class MakeBackEndModule extends MakeModuleCommand
         $path = $this->module_path.'/routes_admin.php';
 
         if ($this->alreadyExists($path)) {
-            //TODO Продумать добавление в файл
-
-            $this->error('Routes already exists!');
+            $this->error('Routes already exists! Add it manually!');
         } else {
             $stub = $this->files->get(base_path('stubs/backEnd/routes.admin.stub'));
             $this->createFileWithStub($stub, $path);
@@ -103,9 +101,7 @@ class MakeBackEndModule extends MakeModuleCommand
         $path = $this->module_path.'/menus.php';
 
         if ($this->alreadyExists($path)) {
-            //TODO Продумать добавление в файл
-
-            $this->error('Menus already exists!');
+            $this->error('Menus already exists! Add it manually!');
         } else {
             $stub = $this->files->get(base_path('stubs/backEnd/menus.stub'));
             $this->createFileWithStub($stub, $path);
@@ -117,9 +113,7 @@ class MakeBackEndModule extends MakeModuleCommand
         $path = $this->module_path.'/breadcrumbs.php';
 
         if ($this->alreadyExists($path)) {
-            //TODO Продумать добавление в файл
-
-            $this->error('BreadCrumbs already exists!');
+            $this->error('BreadCrumbs already exists! Add it manually!');
         } else {
             $stub = $this->files->get(base_path('stubs/backEnd/breadcrumbs.stub'));
             $this->createFileWithStub($stub, $path);

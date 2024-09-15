@@ -46,4 +46,15 @@ class DummyEntitySingularRepository
 
         ];
     }
+
+    public function DummyEntitySingularWithToArray(DummyEntitySingular $dummyVariableEntitySingular): array
+    {
+        $withData = [
+            /**
+             * Данные из relations
+             */
+        ];
+
+        return array_merge($this->DummyEntitySingularToArray($dummyVariableEntitySingular), $withData);
+    }
 }

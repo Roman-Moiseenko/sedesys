@@ -30,9 +30,10 @@ Route::group(
 
                 Route::post('/{service}/del', 'ServiceController@del')->name('del');
                 Route::post('/{service}/set', 'ServiceController@set')->name('set');
+                Route::post('/{service}/attach-consumable', 'ServiceController@attach_consumable')->name('attach-consumable');
+                Route::post('/{service}/detach-consumable', 'ServiceController@detach_consumable')->name('detach-consumable');
                 Route::post('/{service}/attach', 'ServiceController@attach')->name('attach');
                 Route::post('/{service}/detach', 'ServiceController@detach')->name('detach');
-
             }
         );
         Route::group(
@@ -69,11 +70,25 @@ Route::group(
                 Route::post('/{extra}/down', 'ExtraController@down')->name('down');
             }
         );
+        Route::group(
+            [
+                'prefix' => 'consumable',
+                'as' => 'consumable.'
+            ],
+            function () {
+                Route::post('/{consumable}/toggle', 'ConsumableController@toggle')->name('toggle');
+                Route::post('/{consumable}/attach', 'ConsumableController@attach')->name('attach');
+                Route::post('/{consumable}/detach', 'ConsumableController@detach')->name('detach');
+
+            }
+        );
+
         Route::Resource('extra', 'ExtraController');
 
         Route::Resource('service', 'ServiceController');
         Route::Resource('classification', 'ClassificationController');
         Route::Resource('example', 'ExampleController');
         Route::Resource('review', 'ReviewController');
+        Route::Resource('consumable', 'ConsumableController');
     }
 );

@@ -27,6 +27,11 @@ return [
                 'title' => 'Отзывы',
                 'route' => route('admin.service.review.index', [], false),
             ],
+            'consumable' => [
+                'icon' => 'TakeawayBox',
+                'title' => 'Расходники',
+                'route' => route('admin.service.consumable.index', [], false),
+            ],
         ],
     ],
 ];

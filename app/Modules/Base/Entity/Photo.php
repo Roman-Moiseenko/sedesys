@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Base\Entity;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
@@ -21,6 +22,7 @@ use function public_path;
  * @property string $type
  * @property string $title
  * @property string $description
+ * @property MorphTo $imageable
  */
 class Photo extends Model
 {
@@ -47,7 +49,7 @@ class Photo extends Model
 
     private UploadedFile $fileForUpload;
 
-    public function imageable()
+    public function imageable(): MorphTo
     {
         return $this->morphTo();
     }

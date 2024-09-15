@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Service\Entity\Consumable;
 use App\Modules\Service\Entity\Example;
 use App\Modules\Service\Entity\Review;
 use App\Modules\Service\Entity\Service;
@@ -87,3 +88,25 @@ Breadcrumbs::for('admin.service.review.edit', function (BreadcrumbTrail $trail, 
     $trail->parent('admin.service.review.show', $review);
     $trail->push('Редактировать', route('admin.service.review.edit', $review));
 });
+
+
+Breadcrumbs::for('admin.service.consumable.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.home');
+    $trail->push('Расходный материал', route('admin.service.consumable.index'));
+});
+Breadcrumbs::for('admin.service.consumable.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.service.consumable.index');
+    $trail->push('Добавить новый', route('admin.service.consumable.create'));
+});
+
+Breadcrumbs::for('admin.service.consumable.show', function (BreadcrumbTrail $trail, Consumable $service) {
+    $trail->parent('admin.service.consumable.index');
+    $trail->push($service->name, route('admin.service.consumable.show', $service));
+});
+
+Breadcrumbs::for('admin.service.consumable.edit', function (BreadcrumbTrail $trail, Consumable $service) {
+    $trail->parent('admin.service.consumable.show', $service);
+    $trail->push('Редактировать', route('admin.service.consumable.edit', $service));
+});
+
+

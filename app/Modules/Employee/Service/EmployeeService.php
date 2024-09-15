@@ -7,6 +7,7 @@ use App\Modules\Base\Entity\Photo;
 use App\Modules\Service\Entity\Service;
 use Illuminate\Http\Request;
 use App\Modules\Employee\Entity\Employee;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -15,12 +16,17 @@ class EmployeeService
 
     public function create(Request $request): Employee
     {
-        $employee = Employee::employee(
-            (string)$request->string('surname'),
-            (string)$request->string('firstname'),
-            (string)$request->string('secondname')
+        DB::transaction(
+            function () use ($request, &$employee) {
+                $employee = Employee::employee(
+                    (string)$request->string('surname'),
+                    (string)$request->string('firstname'),
+                    (string)$request->string('secondname')
+                );
+                $this->save_fields($employee, $request);
+            }
         );
-        $this->save_fields($employee, $request);
+
         return  $employee;
     }
 

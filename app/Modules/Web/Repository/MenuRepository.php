@@ -90,7 +90,7 @@ class MenuRepository
         foreach ($employees as $employee) {
             $key = 'employee' . $employee->id;
             $result[$key] = [
-                'icon' => '', //TODO $this->icon($employee),
+                'icon' => $this->icon($employee),
                 'name' => $employee->fullname->getFullName(),
                 'url' => route('web.employee.view', $employee),
             ];

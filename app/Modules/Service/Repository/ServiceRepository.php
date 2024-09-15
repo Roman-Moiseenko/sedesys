@@ -5,6 +5,7 @@ namespace App\Modules\Service\Repository;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Repository\TemplateRepository;
 use App\Modules\Service\Entity\Classification;
+use App\Modules\Service\Entity\Consumable;
 use App\Modules\Service\Entity\Extra;
 use App\Modules\Service\Entity\Review;
 use Illuminate\Contracts\Support\Arrayable;
@@ -67,6 +68,7 @@ class ServiceRepository
             ->with('employees')
             ->with('employees.specializations')
             ->with('examples')
+            ->with('consumables')
             ->first();
     }
 
@@ -129,6 +131,19 @@ class ServiceRepository
         ];
     }
 
+    public function ConsumableWithToArray(Service $service): array
+    {
+        $withData = [
+            'classification' => $service->classification()->first()->toArray(),
+            'employees' => $service->employees()->get()->toArray(),
+            'examples' => $service->employees()->get()->toArray(),
+            'consumables' => $service->employees()->get()->toArray(),
+        ];
+
+        return array_merge($this->ServiceToArray($service), $withData);
+    }
+
+
     public function getReviews(Service $service): array
     {
         return $service->reviews()->get()->map(fn(Review $review) => [
@@ -157,5 +172,12 @@ class ServiceRepository
             'update' => route('admin.service.extra.update', $extra),
             'destroy' => route('admin.service.extra.destroy', $extra),
         ])->toArray();
+    }
+
+    public function outConsumables(Service $service)
+    {
+        $ids = $service->consumables()->pluck('id')->toArray();
+        return Consumable::whereNotIn('id', $ids)->getModels();
+
     }
 }

@@ -17,7 +17,7 @@ class ExampleService
         );
         $this->save_fields($example, $request);
 
-        return  $example;
+        return $example;
     }
 
     public function update(Example $example, Request $request)
@@ -52,23 +52,35 @@ class ExampleService
 
     public function addPhoto(Example $example, Request $request)
     {
-        if (empty($file = $request->file('file'))) throw new \DomainException('Нет файла');
+        $example->addImage($request->file('file'));
 
-        $sort = count($example->gallery);
-        $example->gallery()->save(Photo::upload($file, '', $sort));
+        /*   if (empty($file = $request->file('file'))) throw new \DomainException('Нет файла');
+
+           $sort = count($example->gallery);
+           $example->gallery()->save(Photo::upload($file, '', $sort));*/
     }
 
     public function delPhoto(Example $example, Request $request)
     {
+        $example->delImage($request->integer('photo_id'));
+        /*
         $photo = Photo::find($request->integer('photo_id'));
         $photo->delete();
         foreach ($example->gallery as $i => $photo) {
             $photo->update(['sort' => $i]);
-        }
+        }*/
     }
 
     public function setAlt(Example $example, Request $request)
     {
+        $example->setAlt(
+            photo_id: $request->integer('photo_id'),
+            alt: $request->string('alt')->trim()->value(),
+            title: $request->string('title')->trim()->value(),
+            description: $request->string('description')->trim()->value(),
+        );
+
+/*
         $id = $request->integer('photo_id');
         foreach ($example->gallery as $photo) {
             if ($photo->id === $id) {
@@ -79,5 +91,6 @@ class ExampleService
                 ]);
             }
         }
+        */
     }
 }
