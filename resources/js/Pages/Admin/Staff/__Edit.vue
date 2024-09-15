@@ -131,7 +131,6 @@
 </script>
 <script lang="ts">
 import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
 import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
@@ -146,7 +145,6 @@ export default {
         Form,
         UploadImageFile, Delete, Download, Plus, ZoomIn
     },
-    layout: Layout,
     props: {
         errors: Object,
         route: String,

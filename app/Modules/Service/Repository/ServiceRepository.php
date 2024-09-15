@@ -123,6 +123,7 @@ class ServiceRepository
             'image' => $service->getImage('mini'),
             'icon' => $service->getIcon('mini'),
             'template' => $service->template,
+            'consumable_amount' =>$service->getConsumableAmount(),
 
             'url' => route('admin.service.service.show', $service),
             'edit' => route('admin.service.service.edit', $service),

@@ -43,7 +43,11 @@
                 <el-table-column prop="price" label="Стоимость" width="100" />
                 <el-table-column prop="count_employees" label="Выполняют" width="120" />
                 <el-table-column prop="template" label="Шаблон" width="120" />
-                <el-table-column label="Расх.материалы (₽)" width="160" />
+                <el-table-column label="Расх.материалы" width="160" >
+                    <template #default="scope">
+                        {{ func.price(scope.row.consumable_amount)}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button v-if="scope.row.active"
@@ -107,7 +111,7 @@
     import Pagination from '@/Components/Pagination.vue'
     import ru from 'element-plus/dist/locale/ru.mjs'
     import TableFilter from '@/Components/TableFilter.vue'
-
+    import { func} from '/resources/js/func.js'
     const store = useStore();
 
     interface IRow {
@@ -122,12 +126,9 @@
 </script>
 
 <script lang="ts">
-import Layout from '@/Components/Layout.vue'
 import { router } from '@inertiajs/vue3'
 
 export default {
-
-    layout: Layout,
     props: {
         services: Object,
         title: {

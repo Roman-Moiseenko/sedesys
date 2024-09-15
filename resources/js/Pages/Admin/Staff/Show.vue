@@ -98,7 +98,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 
 const props = defineProps({
     staff: Object,
@@ -135,22 +135,6 @@ function subForm() {
 }
 function goEdit() {
     router.get(props.edit);
-}
-
-</script>
-<script lang="ts">
-import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-import {router} from "@inertiajs/vue3";
-
-
-
-export default {
-    components: {
-        Head,
-    },
-    layout: Layout,
-
 }
 </script>
 

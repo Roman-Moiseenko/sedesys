@@ -22,7 +22,6 @@
 
 <script>
 import { Head } from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
 
 export default {
     components: {
@@ -32,7 +31,6 @@ export default {
         version: String,
         updates: Array,
     },
-    layout: Layout,
 }
 
 </script>

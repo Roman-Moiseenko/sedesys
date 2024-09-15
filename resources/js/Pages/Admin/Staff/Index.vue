@@ -105,8 +105,7 @@ const tableRowClassName = ({row, rowIndex}: {row: Staff }) => {
 
 <script lang="ts">
 
-import { Head, Link } from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
+import { Head } from '@inertiajs/vue3'
 import { router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
@@ -116,7 +115,6 @@ export default {
         Head,
         Pagination
     },
-    layout: Layout,
     props: {
         staffs: Object,
         title: {

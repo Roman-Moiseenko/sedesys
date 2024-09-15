@@ -74,7 +74,7 @@
 
 <script lang="ts" setup>
 import {reactive, ref} from 'vue'
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import type {UploadFile} from 'element-plus'
@@ -127,16 +127,5 @@ function onGetChatID() {
 function onSelectImage(val) {
     form.clear_file = val.clear_file;
     form.file = val.file
-}
-</script>
-<script lang="ts">
-import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    components: {
-        Head,
-    },
-    layout: Layout,
 }
 </script>

@@ -139,4 +139,13 @@ class Service extends DisplayedModel implements WidgetData
         )->render();
 
     }*/
+    public function getConsumableAmount(): int
+    {
+        $amount = 0;
+        foreach ($this->consumables as $consumable) {
+            if ($consumable->isActive())
+                $amount += $consumable->pivot->count * $consumable->price;
+        }
+        return $amount;
+    }
 }
