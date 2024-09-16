@@ -1,9 +1,9 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl">{{ staff.fullname.surname + ' ' + staff.fullname.firstname + ' ' + staff.fullname.secondname}}</h1>
+    <h1 class="font-medium text-xl">{{ staff.fullname }}</h1>
     <div class="mt-3 p-3 bg-white rounded-lg ">
-        <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
-            <div class="p-4">
+        <div class="grid lg:grid-cols-6 grid-cols-1 divide-x">
+            <div class="p-4 col-span-2">
                 <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
                     <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
                         <el-image
@@ -19,18 +19,16 @@
                     </div>
                     <div class="ml-5">
                         <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">
-                            {{ staff.fullname.surname + ' ' + staff.fullname.firstname + ' ' + staff.fullname.secondname}}
+                            {{ staff.fullname }}
                         </div>
                         <div class="text-slate-500">{{ staff.post }}</div>
                     </div>
                 </div>
-            </div>
-            <div class="p-4">
                 <el-descriptions :column="1" border title="Персональные данные">
                     <el-descriptions-item>
                         <template #label>
                             <div class="items-center flex">
-                            <el-icon><User /></el-icon>&nbsp;Логин
+                                <el-icon><User /></el-icon>&nbsp;Логин
                             </div>
                         </template>
                         {{ staff.name }}
@@ -61,9 +59,24 @@
                     </el-descriptions-item>
                 </el-descriptions>
             </div>
-            <div class="p-2">
-                <h2 class="font-medium">Доступы</h2>
-                <div>
+
+            <div class="p-4 col-span-4">
+                <el-form-item label="Доступы и уведомления" label-position="top">
+                    <el-checkbox-group v-model="formResp" class="grid grid-cols-3">
+                        <el-checkbox v-for="item in responsibilities" :key="item.value" :value="item.value" :label="item.label" @change="onChange($event, item.value)"
+                                     class="pl-3"
+                        />
+                    </el-checkbox-group>
+                </el-form-item>
+
+                <div class="p-3 rounded-lg bg-sky-100 border border-sky-600">
+                    <div class="font-medium mb-1 text-sky-700">Инструкция</div>
+                    <div class="text-sm">
+                        Для <strong>Руководитель</strong> и <strong>Администратор</strong> доступ полный, но настройка позволит получать уведомления по событиям.
+                    </div>
+                    <div class="text-sm">Например, при получении нового заказа, или оставлении отзыва.</div>
+
+                    <div class="text-sm"></div>
                 </div>
             </div>
         </div>
@@ -112,10 +125,14 @@ const props = defineProps({
     title: {
         type: String,
         default: 'Карточка сотрудника',
-    }
+    },
+    responsibilities: Array,
+    set_resp: String,
 });
 
+console.log(props.staff)
 const dialogFormVisible = ref(false)
+const formResp = ref(props.staff.responsibilities)
 const form = reactive({
     password: '',
 })
@@ -135,6 +152,11 @@ function subForm() {
 }
 function goEdit() {
     router.get(props.edit);
+}
+
+function onChange(val, index) {
+    router.post(props.set_resp, {code: index});
+//    console.log(val, index);
 }
 </script>
 

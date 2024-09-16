@@ -122,12 +122,9 @@
 </script>
 
 <script lang="ts">
-import Layout from '@/Components/Layout.vue'
 import { router } from '@inertiajs/vue3'
 
 export default {
-
-    layout: Layout,
     props: {
         rules: Object,
         title: {

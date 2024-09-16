@@ -144,10 +144,9 @@ function onState(item) {
 </script>
 <script lang="ts">
 import {router} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
 
 export default {
-    layout: Layout,
+
     methods: {
         goEdit() {
             router.get(this.$props.edit);

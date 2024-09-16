@@ -117,10 +117,4 @@
     }
 
 </script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
-</script>

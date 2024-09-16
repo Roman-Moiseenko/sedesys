@@ -16,6 +16,7 @@ Route::group([
 ], function() {
     Route::post('/{staff}/password', 'StaffController@password')->name('password');
     Route::post('/{staff}/toggle', 'StaffController@toggle')->name('toggle');
+    Route::post('/{staff}/responsibility', 'StaffController@responsibility')->name('responsibility');
 });
 
 

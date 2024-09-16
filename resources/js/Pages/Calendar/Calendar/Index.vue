@@ -96,12 +96,9 @@
 </script>
 
 <script lang="ts">
-import Layout from '@/Components/Layout.vue'
 import { router } from '@inertiajs/vue3'
 import { func} from '@/func.js'
 export default {
-
-    layout: Layout,
     props: {
         calendars: Object,
         title: {

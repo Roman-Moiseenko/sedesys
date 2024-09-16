@@ -12,14 +12,14 @@
             </div>
         </div>
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goEdit">Редактировать</el-button>
+            <el-button type="primary" @click="router.get(edit)">Редактировать</el-button>
         </div>
     </div>
 
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link } from '@inertiajs/vue3'
+    import { Head, router } from '@inertiajs/vue3'
 
     const props = defineProps({
         calendar: Object,
@@ -37,20 +37,6 @@
      * Методы
      */
 
-
-</script>
-<script lang="ts">
-    import { router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-
-    export default {
-        layout: Layout,
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-        },
-    }
 
 </script>
 

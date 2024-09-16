@@ -37,20 +37,7 @@ class StaffRepository
 
         return $query->paginate($request->input('size', 20))
             ->withQueryString()
-            ->through(fn(Admin $staff) => [
-                'id' => $staff->id,
-                'name' => $staff->name,
-                'phone' => $staff->phone,
-                'fullname' => $staff->fullname->getFullName(),
-                'shortname' => $staff->fullname->getShortname(),
-                'post' => $staff->post,
-                'role' => $staff->roleHTML(),
-                'active' => $staff->active,
-                'url' => route('admin.staff.show', $staff),
-                'edit' => route('admin.staff.edit', $staff),
-                'destroy' => route('admin.staff.destroy', $staff),
-                'toggle' => route('admin.staff.toggle', $staff),
-            ]);
+            ->through(fn(Admin $staff) => $this->StaffToArray($staff));
     }
 
     public function roles(): array
@@ -61,6 +48,25 @@ class StaffRepository
     public function byTelegram(int $telegram_id): ?Admin
     {
         return Admin::where('telegram_user_id', $telegram_id)->first();
+    }
+
+    public function StaffToArray(Admin $staff): array
+    {
+        return [
+            'id' => $staff->id,
+            'name' => $staff->name,
+            'phone' => $staff->phone,
+            'fullname' => $staff->fullname->getFullName(),
+            'shortname' => $staff->fullname->getShortname(),
+            'post' => $staff->post,
+            'role' => $staff->roleHTML(),
+            'active' => $staff->active,
+            'responsibilities' => $staff->responsibilities()->get()->pluck('code')->toArray(),
+            'url' => route('admin.staff.show', $staff),
+            'edit' => route('admin.staff.edit', $staff),
+            'destroy' => route('admin.staff.destroy', $staff),
+            'toggle' => route('admin.staff.toggle', $staff),
+        ];
     }
 }
 

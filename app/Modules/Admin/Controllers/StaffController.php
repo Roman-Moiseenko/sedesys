@@ -5,6 +5,7 @@ namespace App\Modules\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Entity\Admin;
+use App\Modules\Admin\Entity\Responsibility;
 use App\Modules\Admin\Repository\StaffRepository;
 use App\Modules\Admin\Request\StaffRequest;
 use App\Modules\Admin\Service\StaffService;
@@ -51,10 +52,12 @@ class StaffController extends Controller
     public function show(Admin $staff)
     {
         return Inertia::render('Admin/Staff/Show', [
-            'staff' => $staff,
+            'staff' => $this->repository->StaffToArray($staff),
             'photo' => $staff->getImage(),
             'edit' => route('admin.staff.edit', $staff),
             'password' => route('admin.staff.password', $staff),
+            'responsibilities' => array_select(Responsibility::RESPONSE),
+            'set_resp' => route('admin.staff.responsibility', $staff)
         ]);
     }
 
@@ -106,5 +109,11 @@ class StaffController extends Controller
             $success = 'Сотрудник заблокирован';
         }
         return redirect()->back()->with('success', $success);
+    }
+
+    public function responsibility(Admin $staff, Request $request)
+    {
+        $this->service->responsibility($staff, $request);
+        return redirect()->back()->with('success', 'Сохранено');
     }
 }

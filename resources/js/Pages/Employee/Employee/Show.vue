@@ -28,7 +28,7 @@
         </el-tabs>
     </div>
     <div class="mt-3 p-3 bg-white rounded-lg">
-        <el-button type="primary" @click="goEdit">Редактировать</el-button>
+        <el-button type="primary" @click="router.get(edit)">Редактировать</el-button>
         <el-button v-if="!employee.active" type="success" @click="handleToggle">Разблокировать
         </el-button>
         <el-button v-if="employee.active" type="warning" @click="handleToggle">Заблокировать
@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import {reactive, ref} from "vue";
-import {router} from "@inertiajs/vue3";
+import {router, Head} from "@inertiajs/vue3";
 import {func} from '@/func.js'
 
 import DisplayedShowPanel from '@/Components/Displayed/Show.vue'
@@ -108,29 +108,11 @@ function detachService(row) {
         service_id: row.id
     });
 }
-
+function routeClick(row) {
+    router.get(row.url)
+}
 </script>
 
-<script lang="ts">
-    import { Head, Link, router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-            routeClick(row) {
-                router.get(row.url)
-            },
-        },
-    }
-
-</script>
 
 <style scoped>
 

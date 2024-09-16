@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Service;
 
 use App\Modules\Admin\Entity\Admin;
+use App\Modules\Admin\Entity\Responsibility;
 use App\Modules\Base\Entity\FullName;
 use App\Modules\Base\Entity\Photo;
 use Illuminate\Http\Request;
@@ -75,5 +76,11 @@ class StaffService
     {
         $admin->password = Hash::make((string)$request->string('password'));
         $admin->save();
+    }
+
+    public function responsibility(Admin $admin, Request $request)
+    {
+        $admin->toggleResponsibilities($request->integer('code'));
+
     }
 }

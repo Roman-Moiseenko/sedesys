@@ -113,8 +113,7 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
 </script>
 
 <script lang="ts">
-import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
+import {Head} from '@inertiajs/vue3'
 import {router} from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
@@ -125,7 +124,6 @@ export default {
         Head,
         Pagination
     },
-    layout: Layout,
     props: {
         employees: Object,
         title: {
