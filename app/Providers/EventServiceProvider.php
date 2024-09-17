@@ -9,6 +9,9 @@ use App\Modules\Calendar\Notification\RecordUser;
 use App\Modules\Calendar\Service\CalendarService;
 use App\Modules\Discount\Events\PromotionHasFinish;
 use App\Modules\Discount\Events\PromotionHasStart;
+use App\Modules\Feedback\Events\FeedbackHasSend;
+use App\Modules\Feedback\Notification\FeedbackStaff;
+use App\Modules\Feedback\Service\FeedbackService;
 use App\Modules\Notification\Events\TelegramHasReceived;
 use App\Modules\Notification\Service\NotificationService;
 use Illuminate\Auth\Events\Registered;
@@ -35,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
         TelegramHasReceived::class => [
             NotificationService::class, //Подтверждение уведомления
             CalendarService::class, //Подтверждение записи
+            FeedbackService::class, //Взятие в работу заявки
             /**
              * Добавляем классы, которые обрабатывают подтверждения из Телеграм.
              */
@@ -58,6 +62,10 @@ class EventServiceProvider extends ServiceProvider
             /**
              * При необходимости добавить уведомления подписчикам и/или сотрудникам.
              */
+        ],
+        //Модуль Feedback
+        FeedbackHasSend::class => [
+            FeedbackStaff::class, //Сотрудники по работе с Обратной связью получают сообщения
         ],
 
 

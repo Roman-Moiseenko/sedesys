@@ -13,17 +13,20 @@ class TelegramParams
     public ?int $id;
 
     const OPERATION_READ = 101;
-    const OPERATION_TAKE_ORDER = 102;
+    const OPERATION_ORDER_TAKE = 102;
     const OPERATION_PAYMENT = 103;
     const OPERATION_RECORD_CONFIRM = 104;
     const OPERATION_RECORD_CANCEL = 105;
+    const OPERATION_FEEDBACK_TAKE = 106;
+
 
     const OPERATIONS = [
         self::OPERATION_READ => 'Прочитано', //Staff и Employee
-        self::OPERATION_TAKE_ORDER => 'Взять заказ', //Employee
+        self::OPERATION_ORDER_TAKE => 'Взять заказ', //Employee
         self::OPERATION_PAYMENT => 'Оплата получена',
         self::OPERATION_RECORD_CONFIRM => 'Подтвердить запись',
         self::OPERATION_RECORD_CANCEL => 'Отменить запись',
+        self::OPERATION_FEEDBACK_TAKE => 'Взять в работу заявку',
     ];
 
     public function __construct(int $operation = null, int $id = null)

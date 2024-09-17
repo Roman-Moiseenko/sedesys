@@ -15,6 +15,42 @@ window.$ = jQuery;
     });
     let main = $('main');
 
+    $('.feedback').each(function (element) {
+        let feedback = $(this)
+        let _id = feedback.data('id');
+
+        //Отправляем запрос
+        $.post('/feedback/get-form', {id: _id}, function (data) {
+            _error(data);
+            let route = data.route;
+            feedback.html(data.html);
+            let button = feedback.find('button');
+            button.on('click', function () {
+
+                let fields = {
+                    id: _id,
+                };
+
+
+                feedback.find('[name]').each(function (item) {
+
+                    if ($(this).attr('type') === 'checkbox' || $(this).attr('type') === 'radiobutton') {
+                        if ($(this).is(':checked')) {
+                            fields[$(this).attr('name')]= $(this).val();
+                        }
+                    } else {
+                        fields[$(this).attr('name')]= $(this).val();
+                    }
+
+                });
+                $.post(route, fields, function (data) {
+                    feedback.html(data.html);
+                    }
+                )
+            });
+        });
+
+    });
 
     /** LOGIN POPUP **/
     let loginPopup = $('#login-popup');

@@ -66,12 +66,23 @@
         <br> ***
         <br> ***
         <br> ***
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="feedback" data-id="1"></div>
+            </div>
+        </div>
         <br> ***
         <br> ***
         <br> ***
         <br> ***
-        <br> ***
-        <br> ***
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="feedback" data-id="2"></div>
+            </div>
+        </div>
+
         <br> ***
         <br> ***
         Разработка проекта ведется <a href="https://website39.ru">Калининградской веб-студией Web39</a>

@@ -28,6 +28,7 @@ class Responsibility extends Model
     public const MANAGER_DELIVERY = 1005; //delivery
     public const MANAGER_REQUEST = 1006; //request
     public const MANAGER_LOGGER = 1007; //logger
+    public const MANAGER_RECORD = 1008; //record
 
     //Учет
     public const MANAGER_ACCOUNTING = 1011; //accounting
@@ -58,9 +59,10 @@ class Responsibility extends Model
         self::MANAGER_USER => 'Доступ к данным о клиенте',
         self::MANAGER_REVIEW => 'Работа с отзывами',
         self::MANAGER_FEEDBACK => 'Обратная связь',
-        self::MANAGER_REQUEST => 'Заявка с сайта',
+        self::MANAGER_REQUEST => 'Заявка с сайта', //TODO ????
         self::MANAGER_DELIVERY => 'Доставка товаров',
         self::MANAGER_LOGGER => 'Сборка и выдача товаров',
+        self::MANAGER_RECORD => 'Запись по Календарю',
 
         self::MANAGER_ACCOUNTING => 'Материальный учет',
         self::MANAGER_SUPPLY => 'Заказ товаров',

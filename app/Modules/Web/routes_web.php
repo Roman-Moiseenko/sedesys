@@ -25,3 +25,7 @@ Route::get('/service/{slug}', 'ServiceController@view')->name('service.view');
 
 Route::get('/promotion', 'PromotionController@index')->name('promotion.index');
 Route::get('/promotion/{slug}', 'PromotionController@view')->name('promotion.view');
+
+
+Route::post('/feedback/get-form', 'FeedbackController@get_form')->name('feedback.get-form');
+Route::post('/feedback/send-form', 'FeedbackController@send_form')->name('feedback.send-form');

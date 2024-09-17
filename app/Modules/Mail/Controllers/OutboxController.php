@@ -15,9 +15,6 @@ class OutboxController extends Controller
 {
     private OutboxService $service;
     private OutboxRepository $repository;
-    /**
-     * @var \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|mixed
-     */
     private mixed $tiny_api;
 
     public function __construct(OutboxService $service, OutboxRepository $repository)

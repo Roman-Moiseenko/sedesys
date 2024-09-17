@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Modules\Calendar\Notification;
 
 use App\Modules\Admin\Entity\Admin;
+use App\Modules\Admin\Entity\Responsibility;
+use App\Modules\Admin\Repository\StaffRepository;
 use App\Modules\Calendar\Events\RecordHasChangeStatus;
 use App\Modules\Notification\Helpers\NotificationHelper;
 use App\Modules\Notification\Helpers\TelegramParams;
@@ -11,9 +13,11 @@ use App\Modules\Notification\Message\StaffMessage;
 
 class RecordStaff
 {
-    public function __construct()
+    private StaffRepository $repository;
+
+    public function __construct(StaffRepository $repository)
     {
-        // ...
+        $this->repository = $repository;
     }
 
     public function handle(RecordHasChangeStatus $event)
@@ -37,8 +41,7 @@ class RecordStaff
                 $calendar->getDate() . ' ' . $calendar->getTime();
         }
 
-        //TODO После добавления уровня доступа выбирать, тех, кто принимает заявки
-        $staffs = Admin::get(); //Выбрать "Администратора Ресепшина"
+        $staffs = $this->repository->getActiveByResponsibility(Responsibility::MANAGER_RECORD); //Выбрать "Администратора Ресепшина"
         foreach($staffs as $staff) {
             $staff->notify(
                 new StaffMessage(

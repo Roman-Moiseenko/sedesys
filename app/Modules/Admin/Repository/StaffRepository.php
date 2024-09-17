@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Repository;
 
 use App\Modules\Admin\Entity\Admin;
+use App\Modules\Admin\Entity\Responsibility;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ExpectedValues;
 
 class StaffRepository
 {
@@ -29,7 +31,7 @@ class StaffRepository
             $query->where('role', $role);
         }
 
-        if ($request->input('draft', 'false') == 'true' ) {
+        if ($request->input('draft', 'false') == 'true') {
             $filters['draft'] = 'true';
             $query->where('active', false);
         }
@@ -67,6 +69,32 @@ class StaffRepository
             'destroy' => route('admin.staff.destroy', $staff),
             'toggle' => route('admin.staff.toggle', $staff),
         ];
+    }
+
+    public function forFilter(#[ExpectedValues(valuesFromClass: Responsibility::class)] int $responsibility = null): array
+    {
+        $query = Admin::where('role', '<>', Admin::ROLE_ADMIN);
+
+        if (!is_null($responsibility)) {
+            $query->whereHas('responsibilities', function ($query) use ($responsibility) {
+                $query->where('code', $responsibility);
+            });
+        }
+
+        return $query->get()->map(fn(Admin $staff) => [
+            'id' => $staff->id,
+            'name' => $staff->fullname->getFullName(),
+        ])->toArray();
+    }
+
+    public function getActiveByResponsibility(#[ExpectedValues(valuesFromClass: Responsibility::class)] int $responsibility)
+    {
+        return Admin::where('role', '<>', Admin::ROLE_ADMIN)
+            ->where('active', true)
+            ->whereHas('responsibilities', function ($query) use ($responsibility) {
+                $query->where('code', $responsibility);
+            })
+            ->get();
     }
 }
 
