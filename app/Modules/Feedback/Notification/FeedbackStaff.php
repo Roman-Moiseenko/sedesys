@@ -28,8 +28,11 @@ class FeedbackStaff
         if (!empty($feedback->email)) $message .= $feedback->email . "\n";
         if (!empty($feedback->phone)) $message .= $feedback->phone . "\n";
         if (!empty($feedback->message)) $message .= $feedback->message . "\n";
-        if (!empty($feedback->data)) $message .= json_encode($feedback->data) . "\n";
-
+        if (!empty($feedback->data)) {
+            $message .= 'Данные:' . "\n";
+            foreach ($feedback->data as $field => $value)
+                $message .= ' ' . $field . ': ' . $value . "\n";
+        }
         $params = new TelegramParams(TelegramParams::OPERATION_FEEDBACK_TAKE, $feedback->id);
 
         $message .= $feedback->created_at->translatedFormat('d-m-Y H:i');
