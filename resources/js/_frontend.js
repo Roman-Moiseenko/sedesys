@@ -30,9 +30,13 @@ window.$ = jQuery;
                 let fields = {
                     id: _id,
                 };
-
-
+                let res = true;
                 feedback.find('[name]').each(function (item) {
+                    if ($(this).is(':required') && $(this).val() === '') {
+                        if (res) alert('Не заполнены поля');
+                        res = false;
+                        return;
+                    }
 
                     if ($(this).attr('type') === 'checkbox' || $(this).attr('type') === 'radiobutton') {
                         if ($(this).is(':checked')) {
@@ -43,10 +47,12 @@ window.$ = jQuery;
                     }
 
                 });
-                $.post(route, fields, function (data) {
-                    feedback.html(data.html);
-                    }
-                )
+                if (res === true) {
+                    $.post(route, fields, function (data) {
+                            feedback.html(data.html);
+                        }
+                    )
+                }
             });
         });
 
