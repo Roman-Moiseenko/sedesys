@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Страница ошибок')</title>
     @vite('resources/sass/web.scss')
+    <link rel="preload" as="style" href="/custom/custom.css" />
 </head>
 <body>
 @yield('content')

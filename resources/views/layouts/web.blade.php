@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     @yield('head')
     @vite('resources/sass/web.scss')
+    <link rel="preload" as="style" href="/custom/custom.css" />
 </head>
 <body class="@yield('body')">
 
