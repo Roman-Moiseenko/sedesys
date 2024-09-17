@@ -7,6 +7,7 @@ use App\Modules\Base\Entity\Photo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use function Laravel\Prompts\select;
 
 /**
  * @property int $id
@@ -82,16 +83,12 @@ class Feedback extends Model
         $this->completed_at = now();
         $this->save();
     }
-    public function setField($value): void
-    {
-
-        $this->field = $value;
-        $this->save();
-    }
 
     public function archive()
     {
         $this->archive = true;
+        $this->status = self::STATUS_COMPLETED;
+        $this->completed_at = now();
         $this->save();
     }
 
@@ -102,16 +99,9 @@ class Feedback extends Model
         $this->save();
     }
 
-
-
     /**
      * Гетеры
      */
-    public function getField(): mixed
-    {
-
-        return $this->field;
-    }
 
     /**
      * Отношения

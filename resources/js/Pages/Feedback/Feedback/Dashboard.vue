@@ -35,9 +35,7 @@
                     <template #default="scope">
                         <div class="flex">
                             <el-tag v-if="scope.row.staff" type="success" effect="dark">{{ scope.row.staff }}</el-tag>
-
-
-                            <el-dropdown @command="onStaffChange(scope.row, $event)">
+                            <el-dropdown @command="onStaffChange(scope.row, $event)" v-if="!scope.row.completed">
                                 <el-button type="primary" class="mini-drop-button"><el-icon><arrow-down/></el-icon></el-button>
                                 <template #dropdown>
                                     <el-dropdown-menu>

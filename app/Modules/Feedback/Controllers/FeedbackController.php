@@ -90,7 +90,7 @@ class FeedbackController extends Controller
     {
         /*$feedback->status = Feedback::STATUS_WORK;
         $feedback->save();*/
-        return redirect()->route('admin.mail.outbox.create', ['email' => $feedback->email]);
+        return redirect()->route('admin.mail.outbox.create', ['email' => $feedback->email, 'subject' => 'Re: ' . $feedback->template->name]);
     }
 
     public function from_archive(Feedback $feedback)
