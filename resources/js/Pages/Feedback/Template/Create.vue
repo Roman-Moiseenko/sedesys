@@ -56,7 +56,7 @@
         route: String,
         title: {
             type: String,
-            default: 'Создание template',
+            default: 'Создание шаблона формы заявки',
         },
     });
 

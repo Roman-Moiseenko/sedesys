@@ -63,6 +63,7 @@ class StaffRepository
             'post' => $staff->post,
             'role' => $staff->roleHTML(),
             'active' => $staff->active,
+            'telegram_user_id' => $staff->telegram_user_id,
             'responsibilities' => $staff->responsibilities()->get()->pluck('code')->toArray(),
             'url' => route('admin.staff.show', $staff),
             'edit' => route('admin.staff.edit', $staff),

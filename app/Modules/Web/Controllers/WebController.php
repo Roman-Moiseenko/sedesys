@@ -35,7 +35,7 @@ class WebController extends Controller
             };
         }
         if (in_array('page', $this->web->use_caches)) {
-            return Cache::rememberForever('home' . $page->id, $callback);
+            return Cache::rememberForever('home', $callback);
         } else {
             return $callback();
         }
