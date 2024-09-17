@@ -19,10 +19,10 @@
             </div>
         </div>
         <div class="mt-3 flex flex-row">
-            <el-button
-                type="primary"
-                @click="router.get(template.edit)">
-                Редактировать
+            <el-button type="primary" @click="router.get(template.edit)">Редактировать</el-button>
+            <el-button v-if="!template.active" type="success" @click="handleToggle">Разблокировать
+            </el-button>
+            <el-button v-if="template.active" type="warning" @click="handleToggle">Заблокировать
             </el-button>
         </div>
     </div>
@@ -40,11 +40,14 @@ const props = defineProps({
         type: String,
         default: 'Карточка шаблона формы',
     },
+
     /**
      * Задать props
      */
 });
-
+function handleToggle() {
+    router.post(props.template.toggle);
+}
 /**
  * Методы
  */
