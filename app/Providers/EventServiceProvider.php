@@ -14,6 +14,7 @@ use App\Modules\Feedback\Notification\FeedbackStaff;
 use App\Modules\Feedback\Service\FeedbackService;
 use App\Modules\Notification\Events\TelegramHasReceived;
 use App\Modules\Notification\Service\NotificationService;
+use App\Modules\Order\Events\OrderHasAwaiting;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -68,6 +69,13 @@ class EventServiceProvider extends ServiceProvider
             FeedbackStaff::class, //Сотрудники по работе с Обратной связью получают сообщения
         ],
 
+        //Модуль Order
+        OrderHasAwaiting::class => [
+            /**
+             * При необходимости добавить уведомления подписчикам и/или сотрудникам.
+             * Высылка счета
+             */
+        ],
 
         //Аутентификация сторонними сервисами
         SocialiteWasCalled::class => [
@@ -79,6 +87,8 @@ class EventServiceProvider extends ServiceProvider
              * Добавить при желании клиента
              */
         ],
+
+        //
     ];
 
     /**

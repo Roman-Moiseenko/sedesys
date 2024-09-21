@@ -1,5 +1,5 @@
 <p align="center"><a href="https://sedesys.ru" target="_blank">
-<img src="" width="400" alt="Sedesys Log">
+<img src="" width="400" alt="Sedesys Logo">
 </a></p>
 
 <p align="center">
@@ -69,6 +69,12 @@
 ###Модуль Feedback
 - Событие "Получена новая заявка по форме обратной связи" - FeedbackHasSend, слушатели:
 - * FeedbackStaff::class //Отправляем всем предложение взять в работу, у кого допуск на "Обратная связь" 
+
+###Модуль Order
+- Событие "Заказ ожидает оплаты" - OrderHasAwaiting, слушатели:
+- * .....
+- * .....
+
 
 ##Публикуемые классы
 ###Определение

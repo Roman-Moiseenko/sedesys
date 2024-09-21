@@ -19,13 +19,17 @@
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-                <el-table-column label="IMG" width="100">
+                <el-table-column label="IMG" width="70">
                     <template #default="scope">
-                        <el-image style="width: 50px; height: 50px" :src="scope.row.avatar" fit="fill" />
+                        <el-image style="width: 40px; height: 40px" :src="scope.row.avatar" fit="fill" />
                     </template>
                 </el-table-column>
                 <el-table-column sortable prop="phone" label="Телефон" width="140"/>
-                <el-table-column sortable prop="fullname" label="ФИО"/>
+                <el-table-column sortable prop="fullname" label="ФИО">
+                    <template #default="scope">
+                        {{ func.fullName(scope.row.fullname)}}
+                    </template>
+                </el-table-column>
                 <el-table-column sortable prop="email" label="Email"/>
                 <el-table-column sortable prop="address" label="Адрес"/>
                 <el-table-column label="OAuth" width="100">
@@ -87,6 +91,7 @@
 <script lang="ts" setup>
 import {useStore} from "/resources/js/store.js"
 import TableFilter from '@/Components/TableFilter.vue'
+import { func } from '/resources/js/func.js'
 
 const store = useStore();
 

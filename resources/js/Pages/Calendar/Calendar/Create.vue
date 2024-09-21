@@ -5,7 +5,7 @@
         <el-form :model="form" label-width="auto">
             <div class="grid lg:grid-cols-6 grid-cols-1 divide-x">
                 <div class="p-4 col-span-2">
-                    <!-- Повторить поля -->
+
                     <el-form-item label="Услуга" :rules="{required: true}">
                         <el-select v-model="form.service_id" placeholder="Название" @change="handleService">
                             <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name"/>
@@ -19,10 +19,13 @@
                 <div class="p-4 col-span-4">
                     <div class="flex">
                         <el-form-item label="Телефон" :rules="{required: true}">
-                            <el-input v-model="form.phone"  placeholder="80000000000" @input="handleMaskPhone" />
+                            <el-input v-model="form.phone"  placeholder="80000000000"
+                                      :formatter="(value) => func.MaskPhone(value)" @change="findUser"
+                                      :disabled="isSaving"
+                            />
                         </el-form-item>
                         <el-form-item label="Имя" :rules="{required: true}">
-                            <el-input v-model="form.user"  placeholder="" />
+                            <el-input v-model="form.user"  placeholder=""  :disabled="isSaving"/>
                         </el-form-item>
                         <el-button type="primary" @click="onSubmit" class="ml-3">Записать</el-button>
                     </div>
@@ -39,9 +42,6 @@
                     </div>
                 </div>
             </div>
-
-
-
         </el-form>
     </div>
 </template>
@@ -49,17 +49,19 @@
 
 <script lang="ts" setup>
     import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
+    import {reactive, ref} from 'vue'
     import {router} from "@inertiajs/vue3";
     import { usePage } from '@inertiajs/vue3'
     import {func} from "/resources/js/func.js"
     import axios from "axios";
     import ru from 'element-plus/dist/locale/ru.mjs'
+
     import 'element-plus/es/components/message/style/css'; // this is only needed if the page also used ElMessage
     import 'element-plus/es/components/message-box/style/css';
     import {ElMessage} from "element-plus";
 
     const url = usePage().url
+    const isSaving = ref(false)
     const props = defineProps({
         errors: Object,
         //route: String,
@@ -71,6 +73,7 @@
         //employees: Array,
         rules: Array,
         info: Array,
+        find_user: String,
     });
 
     const form = reactive({
@@ -97,12 +100,22 @@
     function handleTime(val) {
         console.log(val)
     }
-    function handleMaskPhone(val) {
-        form.phone = func.MaskPhone(val);
+    function findUser() {
+        isSaving.value = true;
+        axios.post(props.find_user, {phone: form.phone})
+            .then(response => {
+                console.log(response.data);
+                if (response.data === false) {
+                } else {
+                    form.user = response.data.fullname.firstname
+                }
+                isSaving.value = false
+            });
     }
     function onSubmit() {
         form.mode = 'save';
         if (form.date !== null && form.service_id !== null && form.time !== null && form.phone !== null) {
+            form.date = func.date(form.date)
             router.post(url, form)
         } else {
             ElMessage({

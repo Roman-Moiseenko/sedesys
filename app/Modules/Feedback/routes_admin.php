@@ -21,6 +21,7 @@ Route::group(
 
                 Route::get('/dashboard', 'FeedbackController@dashboard')->name('dashboard');
                 Route::post('/{feedback}/to-email', 'FeedbackController@to_email')->name('to-email');
+                Route::post('/{feedback}/to-order', 'FeedbackController@to_order')->name('to-order');
                 Route::post('/{feedback}/to-completed', 'FeedbackController@to_completed')->name('to-completed');
                 Route::post('/{feedback}/to-archive', 'FeedbackController@to_archive')->name('to-archive');
                 Route::post('/{feedback}/from-archive', 'FeedbackController@from_archive')->name('from-archive');

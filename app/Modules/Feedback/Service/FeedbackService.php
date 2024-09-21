@@ -6,11 +6,24 @@ use App\Modules\Notification\Events\TelegramHasReceived;
 use App\Modules\Notification\Helpers\NotificationHelper;
 use App\Modules\Notification\Helpers\TelegramParams;
 use App\Modules\Notification\Message\StaffMessage;
+use App\Modules\Order\Entity\Order;
+use App\Modules\Order\Service\OrderService;
+use App\Modules\User\Repository\UserRepository;
+use App\Modules\User\Service\UserService;
 use Illuminate\Http\Request;
 use App\Modules\Feedback\Entity\Feedback;
 
 class FeedbackService
 {
+
+    private OrderService $orderService;
+    private UserRepository $users;
+
+    public function __construct(OrderService $orderService, UserRepository $users,)
+    {
+        $this->orderService = $orderService;
+        $this->users = $users;
+    }
 
     public function create(Request $request): Feedback
     {
@@ -77,5 +90,32 @@ class FeedbackService
             );
             //event(new RecordHasChangeStatus($calendar));
         }
+    }
+
+    public function createOrder(Feedback $feedback): Order
+    {
+        if (is_null($feedback->order_id)) {
+            $order = $this->orderService->createByStaff(
+                base: Order::BASE_FEEDBACK,
+            );
+
+            $feedback->order_id = $order->id;
+            $feedback->status = Feedback::STATUS_COMPLETED;
+            $feedback->save();
+
+            //Если заполнен один из контактов, находим или создаем пользователя
+            if ($feedback->phone != null || $feedback->email != null) {
+                $user = $this->users->findOrCreate(
+                    phone: $feedback->phone,
+                    email: $feedback->email,
+                    name: $feedback->user,
+                );
+
+                $order->setUser($user->id);
+            }
+        } else {
+            $order = $feedback->order;
+        }
+        return $order;
     }
 }

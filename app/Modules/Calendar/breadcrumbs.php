@@ -7,22 +7,23 @@ use App\Modules\Calendar\Entity\Calendar;
 
 Breadcrumbs::for('admin.calendar.calendar.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.home');
-    $trail->push('Calendar', route('admin.calendar.calendar.index'));
+    $trail->push('Календарь записи', route('admin.calendar.calendar.index'));
 });
 Breadcrumbs::for('admin.calendar.calendar.create', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.calendar.calendar.index');
-    $trail->push('Добавить Calendar', route('admin.calendar.calendar.create'));
+    $trail->push('Добавить запись', route('admin.calendar.calendar.create'));
 });
-
+/*
 Breadcrumbs::for('admin.calendar.calendar.show', function (BreadcrumbTrail $trail, Calendar $calendar) {
     $trail->parent('admin.calendar.calendar.index');
     $trail->push($calendar->id, route('admin.calendar.calendar.show', $calendar));
 });
 
+
 Breadcrumbs::for('admin.calendar.calendar.edit', function (BreadcrumbTrail $trail, Calendar $calendar) {
     $trail->parent('admin.calendar.calendar.show', $calendar);
     $trail->push('Редактировать', route('admin.calendar.calendar.edit', $calendar));
-});
+});*/
 
 Breadcrumbs::for('admin.calendar.rule.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.home');

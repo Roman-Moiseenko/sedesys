@@ -72,6 +72,7 @@ class ServiceRepository
             ->first();
     }
 
+
     public function outEmployees(Service $service)
     {
         $ids = $service->employees()->pluck('id')->toArray();
@@ -132,7 +133,7 @@ class ServiceRepository
         ];
     }
 
-    public function ConsumableWithToArray(Service $service): array
+    public function ServiceWithToArray(Service $service): array
     {
         $withData = [
             'classification' => $service->classification()->first()->toArray(),

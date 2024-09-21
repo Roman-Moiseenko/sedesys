@@ -4,6 +4,7 @@ namespace App\Modules\Feedback\Entity;
 
 use App\Modules\Admin\Entity\Admin;
 use App\Modules\Base\Entity\Photo;
+use App\Modules\Order\Entity\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,11 +21,13 @@ use function Laravel\Prompts\select;
  * @property array $data
  * @property int $status
  * @property bool $archive
+ * @property int $order_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $completed_at
  * @property Template $template
  * @property Admin $staff
+ * @property Order $order
  */
 class Feedback extends Model
 {
@@ -114,6 +117,11 @@ class Feedback extends Model
     public function staff()
     {
         return $this->belongsTo(Admin::class, 'staff_id', 'id')->withDefault();
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
     public function statusHtml(): string

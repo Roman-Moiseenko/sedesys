@@ -11,6 +11,8 @@ use App\Modules\Feedback\Repository\TemplateRepository;
 use App\Modules\Feedback\Requests\FeedbackRequest;
 use App\Modules\Feedback\Repository\FeedbackRepository;
 use App\Modules\Feedback\Service\FeedbackService;
+use App\Modules\Order\Entity\Order;
+use App\Modules\Order\Service\OrderService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use function Symfony\Component\Translation\t;
@@ -24,10 +26,11 @@ class FeedbackController extends Controller
     private TemplateRepository $templates;
 
     public function __construct(
-        FeedbackService $service,
+        FeedbackService    $service,
         FeedbackRepository $repository,
-        StaffRepository $staffs,
+        StaffRepository    $staffs,
         TemplateRepository $templates,
+
     )
     {
         $this->service = $service;
@@ -90,7 +93,16 @@ class FeedbackController extends Controller
     {
         /*$feedback->status = Feedback::STATUS_WORK;
         $feedback->save();*/
+        $feedback->status = Feedback::STATUS_WORK;
+        $feedback->save();
         return redirect()->route('admin.mail.outbox.create', ['email' => $feedback->email, 'subject' => 'Re: ' . $feedback->template->name]);
+    }
+
+    public function to_order(Feedback $feedback)
+    {
+        $order = $this->service->createOrder($feedback);
+
+        return redirect()->route('admin.order.order.show', $order);
     }
 
     public function from_archive(Feedback $feedback)

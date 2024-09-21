@@ -40,7 +40,6 @@ class CalendarController extends Controller
         $this->employees = $employees;
     }
 
-
     public function index(Request $request)
     {
         $calendars = $this->repository->getIndex($request, $filters);
@@ -82,23 +81,27 @@ class CalendarController extends Controller
             'services' => $services,
             'rules' => $rules ?? [],
             'info' => $info ?? null,
+            'find_user' => route('admin.user.user.find')
         ]);
-    }
-
-    public function show(Calendar $calendar)
-    {
-        return Inertia::render('Calendar/Calendar/Show', [
-                'calendar' => $calendar,
-            ]
-        );
     }
 
     public function destroy(Calendar $calendar)
     {
         $this->service->destroy($calendar);
 
-        return redirect()->back()->with('success', 'Удаление прошло успешно');
+        return redirect()->back()->with('success', 'Запись удалена');
     }
 
+    public function to_order(Calendar $calendar)
+    {
+        $order = $this->service->createOrder($calendar);
+        return redirect()->route('admin.order.order.show', $order);
+    }
+
+    public function cancel(Calendar $calendar)
+    {
+        $calendar->cancel();
+        return redirect()->back()->with('success', 'Запись отменена');
+    }
 
 }

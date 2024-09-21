@@ -52,10 +52,10 @@ class DummyEntitySingularController extends Controller
 
     public function show(DummyEntitySingular $dummyVariableEntitySingular)
     {
-        $dummyVariableEntitySingular = $this->repository->DummyEntitySingularWithToArray($dummyVariableEntitySingular);
+
 
         return Inertia::render('DummySingular/DummyEntitySingular/Show', [
-                'dummyVariableEntitySingular' => $dummyVariableEntitySingular,
+                'dummyVariableEntitySingular' => $this->repository->DummyEntitySingularWithToArray($dummyVariableEntitySingular),
                 'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
             ]
         );

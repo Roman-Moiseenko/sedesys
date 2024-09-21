@@ -17,6 +17,13 @@ export const func = {
         if (val.length >= 12) val = val.substring(0, val.length - 1);
         return val;
     },
+    MaskEmail: (val) => {
+        let last = val.slice(-1);
+       /* if (last.match(/\d+/g) === null && last.match(/[a-z\-_]/g) === null) {
+            val = val.substring(0, val.length - 1);
+        }*/
+        return val;
+    },
     /**
      * Формат логина - латиница и цифры
      * @param val
@@ -44,6 +51,15 @@ export const func = {
         }
         return val;
     },
+    MaskCount: (val, min = 1, max = null) => {
+        let last = val.slice(-1);
+        if (last.match(/\d+/g) === null) {
+            val = val.substring(0, val.length - 1);
+        }
+        if (val < min) val = min;
+        if (max !== null && val > max) val = max;
+        return val;
+    },
     MaskFloat: (val) => {
         let last = val.slice(-1);
         if (last.match(/\d+/g) === null && last.match(/\./g) === null) {
@@ -57,6 +73,13 @@ export const func = {
     price: (val) => {
         if (val === null || val === '' || val === 0) return '';
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + '  ₽';
+    },
+    phone: (val) => {
+        if (val === null || val === '' || val === 0 || val === undefined) return '';
+        //return val
+        return val.substr(0, 1) + ' ' + val.substr(1, 3) + '-' + val.substr(4, 3) + '-' + val.substr(7, 4);
+
+        //return mb_substr($value, 0, 1) . ' ' . mb_substr($value, 1, 3) . '-' . mb_substr($value, 6, 3) . '-' . mb_substr($value, 7, 4);
     },
     experience: (val) => {
         if (val === null || val === 0) return '';

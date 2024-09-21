@@ -4,6 +4,7 @@ namespace App\Modules\Calendar\Entity;
 
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Employee\Entity\Employee;
+use App\Modules\Order\Entity\Order;
 use App\Modules\Service\Entity\Service;
 use App\Modules\User\Entity\User;
 use Carbon\Carbon;
@@ -16,19 +17,29 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $employee_id
  * @property int $user_id
  * @property int $status
+ * @property int $order_id
  * @property Carbon $record_at
  * @property string $comment
  * @property Service $service
  * @property Employee $employee
  * @property User $user
+ * @property Order $order
  */
 class Calendar extends Model
 {
     use HasFactory;
+
     const RECORD_NEW = 1010;
     const RECORD_CONFIRM = 1011;
     const RECORD_COMPLETED = 1012;
     const RECORD_CANCEL = 1013;
+
+    const STATUSES = [
+        self::RECORD_NEW => 'Новая',
+        self::RECORD_CONFIRM => 'Подтверждено',
+        self::RECORD_COMPLETED => 'Завершено',
+        self::RECORD_CANCEL => 'Отмена',
+    ];
 
     public $timestamps = false;
     protected $casts = [
@@ -73,7 +84,6 @@ class Calendar extends Model
     {
         return $this->status == self::RECORD_CANCEL;
     }
-
 
 
     /**
@@ -136,7 +146,15 @@ class Calendar extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
 
+    public function status(): string
+    {
+        return self::STATUSES[$this->status];
+    }
 
     /**
      * Хелперы и Интерфейсы

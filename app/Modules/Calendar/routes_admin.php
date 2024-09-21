@@ -17,7 +17,9 @@ Route::group(
             function() {
 
                 Route::any('/create', 'CalendarController@create')->name('create');
-                Route::get('/{calendar}', 'CalendarController@show')->name('show');
+                Route::any('/{calendar}/to-order', 'CalendarController@to_order')->name('to-order');
+                Route::any('/{calendar}/cancel', 'CalendarController@cancel')->name('cancel');
+                //Route::get('/{calendar}', 'CalendarController@show')->name('show');
                 Route::delete('/destroy/{calendar}', 'CalendarController@destroy')->name('destroy');
                 //Route::post('/store', 'CalendarController@store')->name('store');
                 Route::get('/', 'CalendarController@index')->name('index');

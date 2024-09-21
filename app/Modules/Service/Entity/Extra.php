@@ -6,6 +6,8 @@ namespace App\Modules\Service\Entity;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Base\Entity\SortModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property int $id
@@ -18,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $active
  * @property string $awesome
  * @property Photo $icon
+ * @property Service[] $services
  */
 class Extra extends Model implements SortModel
 {
@@ -80,9 +83,14 @@ class Extra extends Model implements SortModel
         return $this->sort;
     }
 
-    public function icon()
+    public function icon(): MorphOne
     {
         return $this->morphOne(Photo::class, 'imageable')->withDefault();;
+    }
+
+    public function services(): BelongsTo
+    {
+        return $this->belongsTo(Service::class, 'service_id', 'id');
     }
 
     public function getIcon(string $thumb = ''): ?string
@@ -91,6 +99,9 @@ class Extra extends Model implements SortModel
         if (empty($thumb)) return $this->icon->getUploadUrl();
         return $this->icon->getThumbUrl($thumb);
     }
-
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
 
 }

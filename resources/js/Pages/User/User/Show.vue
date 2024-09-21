@@ -1,6 +1,6 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl">{{ user.fullname.surname + ' ' + user.fullname.firstname + ' ' + user.fullname.secondname}}</h1>
+    <h1 class="font-medium text-xl">{{ func.fullName(user.fullname) }}</h1>
 
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid grid-cols-3 divide-x">
@@ -56,9 +56,13 @@
     </div>
 </template>
 
+<script setup>
+import { func } from '/resources/js/func.js'
+</script>
 <script>
     import {Head, Link, router} from '@inertiajs/vue3'
     import Layout from '@/Components/Layout.vue'
+
 
     export default {
         components: {

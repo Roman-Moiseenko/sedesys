@@ -95,7 +95,6 @@ class UserController extends Controller
 
 
     //Axios
-
     public function find_phone(Request $request)
     {
         try {
@@ -111,7 +110,34 @@ class UserController extends Controller
         } catch (\Throwable $e) {
             return response()->json([$e->getMessage()]);
         }
-
-
     }
+
+    //Работа с User
+    public function find(Request $request)
+    {
+        $phone = $request->input('phone');
+        if (is_null($user = User::where('phone', $phone)->first())) {
+            return response()->json(false);
+        } else {
+            return response()->json($user);
+        }
+    }
+
+    public function set(User $user, Request $request)
+    {
+        try {
+            $this->service->update($user, $request);
+            return redirect()->back()->with('success', 'Сохранено');
+            //return response()->json(true);
+        } catch (\DomainException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+            //return response()->json($e->getMessage());
+        }
+    }
+    /*
+    public function add(Request $request)
+    {
+        $meassage = $this->service->create_fast($request);
+        return redirect()->back()->with('success', $meassage);
+    }*/
 }

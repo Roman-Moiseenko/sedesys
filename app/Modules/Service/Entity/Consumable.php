@@ -87,4 +87,8 @@ class Consumable extends Model
     /**
      * Хелперы и Интерфейсы
      */
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
 }

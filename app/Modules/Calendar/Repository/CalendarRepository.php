@@ -63,8 +63,25 @@ class CalendarRepository
             'employee' => $calendar->employee->fullname->getFullName(),
             'user' => $calendar->user->phone . ' (' . $calendar->user->fullname->firstname .' )',
             'comment' => $calendar->comment,
-            'url' => route('admin.calendar.calendar.show', $calendar),
+            'order_id' => $calendar->order_id,
+            'today' => $this->isToday($calendar->record_at),
+            'is_cancel' =>$calendar->isCancel(),
+            'status' => $calendar->status(),
+            'to_order' => route('admin.calendar.calendar.to-order', $calendar),
+            'cancel' => route('admin.calendar.calendar.cancel', $calendar),
             'destroy' => route('admin.calendar.calendar.destroy', $calendar),
         ];
+    }
+
+
+    private function isToday(Carbon $date): int
+    {
+        $now = Carbon::parse(now()->toDateString());
+        $_date = Carbon::parse($date->toDateString());
+
+        if ($now->eq($_date)) return 0;
+        if ($now->lt($_date)) return 1;
+        if ($now->gt($_date)) return -1;
+        throw new \DomainException('Неверная дата ' . $date->format('d-m-Y'));
     }
 }

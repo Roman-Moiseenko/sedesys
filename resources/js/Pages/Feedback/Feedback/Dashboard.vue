@@ -62,6 +62,13 @@
                                    @click.stop="handleEmail(scope.row)">
                             Email
                         </el-button>
+                        <el-button v-if="!scope.row.completed || scope.row.order_id"
+                                   type="warning"
+                                   size="small"
+                                   :plain="scope.row.order_id"
+                                   @click.stop="handleOrder(scope.row)">
+                            Order
+                        </el-button>
                         <el-button v-if="!scope.row.completed"
                                    size="small"
                                    type="success"
@@ -118,6 +125,10 @@ const props = defineProps({
     staffs: Object,
 })
 
+function handleOrder(row) {
+    router.post(row.to_order)
+}
+
 function handleEmail(row) {
     router.post(row.to_email)
 }
@@ -133,6 +144,7 @@ function handleArchive(row) {
 function onStaffChange(row, staff) {
     router.post(row.set_staff, {staff: staff})
 }
+
 </script>
 
 

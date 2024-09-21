@@ -7,6 +7,8 @@ use App\Modules\Base\Entity\DisplayedModel;
 use App\Modules\Base\Entity\Meta;
 use App\Modules\Base\Entity\Photo;
 use App\Modules\Base\Traits\GalleryField;
+use App\Modules\Discount\Entity\Promotion;
+use App\Modules\Discount\Entity\PromotionService;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Page\Entity\Widget;
 use App\Modules\Page\Entity\WidgetData;
@@ -29,6 +31,7 @@ use Illuminate\Support\Str;
  * @property Review[] $reviews
  * @property Extra[] $extras
  * @property Consumable[] $consumables
+ * @property Promotion $promotion
  */
 class Service extends DisplayedModel implements WidgetData
 {
@@ -56,9 +59,37 @@ class Service extends DisplayedModel implements WidgetData
         return is_null($this->classification_id) ? '' : $this->classification->name;
     }
 
+    public function extra_cost(int $employee_id)
+    {
+        foreach ($this->employees as $employee) {
+            if ($employee->id == $employee_id) {
+                return $employee->pivot->extra_cost;
+            }
+        }
+        throw new \DomainException('Сотрудник не найден в услуге ' . $this->name);
+    }
+
     /**
      * Отношения
      */
+    public function promotion()
+    {
+        /*return $this->hasOneThrough(
+            Promotion::class,
+            PromotionService::class,
+            'service_id',
+            'id',
+            'id',
+            'promotion_id');
+        */
+        return $this->belongsToMany(Promotion::class, 'promotions_services', 'service_id', 'promotion_id')->withPivot('price');
+    }
+
+    public function getPromotion()
+    {
+        if (empty($this->promotion)) return null;
+        return $this->promotion()->first();
+    }
 
     public function examples()
     {
@@ -148,4 +179,6 @@ class Service extends DisplayedModel implements WidgetData
         }
         return $amount;
     }
+
+
 }

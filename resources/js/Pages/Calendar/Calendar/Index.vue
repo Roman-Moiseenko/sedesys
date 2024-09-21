@@ -25,9 +25,8 @@
             <el-table
                 :data="tableData"
                 :max-height="$data.tableHeight"
-                style="width: 100%; cursor: pointer;"
+                style="width: 100%;"
                 :row-class-name="tableRowClassName"
-                @row-click="routeClick"
                 v-loading="store.getLoading"
             >
                 <!-- Повторить поля -->
@@ -36,10 +35,30 @@
                 <el-table-column sortable prop="service" label="Услуга" />
                 <el-table-column sortable prop="employee" label="Персонал" />
                 <el-table-column sortable prop="user" label="Клиент" />
+                <el-table-column sortable prop="status" label="Статус" />
                 <el-table-column prop="comment" label="Комментарий"  show-overflow-tooltip/>
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
+
                         <el-button
+                            v-if="scope.row.today === 0 || scope.row.order_id"
+                            size="small"
+                            type="warning"
+                            :plain="scope.row.order_id"
+                            @click.stop="handleOrder(scope.row)"
+                            >
+                            Order
+                        </el-button>
+                        <el-button
+                            v-if="scope.row.today === -1 && !scope.row.is_cancel"
+                            size="small"
+                            type="info" dark
+                            @click.stop="handleCancel(scope.row)"
+                        >
+                            Cancel
+                        </el-button>
+                        <el-button
+                            v-if="!scope.row.is_cancel"
                             size="small"
                             type="danger"
                             @click.stop="handleDelete(scope.$index, scope.row)"
@@ -78,10 +97,11 @@
 
 <script lang="ts" setup>
     import { useStore } from "/resources/js/store.js"
-    import { Head, Link } from '@inertiajs/vue3'
+    import {Head, Link, router} from '@inertiajs/vue3'
     import Pagination from '@/Components/Pagination.vue'
     import ru from 'element-plus/dist/locale/ru.mjs'
     import TableFilter from '@/Components/TableFilter.vue'
+
     const store = useStore();
     interface IRow {
         active: number
@@ -93,11 +113,18 @@
         return ''
     }
 
+    function handleOrder(row) {
+        router.post(row.to_order)
+    }
+    function handleCancel(row) {
+        router.post(row.cancel)
+    }
 </script>
 
 <script lang="ts">
 import { router } from '@inertiajs/vue3'
 import { func} from '@/func.js'
+
 export default {
     props: {
         calendars: Object,
@@ -131,9 +158,6 @@ export default {
     methods: {
         createButton() {
             router.get('/admin/calendar/calendar/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
         },
         handleEdit(index, row) {
             router.get(row.edit);

@@ -66,11 +66,14 @@ class MakeModuleCommand extends Command
 
     protected function createMigration()
     {
+        $module = $this->module->studly()->snake();
+        //$entity = $this->entity->studly()->snake();
         $table = $this->entity->plural()->snake();
+
 
         try {
             $this->call('make:migration', [
-                'name' => "create_{$table}_table",
+                'name' => "create_{$module}_{$table}",
                 '--create' => $table,
             ]);
         } catch (Exception $e) {

@@ -39,23 +39,7 @@ class UserRepository
         if (count($filters) > 0) $filters['count'] = count($filters);
         return $query->paginate($request->input('size', 20))
             ->withQueryString()
-            ->through(fn(User $user) => [
-                'id' => $user->id,
-                'phone' => phone($user->phone),
-                'email' => $user->email,
-                'fullname' => $user->fullname->getFullName(),
-                'shortname' => $user->fullname->getShortname(),
-                'address' => $user->address->address,
-                'avatar' => $user->avatar,
-                'oauths' => array_map(function (OAuth $item){
-                    return $item->network;
-                }, $user->oauths()->getModels()),
-                'active' => $user->isActive(),
-                'verify' => ($user->isWait()) ? route('admin.user.user.verify', $user) : '',
-                'url' => route('admin.user.user.show', $user),
-                'edit' => route('admin.user.user.edit', $user),
-                'destroy' => route('admin.user.user.destroy', $user),
-            ]);
+            ->through(fn(User $user) => $this->UserToArray($user));
     }
 
 
@@ -66,11 +50,46 @@ class UserRepository
         return User::where('email', $email)->first();
     }
 
-    public function findEmailOrPhone($phone, $email):? User
+    public function findEmailOrPhone($phone = null, $email = null):? User
     {
         if (is_null($phone)) {
             return User::where('email', $email)->first();
         }
-        return User::where('phone', $email)->first();
+        return User::where('phone', $phone)->first();
+    }
+
+    public function findOrCreate($phone = null, $email = null, $name = null): User
+    {
+        if (is_null($user = $this->findEmailOrPhone($phone, $email))) {
+            $user = User::new($phone, $email);
+            if (!is_null($name)) {
+                $user->fullname->firstname = $name;
+                $user->save();
+            }
+        }
+        return $user;
+    }
+
+    public function UserToArray(User|null $user): array
+    {
+        return [
+            'id' => $user->id,
+            'phone' => $user->phone,
+            'email' => $user->email,
+            'fullname' => $user->fullname,
+            'address' => $user->address->address,
+            'avatar' => $user->avatar,
+            'oauths' => array_map(function (OAuth $item) {
+                return $item->network;
+            }, $user->oauths()->getModels()),
+            'active' => $user->isActive(),
+            'verify' => ($user->isWait()) ? route('admin.user.user.verify', $user) : '',
+            'url' => route('admin.user.user.show', $user),
+            'edit' => route('admin.user.user.edit', $user),
+            'destroy' => route('admin.user.user.destroy', $user),
+
+            'set' => route('admin.user.user.set', $user),
+        ];
+
     }
 }

@@ -15,12 +15,12 @@
     <!--script src="//cdn.jsdelivr.net/npm/@element-plus/icons-vue"></script-->
     <title inertia>{{ 'SeDeSys - CMS Управления бизнесом' }}</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @stack('styles')
     <!-- -->
     @inertiaHead
 </head>
-<body>
+<body class="">
 @inertia
 @stack('vendors')
 @stack('scripts')

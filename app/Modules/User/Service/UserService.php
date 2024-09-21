@@ -16,42 +16,28 @@ class UserService
             password: $request->string('password')
         );
 
-        $this->save_fields($user, $request);
+        $this->update($user, $request);
         $user->verify();
         return  $user;
     }
 
     public function update(User $user, Request $request)
     {
-        /**
-         * Сохраняем базовые поля
-         */
-        $user->phone = $request->string('phone')->trim()->value();
-        $user->save();
+        if ($request->has('phone')) $user->phone = $request->string('phone')->trim()->value();
+        if ($request->has('surname')) $user->fullname->surname = $request->string('surname')->trim()->value();
+        if ($request->has('firstname')) $user->fullname->firstname = $request->string('firstname')->trim()->value();
+        if ($request->has('secondname')) $user->fullname->secondname = $request->string('secondname')->trim()->value();
+        if ($request->has('address')) $user->address->address = $request->string('address')->trim()->value();
 
-        $this->save_fields($user, $request);
-    }
-
-    private function save_fields(User $user, Request $request)
-    {
-        $user->fullname = new FullName(
-            $request->string('surname')->trim()->value(),
-            $request->string('firstname')->trim()->value(),
-            $request->string('secondname')->trim()->value()
-        );
         $email = $request->string('email')->trim()->value();
         if (!empty($email) && $user->email !== $email) {
-
             if (is_null(User::where('email', $email)->first())) {
                 $user->email = $email;
             } else {
                 throw new \DomainException('Пользователь с таким email уже существует');
             }
-
         }
-
-        $user->address->address = (string)$request->string('address');
-
+        //throw new \DomainException(json_encode($request->all()));
         $user->save();
     }
 
@@ -62,5 +48,8 @@ class UserService
          */
         $user->delete();
     }
+
+
+
 
 }
