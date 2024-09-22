@@ -120,6 +120,7 @@
         </el-form>
     </el-dialog>
 
+
     <!-- Dialog Delete -->
     <el-dialog v-model="dialogDelete" title="Удалить запись" width="400" center>
         <div class="font-medium text-md mt-2">
@@ -143,7 +144,7 @@
 import {reactive, ref} from "vue";
 import {func} from '/resources/js/func.js'
 import {router} from "@inertiajs/vue3";
-import DialogDeleteEntity from '@/Components/DialogDeleteEntity.vue'
+import DialogDeleteEntity from '/resources/js/Components/DialogDeleteEntity.vue'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
 import Active from '/resources/js/Components/Elements/Active.vue'
 

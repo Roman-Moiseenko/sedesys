@@ -18,13 +18,12 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
                 v-loading="store.getLoading"
             >
-
                 <el-table-column sortable prop="name" label="Логин" width="100" />
                 <el-table-column prop="phone" label="Телефон" width="120" />
                 <el-table-column sortable prop="fullname" label="ФИО" />
@@ -46,13 +45,13 @@
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
+                            @click.stop="router.get(scope.row.edit)">
                             Edit
                         </el-button>
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -66,30 +65,36 @@
             :total="$page.props.staffs.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить сотрудника?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+
+    <DeleteEntityModal name="staff" name_entity="сотрудника" />
 </template>
 
 <script lang="ts" setup>
+import { Head, router } from '@inertiajs/vue3'
 import { useStore } from "/resources/js/store.js"
 import TableFilter from '@/Components/TableFilter.vue'
+import {inject, reactive, ref} from "vue";
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
 
+const props = defineProps({
+    staffs: Object,
+    title: {
+        type: String,
+        default: 'Список сотрудников',
+    },
+    filters: Array,
+    roles: Array,
+})
 const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.staffs.data])
+const filter = reactive({
+    user: props.filters.user,
+    role: props.filters.role,
+    draft: props.filters.draft,
+})
 
 interface Staff {
     role: string
@@ -101,80 +106,20 @@ const tableRowClassName = ({row, rowIndex}: {row: Staff }) => {
     }
     return ''
 };
-</script>
-
-<script lang="ts">
-
-import { Head } from '@inertiajs/vue3'
-import { router } from '@inertiajs/vue3'
-import Pagination from '@/Components/Pagination.vue'
-import ru from 'element-plus/dist/locale/ru.mjs'
-
-export default {
-    components: {
-        Head,
-        Pagination
-    },
-    props: {
-        staffs: Object,
-        title: {
-            type: String,
-            default: 'Список сотрудников',
-        },
-        filters: Array,
-        roles: Array,
-    },
-    emits: ['toggle-loading'],
-    data() {
-        return {
-            tableData: [...this.staffs.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                user: this.$props.filters.user,
-                role: this.$props.filters.role,
-                draft: this.$props.filters.draft,
-            },
-        }
-    },
-    mounted() {
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/staff/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-        handleToggle(index, row) {
-            router.visit(row.toggle, {
-                method:'post'});
-        },
-    }
+function handleDeleteEntity(row) {
+    $delete_entity.show('staff', row.destroy)
 }
 
-
+function createButton() {
+    router.get('/admin/staff/create')
+}
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleToggle(index, row) {
+    router.visit(row.toggle, {
+        method:'post'});
+}
 </script>
 
 <style >

@@ -18,7 +18,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -42,24 +42,24 @@
                         <el-button v-if="scope.row.active"
                                    size="small"
                                    type="warning"
-                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                                   @click.stop="handleToggle(scope.row)">
                             Hide
                         </el-button>
                         <el-button v-if="!scope.row.active"
                                    size="small"
                                    type="success"
-                                   @click.stop="handleToggle(scope.$index, scope.row)">
+                                   @click.stop="handleToggle(scope.row)">
                             Show
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
+                            @click.stop="router.get(scope.row.edit)">
                             Edit
                         </el-button>
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -74,57 +74,21 @@
             :total="$page.props.examples.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить example?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+
+    <DeleteEntityModal name="example" name_entity="пример" />
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    import { Head, Link } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
-    import TableFilter from '@/Components/TableFilter.vue'
-    import {func} from '@/func.js'
+import {inject, reactive, ref} from 'vue'
+import { useStore } from "/resources/js/store.js"
+import { Head, router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+import TableFilter from '@/Components/TableFilter.vue'
+import {func} from '@/func.js'
 
-    const store = useStore();
 
-    interface IRow {
-        /**
-         * Статусы
-        */
-        active: number
-    }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
-</script>
-
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-import { router } from '@inertiajs/vue3'
-
-export default {
-
-    layout: Layout,
-    props: {
+const props = defineProps({
         examples: Object,
         title: {
             type: String,
@@ -133,56 +97,46 @@ export default {
         filters: Array,
         services: Array,
         employees: Array,
-    },
-    data() {
-        return {
-            tableData: [...this.examples.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                title: this.$props.filters.title,
-                service: this.$props.filters.service,
-                employee: this.$props.filters.employee,
-            }
-        }
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/service/example/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
+    })
+const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.examples.data])
+const filter = reactive({
+    title: props.filters.title,
+    service: props.filters.service,
+    employee: props.filters.employee,
+})
 
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-        handleToggle(index, row) {
-            router.visit(row.toggle, {
-                method: 'post'
-            });
-        },
-    }
+interface IRow {
+    active: number
 }
+const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
+    if (row.active === false) {
+        return 'warning-row'
+    }
+    return ''
+}
+
+function handleDeleteEntity(row) {
+    $delete_entity.show('example', row.destroy).then(() => {
+
+    });
+}
+function createButton() {
+    router.get('/admin/service/example/create')
+}
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleToggle(row) {
+    router.visit(row.toggle, {
+        method: 'post'
+    });
+}
+
 </script>
+
 
 <style >
     .el-table tr.warning-row {
