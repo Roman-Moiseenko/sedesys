@@ -32,7 +32,7 @@ import { Head, router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
 import { useStore } from "/resources/js/store.js"
-import {defineProps, ref} from "vue/dist/vue";
+import {defineProps, ref} from "vue";
 
 const props = defineProps({
     settings: Object,

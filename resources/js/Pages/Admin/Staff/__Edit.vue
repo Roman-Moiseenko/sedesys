@@ -137,7 +137,7 @@ import {Delete, Download, Plus, ZoomIn} from '@element-plus/icons-vue'
 import axios from 'axios'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
 import Form from '@/Components/Form.vue'
-import {reactive} from "vue/dist/vue";
+import {reactive} from "vue";
 
 export default {
     components: {
