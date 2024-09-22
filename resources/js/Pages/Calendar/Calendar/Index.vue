@@ -24,7 +24,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%;"
                 :row-class-name="tableRowClassName"
                 v-loading="store.getLoading"
@@ -35,11 +35,10 @@
                 <el-table-column sortable prop="service" label="Услуга" />
                 <el-table-column sortable prop="employee" label="Персонал" />
                 <el-table-column sortable prop="user" label="Клиент" />
-                <el-table-column sortable prop="status" label="Статус" />
+                <el-table-column sortable prop="status_text" label="Статус" />
                 <el-table-column prop="comment" label="Комментарий"  show-overflow-tooltip/>
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
-
                         <el-button
                             v-if="scope.row.today === 0 || scope.row.order_id"
                             size="small"
@@ -50,7 +49,7 @@
                             Order
                         </el-button>
                         <el-button
-                            v-if="scope.row.today === -1 && !scope.row.is_cancel"
+                            v-if="scope.row.today === -1 && (scope.row.status.new || scope.row.status.confirm)"
                             size="small"
                             type="info" dark
                             @click.stop="handleCancel(scope.row)"
@@ -58,10 +57,10 @@
                             Cancel
                         </el-button>
                         <el-button
-                            v-if="!scope.row.is_cancel"
+                            v-if="scope.row.status.new && scope.row.today > -1"
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -76,33 +75,41 @@
             :total="$page.props.calendars.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить calendar?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+
+    <DeleteEntityModal name_entity="запись" />
+
 </template>
 
 <script lang="ts" setup>
     import { useStore } from "/resources/js/store.js"
-    import {Head, Link, router} from '@inertiajs/vue3'
+    import {Head, router} from '@inertiajs/vue3'
     import Pagination from '@/Components/Pagination.vue'
     import ru from 'element-plus/dist/locale/ru.mjs'
     import TableFilter from '@/Components/TableFilter.vue'
+    import {inject, reactive, ref} from "vue";
+    import { func} from '@/func.js'
 
+    const props = defineProps({
+        calendars: Object,
+        title: {
+            type: String,
+            default: 'Календарь записи',
+        },
+        filters: Array,
+        services: Array,
+        employees: Array,
+    })
     const store = useStore();
+    const $delete_entity = inject("$delete_entity")
+    const Loading = ref(false)
+    const tableData = ref([...props.calendars.data])
+    const filter = reactive({
+        phone: props.filters.phone,
+        service: props.filters.service,
+        employee: props.filters.employee,
+        day_at: props.filters.day_at,
+    })
+
     interface IRow {
         active: number
     }
@@ -112,79 +119,20 @@
         }
         return ''
     }
+    function handleDeleteEntity(row) {
+        $delete_entity.show(row.destroy).then(() => {
 
+        });
+    }
     function handleOrder(row) {
         router.post(row.to_order)
     }
     function handleCancel(row) {
         router.post(row.cancel)
     }
+
+    function createButton() {
+        router.get('/admin/calendar/calendar/create')
+    }
 </script>
 
-<script lang="ts">
-import { router } from '@inertiajs/vue3'
-import { func} from '@/func.js'
-
-export default {
-    props: {
-        calendars: Object,
-        title: {
-            type: String,
-            default: 'Календарь записи',
-        },
-        filters: Array,
-        services: Array,
-        employees: Array,
-    },
-    data() {
-        return {
-            tableData: [...this.calendars.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                phone: this.$props.filters.phone,
-                service: this.$props.filters.service,
-                employee: this.$props.filters.employee,
-                day_at: this.$props.filters.day_at,
-
-            }
-        }
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/calendar/calendar/create')
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
-
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-    }
-}
-</script>
-
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
-</style>

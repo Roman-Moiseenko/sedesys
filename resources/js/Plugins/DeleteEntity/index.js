@@ -6,11 +6,13 @@ const
     _current = reactive({name:"",resolve:null,reject:null, route: ""}),
     api = {
         active() {return _current.name;},
-        show(name, route) {
+        show(route, name = 'entity') {
+            console.log(name)
             _current.name = name;
             _current.route = route;
             return new Promise(
-                (resolve = () => { }, reject = () => { }) => {
+                (resolve = null, reject = null) => {
+                    console.log(0, resolve)
                     _current.resolve = resolve;
                     _current.reject = reject;
                 })
@@ -21,12 +23,12 @@ const
                 preserveScroll: true,
                 preserveState: false,
             });
-            _current.resolve()
+            if (_current.resolve !== null) _current.resolve()
             _current.name = ""
             _current.route = ""
         },
         cancel() {
-            _current.reject();
+            if (_current.reject !== null) _current.reject();
             _current.name = ""
             _current.route = ""
         }

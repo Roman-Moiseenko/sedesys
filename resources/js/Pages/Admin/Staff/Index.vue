@@ -66,7 +66,7 @@
         />
     </el-config-provider>
 
-    <DeleteEntityModal name="staff" name_entity="сотрудника" />
+    <DeleteEntityModal name_entity="сотрудника" />
 </template>
 
 <script lang="ts" setup>
@@ -106,10 +106,10 @@ const tableRowClassName = ({row, rowIndex}: {row: Staff }) => {
     }
     return ''
 };
-function handleDeleteEntity(row) {
-    $delete_entity.show('staff', row.destroy)
-}
 
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy)
+}
 function createButton() {
     router.get('/admin/staff/create')
 }
@@ -122,11 +122,4 @@ function handleToggle(index, row) {
 }
 </script>
 
-<style >
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>
+

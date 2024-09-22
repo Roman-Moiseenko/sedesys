@@ -18,7 +18,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -48,7 +48,7 @@
                         </span>
                         <span v-else>
                             <span v-if="scope.row.active">
-                                <el-button size="small" type="warning" @click.stop="handleToggle(scope.$index, scope.row)">
+                                <el-button size="small" type="warning" @click.stop="handleToggle(scope.row)">
                                     Hide
                                 </el-button>
                                 <el-button size="small" type="primary" @click.stop="handleStart(scope.$index, scope.row)">
@@ -56,14 +56,16 @@
                                 </el-button>
                             </span>
                             <span v-if="!scope.row.active">
-                                <el-button size="small" type="success" @click.stop="handleToggle(scope.$index, scope.row)">
+                                <el-button size="small" type="success" @click.stop="handleToggle(scope.row)">
                                     Show
                                 </el-button>
                             </span>
-                            <el-button size="small" @click.stop="handleEdit(scope.$index, scope.row)" class="ml-3">
+                            <el-button size="small"
+                                       @click.stop="router.get(scope.row.edit)" class="ml-3">
                                 Edit
                             </el-button>
-                            <el-button size="small" type="danger" @click.stop="handleDelete(scope.$index, scope.row)">
+                            <el-button size="small" type="danger"
+                                       @click.stop="handleDeleteEntity(scope.row)">
                                 Delete
                             </el-button>
                         </span>
@@ -79,34 +81,38 @@
             :total="$page.props.promotions.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить Акцию?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="акцию" />
 </template>
 
 <script lang="ts" setup>
 import {useStore} from "/resources/js/store.js"
-import {Head, Link} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
 import { func } from '@/func.js'
+import {inject, reactive, ref} from "vue";
 
+const props = defineProps({
+    promotions: Object,
+    title: {
+        type: String,
+        default: 'Список акций',
+    },
+    filters: Array,
+    statuses: Array,
+    services: Array,
+})
 const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.promotions.data])
+const filter = reactive({
+    name: props.filters.name,
+    status: props.filters.status,
+    service: props.filters.service,
+})
+
 
 interface IRow {
     /**
@@ -121,90 +127,36 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     }
     return ''
 }
+
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy);
+}
+
+function createButton() {
+    router.get('/admin/discount/promotion/create')
+}
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleStart(index, row) {
+    router.visit(row.start, {
+        method: 'post'
+    });
+}
+function handleFinish(index, row) {
+    router.visit(row.finish, {
+        method: 'post'
+    });
+}
+function handleToggle(row) {
+    router.visit(row.toggle, {
+        method: 'post'
+    });
+}
+
+
 </script>
 
-<script lang="ts">
-import {router} from '@inertiajs/vue3'
 
-export default {
 
-    props: {
-        promotions: Object,
-        title: {
-            type: String,
-            default: 'Список акций',
-        },
-        filters: Array,
-        statuses: Array,
-        services: Array,
-    },
-    data() {
-        return {
-            tableData: [...this.promotions.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                name: this.$props.filters.name,
-                status: this.$props.filters.status,
-                service: this.$props.filters.service,
-                //
-            }
-        }
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/discount/promotion/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
-        handleToggle(index, row) {
-            router.visit(row.toggle, {
-                method: 'post'
-            });
-        },
-        handleStart(index, row) {
-            console.log(row.start)
-            router.visit(row.start, {
-                method: 'post'
-            });
-        },
-        handleFinish(index, row) {
-            router.visit(row.finish, {
-                method: 'post'
-            });
-        },
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-    }
-}
-</script>
 
-<style>
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>

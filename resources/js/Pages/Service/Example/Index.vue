@@ -75,17 +75,17 @@
         />
     </el-config-provider>
 
-    <DeleteEntityModal name="example" name_entity="пример" />
+    <DeleteEntityModal name_entity="пример" />
 </template>
 
 <script lang="ts" setup>
-import {inject, reactive, ref} from 'vue'
+import {inject, reactive, ref, defineProps} from "vue";
+import ru from 'element-plus/dist/locale/ru.mjs'
+import {func} from '@/func.js'
 import { useStore } from "/resources/js/store.js"
 import { Head, router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
-import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
-import {func} from '@/func.js'
 
 
 const props = defineProps({
@@ -119,9 +119,7 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
 }
 
 function handleDeleteEntity(row) {
-    $delete_entity.show('example', row.destroy).then(() => {
-
-    });
+    $delete_entity.show(row.destroy);
 }
 function createButton() {
     router.get('/admin/service/example/create')
@@ -138,11 +136,4 @@ function handleToggle(row) {
 </script>
 
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
-</style>
+

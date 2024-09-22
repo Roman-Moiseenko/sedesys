@@ -49,11 +49,11 @@ console.log(props.rule.services);
  * Методы
  */
 function handleToggle(val) {
-    router.post(this.$props.rule.toggle);
+    router.post(props.rule.toggle);
 }
 
 function goEdit() {
-    router.get(this.$props.edit);
+    router.get(props.edit);
 }
 
 </script>
