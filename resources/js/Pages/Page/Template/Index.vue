@@ -13,7 +13,7 @@
     <div class="mt-2 p-5 bg-white rounded-md">
         <el-table
             :data="tableData"
-            :max-height="tableHeight"
+            :max-height="600"
             style="width: 100%; cursor: pointer;"
             @row-click="routeClick"
         >
@@ -27,7 +27,7 @@
                     <el-button
                         size="small"
                         type="danger"
-                        @click.stop="handleDelete(scope.$index, scope.row)"
+                        @click.stop="handleDeleteEntity(scope.row)"
                     >
                         Delete
                     </el-button>
@@ -35,24 +35,7 @@
             </el-table-column>
         </el-table>
     </div>
-
-    <!-- Dialog Delete -->
-    <el-dialog v-model="dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить Шаблон?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem(routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="шаблон" />
 
     <el-dialog v-model="dialogFormVisible" title="Создать шаблон" width="500">
         <el-form :model="form">
@@ -60,7 +43,8 @@
                 <el-input v-model="form.name" autocomplete="off" placeholder="На русском" />
             </el-form-item>
             <el-form-item label="Шаблон">
-                <el-input v-model="form.template" autocomplete="off" placeholder="Имя файла" @input="handleMaskSlug"/>
+                <el-input v-model="form.template" autocomplete="off" placeholder="Имя файла"
+                          :formatter="(val) => func.MaskSlug(val)"/>
             </el-form-item>
             <el-form-item label="Тип шаблона">
                 <el-select v-model="form.type" placeholder="Выберите тип">
@@ -79,78 +63,46 @@
     </el-dialog>
 </template>
 
-
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-import {router} from '@inertiajs/vue3'
-import {Head, Link} from '@inertiajs/vue3'
-import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {inject, reactive, ref, defineProps} from "vue";
+import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
+import {Head, router} from '@inertiajs/vue3'
+import {func} from "/resources/js/func.js"
 
-export default {
-    components: {
-        Head,
-        Link,
-        TableFilter,
+const props = defineProps({
+    templates: Array,
+    title: {
+        type: String,
+        default: 'Список Шаблонов',
     },
-    layout: Layout,
+    store: String,
+    types: Array,
+    filters: Array,
+})
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const dialogFormVisible = ref(false)
+const tableData = ref([...props.templates])
+const filter = reactive({
+    type: props.filters.type,
+})
+const form = reactive({
+    name: null,
+    template: null,
+    type: null,
+})
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy);
+}
 
-    data() {
-        return {
-            tableData: [...this.templates],
-            tableHeight: '600',
-            dialogDelete: false,
-            dialogFormVisible: false,
-            routeDestroy: null,
-            form: {
-                name: null,
-                template: null,
-                type: null,
-            },
-            filter: {
-                type: this.$props.filters.type,
-
-            },
-        }
-    },
-    props: {
-        templates: Array,
-        title: {
-            type: String,
-            default: 'Список Шаблонов',
-        },
-        store: String,
-        types: Array,
-        filters: Array,
-    },
-
-    methods: {
-        handleDelete(index, row) {
-            this.dialogDelete = true;
-            this.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete',
-                    preserveState: true,
-                });
-                this.dialogDelete = false;
-                this.routeDestroy = null;
-            }
-        },
-        onSubmit() {
-            this.dialogFormVisible = false;
-            router.post(this.store, this.form, { preserveState: true });
-        },
-        routeClick(row) {
-            router.get(row.url);
-        },
-        handleMaskSlug(val) {
-            this.form.template = func.MaskSlug(val);
-        }
-
-    }
+function onSubmit() {
+    dialogFormVisible.value = false;
+    router.post(props.store, form, { preserveState: true });
+}
+function routeClick(row) {
+    router.get(row.url);
 }
 </script>
+
 

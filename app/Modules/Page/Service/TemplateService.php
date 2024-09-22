@@ -24,7 +24,8 @@ class TemplateService
         $type = $request->string('type')->value();
         $template = $request->string('template')->trim()->value();
         $name = $request->string('name')->trim()->value();
-        mkdir(Template::Path($type), 0777, true);
+        if (!file_exists(Template::Path($type)))
+            mkdir(Template::Path($type), 0777, true);
         $file = Template::File($type, $template);
         //Заменяем данные в шаблоне
         //Возможно расширение параметров, для версии 0.2 dummyParamsName = Имя шаблона

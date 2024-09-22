@@ -12,7 +12,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 @row-click="routeClick"
                 v-loading="store.getLoading"
@@ -47,66 +47,37 @@
 
 <script lang="ts" setup>
 import {useStore} from "/resources/js/store.js"
-import {Head, Link} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
+import {defineProps, reactive, ref} from "vue";
 
+const props = defineProps({
+    systemMails: Object,
+    title: {
+        type: String,
+        default: 'Системная почта',
+    },
+    filters: Array,
+    mailables: Array,
+})
 const store = useStore();
+const Loading = ref(false)
+const tableData = ref([...props.systemMails.data])
+const filter = reactive({
+    mailable: props.filters.mailable,
+})
+
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleRepeat(index, row) {
+    router.visit(row.repeat, {
+        method: 'post'
+    });
+}
 
 </script>
 
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-import {router} from '@inertiajs/vue3'
 
-export default {
-
-    layout: Layout,
-    props: {
-        systemMails: Object,
-        title: {
-            type: String,
-            default: 'Системная почта',
-        },
-        filters: Array,
-        mailables: Array,
-    },
-    data() {
-        return {
-            tableData: [...this.systemMails.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                mailable: this.$props.filters.mailable,
-                //draft: this.$props.filters.draft,
-            },
-        }
-    },
-    methods: {
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleRepeat(index, row) {
-            router.visit(row.repeat, {
-                method: 'post'
-            });
-        },
-    }
-}
-</script>
-
-<style>
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>

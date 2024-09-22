@@ -7,7 +7,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -22,14 +22,13 @@
                     <template #default="scope">
                         <el-button
                             size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
+                            @click.stop="router.get(scope.row.edit)">
                             Edit
                         </el-button>
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
-                        >
+                            @click.stop="handleDeleteEntity(scope.row)">
                             Delete
                         </el-button>
                     </template>
@@ -43,105 +42,47 @@
             :total="$page.props.widgets.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить виджет?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="виджет" />
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    const store = useStore();
+import {inject, reactive, ref, defineProps} from "vue";
+import ru from 'element-plus/dist/locale/ru.mjs'
+import { useStore } from "/resources/js/store.js"
+import Pagination from '@/Components/Pagination.vue'
+import { Head, router } from '@inertiajs/vue3'
 
-    interface IRow {
-        /**
-         * Статусы
-        */
-        active: number
-    }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === 0) {
-            return 'warning-row'
-        }
-        return ''
-    }
-</script>
 
-<script lang="ts">
-    import { Head, Link } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import { router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
-
-export default {
-    components: {
-        Head,
-        Pagination
+const props = defineProps({
+    widgets: Object,
+    title: {
+        type: String,
+        default: 'Список виджетов',
     },
-    layout: Layout,
-    props: {
-        widgets: Object,
-        title: {
-            type: String,
-            default: 'Список виджетов',
-        }
-    },
-    data() {
-        return {
-            tableData: [...this.widgets.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-        }
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/page/widget/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
+})
+const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.widgets.data])
 
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
+interface IRow {
+    active: number
+}
+const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
+    if (row.active === 0) {
+        return 'warning-row'
     }
+    return ''
+}
+
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy);
+}
+function createButton() {
+    router.get('/admin/page/widget/create')
+}
+function routeClick(row) {
+    router.get(row.url)
 }
 </script>
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
-</style>

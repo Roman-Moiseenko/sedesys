@@ -13,7 +13,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -49,13 +49,13 @@
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
+                            @click.stop="router.get(scope.row.edit)">
                             Edit
                         </el-button>
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -69,126 +69,58 @@
             :total="$page.props.users.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить Клиента?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="клиента" />
 </template>
 
 <script lang="ts" setup>
+import {inject, reactive, ref, defineProps} from "vue";
 import {useStore} from "/resources/js/store.js"
 import TableFilter from '@/Components/TableFilter.vue'
 import { func } from '/resources/js/func.js'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+import {Head, router} from '@inertiajs/vue3'
 
+const props = defineProps({
+    users: Object,
+    title: {
+        type: String,
+        default: 'Список клиентов',
+    },
+    filters: Array,
+})
 const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.users.data])
+const filter = reactive({
+    user: props.filters.user,
+    address: props.filters.address,
+    draft: props.filters.draft,
+})
 
 interface IRow {
-    /**
-     * Статусы
-     */
     active: boolean
 }
-
 const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     if (row.active === false) {
         return 'warning-row'
     }
     return ''
 }
-</script>
-
-<script lang="ts">
-import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-import {router} from '@inertiajs/vue3'
-import Pagination from '@/Components/Pagination.vue'
-import ru from 'element-plus/dist/locale/ru.mjs'
-
-export default {
-    components: {
-        Head,
-        Pagination
-    },
-    layout: Layout,
-    props: {
-        users: Object,
-        title: {
-            type: String,
-            default: 'Список клиентов',
-        },
-        filters: Array,
-    },
-    data() {
-        return {
-            tableData: [...this.users.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                user: this.$props.filters.user,
-                address: this.$props.filters.address,
-                draft: this.$props.filters.draft,
-            },
-        }
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/user/user/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
-
-
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        handleActivated(index, row) {
-            router.visit(row.verify, {
-                method: 'post'
-            });
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-
-    }
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy);
+}
+function createButton() {
+    router.get('/admin/user/user/create')
+}
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleActivated(index, row) {
+    router.visit(row.verify, {
+        method: 'post'
+    });
 }
 </script>
 
-<style>
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>

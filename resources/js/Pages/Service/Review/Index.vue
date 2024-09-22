@@ -18,7 +18,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -51,14 +51,14 @@
                         <el-button
                             v-if="scope.row.is_edit"
                             size="small"
-                            @click.stop="handleEdit(scope.$index, scope.row)">
+                            @click.stop="router.get(scope.row.edit)">
                             Edit
                         </el-button>
                         <el-button
                             v-if="scope.row.is_edit"
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -73,33 +73,36 @@
             :total="$page.props.reviews.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить отзыв?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="отзыв" />
 </template>
 
 <script lang="ts" setup>
+import {inject, reactive, ref, defineProps} from "vue"
 import {useStore} from "/resources/js/store.js"
-import {Head, Link} from '@inertiajs/vue3'
+import {Head, Link, router} from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
 
+const props = defineProps({
+    reviews: Object,
+    title: {
+        type: String,
+        default: 'Список отзывов на услуги',
+    },
+    filters: Array,
+    services: Array,
+    employees: Array,
+})
 const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.reviews.data])
+const filter = reactive({
+    rating: props.filters.rating,
+    service_id: props.filters.service_id,
+    employee_id: props.filters.employee_id,
+})
 
 interface IRow {
     /**
@@ -107,87 +110,26 @@ interface IRow {
      */
     active: number
 }
-
 const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     if (row.active === false) {
         return 'warning-row'
     }
     return ''
 }
-</script>
 
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-import {router} from '@inertiajs/vue3'
-
-export default {
-
-    layout: Layout,
-    props: {
-        reviews: Object,
-        title: {
-            type: String,
-            default: 'Список отзывов на услуги',
-        },
-        filters: Array,
-        services: Array,
-        employees: Array,
-    },
-    data() {
-        return {
-            tableData: [...this.reviews.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-
-            filter: {
-                rating: this.$props.filters.rating,
-                service_id: this.$props.filters.service_id,
-                employee_id: this.$props.filters.employee_id,
-
-            }
-        }
-    },
-    methods: {
-        createButton() {
-            router.get('/admin/service/review/create')
-        },
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleEdit(index, row) {
-            router.get(row.edit);
-        },
-
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-        handleToggle(index, row) {
-            router.visit(row.toggle, {
-                method: 'post'
-            });
-        },
-    }
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy);
+}
+function createButton() {
+    router.get('/admin/service/review/create')
+}
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleToggle(index, row) {
+    router.visit(row.toggle, {
+        method: 'post'
+    });
 }
 </script>
 
-<style>
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>

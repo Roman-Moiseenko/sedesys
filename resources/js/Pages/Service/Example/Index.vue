@@ -59,8 +59,7 @@
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDeleteEntity(scope.row)"
-                        >
+                            @click.stop="handleDeleteEntity(scope.row)">
                             Delete
                         </el-button>
                     </template>
@@ -86,7 +85,6 @@ import { useStore } from "/resources/js/store.js"
 import { Head, router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import TableFilter from '@/Components/TableFilter.vue'
-
 
 const props = defineProps({
         examples: Object,
@@ -132,7 +130,6 @@ function handleToggle(row) {
         method: 'post'
     });
 }
-
 </script>
 
 

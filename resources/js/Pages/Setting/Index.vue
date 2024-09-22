@@ -6,7 +6,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -28,52 +28,34 @@
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    const store = useStore();
+import { Head, router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+import { useStore } from "/resources/js/store.js"
+import {defineProps, ref} from "vue/dist/vue";
 
-    interface IRow {
-        active: number
+const props = defineProps({
+    settings: Object,
+    title: {
+        type: String,
+        default: 'Список Классов настроек',
     }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
+})
+const store = useStore();
+const Loading = ref(false)
+const tableData = ref([...props.settings.data])
+interface IRow {
+    active: number
+}
+const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
+    if (row.active === false) {
+        return 'warning-row'
     }
-</script>
-
-<script lang="ts">
-    import { Head, Link } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import { router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
-
-export default {
-    components: {
-        Head,
-        Pagination
-    },
-    layout: Layout,
-    props: {
-        settings: Object,
-        title: {
-            type: String,
-            default: 'Список Классов настроек',
-        }
-    },
-    data() {
-        return {
-            tableData: [...this.settings.data],
-            tableHeight: '600',
-            Loading: false,
-        }
-    },
-    methods: {
-        routeClick(row) {
-            router.get(row.url)
-        },
-    }
+    return ''
+}
+function routeClick(row) {
+    router.get(row.url)
 }
 </script>
+
 

@@ -16,7 +16,7 @@
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
                 :data="tableData"
-                :max-height="$data.tableHeight"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -34,7 +34,7 @@
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.$index, scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -49,114 +49,59 @@
             :total="$page.props.inboxes.total"
         />
     </el-config-provider>
-    <!-- Dialog Delete -->
-    <el-dialog v-model="$data.dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить inbox?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="$data.dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem($data.routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="входящее письмо" />
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    import { Head, Link } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
-    import TableFilter from '@/Components/TableFilter.vue'
+import {inject, reactive, ref, defineProps} from "vue";
+import { useStore } from "/resources/js/store.js"
+import {Head, Link, router} from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+import TableFilter from '@/Components/TableFilter.vue'
 
-    const store = useStore();
-
-    interface IRow {
-        /**
-         * Статусы
-        */
-        read: number
-    }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.read === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
-</script>
-
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-import { router } from '@inertiajs/vue3'
-
-export default {
-
-    layout: Layout,
-    props: {
-        inboxes: Object,
-        title: {
-            type: String,
-            default: 'Входящая почта',
-        },
-        filters: Array,
-        boxes: Array,
-        load: String,
+const props = defineProps({
+    inboxes: Object,
+    title: {
+        type: String,
+        default: 'Входящая почта',
     },
-    data() {
-        return {
-            tableData: [...this.inboxes.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                from: this.$props.filters.from,
-                read: this.$props.filters.read,
-                box: this.$props.filters.box,
+    filters: Array,
+    boxes: Array,
+    load: String
+})
+const store = useStore();
+const $delete_entity = inject("$delete_entity")
+const Loading = ref(false)
+const tableData = ref([...props.inboxes.data])
+const filter = reactive({
+    from: props.filters.from,
+    read: props.filters.read,
+    box: props.filters.box,
+})
 
-            },
-        }
-    },
-    methods: {
-
-        routeClick(row) {
-            router.get(row.url)
-        },
-        handleLoad() {
-            router.get(this.$props.load)
-        },
-
-        handleDelete(index, row) {
-            this.$data.dialogDelete = true;
-            this.$data.routeDestroy = row.destroy;
-        },
-        removeItem(_route) {
-            if (_route !== null) {
-                router.visit(_route, {
-                    method: 'delete'
-                });
-                this.$data.dialogDelete = false;
-                this.$data.routeDestroy = null;
-            }
-        },
-    }
+interface IRow {
+    /**
+     * Статусы
+    */
+    read: number
 }
+const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
+    if (row.read === false) {
+        return 'warning-row'
+    }
+    return ''
+}
+
+function handleDeleteEntity(row) {
+    $delete_entity.show(row.destroy);
+}
+function routeClick(row) {
+    router.get(row.url)
+}
+function handleLoad() {
+    router.get(props.load)
+}
+
 </script>
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
-</style>
