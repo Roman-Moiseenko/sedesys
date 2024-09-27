@@ -37,8 +37,6 @@ class StaffController extends Controller
     {
         return Inertia::render('Admin/Staff/Create', [
             'roles' => $this->repository->roles(),
-            'route' => route('admin.staff.store'),
-            'chat_id' => route('admin.notification.telegram.chat-id'),
             ]);
     }
 
@@ -54,10 +52,7 @@ class StaffController extends Controller
         return Inertia::render('Admin/Staff/Show', [
             'staff' => $this->repository->StaffToArray($staff),
             'photo' => $staff->getImage(),
-            'edit' => route('admin.staff.edit', $staff),
-            'password' => route('admin.staff.password', $staff),
             'responsibilities' => array_select(Responsibility::RESPONSE),
-            'set_resp' => route('admin.staff.responsibility', $staff)
         ]);
     }
 
@@ -67,8 +62,6 @@ class StaffController extends Controller
             'roles' => $this->repository->roles(),
             'staff' => $staff,
             'photo' => $staff->getImage(),
-            'route' => route('admin.staff.update', $staff),
-            'chat_id' => route('admin.notification.telegram.chat-id'),
         ]);
     }
 

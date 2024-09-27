@@ -69,8 +69,11 @@ class CouponService
 
     public function destroy(Coupon $coupon)
     {
-        if ($coupon->isNew()) $coupon->delete();
-        throw new \DomainException('Купон сменил статус, удалить нельзя');
+        if ($coupon->isNew()) {
+            $coupon->delete();
+        } else {
+            throw new \DomainException('Купон сменил статус, удалить нельзя');
+        }
     }
 
     public function generate(int $length = 6, bool $full = false): string

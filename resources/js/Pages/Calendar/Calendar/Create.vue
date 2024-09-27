@@ -73,7 +73,6 @@
         //employees: Array,
         rules: Array,
         info: Array,
-        find_user: String,
     });
 
     const form = reactive({
@@ -102,7 +101,7 @@
     }
     function findUser() {
         isSaving.value = true;
-        axios.post(props.find_user, {phone: form.phone})
+        axios.post(route('admin.user.user.find'), {phone: form.phone})
             .then(response => {
                 console.log(response.data);
                 if (response.data === false) {

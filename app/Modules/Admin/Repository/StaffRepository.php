@@ -65,10 +65,11 @@ class StaffRepository
             'active' => $staff->active,
             'telegram_user_id' => $staff->telegram_user_id,
             'responsibilities' => $staff->responsibilities()->get()->pluck('code')->toArray(),
-            'url' => route('admin.staff.show', $staff),
+
+        /*    'url' => route('admin.staff.show', $staff),
             'edit' => route('admin.staff.edit', $staff),
             'destroy' => route('admin.staff.destroy', $staff),
-            'toggle' => route('admin.staff.toggle', $staff),
+            'toggle' => route('admin.staff.toggle', $staff),*/
         ];
     }
 

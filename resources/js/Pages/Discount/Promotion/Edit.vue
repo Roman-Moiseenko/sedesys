@@ -67,7 +67,6 @@
 
     const props = defineProps({
         errors: Object,
-        route: String,
         promotion: Object,
         title: {
             type: String,
@@ -81,7 +80,6 @@
 
     const form = reactive({
         displayed: func.displayedInfo(props.promotion, props.image, props.icon),
-
         description: props.promotion.description,
         condition_url: props.promotion.condition_url,
         start_at: props.promotion.start_at,
@@ -107,14 +105,16 @@
         if (form.range_at !== null && form.range_at.length === 2 && form.range_at[0] !== null)
             form.range_at = form.range_at.map(item => func.date(item));
 
-        router.visit(props.route, {
-            method: 'post',
-            data: form,
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: page => {
-                isUnSave.value = false
-            }
+        router.visit(
+            route('admin.discount.promotion.update', {promotion: props.promotion.id}),
+            {
+                method: 'post',
+                data: form,
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: page => {
+                    isUnSave.value = false
+                }
         });
     }
     ////<=

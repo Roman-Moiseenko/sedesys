@@ -89,7 +89,6 @@
 
     const props = defineProps({
         errors: Object,
-        route: String,
         rule: Object,
         title: {
             type: String,
@@ -100,7 +99,6 @@
         dates: Array,
         regularities: Array,
     });
-
     const form = reactive({
         name: props.rule.name,
         services: [...props.rule.services.map(item => item.id)],
@@ -110,7 +108,6 @@
         close: null,
         _method: 'put',
     })
-
     ///Блок сохранения и обновления=>
     const isUnSave = ref(false)
     watch(
@@ -122,7 +119,7 @@
     );
     function onSubmit(val) {
         form.close = val
-        router.visit(props.route, {
+        router.visit(route('admin.calendar.rule.update', {rule: props.rule.id}), {
             method: 'post',
             data: form,
             preserveScroll: true,

@@ -27,59 +27,50 @@
 
 
 <script lang="ts" setup>
-    import {Head, router} from '@inertiajs/vue3'
-    import {reactive, defineProps, watch, ref} from 'vue'
-    import {func} from "/resources/js/func.js"
+import {Head, router} from '@inertiajs/vue3'
+import {reactive, defineProps, watch, ref} from 'vue'
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        dummyVariableEntitySingular: Object,
-        title: {
-            type: String,
-            default: 'Редактирование dummyVariableEntitySingular',
-        },
+const props = defineProps({
+    errors: Object,
+    dummyVariableEntitySingular: Object,
+    title: {
+        type: String,
+        default: 'Редактирование dummyVariableEntitySingular',
+    },
+});
+
+const form = reactive({
+    ...props.dummyVariableEntitySingular,
+    //name: props.dummyVariableEntitySingular.name,
+    /**
+     * Добавить новые поля
+     */
+    _method: 'put',
+    close: null,
+})
+
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({ ...form }),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+function onSubmit(val) {
+    form.close = val
+    router.visit(route('admin.dummyVariableSingular.dummyVariableEntitySingular.update', {dummyVariableEntitySingular: props.dummyVariableEntitySingular.id}), {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
     });
-
-    const form = reactive({
-        ...props.dummyVariableEntitySingular,
-        //name: props.dummyVariableEntitySingular.name,
-        /**
-         * Добавить новые поля
-         */
-        _method: 'put',
-        close: null,
-    })
-
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({ ...form }),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
-    function onSubmit(val) {
-        form.close = val
-        router.visit(props.route, {
-            method: 'post',
-            data: form,
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: page => {
-                isUnSave.value = false
-            }
-        });
-    }
-    ////<=
+}
+////<=
 </script>
 

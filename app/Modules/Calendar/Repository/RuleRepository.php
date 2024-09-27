@@ -46,13 +46,10 @@ class RuleRepository
             });
         }
 
-
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
-        $rules = $query->paginate($request->input('size', 20))
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Rule $rule) => $this->RuleToArray($rule));
-
-        return $rules;
     }
 
 
@@ -89,10 +86,6 @@ class RuleRepository
             })->toArray(),
             'max' => $rule->max,
             'active' => $rule->isActive(),
-            'url' => route('admin.calendar.rule.show', $rule),
-            'edit' => route('admin.calendar.rule.edit', $rule),
-            'destroy' => route('admin.calendar.rule.destroy', $rule),
-            'toggle' => route('admin.calendar.rule.toggle', $rule),
         ];
     }
 

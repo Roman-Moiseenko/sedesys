@@ -94,46 +94,33 @@
 
     const props = defineProps({
         errors: Object,
-        route: String,
-        find_phone: String,
         title: {
             type: String,
             default: 'Создание купонов',
         },
     });
-
     const form = reactive({
         bonus: null,
         finished_at: null,
         min: null,
         users: [],
-
         condition: {
             all: null,
             long_days: null,
             payment_before: null,
             payment_after: null,
         },
-
-        /**
-         * Добавить новые поля
-         */
     })
-
-
     interface ListItem {
         value: string
         label: string
     }
-
     const options = ref<ListItem[]>([])
     const loading = ref(false)
-
     const remoteMethod = (query: string) => {
-        console.log(query, props.find_phone)
         if (query) {
             loading.value = true
-            axios.post(props.find_phone, {phone: query}).then(response => {
+            axios.post(route('admin.user.find_phone'), {phone: query}).then(response => {
                 console.log(response.data);
                 options.value = response.data
                 loading.value = false
@@ -142,15 +129,6 @@
             options.value = []
         }
     }
-
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
     function onSubmit() {
         if (form.condition.all === true) {
             form.users = [];
@@ -159,7 +137,7 @@
             form.condition.long_days = null
         }
         if (form.finished_at !== null) form.finished_at = func.date(form.finished_at);
-        router.post(props.route, form)
+        router.post(route('admin.discount.coupon.store'), form)
     }
     ///Блок сохранения и обновления=>
     const isUnSave = ref(false)

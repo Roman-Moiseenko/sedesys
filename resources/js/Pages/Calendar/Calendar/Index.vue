@@ -120,19 +120,23 @@
         return ''
     }
     function handleDeleteEntity(row) {
-        $delete_entity.show(row.destroy).then(() => {
+        $delete_entity.show(route('admin.calendar.calendar.destroy', {calendar: row.id})).then(() => {
 
         });
     }
     function handleOrder(row) {
-        router.post(row.to_order)
+        router.post(route('admin.calendar.calendar.to-order', {calendar: row.id}))
     }
     function handleCancel(row) {
-        router.post(row.cancel)
+        router.visit(route('admin.calendar.calendar.cancel', {calendar: row.id}), {
+            method: "post",
+            preserveState: true,
+            preserveScroll: true,
+        })
     }
 
     function createButton() {
-        router.get('/admin/calendar/calendar/create')
+        router.get(route('admin.calendar.calendar.create'))
     }
 </script>
 

@@ -107,7 +107,7 @@ const props = defineProps({
 const store = useStore();
 const $delete_entity = inject("$delete_entity")
 const Loading = ref(false)
-const tableData = ref([...props.classifications.data])
+const tableData = ref([...props.classifications])
 
 interface IRow {
     active: number

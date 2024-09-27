@@ -39,7 +39,7 @@ class CouponRepository
             'bonus' => price($coupon->bonus),
             'min' => price($coupon->min),
             'finished_at' => is_null($coupon->finished_at) ? 'бессрочно' : $coupon->finished_at->translatedFormat('j F Y'),
-            'destroy' => route('admin.discount.coupon.destroy', $coupon),
+//            'destroy' => route('admin.discount.coupon.destroy', $coupon),
 
         ];
     }

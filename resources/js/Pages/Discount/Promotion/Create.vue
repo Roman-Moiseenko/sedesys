@@ -68,7 +68,6 @@ import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
 const props = defineProps({
     errors: Object,
-    route: String,
     title: {
         type: String,
         default: 'Создание Акции',
@@ -76,10 +75,8 @@ const props = defineProps({
     templates: Array,
     tiny_api: String,
 });
-
 const form = reactive({
     displayed: func.displayedInfo(),
-
     description: null,
     condition_url: null,
     start_at: null,
@@ -87,7 +84,11 @@ const form = reactive({
     discount: null,
     range_at: [null, null],
 })
-
+function onSubmit() {
+    if (form.range_at !== null && form.range_at.length === 2 && form.range_at[0] !== null)
+        form.range_at = form.range_at.map(item => func.date(item));
+    router.post(route('admin.discount.promotion.store'), form)
+}
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)
 watch(
@@ -97,13 +98,5 @@ watch(
     },
     {deep: true}
 );
-
-function onSubmit() {
-    if (form.range_at !== null && form.range_at.length === 2 && form.range_at[0] !== null)
-        form.range_at = form.range_at.map(item => func.date(item));
-
-    router.post(props.route, form)
-}
-
 </script>
 

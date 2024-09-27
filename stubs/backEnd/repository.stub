@@ -39,11 +39,6 @@ class DummyEntitySingularRepository
             /**
 
              */
-
-            'url' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', $dummyVariableEntitySingular),
-            'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
-            'destroy' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.destroy', $dummyVariableEntitySingular),
-
         ];
     }
 

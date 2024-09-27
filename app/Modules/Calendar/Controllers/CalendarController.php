@@ -81,7 +81,6 @@ class CalendarController extends Controller
             'services' => $services,
             'rules' => $rules ?? [],
             'info' => $info ?? null,
-            'find_user' => route('admin.user.user.find')
         ]);
     }
 

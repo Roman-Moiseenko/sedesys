@@ -26,6 +26,7 @@ export default defineConfig({
             '@': '/resources/js',
             "tailwind-config.js": path.resolve(__dirname, "./tailwind.config.js"),
             '$': 'jQuery',
+            'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
         },
     },
     plugins: [

@@ -40,14 +40,14 @@
         </el-tabs>
 
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goEdit">Редактировать</el-button>
+            <el-button type="primary" @click="goEdit()">Редактировать</el-button>
         </div>
     </div>
 
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-select v-model="formAdd.service_id" placeholder="Услуга" style="width: 240px" filterable multiple>
             <el-option-group
-                v-for="group in services_data.group_services"
+                v-for="group in group_services"
                 :key="group.label"
                 :label="group.label"
             >
@@ -103,7 +103,6 @@ const props = defineProps({
     finish: String,
     image: String,
     icon: String,
-    services_data: Object,
     group_services: Array,
     attach: String,
 });
@@ -113,65 +112,63 @@ const formAdd = reactive({
 })
 
 function onAttach() {
-    router.post(props.services_data.attach, formAdd);
+    router.post(
+        route('admin.discount.promotion.attach', {promotion: props.promotion.id}),
+        formAdd
+    );
 }
 
 function onDetach(item) {
-    router.post(props.services_data.detach, {service_id: item.id});
+    router.post(
+        route('admin.discount.promotion.detach', {promotion: props.promotion.id}),
+        {service_id: item.id}
+    );
 }
 
 function onState(item) {
     item.disabled = true
-    router.visit(props.services_data.set, {
-        method: 'post',
-        preserveScroll: true,
-        preserveState: true,
-        data: {
-            service_id: item.id,
-            price: item.price,
-        },
-        onSuccess: page => {
-            item.disabled = false;
-        }
+    router.visit(
+        route('admin.discount.promotion.set', {promotion: props.promotion.id}),
+        {
+            method: 'post',
+            preserveScroll: true,
+            preserveState: true,
+            data: {
+                service_id: item.id,
+                price: item.price,
+            },
+            onSuccess: page => {
+                item.disabled = false;
+            }
     })
 }
 
-/**
- * Методы
- */
+function goEdit() {
+    router.get(route('admin.discount.promotion.edit', {promotion: props.promotion.id}));
+}
+function handleToggle(index, row) {
+    router.visit(route('admin.discount.promotion.toggle', {promotion: props.promotion.id}), {
+        method: 'post'
+    });
+}
+function handleStart(index, row) {
 
-
-</script>
-<script lang="ts">
-import {router} from '@inertiajs/vue3'
-
-export default {
-
-    methods: {
-        goEdit() {
-            router.get(this.$props.edit);
-        },
-        handleToggle(index, row) {
-            router.visit(this.$props.toggle, {
-                method: 'post'
-            });
-        },
-        handleStart(index, row) {
-            console.log(row.start)
-            router.visit(this.$props.start, {
-                method: 'post'
-            });
-        },
-        handleFinish(index, row) {
-            router.visit(this.$props.finish, {
-                method: 'post'
-            });
-        },
-    },
+    router.visit(
+        route('admin.discount.promotion.start', {promotion: props.promotion.id}),
+        {
+            method: 'post'
+        }
+    );
+}
+function handleFinish(index, row) {
+    router.visit(
+        route('admin.discount.promotion.finish', {promotion: props.promotion.id}),
+        {
+            method: 'post'
+        }
+    );
 }
 
 </script>
 
-<style>
 
-</style>

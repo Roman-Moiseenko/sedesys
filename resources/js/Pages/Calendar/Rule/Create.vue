@@ -7,7 +7,7 @@
                 <div class="p-4">
                     <!-- Повторить поля -->
                     <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Название" @input="handleMaskName"/>
+                        <el-input v-model="form.name" placeholder="Название"/>
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Периодичность">
@@ -81,44 +81,29 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head} from '@inertiajs/vue3'
+import {reactive} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание правила',
-        },
-        services: Array,
-        employees: Array,
-        regularities: Array,
-    });
-
-    const form = reactive({
-        name: null,
-        services: null,
-        employees: null,
-        regularity: null,
-        max: null,
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание правила',
+    },
+    services: Array,
+    employees: Array,
+    regularities: Array,
+});
+const form = reactive({
+    name: null,
+    services: null,
+    employees: null,
+    regularity: null,
+    max: null,
+})
+function onSubmit() {
+    router.post(route('admin.calendar.rule.store'), form)
+}
 </script>

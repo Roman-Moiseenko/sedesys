@@ -63,7 +63,8 @@
             <div class="p-4 col-span-4">
                 <el-form-item label="Доступы и уведомления" label-position="top">
                     <el-checkbox-group v-model="formResp" class="grid grid-cols-3">
-                        <el-checkbox v-for="item in responsibilities" :key="item.value" :value="item.value" :label="item.label" @change="onChange($event, item.value)"
+                        <el-checkbox v-for="item in responsibilities" :key="item.value" :value="item.value" :label="item.label"
+                                     @change="onChange($event, item.value)"
                                      class="pl-3"
                         />
                     </el-checkbox-group>
@@ -111,33 +112,30 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import {router, Head} from "@inertiajs/vue3";
-
 const props = defineProps({
     staff: Object,
     photo: {
         type: String,
         default: null,
     },
-    edit: String,
     errors: Object,
-    password: String,
     title: {
         type: String,
         default: 'Карточка сотрудника',
     },
     responsibilities: Array,
-    set_resp: String,
 });
-
-console.log(props.staff)
 const dialogFormVisible = ref(false)
 const formResp = ref(props.staff.responsibilities)
 const form = reactive({
     password: '',
 })
-
+//
 function subForm() {
-    router.visit(props.password, {
+    router.visit(
+        route('admin.staff.password', {staff: props.staff.id}),
+        //props.password,
+        {
         method: 'post',
         data: form,
         preserveState: true,
@@ -150,15 +148,11 @@ function subForm() {
 
 }
 function goEdit() {
-    router.get(props.edit);
+    router.get(route('admin.staff.edit', {staff: props.staff.id}));
 }
 
 function onChange(val, index) {
-    router.post(props.set_resp, {code: index});
-//    console.log(val, index);
+    router.post(route('admin.staff.responsibility', {staff: props.staff.id}), {code: index});
 }
 </script>
 
-<style scoped>
-
-</style>

@@ -25,7 +25,7 @@
                     <template #default="scope">
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -87,16 +87,21 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     }
     return ''
 }
+function handleEdit(row) {
+    router.get(
+        route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', {dummyVariableEntitySingular: row.id})
+    );
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy).then(() => {
+    $delete_entity.show(route('admin.dummyVariableSingular.dummyVariableEntitySingular.destroy', {dummyVariableEntitySingular: row.id})).then(() => {
 
     });
 }
 function createButton() {
-    router.get('/admin/dummyVariableSingular/dummyVariableEntitySingular/create')
+    router.get(route('.admin.dummyVariableSingular.dummyVariableEntitySingular.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.dummyVariableSingular.dummyVariableEntitySingular.show', {dummyVariableEntitySingular: row.id}))
 }
 </script>
 

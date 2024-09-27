@@ -22,10 +22,10 @@ class PromotionController extends Controller
     private string $tiny_api;
 
     public function __construct(
-        PromotionService $service,
+        PromotionService    $service,
         PromotionRepository $repository,
-        ServiceRepository $services,
-        TemplateRepository       $templates,
+        ServiceRepository   $services,
+        TemplateRepository  $templates,
     )
     {
         $this->service = $service;
@@ -56,7 +56,6 @@ class PromotionController extends Controller
         $templates = $this->templates->getTemplates('promotion');
 
         return Inertia::render('Discount/Promotion/Create', [
-            'route' => route('admin.discount.promotion.store'),
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,
         ]);
@@ -79,21 +78,10 @@ class PromotionController extends Controller
         $promotion = Promotion::where('id', $promotion->id)->with(['services'])->first();
         return Inertia::render('Discount/Promotion/Show', [
                 'promotion' => $promotion,
-                'edit' => route('admin.discount.promotion.edit', $promotion),
-                'toggle' => route('admin.discount.promotion.toggle', $promotion),
-                'start' => route('admin.discount.promotion.start', $promotion),
-                'finish' => route('admin.discount.promotion.finish', $promotion),
                 'services' => $services,
                 'image' => $promotion->getImage(),
                 'icon' => $promotion->getIcon(),
-
-                'services_data' => [
-                    'group_services' => $group_services,
-                    'attach' => route('admin.discount.promotion.attach', $promotion),
-                    'detach' => route('admin.discount.promotion.detach', $promotion),
-                    'set' => route('admin.discount.promotion.set', $promotion),
-                ],
-
+                'group_services' => $group_services,
             ]
         );
     }
@@ -104,7 +92,6 @@ class PromotionController extends Controller
 
         return Inertia::render('Discount/Promotion/Edit', [
             'promotion' => $promotion,
-            'route' => route('admin.discount.promotion.update', $promotion),
             'image' => $promotion->getImage(),
             'icon' => $promotion->getIcon(),
             'templates' => $templates,

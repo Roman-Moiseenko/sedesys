@@ -1,7 +1,6 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <h1 class="font-medium text-xl"> {{ rule.name }} </h1>
-
     <div class="mt-3 p-3 bg-white rounded-lg">
         <div class="grid grid-cols-1 divide-x">
             <div class="p-4">
@@ -26,7 +25,6 @@
             </el-button>
         </div>
     </div>
-
 </template>
 
 <script lang="ts" setup>
@@ -34,28 +32,18 @@ import {Head, router} from '@inertiajs/vue3'
 
 const props = defineProps({
     rule: Object,
-    edit: String,
     title: {
         type: String,
-        default: 'Карточка rule',
+        default: 'Правило для календаря',
     },
-    /**
-     * Задать props
-     */
+
 });
-console.log(props.rule.services);
-
-/**
- * Методы
- */
-function handleToggle(val) {
-    router.post(props.rule.toggle);
+function handleToggle() {
+    router.post(route('admin.calendar.rule.toggle', {rule: props.rule.id}));
 }
-
 function goEdit() {
-    router.get(props.edit);
+    router.get(route('admin.calendar.rule.edit', {rule: props.rule.id}));
 }
-
 </script>
 
 <style>

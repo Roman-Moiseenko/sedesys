@@ -52,7 +52,6 @@ class CalendarRepository
             ->through(fn(Calendar $calendar) => $this->CalendarToArray($calendar));
     }
 
-
     public function CalendarToArray(Calendar $calendar): array
     {
         return [
@@ -73,9 +72,6 @@ class CalendarRepository
                 'cancel' => $calendar->isCancel(),
                 'completed' => $calendar->isCompleted(),
             ],
-            'to_order' => route('admin.calendar.calendar.to-order', $calendar),
-            'cancel' => route('admin.calendar.calendar.cancel', $calendar),
-            'destroy' => route('admin.calendar.calendar.destroy', $calendar),
         ];
     }
 

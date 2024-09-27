@@ -57,7 +57,7 @@
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -123,19 +123,22 @@
         return ''
     }
 
+    function handleEdit(row) {
+        router.get(route('admin.calendar.rule.edit', {rule: row.id}))
+    }
     function handleDeleteEntity(row) {
-        $delete_entity.show(row.destroy).then(() => {
+        $delete_entity.show(route('admin.calendar.rule.destroy', {rule: row.id})).then(() => {
 
         });
     }
     function createButton() {
-        router.get('/admin/calendar/rule/create')
+        router.get(route('admin.calendar.rule.create'))
     }
     function routeClick(row) {
-        router.get(row.url)
+        router.get(route('admin.calendar.rule.show', {rule: row.id}))
     }
     function handleToggle(index, row) {
-        router.visit(row.toggle, {
+        router.visit(route('admin.calendar.rule.toggle', {rule: row.id}), {
             method: 'post'
         });
     }

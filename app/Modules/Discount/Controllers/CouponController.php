@@ -22,7 +22,6 @@ class CouponController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index(Request $request)
     {
         $coupons = $this->repository->getIndex($request, $filters);
@@ -31,7 +30,6 @@ class CouponController extends Controller
                 'coupons' => $coupons,
                 'filters' => $filters,
                 'statuses' => array_select(Coupon::STATUSES),
-
             ]
         );
     }
@@ -39,15 +37,12 @@ class CouponController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Discount/Coupon/Create', [
-            'route' => route('admin.discount.coupon.store'),
-            'find_phone' => route('admin.user.find_phone')
         ]);
     }
 
     public function store(CouponRequest $request)
     {
         $request->validated();
-
         $count = $this->service->create($request);
         return redirect()
             ->route('admin.discount.coupon.index')
@@ -58,7 +53,6 @@ class CouponController extends Controller
     {
         return Inertia::render('Discount/Coupon/Show', [
                 'coupon' => $coupon,
-                'edit' => route('admin.discount.coupon.edit', $coupon),
             ]
         );
     }
@@ -66,7 +60,6 @@ class CouponController extends Controller
     public function destroy(Coupon $coupon): \Illuminate\Http\RedirectResponse
     {
         $this->service->destroy($coupon);
-
         return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 }

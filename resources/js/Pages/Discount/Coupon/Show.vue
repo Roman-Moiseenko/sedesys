@@ -12,30 +12,25 @@
             </div>
         </div>
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="router.get(edit)">Редактировать</el-button>
+            <el-button type="primary" @click="handleEdit()">Редактировать</el-button>
         </div>
     </div>
 
 </template>
 
 <script lang="ts" setup>
-    import { Head, router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 
-    const props = defineProps({
-        coupon: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Карточка coupon',
-        },
-        /**
-         * Задать props
-         */
-    });
-
-    /**
-     * Методы
-     */
+const props = defineProps({
+    coupon: Object,
+    title: {
+        type: String,
+        default: 'Карточка coupon',
+    },
+});
+function handleEdit() {
+    router.get(route('admin.discount.coupon.edit', {coupon: props.coupon.id}))
+}
 
 </script>
 

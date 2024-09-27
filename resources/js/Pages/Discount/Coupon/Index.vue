@@ -89,13 +89,13 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
 }
 
 function createButton() {
-    router.get('/admin/discount/coupon/create')
+    router.get(route('admin.discount.coupon.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.discount.coupon.show', {coupon: row.id}))
 }
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.discount.coupon.destroy', {coupon: row.id}));
 }
 </script>
 

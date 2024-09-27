@@ -108,16 +108,16 @@ const tableRowClassName = ({row, rowIndex}: {row: Staff }) => {
 };
 
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy)
+    $delete_entity.show(route('admin.staff.destroy', {staff: row.id}))
 }
 function createButton() {
-    router.get('/admin/staff/create')
+    router.get(route('admin.staff.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.staff.show', {staff: row.id}))
 }
 function handleToggle(index, row) {
-    router.visit(row.toggle, {
+    router.visit(route('admin.staff.toggle', {staff: row.id}), {
         method:'post'});
 }
 </script>

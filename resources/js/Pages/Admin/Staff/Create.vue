@@ -85,8 +85,7 @@ const chat_ids = ref([])
 
 const props = defineProps({
     errors: Object,
-    route: String,
-    chat_id: String,
+    //chat_id: String,
     roles: Array,
     title: {
         type: String,
@@ -116,16 +115,15 @@ function handleMaskLogin(val) {
     form.name = func.MaskLogin(val);
 }
 function onSubmit() {
-    router.post(props.route, form)
+    router.post(route('admin.staff.store'), form)
 }
 function onGetChatID() {
-    axios.post(props.chat_id)
+    axios.post(route('admin.notification.telegram.chat-id'))
         .then(response => {
             chat_ids.value = response.data;
         });
 }
 function onSelectImage(val) {
-    form.clear_file = val.clear_file;
     form.file = val.file
 }
 </script>

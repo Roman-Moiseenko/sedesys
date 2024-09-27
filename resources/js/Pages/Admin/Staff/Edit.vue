@@ -82,13 +82,12 @@ import axios from 'axios'
 import UploadImageFile from '@/Components/UploadImageFile.vue'
 import Form from '@/Components/Form.vue'
 
-
 const chat_ids = ref([])
 
 const props = defineProps({
     errors: Object,
-    route: String,
-    chat_id: String,
+  //  route: String,
+  //  chat_id: String,
     staff: Object,
     roles: Array,
     title: {
@@ -129,7 +128,7 @@ watch(
 );
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.staff.update', {staff: props.staff.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -152,7 +151,7 @@ function handleMaskLogin(val) {
 
 
 function onGetChatID() {
-    axios.post(props.chat_id)
+    axios.post(route('admin.notification.telegram.chat-id'))
         .then(response => {
             chat_ids.value = response.data;
         });

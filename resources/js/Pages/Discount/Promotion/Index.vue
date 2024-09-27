@@ -61,7 +61,7 @@
                                 </el-button>
                             </span>
                             <el-button size="small"
-                                       @click.stop="router.get(scope.row.edit)" class="ml-3">
+                                       @click.stop="handleEdit(scope.row)" class="ml-3">
                                 Edit
                             </el-button>
                             <el-button size="small" type="danger"
@@ -129,27 +129,29 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
 }
 
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.discount.promotion.destroy', {promotion: row.id}));
 }
-
+function handleEdit(row) {
+    router.get(route('admin.discount.promotion.edit', {promotion: row.id}))
+}
 function createButton() {
-    router.get('/admin/discount/promotion/create')
+    router.get(route('admin.discount.promotion.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.discount.promotion.show', {promotion: row.id}))
 }
 function handleStart(index, row) {
-    router.visit(row.start, {
+    router.visit(route('admin.discount.promotion.start', {promotion: row.id}), {
         method: 'post'
     });
 }
 function handleFinish(index, row) {
-    router.visit(row.finish, {
+    router.visit(route('admin.discount.promotion.finish', {promotion: row.id}), {
         method: 'post'
     });
 }
 function handleToggle(row) {
-    router.visit(row.toggle, {
+    router.visit(route('admin.discount.promotion.toggle', {promotion: row.id}), {
         method: 'post'
     });
 }

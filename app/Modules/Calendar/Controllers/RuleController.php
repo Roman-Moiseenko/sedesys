@@ -33,7 +33,6 @@ class RuleController extends Controller
         $this->employees = $employees;
     }
 
-
     public function index(Request $request)
     {
         $rules = $this->repository->getIndex($request, $filters);
@@ -58,7 +57,6 @@ class RuleController extends Controller
         $regularities = $this->repository->getRegularities();
 
         return Inertia::render('Calendar/Rule/Create', [
-            'route' => route('admin.calendar.rule.store'),
             'services' => $services,
             'employees' => $employees,
             'regularities' => $regularities,
@@ -78,24 +76,19 @@ class RuleController extends Controller
     {
         return Inertia::render('Calendar/Rule/Show', [
                 'rule' => $this->repository->RuleToArray($rule),
-                'edit' => route('admin.calendar.rule.edit', $rule),
-                'toggle' => route('admin.calendar.rule.toggle', $rule),
             ]
         );
     }
 
     public function edit(Rule $rule)
     {
-
         $rule = Rule::where('id', $rule->id)->with(['services', 'employees'])->first();
-
         $services = $this->services->getActive();
         $employees = $this->employees->getActive();
         $regularities = $this->repository->getRegularities();
 
         return Inertia::render('Calendar/Rule/Edit', [
             'rule' => $rule,
-            'route' => route('admin.calendar.rule.update', $rule),
             'services' => $services,
             'employees' => $employees,
             'regularities' => $regularities,
@@ -119,7 +112,6 @@ class RuleController extends Controller
     public function destroy(Rule $rule)
     {
         $this->service->destroy($rule);
-
         return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 

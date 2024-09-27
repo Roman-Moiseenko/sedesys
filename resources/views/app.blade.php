@@ -14,7 +14,7 @@
 
     <!--script src="//cdn.jsdelivr.net/npm/@element-plus/icons-vue"></script-->
     <title inertia>{{ 'SeDeSys - CMS Управления бизнесом' }}</title>
-
+    @routes
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @stack('styles')
     <!-- -->

@@ -74,16 +74,6 @@ class PromotionRepository
             'finish_at' => $promotion->getFinishAt(),
             'discount' => $promotion->discount,
             'items' => $promotion->items()->count(),
-
-            'url' => route('admin.discount.promotion.show', $promotion),
-            'edit' => route('admin.discount.promotion.edit', $promotion),
-            'destroy' => route('admin.discount.promotion.destroy', $promotion),
-            'toggle' => route('admin.discount.promotion.toggle', $promotion),
-            'start' => route('admin.discount.promotion.start', $promotion),
-
-            'finish' => route('admin.discount.promotion.finish', $promotion),
-
-
         ];
     }
 

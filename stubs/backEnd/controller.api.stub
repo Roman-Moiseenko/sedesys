@@ -36,9 +36,7 @@ class DummyEntitySingularController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('DummySingular/DummyEntitySingular/Create', [
-            'route' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.store'),
-        ]);
+        return Inertia::render('DummySingular/DummyEntitySingular/Create', []);
     }
 
     public function store(DummyEntitySingularRequest $request)
@@ -52,11 +50,8 @@ class DummyEntitySingularController extends Controller
 
     public function show(DummyEntitySingular $dummyVariableEntitySingular)
     {
-
-
         return Inertia::render('DummySingular/DummyEntitySingular/Show', [
                 'dummyVariableEntitySingular' => $this->repository->DummyEntitySingularWithToArray($dummyVariableEntitySingular),
-                'edit' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.edit', $dummyVariableEntitySingular),
             ]
         );
     }
@@ -67,7 +62,6 @@ class DummyEntitySingularController extends Controller
 
         return Inertia::render('DummySingular/DummyEntitySingular/Edit', [
             'dummyVariableEntitySingular' => $dummyVariableEntitySingular,
-            'route' => route('admin.dummyVariableSingular.dummyVariableEntitySingular.update', $dummyVariableEntitySingular),
         ]);
     }
 
