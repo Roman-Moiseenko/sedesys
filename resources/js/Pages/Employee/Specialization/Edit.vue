@@ -19,7 +19,7 @@
                     </template>
                     <div class="grid lg:grid-cols-4 grid-cols-1 divide-x">
                         <div v-for="employee in employees" class="p-2">
-                            <el-checkbox v-model="form.employees" :label="employee.fullname"
+                            <el-checkbox v-model="form.employees" :label="func.fullName(employee.fullname)"
                                          type="checkbox" :key="employee.id"
                                          :value="employee.id"
                             />
@@ -44,7 +44,6 @@ import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
 const props = defineProps({
     errors: Object,
-    route: String,
     specialization: Object,
     title: {
         type: String,
@@ -59,7 +58,6 @@ const props = defineProps({
 
 const form = reactive({
     displayed: func.displayedInfo(props.specialization, props.image, props.icon),
-
     _method: 'put',
     close: null,
     employees: [...props.specialization.employees.map(item => item.id)],
@@ -76,7 +74,7 @@ watch(
 
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.employee.specialization.update', {specialization: props.specialization.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -88,11 +86,4 @@ function onSubmit(val) {
 }
 ////<=
 
-</script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    layout: Layout,
-}
 </script>

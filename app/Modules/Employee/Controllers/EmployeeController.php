@@ -69,8 +69,6 @@ class EmployeeController extends Controller
         $templates = $this->templates->getTemplates('employee');
 
         return Inertia::render('Employee/Employee/Create', [
-            'route' => route('admin.employee.employee.store'),
-            'chat_id' => route('admin.notification.telegram.chat-id'),
             'specializations' => $specializations,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,
@@ -97,24 +95,15 @@ class EmployeeController extends Controller
 
         return Inertia::render('Employee/Employee/Show', [
                 'employee' => $employee,
-                'edit' => route('admin.employee.employee.edit', $employee),
-                'toggle' => route('admin.employee.employee.toggle', $employee),
                 'services_data' => [
-                    'attach' => route('admin.employee.employee.attach-service', $employee),
-                    'detach' => route('admin.employee.employee.detach-service', $employee),
                     'services' => $services,
                     'out_services' => $out_services,
                 ],
-                'new_example' => route('admin.service.example.create', ['employee_id' => $employee->id]),
                 'examples' => $examples,
-
                 'image' => $employee->getImage(),
                 'icon' => $employee->getIcon(),
                 'specializations' => $specializations,
-
                 'reviews' => $reviews,
-
-
             ]
         );
     }
@@ -127,10 +116,8 @@ class EmployeeController extends Controller
         $employee = Employee::where('id', $employee->id)->with('specializations:id')->first();
         return Inertia::render('Employee/Employee/Edit', [
             'employee' => $employee,
-            'route' => route('admin.employee.employee.update', $employee),
             'image' => $employee->getImage(),
             'icon' => $employee->getIcon(),
-            'chat_id' => route('admin.notification.telegram.chat-id'),
             'specializations' => $specializations,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,

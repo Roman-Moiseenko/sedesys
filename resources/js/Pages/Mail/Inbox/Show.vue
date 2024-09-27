@@ -12,13 +12,13 @@
                     <el-descriptions-item label="Тема">{{ inbox.subject }}</el-descriptions-item>
                     <el-descriptions-item label="Получено">{{ inbox.created_at }}</el-descriptions-item>
                     <el-descriptions-item label="Прочитано">
-                        <span v-if="$props.inbox.read">{{ inbox.read_at }}</span>
+                        <span v-if="inbox.read">{{ inbox.read_at }}</span>
                     </el-descriptions-item>
                 </el-descriptions>
             </div>
             <div class="p-2">
                 <div class="font-medium mb-2">Вложенные файлы:</div>
-                <div v-for="(item, index) in $props.inbox.attachments" class="ml-1 mt-1">
+                <div v-for="(item, index) in inbox.attachments" class="ml-1 mt-1">
                     <el-tag type="primary"  class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">
                         {{ index }}&nbsp;<el-icon><Download /></el-icon>
                     </el-tag>
@@ -37,49 +37,31 @@
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link } from '@inertiajs/vue3'
+import {Head, Link, router} from '@inertiajs/vue3'
+import axios from "axios";
 
-    const props = defineProps({
-        inbox: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Входящее письмо',
-        },
-        reply: String,
-        attachment: String,
+const props = defineProps({
+    inbox: Object,
+    title: {
+        type: String,
+        default: 'Входящее письмо',
+    },
+});
 
-    });
-
-</script>
-<script lang="ts">
-    import { router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import axios from "axios";
-
-    export default {
-        layout: Layout,
-        methods: {
-            goReply() {
-                router.get(this.$props.reply);
-            },
-            download(file, name) {
-                axios.get(this.$props.attachment,
-                    {responseType: 'arraybuffer', params: {file: file}}
-                ).then(res=>{
-                    let blob = new Blob([res.data], {type:'application/*'})
-                    let link = document.createElement('a')
-                    link.href = window.URL.createObjectURL(blob)
-                    link.download = name
-                    link._target = 'blank'
-                    link.click();
-                })
-            },
-        },
-    }
+function goReply() {
+    router.get(route('admin.mail.inbox.reply', {inbox: props.inbox.id}));
+}
+function download(file, name) {
+    axios.get(route('admin.mail.inbox.attachment'),
+        {responseType: 'arraybuffer', params: {file: file}}
+    ).then(res=>{
+        let blob = new Blob([res.data], {type:'application/*'})
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = name
+        link._target = 'blank'
+        link.click();
+    })
+}
 
 </script>
-
-<style>
-
-</style>

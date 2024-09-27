@@ -40,18 +40,9 @@ class SpecializationRepository
                             'fullname' => $employee->fullname->getFullName(),
                             'phone' => $employee->phone,
                             'photo' => $employee->getImage('mini'),
-                            'detach' => route('admin.employee.specialization.detach', $specialization),
-                            'url' => route('admin.employee.employee.show', $employee),
                         ];
                     }
                 )->toArray(),
-
-                'url' => route('admin.employee.specialization.show', $specialization),
-                'edit' => route('admin.employee.specialization.edit', $specialization),
-                'destroy' => route('admin.employee.specialization.destroy', $specialization),
-                'toggle' => route('admin.employee.specialization.toggle', $specialization),
-                'up' => route('admin.employee.specialization.up', $specialization),
-                'down' => route('admin.employee.specialization.down', $specialization),
             ]);
     }
 
@@ -68,7 +59,7 @@ class SpecializationRepository
         return Employee::orderBy('fullname')->get()->map(function (Employee $employee) use ($ids) {
             return [
                 'id' => $employee->id,
-                'fullname' => $employee->fullname->getFullName(),
+                'fullname' => $employee->fullname,
                 'phone' => $employee->phone,
                 'photo' => $employee->getImage('mini'),
                 'checked' => in_array($employee->id, $ids),

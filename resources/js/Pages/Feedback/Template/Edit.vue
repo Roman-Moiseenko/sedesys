@@ -46,65 +46,53 @@
 
 
 <script lang="ts" setup>
-    import {Head, router} from '@inertiajs/vue3'
-    import {reactive, defineProps, watch, ref} from 'vue'
-    import {func} from "/resources/js/func.js"
-    import Codemirror from "codemirror-editor-vue3";
+import {Head, router} from '@inertiajs/vue3'
+import {reactive, defineProps, watch, ref} from 'vue'
+import {func} from "/resources/js/func.js"
+import Codemirror from "codemirror-editor-vue3";
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        template: Object,
-        title: {
-            type: String,
-            default: 'Редактирование template',
-        },
+const props = defineProps({
+    errors: Object,
+
+    template: Object,
+    title: {
+        type: String,
+        default: 'Редактирование template',
+    },
+});
+
+const  cmOptions = {
+    mode: "htmlmixed", // Language mode
+    theme: "bespin", // Theme
+}
+const form = reactive({
+    ...props.template,
+    //name: props.template.name,
+    _method: 'put',
+    close: null,
+})
+
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({ ...form }),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+function onSubmit(val) {
+    form.close = val
+    router.visit(route('admin.feedback.template.update', {template: props.template.id}), {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
     });
-
-    const  cmOptions = {
-        mode: "htmlmixed", // Language mode
-        theme: "bespin", // Theme
-    }
-    const form = reactive({
-        ...props.template,
-        //name: props.template.name,
-        /**
-         * Добавить новые поля
-         */
-        _method: 'put',
-        close: null,
-    })
-    console.log(props.template)
-
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({ ...form }),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
-    function onSubmit(val) {
-        form.close = val
-        router.visit(props.route, {
-            method: 'post',
-            data: form,
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: page => {
-                isUnSave.value = false
-            }
-        });
-    }
-    ////<=
+}
+////<=
 </script>
 

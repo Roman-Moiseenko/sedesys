@@ -99,16 +99,10 @@ import {ref} from 'vue'
 import {func} from "/resources/js/func.js"
 
 const store = useStore();
-
 const staffChange = ref(null);
-
 interface IRow {
-    /**
-     * Статусы
-     */
     active: number
 }
-
 const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     if (row.active === false) {
         return 'warning-row'
@@ -126,23 +120,19 @@ const props = defineProps({
 })
 
 function handleOrder(row) {
-    router.post(row.to_order)
+    router.post(route('admin.feedback.feedback.to-order', {feedback: row.id}))
 }
-
 function handleEmail(row) {
-    router.post(row.to_email)
+    router.post(route('admin.feedback.feedback.to-email', {feedback: row.id}))
 }
-
 function handleCompleted(row) {
-    router.post(row.to_completed)
+    router.post(route('admin.feedback.feedback.to-completed', {feedback: row.id}))
 }
-
 function handleArchive(row) {
-    router.post(row.to_archive)
+    router.post(route('admin.feedback.feedback.to-archive', {feedback: row.id}))
 }
-
 function onStaffChange(row, staff) {
-    router.post(row.set_staff, {staff: staff})
+    router.post(route('admin.feedback.feedback.set-staff', {feedback: row.id}), {staff: staff})
 }
 
 </script>

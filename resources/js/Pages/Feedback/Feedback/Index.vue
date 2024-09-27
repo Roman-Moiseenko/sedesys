@@ -15,8 +15,8 @@
         </div>
         <div class="mt-2 p-5 bg-white rounded-md">
             <el-table
-                :data="tableData"
-                :max-height="$data.tableHeight"
+                :data="[...feedback.data]"
+                :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
                 @row-click="routeClick"
@@ -61,78 +61,47 @@
 </template>
 
 <script lang="ts" setup>
-    import { useStore } from "/resources/js/store.js"
-    import { Head, Link, router } from '@inertiajs/vue3'
-    import Pagination from '@/Components/Pagination.vue'
-    import ru from 'element-plus/dist/locale/ru.mjs'
-    import TableFilter from '@/Components/TableFilter.vue'
-    import {func} from "/resources/js/func.js"
-    const store = useStore();
+import { ref, reactive } from 'vue'
+import { useStore } from "/resources/js/store.js"
+import { Head, router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
+import ru from 'element-plus/dist/locale/ru.mjs'
+import TableFilter from '@/Components/TableFilter.vue'
+import {func} from "/resources/js/func.js"
 
-    interface IRow {
-        /**
-         * Статусы
-        */
-        active: number
-    }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
-
-    function handleArchive(row) {
-        router.visit(row.from_archive, {
-            method: "post"
-        })
-    }
-</script>
-
-<script lang="ts">
-import { router } from '@inertiajs/vue3'
-
-export default {
-    props: {
-        feedback: Object,
-        title: {
-            type: String,
-            default: 'Список заявок в архиве',
-        },
-        filters: Array,
-        templates: Array,
-        staffs: Array,
+const store = useStore()
+const props = defineProps({
+    feedback: Object,
+    title: {
+        type: String,
+        default: 'Список заявок в архиве',
     },
-    data() {
-        return {
-            tableData: [...this.feedback.data],
-            tableHeight: '600',
-            Loading: false,
-            dialogDelete: false,
-            routeDestroy: null,
-            /**
-             * Данные для формы-фильтр
-             */
-            filter: {
-                template: this.$props.filters.template,
+    filters: Array,
+    templates: Array,
+    staffs: Array,
+})
+const Loading = ref(false)
+const filter = reactive({
+    template: props.filters.template,
+})
 
-            }
-        }
-    },
-    methods: {
-
-        routeClick(row) {
-            router.get(row.url)
-        },
+interface IRow {
+    active: number
+}
+const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
+    if (row.active === false) {
+        return 'warning-row'
     }
+    return ''
+}
+function handleArchive(row) {
+    router.visit(route('admin.feedback.feedback.from-archive', {feedback: row.id}), {
+        method: "post"
+    })
+}
+function routeClick(row) {
+    router.get(route('admin.feedback.feedback.show', {feedback: row.id}))
 }
 </script>
 
-<style >
-    .el-table tr.warning-row {
-        --el-table-tr-bg-color: var(--el-color-warning-light-7);
-    }
-    .el-table .success-row {
-        --el-table-tr-bg-color: var(--el-color-success-light-9);
-    }
-</style>
+

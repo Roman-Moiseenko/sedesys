@@ -32,46 +32,28 @@
 
 <script lang="ts" setup>
 import {Head, Link} from '@inertiajs/vue3'
+import axios from "axios";
 
 const props = defineProps({
     mail: Object,
-    edit: String,
-    attachment: String,
     title: {
         type: String,
-        default: 'Карточка systemMail',
+        default: 'Карточка системного сообщения',
     },
 });
-
-</script>
-<script lang="ts">
-import {router} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-import axios from "axios";
-
-export default {
-    layout: Layout,
-    methods: {
-        goEdit() {
-            router.get(this.$props.edit);
-        },
-        download(file, name) {
-            axios.get(this.$props.attachment,
-                {responseType: 'arraybuffer', params: {file: file}}
-            ).then(res=>{
-                let blob = new Blob([res.data], {type:'application/*'})
-                let link = document.createElement('a')
-                link.href = window.URL.createObjectURL(blob)
-                link.download = name
-                link._target = 'blank'
-                link.click();
-            })
-        },
-    },
+console.log(props.mail)
+function download(file, name) {
+    axios.get(route('admin.mail.system.attachment'),
+        {responseType: 'arraybuffer', params: {file: file}}
+    ).then(res=>{
+        let blob = new Blob([res.data], {type:'application/*'})
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = name
+        link._target = 'blank'
+        link.click();
+    })
 }
 
 </script>
 
-<style>
-
-</style>

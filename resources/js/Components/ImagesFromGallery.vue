@@ -46,15 +46,12 @@ import axios from 'axios'
 const dialogVisible = ref(false)
 const editableTabsValue = ref(1)
 const selectedPhoto = ref(null)
-const urlGallery = '/admin/page/gallery/get-tree'
-const urlPhoto = '/admin/page/gallery/get-photo'
 const props = defineProps({
     error: String,
     photo_id: Number,
     image: String,
 
 });
-console.log(selectedPhoto)
 const select = reactive({
     id: props.photo_id,
 });
@@ -71,7 +68,7 @@ const selectPhoto = function () {
 setPhoto(props.photo_id)
 
 function getGallery() {
-    axios.post(urlGallery)
+    axios.post(route('admin.page.gallery.get-tree'))
         .then(response => {
             galleries.value = response.data;
             dialogVisible.value = true;
@@ -80,7 +77,7 @@ function getGallery() {
 
 function setPhoto(val) {
     if (props === null) return;
-    axios.post(urlPhoto, {photo_id: val})
+    axios.post(route('admin.page.gallery.get-photo'), {photo_id: val})
         .then(response => {
             selectedPhoto.value = response.data;
         });

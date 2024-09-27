@@ -21,7 +21,7 @@
                 <el-table-column prop="title" label="Заголовок"/>
                 <el-table-column sortable prop="user" label="Получатель"/>
                 <el-table-column prop="created_at" label="Отправлено"/>
-                <el-table-column prop="attachments" label="Вложения" width="120"/>
+                <el-table-column prop="count_attachments" label="Вложения" width="120"/>
                 <el-table-column prop="count" label="Отправок"/>
 
                 <el-table-column label="Действия" align="right">
@@ -70,10 +70,10 @@ const filter = reactive({
 })
 
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.mail.system.show', {system: row.id}))
 }
 function handleRepeat(index, row) {
-    router.visit(row.repeat, {
+    router.visit(route('admin.mail.system.repeat', {system: row.id}), {
         method: 'post'
     });
 }

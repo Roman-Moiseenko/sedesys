@@ -68,7 +68,6 @@ const props = defineProps({
     },
     filters: Array,
     boxes: Array,
-    load: String
 })
 const store = useStore();
 const $delete_entity = inject("$delete_entity")
@@ -81,9 +80,6 @@ const filter = reactive({
 })
 
 interface IRow {
-    /**
-     * Статусы
-    */
     read: number
 }
 const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
@@ -92,15 +88,14 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     }
     return ''
 }
-
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.mail.inbox.destroy', {inbox: row.id}));
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.mail.inbox.show', {inbox: row.id}))
 }
 function handleLoad() {
-    router.get(props.load)
+    router.get(route('admin.mail.inbox.load'))
 }
 
 </script>

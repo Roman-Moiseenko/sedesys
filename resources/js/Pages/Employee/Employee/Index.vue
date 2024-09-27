@@ -52,7 +52,7 @@
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -113,17 +113,20 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     }
     return ''
 }
+function handleEdit(row) {
+    router.get(route('admin.employee.employee.edit', {employee: row.id}))
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.employee.employee.destroy', {employee: row.id}));
 }
 function createButton() {
-    router.get('/admin/employee/employee/create')
+    router.get(route('admin.employee.employee.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.employee.employee.show', {employee: row.id}))
 }
 function handleToggle(index, row) {
-    router.visit(row.toggle, {
+    router.visit(route('admin.employee.employee.toggle', {employee: row.id}), {
         method: 'post'
     });
 }

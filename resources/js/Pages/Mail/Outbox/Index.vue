@@ -31,7 +31,7 @@
                     <template #default="scope">
                         <el-button v-if="!scope.row.sent"
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button v-if="!scope.row.sent"
@@ -89,7 +89,6 @@ const filter = reactive({
     email: props.filters.email,
 })
 
-
 interface IRow {
     active: number
 }
@@ -99,22 +98,23 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     }
     return ''
 }
-
-function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+function handleEdit(row) {
+    router.get(route('admin.mail.outbox.edit', {outbox: row.id}))
 }
-
+function handleDeleteEntity(row) {
+    $delete_entity.show(route('admin.mail.outbox.destroy', {outbox: row.id}));
+}
 function createButton() {
-    router.get('/admin/mail/outbox/create')
+    router.get(route('admin.mail.outbox.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.mail.outbox.show', {outbox: row.id}))
 }
 function handleRepeat(index, row) {
-    router.post(row.repeat);
+    router.post(route('admin.mail.outbox.repeat', {outbox: row.id}));
 }
 function handleSend(index, row) {
-    router.post(row.send);
+    router.post(route('admin.mail.outbox.send', {outbox: row.id}));
 }
 
 </script>

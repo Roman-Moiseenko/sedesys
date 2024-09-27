@@ -76,12 +76,11 @@ import {router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import {useStore} from '/resources/js/store.js'
 import {UploadUserFile, UploadInstance} from "element-plus";
+import Editor from '@tinymce/tinymce-vue'
 
 const store = useStore();
-
 const props = defineProps({
     errors: Object,
-    route: String,
     title: {
         type: String,
         default: 'Новое письмо',
@@ -91,8 +90,6 @@ const props = defineProps({
     subject: String,
 });
 const upload = ref<UploadInstance>();
-
-
 const fileList = ref<UploadUserFile[]>();
 const form = reactive({
     emails: [],
@@ -104,23 +101,11 @@ const form = reactive({
 if (props.email !== '') form.emails.push(props.email);
 
 function onSubmit() {
-    router.post(props.route, form)
+    router.post(route('admin.mail.outbox.store'), form)
 }
-
 function onSubmitSend() {
     form.send = true;
-    router.post(props.route, form)
-}
-
-</script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-import Editor from '@tinymce/tinymce-vue'
-import {router} from "@inertiajs/vue3";
-
-export default {
-    layout: Layout,
-    'editor': Editor,
-    methods: {}
+    router.post(route('admin.mail.outbox.store'), form)
 }
 </script>
+

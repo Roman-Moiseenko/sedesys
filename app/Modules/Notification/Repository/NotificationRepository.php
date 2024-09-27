@@ -16,7 +16,7 @@ class NotificationRepository
         $staff = Auth::guard('admin')->user();
         if (is_null($staff)) throw new \DomainException('Что-то пошло не так');
         $query = $staff->notifications();
-        //TODO Фильтр Без учета регистра
+
         $filters = [];
 
         if ($request->has('event')) {
@@ -44,7 +44,6 @@ class NotificationRepository
                 'params' => json_decode($notification->data['params'], true),
                 'created_at' => $notification->created_at->translatedFormat('j F Y H:i:s'),
                 'read_at' => is_null($notification->read_at) ? null : $notification->read_at->translatedFormat('j F Y H:i:s'),
-                'read' => route('admin.notification.notification.read', $notification),
             ]);
 
 

@@ -28,7 +28,7 @@
                         </div>
                         <div class="p-4">
                             <el-form-item label="Телефон" :rules="{required: true}">
-                                <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
+                                <el-input v-model="form.phone" placeholder="80000000000" :formatter="(val) => func.MaskPhone(val)"/>
                                 <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
                             </el-form-item>
                             <el-form-item label="ID Телеграм-бота">
@@ -105,8 +105,6 @@ const store = useStore()
 const chat_ids = ref([])
 const props = defineProps({
     errors: Object,
-    route: String,
-    chat_id: String,
     employee: Object,
     title: {
         type: String,
@@ -133,7 +131,7 @@ const form = reactive({
     _method: 'put',
     close: null,
 })
-console.log(props.employee.specializations, form.specializations)
+
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)
 watch(
@@ -146,7 +144,7 @@ watch(
 
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.employee.employee.update', {employee: props.employee.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -158,19 +156,11 @@ function onSubmit(val) {
 }
 ////<=
 
-function handleMaskPhone(val) {
-    form.phone = func.MaskPhone(val);
-}
-
 function onGetChatID() {
-    axios.post(props.chat_id)
+    axios.post(route('admin.notification.telegram.chat-id'))
         .then(response => {
             chat_ids.value = response.data;
         });
-}
-
-function handleYear(val) {
-    form.experience_year = func.MaskInteger(val);
 }
 
 </script>

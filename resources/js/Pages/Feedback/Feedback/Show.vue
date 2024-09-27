@@ -14,7 +14,7 @@
         <div class="mt-3 flex flex-row">
             <el-button
                 type="primary"
-                @click="router.get(feedback.edit)">
+                @click="handleEdit">
                 Редактировать
             </el-button>
         </div>
@@ -23,27 +23,19 @@
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link } from '@inertiajs/vue3'
-    import { router } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 
-    const props = defineProps({
-        feedback: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Карточка feedback',
-        },
-        /**
-         * Задать props
-         */
-    });
+const props = defineProps({
+    feedback: Object,
+    title: {
+        type: String,
+        default: 'Карточка feedback',
+    },
 
-    /**
-     * Методы
-     */
-
+});
+function handleEdit() {
+    router.get(route('admin.feedback.feedback.edit', {feedback: props.feedback.id}))
+}
 </script>
 
-<style>
-
-</style>

@@ -67,7 +67,6 @@ class NotificationController extends Controller
             ];
         })->toArray();
         return Inertia::render('Notification/Notification/Create', [
-            'route' => route('admin.notification.notification.store'),
             'staffs' => $staffs,
             'employees' => $employees,
         ]);
@@ -80,43 +79,6 @@ class NotificationController extends Controller
         return redirect()
             ->route('admin.notification.notification.index')
             ->with('success', 'Уведомление отправлено');
-    }
-
-
-    #[Deprecated]
-    public function show(Notification $notification)
-    {
-        return Inertia::render('Notification/Notification/Show', [
-                'notification' => $notification,
-                'edit' => route('admin.notification.notification.edit', $notification),
-            ]
-        );
-    }
-
-    #[Deprecated]
-    public function edit(Notification $notification)
-    {
-        return Inertia::render('Notification/Notification/Edit', [
-            'notification' => $notification,
-            'route' => route('admin.notification.notification.update', $notification),
-        ]);
-    }
-
-    #[Deprecated]
-    public function update(NotificationRequest $request, Notification $notification)
-    {
-        $request->validated();
-        $this->service->update($notification, $request);
-        return redirect()
-            ->route('admin.notification.notification.show', $notification)
-            ->with('success', 'Сохранение прошло успешно');
-    }
-
-    #[Deprecated]
-    public function destroy(Notification $notification)
-    {
-        $this->service->destroy($notification);
-        return redirect()->back()->with('success', 'Удаление прошло успешно');
     }
 
 

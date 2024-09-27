@@ -31,7 +31,7 @@
                                     <el-button
                                         size="small"
                                         type="warning"
-                                        @click.stop="handleDetach(scope.$index, scope.row)">
+                                        @click.stop="handleDetach(props.row, scope.row)">
                                         Detach
                                     </el-button>
                                 </template>
@@ -94,7 +94,7 @@
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -126,6 +126,7 @@ import {Head, router} from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 import ru from 'element-plus/dist/locale/ru.mjs'
 import TableFilter from '@/Components/TableFilter.vue'
+import {defaultsDeep} from "lodash";
 
 const props = defineProps({
     specializations: Object,
@@ -144,51 +145,50 @@ const filter = reactive({
 })
 
 interface IRow {
-    /**
-     * Статусы
-     */
     active: number
 }
-
 const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     if (row.active === false) {
         return 'warning-row'
     }
     return ''
 }
+function handleEdit(row) {
+    router.get(route('admin.employee.specialization.edit', {specialization: row.id}))
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.employee.specialization.destroy', {specialization: row.id}));
 }
 function createButton() {
-    router.get('/admin/employee/specialization/create')
+    router.get(route('admin.employee.specialization.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.employee.specialization.show', {specialization: row.id}))
 }
 function  handleToggle(index, row) {
-    router.visit(row.toggle, {
+    router.visit(route('admin.employee.specialization.toggle', {specialization: row.id}), {
         method: 'post'
     });
 }
 function handleUp(index, row) {
-    router.visit(row.up, {
+    router.visit(route('admin.employee.specialization.up', {specialization: row.id}), {
         method: 'post'
     });
 }
 function handleDown(index, row) {
-    router.visit(row.down, {
+    router.visit(route('admin.employee.specialization.down', {specialization: row.id}), {
         method: 'post'
     });
 }
-function handleDetach(index, row) {
-    router.visit(row.detach, {
+function handleDetach(main_row, row) {
+    router.visit(route('admin.employee.specialization.detach', {specialization: main_row.id}), {
         method: "post",
         data: {employee_id: row.id}
     });
 
 }
 function routeClickEmployee(row) {
-    router.get(row.url)
+    router.get(route('admin.employee.employee.show', {employee: row.id}))
 }
 </script>
 

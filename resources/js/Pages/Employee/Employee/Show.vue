@@ -1,6 +1,6 @@
 <template>
     <Head><title>{{ $props.title }}</title></Head>
-    <h1 class="font-medium text-xl">  {{ employee.fullname.surname + ' ' + employee.fullname.firstname + ' ' + employee.fullname.secondname }}  </h1>
+    <h1 class="font-medium text-xl">  {{ func.fullName(employee.fullname) }}  </h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-tabs type="border-card" class="">
             <!-- Панель Общая информация -->
@@ -11,11 +11,12 @@
             <!-- Панель Услуги -->
             <ServicePanel
                 :services_data="services_data"
+                :employee_id="employee.id"
             />
             <!-- Панель Примеры -->
             <ExamplesPanel
                 :examples="examples"
-                :new_example="new_example"
+                :employee_id="employee.id"
             />
             <!-- Панель Отзывы -->
             <ReviewPanel :reviews="reviews" />
@@ -28,7 +29,7 @@
         </el-tabs>
     </div>
     <div class="mt-3 p-3 bg-white rounded-lg">
-        <el-button type="primary" @click="router.get(edit)">Редактировать</el-button>
+        <el-button type="primary" @click="handleEdit()">Редактировать</el-button>
         <el-button v-if="!employee.active" type="success" @click="handleToggle">Разблокировать
         </el-button>
         <el-button v-if="employee.active" type="warning" @click="handleToggle">Заблокировать
@@ -58,28 +59,18 @@ const dialogSave = ref(false)
 
 const props = defineProps({
     employee: Object,
-    edit: String,
     image: String,
     icon: String,
     title: {
         type: String,
         default: 'Карточка Персонала',
     },
-
-    attach: String,
-    detach: String,
     services: Array,
     out_services: Array,
-
     services_data: Object,
-
-    new_example: String,
     specializations:  Object,
-
     examples: Array,
     reviews: Array,
-
-    toggle: String,
 
 });
 
@@ -87,33 +78,14 @@ const formService = reactive({
     service_id: null,
     extra_cost: null
 });
-
+function handleEdit() {
+    router.get(route('admin.employee.employee.edit', {employee: props.employee.id}))
+}
 function handleToggle() {
-    router.post(props.toggle);
+    router.post(route('admin.employee.employee.toggle', {employee: props.employee.id}));
 }
 function newExample() {
-    router.get(props.new_example);
-}
-function handleExtraCost(val) {
-    formService.extra_cost = func.MaskInteger(val);
-}
-function attachService() {
-    if (formService.service_id === null) return;
-    router.post(props.attach, formService);
-    dialogService.value = false;
-}
-
-function detachService(row) {
-    router.post(props.detach, {
-        service_id: row.id
-    });
-}
-function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.service.example.create', {employee_id: props.employee.id}));
 }
 </script>
 
-
-<style scoped>
-
-</style>

@@ -16,7 +16,7 @@
             </div>
             <div class="p-2">
                 <div class="font-medium mb-2">Вложенные файлы:</div>
-                <div v-for="(item, index) in $props.outbox.attachments" class="ml-1 mt-1">
+                <div v-for="(item, index) in outbox.attachments" class="ml-1 mt-1">
                     <el-tag type="primary" class="font-medium cursor-pointer" @click="download(item, index)" title="Скачать файл">
                         {{ index }}&nbsp;<el-icon><Download /></el-icon>
                     </el-tag>
@@ -26,69 +26,46 @@
 
 
         <div class="mt-3 flex flex-row">
-            <el-button v-if="!$props.outbox.sent" type="info" @click="goEdit">Редактировать</el-button>
-            <el-button v-if="!$props.outbox.sent" type="primary" @click="goSend">Отправить</el-button>
+            <el-button v-if="!outbox.sent" type="info" @click="goEdit">Редактировать</el-button>
+            <el-button v-if="!outbox.sent" type="primary" @click="goSend">Отправить</el-button>
         </div>
     </div>
 
     <h2 class="mt-3 font-medium">Письмо:</h2>
-    <div class="mt-1 p-3 bg-white rounded-lg" v-html="$props.outbox.message">
+    <div class="mt-1 p-3 bg-white rounded-lg" v-html="outbox.message">
     </div>
 
 </template>
 
 <script lang="ts" setup>
-import {Head, Link} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
+import axios from "axios";
 
 const props = defineProps({
     outbox: Object,
-    edit: String,
     title: {
         type: String,
-        default: 'Карточка outbox',
+        default: 'Карточка письма',
     },
-    send: String,
-    attachment: String,
-
 });
 
-/**
- * Методы
- */
-
-
-</script>
-<script lang="ts">
-import {router} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-import axios from "axios";
-
-export default {
-    layout: Layout,
-    methods: {
-        goEdit() {
-            router.get(this.$props.edit);
-        },
-        goSend() {
-            router.post(this.$props.send);
-        },
-        download(file, name) {
-            axios.get(this.$props.attachment,
-                {responseType: 'arraybuffer', params: {file: file}}
-            ).then(res=>{
-                let blob = new Blob([res.data], {type:'application/*'})
-                let link = document.createElement('a')
-                link.href = window.URL.createObjectURL(blob)
-                link.download = name
-                link._target = 'blank'
-                link.click();
-            })
-        },
-    },
+function goEdit() {
+    router.get(route('admin.mail.outbox.edit', {outbox: props.outbox.id}));
 }
-
+function goSend() {
+    router.post(route('admin.mail.outbox.send', {outbox: props.outbox.id}));
+}
+function download(file, name) {
+    axios.get(route('admin.mail.outbox.attachment'),
+        {responseType: 'arraybuffer', params: {file: file}}
+    ).then(res=>{
+        let blob = new Blob([res.data], {type:'application/*'})
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = name
+        link._target = 'blank'
+        link.click();
+    })
+}
 </script>
 
-<style>
-
-</style>

@@ -41,46 +41,28 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head} from '@inertiajs/vue3'
+import {reactive} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        staffs: Array,
-        employees: Array,
-        title: {
-            type: String,
-            default: 'Новое уведомление',
-        },
-    });
-
-    const form = reactive({
-        staffs: [],
-        employees: [],
-        message: null,
-        confirmation: false,
-    })
-
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-
+const props = defineProps({
+    errors: Object,
+    staffs: Array,
+    employees: Array,
+    title: {
+        type: String,
+        default: 'Новое уведомление',
+    },
+});
+const form = reactive({
+    staffs: [],
+    employees: [],
+    message: null,
+    confirmation: false,
+})
+function onSubmit() {
+    router.post(route('admin.notification.notification.store'), form)
+}
 </script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
-</script>

@@ -88,10 +88,10 @@ class ExampleRepository
             'employees' => $example->employees,
             'gallery_count' => $example->gallery()->count(),
 
-            'url' => route('admin.service.example.show', $example),
-            'edit' => route('admin.service.example.edit', $example),
+            //'url' => route('admin.service.example.show', $example),
+           // 'edit' => route('admin.service.example.edit', $example),
             'destroy' => route('admin.service.example.destroy', $example),
-            'toggle' => route('admin.service.example.toggle', $example),
+          //  'toggle' => route('admin.service.example.toggle', $example),
         ];
     }
 }

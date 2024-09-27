@@ -49,15 +49,6 @@ class FeedbackRepository
             'status_html' => $feedback->statusHtml(),
             'completed' => $feedback->isCompleted(),
             'order_id' => $feedback->order_id,
-
-            'url' => route('admin.feedback.feedback.show', $feedback),
-
-            'to_archive' => route('admin.feedback.feedback.to-archive', $feedback),
-            'from_archive' => route('admin.feedback.feedback.from-archive', $feedback),
-            'to_email' => route('admin.feedback.feedback.to-email', $feedback),
-            'to_order' => route('admin.feedback.feedback.to-order', $feedback),
-            'to_completed' => route('admin.feedback.feedback.to-completed', $feedback),
-            'set_staff' => route('admin.feedback.feedback.set-staff', $feedback),
         ];
     }
 

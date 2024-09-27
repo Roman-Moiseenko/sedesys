@@ -7,9 +7,9 @@
                     </span>
         </template>
         <div class="mb-5">
-            <el-table #default="mainscope" :data="examples"
+            <el-table :data="examples"
                       style="width: 100%; cursor: pointer;"
-                      @row-click="router.get(mainscope.row.url)"
+                      @row-click="rowClick"
             >
                 <el-table-column label="Дата" prop="date"  width="120" />
                 <el-table-column label="Заголовок" prop="title" width="250"/>
@@ -30,18 +30,18 @@
                         <el-button v-if="scope.row.active"
                                    size="small"
                                    type="warning"
-                                   @click.stop="router.post(scope.row.toggle)">
+                                   @click.stop="handleToggle(scope.row)">
                             Hide
                         </el-button>
                         <el-button v-if="!scope.row.active"
                                    size="small"
                                    type="success"
-                                   @click.stop="router.post(scope.row.toggle)">
+                                   @click.stop="handleToggle(scope.row)">
                             Show
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                     </template>
@@ -49,20 +49,31 @@
 
             </el-table>
         </div>
-        <el-button @click="router.get(props.new_example)">Новый пример</el-button>
+        <el-button @click="onSubmit()">Новый пример</el-button>
     </el-tab-pane>
 </template>
 
 <script lang="ts" setup>
-import {reactive, ref} from "vue";
 import {func} from '@/func.js'
 import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     examples: Array,
-    new_example: String,
+    employee_id: Number,
 })
+function onSubmit() {
+    router.get(route('admin.service.example.create', {employee_id: props.employee_id}))
+}
 
+function rowClick(row) {
+    router.get(route('admin.service.example.show', {example: row.id}))
+}
+function handleEdit(row) {
+    router.get(route('admin.service.example.edit', {example: row.id}))
+}
+function handleToggle(row) {
+    router.post(route('admin.service.example.toggle', {example: row.id}))
+}
 
 </script>
 

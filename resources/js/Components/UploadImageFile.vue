@@ -73,25 +73,3 @@ const handlePictureCardPreview = (file: UploadFile) => {
 }
 </script>
 
-<script lang="ts">
-export default {
-    /*data() {
-        return {
-            photo_id: this.$props.photo_id,
-        }
-    },*/
-    /* methods: {
-         updateParent(val) {
-             console.log(val);
-             this.$emit('updateImageFile', {
-                 photo_id: val,
-             })
-         }
-     }*/
-}
-
-</script>
-
-<style scoped>
-
-</style>

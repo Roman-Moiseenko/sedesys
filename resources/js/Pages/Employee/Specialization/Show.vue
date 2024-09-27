@@ -6,8 +6,7 @@
         <el-tabs type="border-card" class="mb-4">
             <EmployeePanel
                 :employees="specialization.employees"
-                :attach="attach"
-                :detach="detach"
+                :specialization_id="specialization.id"
                 :out_employees="out_employees"
             />
         <DisplayedShowPanel
@@ -50,25 +49,11 @@ const props = defineProps({
     icon: String,
 });
 
-</script>
-<script lang="ts">
-import {router} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    layout: Layout,
-    methods: {
-        goEdit() {
-            router.get(this.$props.edit);
-        },
-        handleToggle(val) {
-            router.post(this.$props.toggle);
-        }
-    },
+function goEdit() {
+    router.get(route('admin.employee.specialization.edit', {specialization: props.specialization.id}));
 }
-
+function handleToggle() {
+    router.post(route('admin.employee.specialization.toggle', {specialization: props.specialization.id}));
+}
 </script>
 
-<style>
-
-</style>

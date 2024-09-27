@@ -72,7 +72,6 @@ class FeedbackController extends Controller
 
         return Inertia::render('Feedback/Feedback/Show', [
                 'feedback' => $feedback,
-                'edit' => route('admin.feedback.feedback.edit', $feedback),
             ]
         );
     }
@@ -91,10 +90,7 @@ class FeedbackController extends Controller
 
     public function to_email(Feedback $feedback)
     {
-        /*$feedback->status = Feedback::STATUS_WORK;
-        $feedback->save();*/
-        $feedback->status = Feedback::STATUS_WORK;
-        $feedback->save();
+        $feedback->work();
         return redirect()->route('admin.mail.outbox.create', ['email' => $feedback->email, 'subject' => 'Re: ' . $feedback->template->name]);
     }
 

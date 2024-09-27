@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="router.get(template.edit)">Редактировать</el-button>
+            <el-button type="primary" @click="handleEdit()">Редактировать</el-button>
             <el-button v-if="!template.active" type="success" @click="handleToggle">Разблокировать
             </el-button>
             <el-button v-if="template.active" type="warning" @click="handleToggle">Заблокировать
@@ -30,8 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Head, Link} from '@inertiajs/vue3'
-import {router} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 
 const props = defineProps({
     template: Object,
@@ -40,18 +39,13 @@ const props = defineProps({
         type: String,
         default: 'Карточка шаблона формы',
     },
-
-    /**
-     * Задать props
-     */
 });
 function handleToggle() {
-    router.post(props.template.toggle);
+    router.post(route('admin.feedback.template.toggle', {template: props.template.id}));
 }
-/**
- * Методы
- */
-
+function handleEdit() {
+    router.get(route('admin.feedback.template.edit', {template: props.template.id}))
+}
 </script>
 
 <style>

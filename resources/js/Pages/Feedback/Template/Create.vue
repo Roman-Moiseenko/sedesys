@@ -45,47 +45,40 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive, ref, watch, defineProps} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
-    import Codemirror from "codemirror-editor-vue3";
+import {Head} from '@inertiajs/vue3'
+import {reactive, ref, watch, defineProps} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
+import Codemirror from "codemirror-editor-vue3";
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание шаблона формы заявки',
-        },
-    });
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание шаблона формы заявки',
+    },
+});
 
-    const form = reactive({
-        name: null,
-        color: null,
-        template: null,
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    const  cmOptions = {
-        mode: "htmlmixed", // Language mode
-        theme: "bespin", // Theme
-    }
-
-
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({...form}),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
+const form = reactive({
+    name: null,
+    color: null,
+    template: null,
+})
+const  cmOptions = {
+    mode: "htmlmixed", // Language mode
+    theme: "bespin", // Theme
+}
+function onSubmit() {
+    router.post(route('admin.feedback.template.store'), form)
+}
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
 </script>
 

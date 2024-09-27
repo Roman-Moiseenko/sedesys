@@ -32,12 +32,6 @@ class OutboxRepository
                 'sent' => $outbox->isSent(),
                 'created_at' => $outbox->created_at->translatedFormat('j F Y H:i:s'),
                 'sent_at' => is_null($outbox->sent_at) ? '' : $outbox->sent_at->translatedFormat('j F Y H:i:s'),
-
-                'url' => route('admin.mail.outbox.show', $outbox),
-                'edit' => route('admin.mail.outbox.edit', $outbox),
-                'destroy' => route('admin.mail.outbox.destroy', $outbox),
-                'repeat' => route('admin.mail.outbox.repeat', $outbox),
-                'send' => route('admin.mail.outbox.send', $outbox),
             ]);
 
     }

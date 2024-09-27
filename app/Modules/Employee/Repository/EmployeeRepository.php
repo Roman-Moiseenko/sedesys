@@ -50,10 +50,10 @@ class EmployeeRepository
                 'photo' => $employee->getImage('mini'),
                 'experience_year' => $employee->experience_year,
 
-                'url' => route('admin.employee.employee.show', $employee),
+         /*       'url' => route('admin.employee.employee.show', $employee),
                 'edit' => route('admin.employee.employee.edit', $employee),
                 'destroy' => route('admin.employee.employee.destroy', $employee),
-                'toggle' => route('admin.employee.employee.toggle', $employee),
+                'toggle' => route('admin.employee.employee.toggle', $employee),*/
             ]);
     }
 

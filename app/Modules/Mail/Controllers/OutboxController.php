@@ -38,7 +38,6 @@ class OutboxController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Mail/Outbox/Create', [
-            'route' => route('admin.mail.outbox.store'),
             'tiny_api' => $this->tiny_api,
             'email' => $request->string('email')->value(),
             'subject' => $request->string('subject')->value(),
@@ -64,9 +63,6 @@ class OutboxController extends Controller
     {
         return Inertia::render('Mail/Outbox/Show', [
                 'outbox' => $outbox,
-                'edit' => route('admin.mail.outbox.edit', $outbox),
-                'send' => route('admin.mail.outbox.send', $outbox),
-                'attachment' => route('admin.mail.outbox.attachment'),
             ]
         );
     }
@@ -75,9 +71,7 @@ class OutboxController extends Controller
     {
         return Inertia::render('Mail/Outbox/Edit', [
             'outbox' => $outbox,
-            'route' => route('admin.mail.outbox.update', $outbox),
             'tiny_api' => $this->tiny_api,
-            'del_attach' => route('admin.mail.outbox.delete-attachment', $outbox),
         ]);
     }
 

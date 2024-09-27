@@ -52,10 +52,6 @@ class InboxRepository
                 'created_at' => $inbox->created_at->translatedFormat('j F Y H:i:s'),
                 'read_at' => ($inbox->isRead()) ? $inbox->created_at->translatedFormat('j F Y H:i:s') : '',
                 'read' => $inbox->isRead(),
-
-                'url' => route('admin.mail.inbox.show', $inbox),
-                'destroy' => route('admin.mail.inbox.destroy', $inbox),
-
             ]);
 
     }

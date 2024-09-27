@@ -28,7 +28,7 @@
                         </div>
                         <div class="p-4">
                             <el-form-item label="Телефон" :rules="{required: true}">
-                                <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
+                                <el-input v-model="form.phone" placeholder="80000000000" :formatter="(val) => func.MaskPhone(val)"/>
                                 <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
                             </el-form-item>
                             <el-form-item label="ID Телеграм-бота">
@@ -102,8 +102,6 @@ import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 const chat_ids = ref([])
 const props = defineProps({
     errors: Object,
-    route: String,
-    chat_id: String,
     title: {
         type: String,
         default: 'Создание Персонала',
@@ -128,16 +126,12 @@ const form = reactive({
     displayed: func.displayedInfo(),
 })
 
-function handleMaskPhone(val) {
-    form.phone = func.MaskPhone(val);
-}
-
 function onSubmit() {
-    router.post(props.route, form)
+    router.post(route('admin.employee.employee.store'), form)
 }
 
 function onGetChatID() {
-    axios.post(props.chat_id)
+    axios.post(route('admin.notification.telegram.chat-id'))
         .then(response => {
             chat_ids.value = response.data;
         });

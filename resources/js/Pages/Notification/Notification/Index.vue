@@ -21,7 +21,6 @@
                 :max-height="600"
                 style="width: 100%; cursor: pointer;"
                 :row-class-name="tableRowClassName"
-                @row-click="routeClick"
                 v-loading="store.getLoading"
             >
                 <el-table-column sortable prop="event" label="Событие" width="200"/>
@@ -79,9 +78,6 @@ const filter = reactive({
 })
 
 interface IRow {
-    /**
-     * Статусы
-     */
     active: number,
     read_at: String,
 }
@@ -92,13 +88,10 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     return ''
 }
 function createButton() {
-    router.get('/admin/notification/notification/create')
-}
-function routeClick(row) {
-    router.get(row.route)
+    router.get(route('admin.notification.notification.create'))
 }
 function handleRead(index, row) {
-    router.visit(row.read, {
+    router.visit(route('admin.notification.notification.read', {notification: row.id}), {
         method: 'post',
     });
 }

@@ -80,6 +80,12 @@ class Feedback extends Model
      * Сетеры
      */
 
+    public function work()
+    {
+        $this->status = self::STATUS_WORK;
+        $this->save();
+    }
+
     public function completed()
     {
         $this->status = self::STATUS_COMPLETED;

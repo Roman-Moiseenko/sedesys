@@ -25,7 +25,6 @@ class SystemMailService
             foreach($mail->attachments as $file) {
                 $message->attach($file);
             }
-
             $mail->count++;
             $mail->save();
         });

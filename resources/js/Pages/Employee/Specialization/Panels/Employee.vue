@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column label="Действия" width="250">
                 <template #default="scope">
-                    <el-button type="warning" @click.stop="detachEmployee(scope.row.id)">Detach</el-button>
+                    <el-button type="warning" @click.stop="detachEmployee(scope.row)">Detach</el-button>
                 </template>
             </el-table-column>
 
@@ -61,24 +61,21 @@ import {router} from "@inertiajs/vue3";
 
 const dialogEmployee = ref(false)
 const props = defineProps({
+    specialization_id: Number,
     employees: Object,
-    detach: String,
-    attach: String,
     out_employees: Object,
 
 })
-console.log(1,props.out_employees)
 const formEmployee = reactive({
     employee_id: null,
     extra_cost: null
 });
 function attachEmployee() {
     if (formEmployee.employee_id === null) return;
-    router.post(props.attach, formEmployee);
+    router.post(route('admin.employee.specialization.attach', {specialization: props.specialization_id}), formEmployee);
     dialogEmployee.value = false;
 }
-function detachEmployee(val) {
-    router.post(props.detach, {employee_id: val})
+function detachEmployee(row) {
+    router.post(route('admin.employee.specialization.detach', {specialization: props.specialization_id}), {employee_id: row.id})
 }
-
 </script>

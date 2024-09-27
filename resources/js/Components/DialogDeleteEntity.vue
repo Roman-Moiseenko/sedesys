@@ -22,29 +22,18 @@ import {func} from '@/func.js'
 import {router} from "@inertiajs/vue3";
 
 const dialogDelete = ref(false)
-
-
 const props = defineProps({
     entity: String,
     show: Boolean,
     route: String
 })
-
 const showDialog= reactive({value: props.show});
-
-
 function removeItem() {
     if (props.route !== null) {
         router.visit(props.route, {
             method: 'delete'
         });
         showDialog.value = false;
-        //props.route = null;
     }
 }
-
 </script>
-
-<style scoped>
-
-</style>

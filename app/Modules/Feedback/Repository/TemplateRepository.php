@@ -14,9 +14,6 @@ class TemplateRepository
     public function getIndex(Request $request, &$filters): Arrayable
     {
         $query = Template::orderBy('name');
-        /**
-         * Фильтр, для каждого параметра своя проверка
-         */
         $filters = [];
         if ($request->has('name')) {
             $name = $request->string('name')->trim()->value();
@@ -25,11 +22,9 @@ class TemplateRepository
         }
 
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
-        $templates = $query->paginate($request->input('size', 20))
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(Template $template) => $this->TemplateToArray($template));
-
-        return $templates;
     }
 
 
@@ -41,12 +36,6 @@ class TemplateRepository
             'color' => $template->color,
             'template' => $template->template,
             'active' => $template->isActive(),
-
-            'url' => route('admin.feedback.template.show', $template),
-            'toggle' => route('admin.feedback.template.toggle', $template),
-            'edit' => route('admin.feedback.template.edit', $template),
-            'destroy' => route('admin.feedback.template.destroy', $template),
-
         ];
     }
 

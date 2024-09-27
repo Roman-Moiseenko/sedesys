@@ -70,34 +70,29 @@ import { func } from '/resources/js/func.js'
 
 const dialogService = ref(false)
 const dialogSave = ref(false)
-
 const props = defineProps({
     services_data: Object,
-
+    employee_id: Number,
 })
 const formService = reactive({
     service_id: null,
     extra_cost: null
 });
-function handleExtraCost(val) {
-    formService.extra_cost = func.MaskInteger(val);
-}
+
 function detachService(row) {
-    router.post(props.services_data.detach, {
-        service_id: row.id
-    });
+    router.post(
+        route('admin.employee.employee.detach-service', {employee: props.employee_id}),
+        {service_id: row.id}
+    );
 }
 function attachService() {
     if (formService.service_id === null) return;
-    router.post(props.services_data.attach, formService);
+    router.post(
+        route('admin.employee.employee.attach-service', {employee: props.employee_id}),
+        formService);
     dialogService.value = false;
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.service.service.show', {service: row.id}))
 }
-
 </script>
-
-<style scoped>
-
-</style>

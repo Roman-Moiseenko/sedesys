@@ -48,7 +48,6 @@ class SpecializationController extends Controller
         $templates = $this->templates->getTemplates('specialization');
 
         return Inertia::render('Employee/Specialization/Create', [
-            'route' => route('admin.employee.specialization.store'),
             'employees' => $employees,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,
@@ -72,13 +71,8 @@ class SpecializationController extends Controller
 
         return Inertia::render('Employee/Specialization/Show', [
                 'specialization' => $specialization,
-                'edit' => route('admin.employee.specialization.edit', $specialization),
                 'image' => $specialization->getImage(),
                 'icon' => $specialization->getIcon(),
-                'toggle' => route('admin.employee.specialization.toggle', $specialization),
-
-                'attach' => route('admin.employee.specialization.attach', $specialization),
-                'detach' => route('admin.employee.specialization.detach', $specialization),
                 'out_employees' => $out_employees,
             ]
         );
@@ -92,7 +86,6 @@ class SpecializationController extends Controller
 
         return Inertia::render('Employee/Specialization/Edit', [
             'specialization' => $specialization,
-            'route' => route('admin.employee.specialization.update', $specialization),
             'image' => $specialization->getImage(),
             'icon' => $specialization->getIcon(),
             'employees' => $employees,
