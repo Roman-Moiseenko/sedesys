@@ -10,37 +10,35 @@
             />
             <!-- Панель Галерея -->
             <GalleryPanel
-                :add="gallery_data.add"
-                :del="gallery_data.del"
-                :set="gallery_data.set"
-                :gallery="gallery_data.gallery"
+                :add="route('admin.service.service.add', {service: service.id})"
+                :del="route('admin.service.service.del', {service: service.id})"
+                :set="route('admin.service.service.set', {service: service.id})"
+                :gallery="gallery"
             />
             <!-- Панель Персонал -->
             <EmployeePanel
-                :attach="employee_data.attach"
-                :detach="employee_data.detach"
+                :service_id="service.id"
                 :employees="service.employees"
-                :out_employees="employee_data.out_employees"
+                :out_employees="out_employees"
             />
             <!-- Панель Расходники -->
             <ConsumablesPanel
-                :attach="consumable_data.attach"
-                :detach="consumable_data.detach"
+                :service_id="service.id"
                 :consumables="service.consumables"
-                :out_consumables="consumable_data.out_consumables"
+                :out_consumables="out_consumables"
             />
             <!-- Панель Примеры работ -->
             <ExamplesPanel
-                :examples="example_data.examples"
-                :new_example="example_data.new_example"
+                :service_id="service.id"
+                :examples="examples"
+                :new_example="route('admin.service.example.create', {service_id: service.id})"
             />
             <!-- Панель Отзывы -->
             <ReviewPanel :reviews="reviews" />
             <!-- Панель Доп.услуги -->
             <ExtraPanel
-                :extras="extra_data.extras"
+                :extras="extras"
                 :errors="errors"
-                :add="extra_data.add"
                 :service_id="service.id"
             />
             <DisplayedShowPanel
@@ -53,7 +51,7 @@
 
     <div class="mt-3 p-3 bg-white rounded-lg">
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goEdit">Редактировать</el-button>
+            <el-button type="primary" @click="handleEdit">Редактировать</el-button>
             <el-button v-if="!$props.service.active" type="success" @click="handleToggle">Показывать</el-button>
             <el-button v-if="$props.service.active" type="warning" @click="handleToggle">Скрыть из показа</el-button>
         </div>
@@ -78,55 +76,27 @@ import DisplayedShowPanel from '@/Components/Displayed/Show.vue'
 
 const props = defineProps({
     service: Object,
-    edit: String,
     image: String,
     icon: String,
     errors: Object,
-
     title: {
         type: String,
         default: 'Карточка услуги',
     },
-    gallery_data: Array,
-    employee_data: Array,
-
-    toggle: String,
+    gallery: Array,
+    out_employees: Array,
     class_name: String,
-
-    example_data: Array,
-    consumable_data: Array,
-
+    examples: Array,
+    out_consumables: Array,
     reviews: Array,
-    extra_data: Array,
+    extras: Array,
 });
 
-
+function handleEdit() {
+    router.post(route('admin.service.service.edit', {service: props.service.id}));
+}
 function handleToggle() {
-    router.post(props.toggle);
-}
-
-
-function newExtra() {
-    alert('Добавить');
+    router.post(route('admin.service.service.toggle', {service: props.service.id}));
 }
 </script>
 
-<script lang="ts">
-import {router} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-;
-
-export default {
-    layout: Layout,
-    methods: {
-        goEdit() {
-            router.get(this.$props.edit);
-        },
-    },
-}
-
-</script>
-
-<style>
-
-</style>

@@ -69,7 +69,7 @@
                         </el-button>
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -118,31 +118,32 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     }
     return ''
 }
-
+function handleEdit(row) {
+    router.get(route('admin.service.classification.edit', {classification: row.id}))
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.service.classification.destroy', {classification: row.id}));
 }
 function createButton() {
-    router.get('/admin/service/classification/create')
+    router.get(route('admin.service.classification.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.service.classification.show', {classification: row.id}))
 }
 function handleUp(index, row) {
-    router.visit(row.up, {
+    router.visit(route('admin.service.classification.up', {classification: row.id}), {
         method: 'post'
     });
 }
 function handleDown(index, row) {
-    router.visit(row.down, {
+    router.visit(route('admin.service.classification.down', {classification: row.id}), {
         method: 'post'
     });
 }
 function handleToggle(index, row) {
-    router.visit(row.toggle, {
+    router.visit(route('admin.service.classification.toggle', {classification: row.id}), {
         method: 'post'
     });
 }
-
 </script>
 

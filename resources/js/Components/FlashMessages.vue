@@ -30,6 +30,7 @@ import 'element-plus/es/components/message/style/css'; // this is only needed if
 import 'element-plus/es/components/message-box/style/css';
 import { ElMessage } from 'element-plus'
 
+//TODO Переписать на Composition API + добавить warning, info
 export default {
     components: {
         ElMessage,

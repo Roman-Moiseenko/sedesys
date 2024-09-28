@@ -30,14 +30,7 @@
 import {defineProps} from "vue";
 import {func} from '@/func.js'
 
-
 const props = defineProps({
     service: Array,
-
     })
 </script>
-
-
-<style scoped>
-
-</style>

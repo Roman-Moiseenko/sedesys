@@ -66,7 +66,6 @@ class ServiceController extends Controller
         $templates = $this->templates->getTemplates('service');
 
         return Inertia::render('Service/Service/Create', [
-            'route' => route('admin.service.service.store'),
             'classifications' => $classifications,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,
@@ -91,39 +90,15 @@ class ServiceController extends Controller
 
         return Inertia::render('Service/Service/Show', [
                 'service' => $service,
-                'edit' => route('admin.service.service.edit', $service),
-                'toggle' => route('admin.service.service.toggle', $service),
                 'image' => $service->getImage(),
                 'icon' => $service->getIcon(),
-
-
-                'gallery_data' => [
-                    'add' => route('admin.service.service.add', $service),
-                    'del' => route('admin.service.service.del', $service),
-                    'set' => route('admin.service.service.set', $service),
-                    'gallery' => $this->repository->getGallery($service),
-                ],
-                'employee_data' => [
-                    'attach' => route('admin.service.service.attach', $service),
-                    'detach' => route('admin.service.service.detach', $service),
-                    'out_employees' => $out_employees,
-                ],
-                'example_data' => [
-                    'new_example' => route('admin.service.example.create', ['service_id' => $service->id]),
-                    'examples' => $this->exampleRepository->getShowByService($service),
-
-                ],
-                'consumable_data' => [
-                    'attach' => route('admin.service.service.attach-consumable', $service),
-                    'detach' => route('admin.service.service.detach-consumable', $service),
-                    'out_consumables' => $this->repository->outConsumables($service),
-                    'consumables' => $this->consumables->getShowByService($service),
-                ],
+                'gallery' => $this->repository->getGallery($service),
+                'out_employees' => $out_employees,
+                'examples' => $this->exampleRepository->getShowByService($service),
+                'out_consumables' => $this->repository->outConsumables($service),
+                //  'consumables' => $this->consumables->getShowByService($service),
                 'reviews' => $reviews,
-                'extra_data' => [
-                    'add' => route('admin.service.extra.store'),
-                    'extras' => $extras,
-                ]
+                'extras' => $extras,
             ]
         );
     }
@@ -135,7 +110,6 @@ class ServiceController extends Controller
 
         return Inertia::render('Service/Service/Edit', [
             'service' => $service,
-            'route' => route('admin.service.service.update', $service),
             'classifications' => $classifications,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,

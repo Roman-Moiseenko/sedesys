@@ -1,10 +1,7 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <h1 class="font-medium text-xl">  {{ classification.name }}  </h1>
-
     <div class="mt-3 p-3 bg-white rounded-lg">
-
-
         <el-tabs type="border-card" class="mb-4">
             <el-tab-pane>
                 <template #label>
@@ -42,7 +39,7 @@
                                 </el-button>
                                 <el-button
                                     size="small"
-                                    @click.stop="handleEdit(scope.$index, scope.row)">
+                                    @click.stop="handleEditRow(scope.row)">
                                     Edit
                                 </el-button>
                             </template>
@@ -59,7 +56,7 @@
         </el-tabs>
 
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="goEdit">Редактировать</el-button>
+            <el-button type="primary" @click="handleEdit">Редактировать</el-button>
             <el-button v-if="!classification.active" type="success" @click="handleToggle">Показывать</el-button>
             <el-button v-if="classification.active" type="warning" @click="handleToggle">Скрыть из показа</el-button>
         </div>
@@ -72,68 +69,39 @@
 import {Head, Link, router} from '@inertiajs/vue3'
 import DisplayedShowPanel from '@/Components/Displayed/Show.vue'
 
-    interface IRow {
-        active: number
+interface IRow {
+    active: number
+}
+const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
+    if (row.active === false) {
+        return 'warning-row'
     }
-    const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
-        if (row.active === false) {
-            return 'warning-row'
-        }
-        return ''
-    }
-    const props = defineProps({
-        classification: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Карточка категории услуг',
-        },
-        image: String,
-        icon: String,
-        toggle: String,
-        services: Array,
+    return ''
+}
+const props = defineProps({
+    classification: Object,
+    title: {
+        type: String,
+        default: 'Карточка категории услуг',
+    },
+    image: String,
+    icon: String,
+    services: Array,
+});
+
+function handleEdit() {
+    router.post(route('admin.service.classification.edit', {classification: props.classification.id}));
+}
+function handleToggle() {
+    router.post(route('admin.service.classification.toggle', {classification: props.classification.id}));
+}
+function handleToggleRow(index, row) {
+    router.visit(route('admin.service.service.toggle', {service: row.id}), {
+        method: 'post'
     });
-
-    /**
-     * Методы
-     */
-    function handleToggle() {
-        router.post(props.toggle);
-    }
-
-</script>
-<script lang="ts">
-    import { router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import DisplayedShow from '@/Components/DisplayedShow.vue'
-
-    export default {
-        layout: Layout,
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-            routeClick(row) {
-                router.get(row.url)
-            },
-            handleToggleRow(index, row) {
-                router.visit(row.toggle, {
-                    method: 'post'
-                });
-            },
-            handleEdit(index, row) {
-                router.get(row.edit);
-            },
-        },
-    }
-
+}
+function handleEditRow(row) {
+    router.get(route('admin.service.service.edit', {service: row.id}));
+}
 </script>
 
-<style >
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>

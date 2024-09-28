@@ -17,7 +17,8 @@
                         <div v-if="errors.price" class="text-red-700">{{ errors.price }}</div>
                     </el-form-item>
                     <el-form-item label="Кол-во">
-                        <el-input v-model="form.count" placeholder="Для неограниченного оставьте пустым" :formatter="(value) => func.MaskInteger(value)"/>
+                        <el-input v-model="form.count" placeholder="Для неограниченного оставьте пустым"
+                                  :formatter="(value) => func.MaskInteger(value)"/>
                         <div v-if="errors.count" class="text-red-700">{{ errors.count }}</div>
                     </el-form-item>
                     <el-form-item label="Описание">
@@ -49,66 +50,61 @@
 
 
 <script lang="ts" setup>
-    import {Head, router} from '@inertiajs/vue3'
-    import {reactive, defineProps, watch, ref} from 'vue'
-    import {func} from "/resources/js/func.js"
-    import UploadImageFile from "/resources/js/Components/UploadImageFile.vue"
+import {Head, router} from '@inertiajs/vue3'
+import {reactive, defineProps, watch, ref} from 'vue'
+import {func} from "/resources/js/func.js"
+import UploadImageFile from "/resources/js/Components/UploadImageFile.vue"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        consumable: Object,
-        title: {
-            type: String,
-            default: 'Редактирование расходного материала',
-        },
+const props = defineProps({
+    errors: Object,
+    consumable: Object,
+    title: {
+        type: String,
+        default: 'Редактирование расходного материала',
+    },
+});
+
+const form = reactive({
+    name: props.consumable.name,
+    description: props.consumable.description,
+    price: props.consumable.price,
+    count: props.consumable.count,
+    show: props.consumable.show,
+
+    clear_image: null,
+    image: null,
+    _method: 'put',
+    close: null,
+})
+
+function onSelectImage(val) {
+    form.clear_image = val.clear_file;
+    form.image = val.file
+}
+
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+
+function onSubmit(val) {
+    form.close = val
+    router.visit(route('admin.service.consumable.update', {consumable: props.consumable.id}), {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
     });
+}
 
-    const form = reactive({
-        name: props.consumable.name,
-        description: props.consumable.description,
-        price: props.consumable.price,
-        count: props.consumable.count,
-        show: props.consumable.show,
-
-        clear_image: null,
-        image: null,
-        _method: 'put',
-        close: null,
-    })
-
-    function onSelectImage(val) {
-        form.clear_image = val.clear_file;
-        form.image = val.file
-    }
-
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({ ...form }),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
-    function onSubmit(val) {
-        form.close = val
-        router.visit(props.route, {
-            method: 'post',
-            data: form,
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: page => {
-                isUnSave.value = false
-            }
-        });
-    }
-    ////<=
+////<=
 </script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
-</script>

@@ -7,11 +7,11 @@
             </span>
         </template>
         <div class="mb-5">
-            <el-table #default="mainscope"
+            <el-table
                       :data="extras"
                       style="width: 100%; cursor: pointer;"
                       :row-class-name="tableRowClassName"
-                      @row-click="router.get(mainscope.row.url)"
+                      @row-click="rowClick"
             >
                 <el-table-column label="Иконка" width="120">
                     <template #default="scope">
@@ -48,13 +48,13 @@
                         <el-button v-if="scope.row.active"
                                    size="small"
                                    type="warning"
-                                   @click.stop="router.post(scope.row.toggle)">
+                                   @click.stop="handleToggle(scope.row)">
                             Hide
                         </el-button>
                         <el-button v-if="!scope.row.active"
                                    size="small"
                                    type="success"
-                                   @click.stop="router.post(scope.row.toggle)">
+                                   @click.stop="handleToggle(scope.row)">
                             Show
                         </el-button>
                         <el-button
@@ -65,7 +65,7 @@
                         <el-button
                             size="small"
                             type="danger"
-                            @click.stop="handleDelete(scope.row)"
+                            @click.stop="handleDeleteEntity(scope.row)"
                         >
                             Delete
                         </el-button>
@@ -86,13 +86,13 @@
                         <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
                     </el-form-item>
                     <el-form-item label="Цена">
-                        <el-input v-model="form.price" @input="handleInteger">
+                        <el-input v-model="form.price" :formatter="(val) => func.MaskInteger(val, 9)">
                             <template #append>₽</template>
                         </el-input>
                         <div v-if="errors.price" class="text-red-700">{{ errors.price }}</div>
                     </el-form-item>
                     <el-form-item label="Длительность">
-                        <el-input v-model="form.duration" @input="handleIntegerDuration">
+                        <el-input v-model="form.duration" :formatter="(val) => func.MaskInteger(val, 9)">
                             <template #append>мин</template>
                         </el-input>
                         <div v-if="errors.price" class="text-red-700">{{ errors.price }}</div>
@@ -120,28 +120,11 @@
         </el-form>
     </el-dialog>
 
-
-    <!-- Dialog Delete -->
-    <el-dialog v-model="dialogDelete" title="Удалить запись" width="400" center>
-        <div class="font-medium text-md mt-2">
-            Вы уверены, что хотите удалить Доп.услугу?
-        </div>
-        <div class="text-red-600 text-md mt-2">
-            Восстановить данные будет невозможно!
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="dialogDelete = false">Отмена</el-button>
-                <el-button type="danger" @click="removeItem(routeDestroy)">
-                    Удалить
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <DeleteEntityModal name_entity="доп.услугу" />
 </template>
 
 <script lang="ts" setup>
-import {reactive, ref} from "vue";
+import {inject, reactive, ref} from "vue";
 import {func} from '/resources/js/func.js'
 import {router} from "@inertiajs/vue3";
 import DialogDeleteEntity from '/resources/js/Components/DialogDeleteEntity.vue'
@@ -151,26 +134,22 @@ import Active from '/resources/js/Components/Elements/Active.vue'
 interface IRow {
     active: number
 }
-
+const $delete_entity = inject("$delete_entity")
 const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     if (row.active === 0) {
         return 'warning-row'
     }
     return ''
 }
-
 const dialogDelete = ref(false)
 const dialogExtra = ref(false)
 const routeDestroy = ref(null)
 const routeSubmit = ref(null)
-
 const props = defineProps({
     extras: Array,
-    add: String,
     errors: Object,
     service_id: Number,
 })
-
 const form = reactive({
     service_id: props.service_id,
     name: null,
@@ -182,30 +161,19 @@ const form = reactive({
     clear_icon: false,
     _method: 'post',
 })
-
-function handleDelete(row) {
-    routeDestroy.value = row.destroy;
-    dialogDelete.value = true;
+function rowClick(row){
+    router.get(route('admin.service.extra.show', {extra: row.id}))
 }
-function removeItem(val) {
-    if (val !== null) {
-        router.delete(val);
-        dialogDelete.value = false;
-    }
+function handleToggle(row) {
+    router.post(route('admin.service.extra.toggle', {extra: row.id}))
 }
-
-function handleInteger(val) {
-    form.price = func.MaskInteger(val, 9)
-}
-
-function handleIntegerDuration(val) {
-    form.duration = func.MaskInteger(val, 9)
+function handleDeleteEntity(row) {
+    $delete_entity.show(route('admin.service.extra.destroy', {extra: row.id}));
 }
 function selectIcon(val) {
     form.clear_icon = val.clear_file
     form.icon = val.file
 }
-
 function onSubmit() {
    // router.post(routeSubmit.value, form);
     router.visit(routeSubmit.value, {
@@ -218,17 +186,6 @@ function onSubmit() {
         },
     })
 }
-
-function __removeItem(_route) {
-    if (_route !== null) {
-        router.visit(_route, {
-            method: 'delete'
-        });
-        dialogDelete.value = false;
-        routeDestroy.value = null;
-    }
-}
-
 function newExtra() {
     form.name = null
     form.description = null
@@ -237,10 +194,9 @@ function newExtra() {
     form.awesome = null
     form.icon = null
     form._method = 'post'
-    routeSubmit.value = props.add
+    routeSubmit.value = route('admin.service.extra.store')
     dialogExtra.value = true
 }
-
 function handleEdit(row) {
     form.name = row.name
     form.description = row.description
@@ -250,24 +206,13 @@ function handleEdit(row) {
     console.log(row.icon)
     form.icon = row.icon
     form._method = 'put'
-    routeSubmit.value = row.update
+    routeSubmit.value = route('admin.service.extra.update', {extra: row.id})
     dialogExtra.value = true
 }
-
 function handleUp(row) {
-    router.post(row.up);
+    router.post(route('admin.service.extra.up', {extra: row.id}));
 }
 function handleDown(row) {
-    router.post(row.down);
+    router.post(route('admin.service.extra.down', {extra: row.id}));
 }
-
 </script>
-<style>
-.el-table tr.warning-row {
-    --el-table-tr-bg-color: var(--el-color-warning-light-7);
-}
-
-.el-table .success-row {
-    --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>

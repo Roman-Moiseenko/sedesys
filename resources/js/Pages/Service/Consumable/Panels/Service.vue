@@ -78,8 +78,7 @@ const dialogService = ref(false)
 const dialogSave = ref(false)
 const props = defineProps({
     services: Array,
-    attach: String,
-    detach: String,
+    consumable_id: Number,
     out_services: Array,
 })
 const formService = reactive({
@@ -88,17 +87,17 @@ const formService = reactive({
 });
 
 function detachService(row) {
-    router.post(props.detach, {
+    router.post(route('admin.service.consumable.detach', {consumable: props.consumable_id}), {
         service_id: row.id
     });
 }
 function attachService() {
     if (formService.service_id === null) return;
-    router.post(props.attach, formService);
+    router.post(route('admin.service.consumable.attach', {consumable: props.consumable_id}), formService);
     dialogService.value = false;
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.service.service.show', {service: row.id}))
 }
 
 </script>

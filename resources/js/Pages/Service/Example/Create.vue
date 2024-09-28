@@ -8,7 +8,7 @@
 
                     <el-form-item label="Услуга">
                         <el-select v-model="form.service_id">
-                            <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name" />
+                            <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name"/>
                         </el-select>
                         <div v-if="errors.service_id" class="text-red-700">{{ errors.service_id }}</div>
                     </el-form-item>
@@ -27,10 +27,10 @@
                         <div v-if="errors.duration" class="text-red-700">{{ errors.duration }}</div>
                     </el-form-item>
                     <el-form-item label="Дата оказания">
-                    <el-date-picker v-model="form.date" type="date"/>
+                        <el-date-picker v-model="form.date" type="date"/>
                     </el-form-item>
                     <el-form-item label="Описание">
-                        <el-input v-model="form.description" type="textarea" :rows="5" />
+                        <el-input v-model="form.description" type="textarea" :rows="5"/>
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
                     <el-form-item label="Персонал">
@@ -66,47 +66,41 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head} from '@inertiajs/vue3'
+import {reactive} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание примера работ',
-        },
-        services: Array,
-        employees: Array,
-        service_id: Number,
-        employee_id: Number,
-    });
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание примера работ',
+    },
+    services: Array,
+    employees: Array,
+    service_id: Number,
+    employee_id: Number,
+});
 
-    const form = reactive({
-        title: null,
-        description: null,
-        service_id: null,
-        cost: null,
-        duration: null,
-        date: null,
-        employees: [],
-    })
-    if (props.service_id > 0) form.service_id = props.service_id;
-    if (props.employee_id > 0) form.employees = [props.employee_id];
+const form = reactive({
+    title: null,
+    description: null,
+    service_id: null,
+    cost: null,
+    duration: null,
+    date: null,
+    employees: [],
+})
+if (props.service_id > 0) form.service_id = props.service_id;
+if (props.employee_id > 0) form.employees = [props.employee_id];
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-    function handleCost(val) {
-        form.cost = func.MaskInteger(val)
-    }
+function onSubmit() {
+    router.post(route('admin.service.example.store'), form)
+}
+
+function handleCost(val) {
+    form.cost = func.MaskInteger(val)
+}
 </script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
-</script>

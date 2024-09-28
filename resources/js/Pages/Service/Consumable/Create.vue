@@ -17,7 +17,8 @@
                         <div v-if="errors.price" class="text-red-700">{{ errors.price }}</div>
                     </el-form-item>
                     <el-form-item label="Кол-во">
-                        <el-input v-model="form.count" placeholder="Для неограниченного оставьте пустым" :formatter="(value) => func.MaskInteger(value)"/>
+                        <el-input v-model="form.count" placeholder="Для неограниченного оставьте пустым"
+                                  :formatter="(value) => func.MaskInteger(value)"/>
                         <div v-if="errors.count" class="text-red-700">{{ errors.count }}</div>
                     </el-form-item>
                     <el-form-item label="Описание">
@@ -45,53 +46,46 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive, ref, watch, defineProps} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
-    import UploadImageFile from "/resources/js/Components/UploadImageFile.vue"
+import {Head} from '@inertiajs/vue3'
+import {reactive, ref, watch, defineProps} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
+import UploadImageFile from "/resources/js/Components/UploadImageFile.vue"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание расходного материала',
-        },
-    });
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание расходного материала',
+    },
+});
 
-    const form = reactive({
-        name: null,
-        description: null,
-        price: null,
-        count: null,
-        show: null,
-        clear_image: null,
-        image: null,
-    })
+const form = reactive({
+    name: null,
+    description: null,
+    price: null,
+    count: null,
+    show: null,
+    clear_image: null,
+    image: null,
+})
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-    function onSelectImage(val) {
-        form.clear_image = val.clear_file;
-        form.image = val.file
-    }
-
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({...form}),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
-</script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    layout: Layout,
+function onSubmit() {
+    router.post(route('admin.service.consumable.store'), form)
 }
+
+function onSelectImage(val) {
+    form.clear_image = val.clear_file;
+    form.image = val.file
+}
+
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
 </script>

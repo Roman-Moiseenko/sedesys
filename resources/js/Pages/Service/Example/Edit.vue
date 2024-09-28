@@ -9,7 +9,7 @@
 
                     <el-form-item label="Услуга">
                         <el-select v-model="form.service_id">
-                            <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name" />
+                            <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name"/>
                         </el-select>
                         <div v-if="errors.service_id" class="text-red-700">{{ errors.service_id }}</div>
                     </el-form-item>
@@ -31,7 +31,7 @@
                         <el-date-picker v-model="form.date" type="date"/>
                     </el-form-item>
                     <el-form-item label="Описание">
-                        <el-input v-model="form.description" type="textarea" :rows="5" />
+                        <el-input v-model="form.description" type="textarea" :rows="5"/>
                         <div v-if="errors.description" class="text-red-700">{{ errors.description }}</div>
                     </el-form-item>
                     <el-form-item label="Персонал">
@@ -68,68 +68,69 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive, ref, watch} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head} from '@inertiajs/vue3'
+import {reactive, ref, watch} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        example: Object,
-        title: {
-            type: String,
-            default: 'Редактирование работы',
-        },
-        services: Array,
-        employees: Array,
+const props = defineProps({
+    errors: Object,
+    example: Object,
+    title: {
+        type: String,
+        default: 'Редактирование работы',
+    },
+    services: Array,
+    employees: Array,
+});
+
+const form = reactive({
+    name: props.example.name,
+    title: props.example.title,
+    description: props.example.description,
+    service_id: props.example.service_id,
+    cost: props.example.cost,
+    duration: props.example.duration,
+    date: props.example.date,
+    employees: props.example.employees.map(item => item.id),
+    close: null,
+    _method: 'put',
+})
+
+function handleCost(val) {
+    form.cost = func.MaskInteger(val)
+}
+
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
+
+function onSubmit(val) {
+    form.close = val
+    router.visit(route('admin.service.example.update', {example: props.example.id}), {
+        method: 'post',
+        data: form,
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: page => {
+            isUnSave.value = false
+        }
     });
+}
 
-    const form = reactive({
-        name: props.example.name,
-
-        title: props.example.title,
-        description: props.example.description,
-        service_id: props.example.service_id,
-        cost: props.example.cost,
-        duration: props.example.duration,
-        date: props.example.date,
-        employees: props.example.employees.map(item => item.id),
-        close: null,
-        _method: 'put',
-    })
-
-    function handleCost(val) {
-        form.cost = func.MaskInteger(val)
-    }
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({ ...form }),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
-    function onSubmit(val) {
-        form.close = val
-        router.visit(props.route, {
-            method: 'post',
-            data: form,
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: page => {
-                isUnSave.value = false
-            }
-        });
-    }
-    ////<=
+////<=
 
 </script>
 <script lang="ts">
-    import Layout from '@/Components/Layout.vue'
+import Layout from '@/Components/Layout.vue'
 
-    export default {
-        layout: Layout,
-    }
+export default {
+    layout: Layout,
+}
 </script>

@@ -51,7 +51,7 @@
                         <el-button
                             v-if="scope.row.is_edit"
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -116,18 +116,20 @@ const tableRowClassName = ({row, rowIndex}: { row: IRow }) => {
     }
     return ''
 }
-
+function handleEdit(row) {
+    router.get(route('admin.service.review.edit', {review: row.id}))
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.service.review.destroy', {review: row.id}));
 }
 function createButton() {
-    router.get('/admin/service/review/create')
+    router.get(route('admin.service.review.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.service.review.show', {review: row.id}))
 }
 function handleToggle(index, row) {
-    router.visit(row.toggle, {
+    router.visit(route('admin.service.review.toggle', {review: row.id}), {
         method: 'post'
     });
 }

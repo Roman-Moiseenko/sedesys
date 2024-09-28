@@ -9,14 +9,13 @@
                 :consumable="consumable"
             />
             <ServicePanel
+                :consumable_id="consumable.id"
                 :services="consumable.services"
-                :attach="consumable.attach"
-                :detach="consumable.detach"
                 :out_services="out_services"
             />
         </el-tabs>
         <div class="mt-3 flex flex-row">
-            <el-button type="primary" @click="router.get(consumable.edit)">Редактировать</el-button>
+            <el-button type="primary" @click="handleEdit">Редактировать</el-button>
             <el-button v-if="!consumable.active" type="success" @click="handleToggle">В расчет услуг</el-button>
             <el-button v-if="consumable.active" type="warning" @click="handleToggle">Убрать из расчета</el-button>
         </div>
@@ -25,37 +24,23 @@
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link, router } from '@inertiajs/vue3'
-    import CommonPanel from './Panels/Common.vue'
-    import ServicePanel from './Panels/Service.vue'
+import { Head, router } from '@inertiajs/vue3'
+import CommonPanel from './Panels/Common.vue'
+import ServicePanel from './Panels/Service.vue'
 
-    const props = defineProps({
-        consumable: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Карточка расходного материала',
-        },
-        out_services: Array,
-    });
-    function handleToggle() {
-        router.post(props.consumable.toggle);
-    }
-</script>
-<script lang="ts">
-    import { router } from '@inertiajs/vue3'
-
-    export default {
-
-        methods: {
-            goEdit() {
-                router.get(this.$props.consumable.edit);
-            },
-        },
-    }
-
+const props = defineProps({
+    consumable: Object,
+    title: {
+        type: String,
+        default: 'Карточка расходного материала',
+    },
+    out_services: Array,
+});
+function handleToggle() {
+    router.post(route('admin.service.consumable.toggle', {consumable: props.consumable.id}));
+}
+function handleEdit() {
+    router.get(route('admin.service.consumable.edit', {consumable: props.consumable.id}))
+}
 </script>
 
-<style>
-
-</style>

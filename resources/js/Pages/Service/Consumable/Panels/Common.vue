@@ -40,14 +40,7 @@
 import {defineProps} from "vue";
 import {func} from '@/func.js'
 
-
 const props = defineProps({
     consumable: Array,
-
     })
 </script>
-
-
-<style scoped>
-
-</style>

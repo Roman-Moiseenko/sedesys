@@ -61,7 +61,6 @@ class ExampleController extends Controller
         $employees = $this->employeeRepository->getActive();
 
         return Inertia::render('Service/Example/Create', [
-            'route' => route('admin.service.example.store'),
             'services' => $services,
             'employees' => $employees,
             'service_id' => $request->integer('service_id', null),
@@ -85,11 +84,6 @@ class ExampleController extends Controller
         return Inertia::render('Service/Example/Show', [
                 'example' => $example,
                 'gallery' => $this->repository->getGallery($example),
-                'edit' => route('admin.service.example.edit', $example),
-                'toggle' => route('admin.service.example.toggle', $example),
-                'add' => route('admin.service.example.add', $example),
-                'del' => route('admin.service.example.del', $example),
-                'set' => route('admin.service.example.set', $example),
             ]
         );
     }
@@ -103,7 +97,6 @@ class ExampleController extends Controller
 
         return Inertia::render('Service/Example/Edit', [
             'example' => $example,
-            'route' => route('admin.service.example.update', $example),
             'services' => $services,
             'employees' => $employees,
         ]);

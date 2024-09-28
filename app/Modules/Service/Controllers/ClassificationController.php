@@ -39,12 +39,10 @@ class ClassificationController extends Controller
     public function index(Request $request)
     {
         $classifications = $this->repository->getIndex($request, $filters);
-
         return Inertia::render('Service/Classification/Index', [
                 'classifications' => $classifications,
             ]
         );
-
     }
 
     public function create(Request $request)
@@ -53,7 +51,6 @@ class ClassificationController extends Controller
         $templates = $this->templates->getTemplates('classification');
 
         return Inertia::render('Service/Classification/Create', [
-            'route' => route('admin.service.classification.store'),
             'classifications' => $classifications,
             'templates' => $templates,
             'tiny_api' => $this->tiny_api,
@@ -75,8 +72,6 @@ class ClassificationController extends Controller
 
         return Inertia::render('Service/Classification/Show', [
                 'classification' => $classification,
-                'edit' => route('admin.service.classification.edit', $classification),
-                'toggle' => route('admin.service.classification.toggle', $classification),
                 'image' => $classification->getImage(),
                 'icon' => $classification->getIcon(),
                 'services' => $services,
@@ -91,7 +86,6 @@ class ClassificationController extends Controller
 
         return Inertia::render('Service/Classification/Edit', [
             'classification' => $classification,
-            'route' => route('admin.service.classification.update', $classification),
             'image' => $classification->getImage(),
             'icon' => $classification->getIcon(),
             'classifications' => $classifications,

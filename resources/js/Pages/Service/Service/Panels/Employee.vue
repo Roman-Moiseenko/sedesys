@@ -9,7 +9,6 @@
         <div class="mb-5">
             <el-table :data="employees"
                       style="width: 100%;"
-
             >
                 <el-table-column label="Персонал" width="250">
                     <template #default="scope">
@@ -46,6 +45,7 @@
             </el-icon>&nbsp;
             Добавить Персонал
         </el-button>
+
         <!--Dialog-->
         <el-dialog v-model="dialogEmployee" width="400" class="p-4" center>
             <el-form :model="formEmployee" class="mt-3">
@@ -80,9 +80,8 @@ const dialogEmployee = ref(false)
 const dialogSave = ref(false)
 
 const props = defineProps({
+    service_id: Number,
     employees: Array,
-    detach: String,
-    attach: String,
     out_employees: Array,
 })
 const formEmployee = reactive({
@@ -91,11 +90,11 @@ const formEmployee = reactive({
 });
 function attachEmployee() {
     if (formEmployee.employee_id === null) return;
-    router.post(props.attach, formEmployee);
+    router.post(route('admin.service.service.attach', {service: props.service_id}), formEmployee);
     dialogEmployee.value = false;
 }
 function detachEmployee(val) {
-    router.post(props.detach, {employee_id: val})
+    router.post(route('admin.service.service.detach', {service: props.service_id}), {employee_id: val})
 }
 
 

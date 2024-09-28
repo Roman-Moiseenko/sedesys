@@ -49,14 +49,6 @@ class ClassificationRepository
                 'image' => $classification->getImage('mini'),
                 'icon' => $classification->getIcon('mini'),
                 'services' => $classification->services()->count() . $count,
-
-                'url' => route('admin.service.classification.show', $classification),
-                'edit' => route('admin.service.classification.edit', $classification),
-                'destroy' => route('admin.service.classification.destroy', $classification),
-                'up' => route('admin.service.classification.up', $classification),
-                'down' => route('admin.service.classification.down', $classification),
-                'toggle' => route('admin.service.classification.toggle', $classification),
-
                 'children' => $children ?? null,
             ];
         }

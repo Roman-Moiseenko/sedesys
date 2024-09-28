@@ -46,41 +46,24 @@
 </template>
 
 <script lang="ts" setup>
-    import { Head, Link } from '@inertiajs/vue3'
+import {Head, Link, router} from '@inertiajs/vue3'
     import {func} from '/resources/js/func.js'
     import {ref} from "vue";
     import {UploadUserFile} from "element-plus";
 
-    const props = defineProps({
-        review: Object,
-        edit: String,
-        title: {
-            type: String,
-            default: 'Карточка отзывы',
-        },
-        toggle: String,
-        gallery: Array,
-    });
-
-</script>
-<script lang="ts">
-    import { router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-
-    export default {
-        layout: Layout,
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-            handleToggle(val) {
-                router.post(this.$props.toggle);
-            }
-        },
-    }
-
+const props = defineProps({
+    review: Object,
+    title: {
+        type: String,
+        default: 'Карточка отзывы',
+    },
+    gallery: Array,
+});
+function goEdit() {
+    router.get(route('admin.service.review.edit', {review: props.review.id}));
+}
+function handleToggle(val) {
+    router.post(route('admin.service.review.edit', {review: props.review.id}));
+}
 </script>
 
-<style>
-
-</style>

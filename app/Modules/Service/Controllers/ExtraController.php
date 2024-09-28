@@ -21,7 +21,7 @@ class ExtraController extends Controller
     public function store(ExtraRequest $request)
     {
         $request->validated();
-        $service = $this->service->create($request);
+        $this->service->create($request);
         return redirect()
             ->back()
             ->with('success', 'Услуга добавлена');

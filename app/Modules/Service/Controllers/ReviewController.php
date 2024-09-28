@@ -33,7 +33,6 @@ class ReviewController extends Controller
         $this->employeeRepository = $employeeRepository;
     }
 
-
     public function index(Request $request)
     {
         $reviews = $this->repository->getIndex($request, $filters);
@@ -56,7 +55,6 @@ class ReviewController extends Controller
         $employees = $this->employeeRepository->getActive();
 
         return Inertia::render('Service/Review/Create', [
-            'route' => route('admin.service.review.store'),
             'externals' => $externals,
             'services' => $services,
             'employees' => $employees,
@@ -69,7 +67,7 @@ class ReviewController extends Controller
         $review = $this->service->create($request);
         return redirect()
             ->route('admin.service.review.index')
-            ->with('success', 'Новый review добавлен');
+            ->with('success', 'Новый отзыв добавлен');
     }
 
     public function show(Review $review)
@@ -78,8 +76,6 @@ class ReviewController extends Controller
 
         return Inertia::render('Service/Review/Show', [
                 'review' => $review,
-                'edit' => route('admin.service.review.edit', $review),
-                'toggle' => route('admin.service.review.toggle', $review),
                 'gallery' => $this->repository->getPhotos($review),
             ]
         );
@@ -93,7 +89,6 @@ class ReviewController extends Controller
 
         return Inertia::render('Service/Review/Edit', [
             'review' => $review,
-            'route' => route('admin.service.review.update', $review),
             'externals' => $externals,
             'services' => $services,
             'employees' => $employees,

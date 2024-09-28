@@ -71,6 +71,7 @@ const dialogConsumable = ref(false)
 const dialogSave = ref(false)
 const props = defineProps({
     consumables: Array,
+    service_id: Number,
     detach: String,
     attach: String,
     out_consumables: Array,
@@ -81,13 +82,13 @@ const formConsumable = reactive({
 });
 function attachConsumable() {
     if (formConsumable.consumable_id === null) return;
-    router.post(props.attach, formConsumable);
+    router.post(route('admin.service.service.attach-consumable', {service: props.service_id}), formConsumable);
     dialogConsumable.value = false;
 }
 
 
 function detachConsumable(val) {
-    router.post(props.detach, {consumable_id: val})
+    router.post(route('admin.service.service.detach-consumable', {service: props.service_id}), {consumable_id: val})
 }
 function rowClick(row) {
     //router.get(row.url)

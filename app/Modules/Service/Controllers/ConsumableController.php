@@ -38,7 +38,6 @@ class ConsumableController extends Controller
     public function create(Request $request): \Inertia\Response
     {
         return Inertia::render('Service/Consumable/Create', [
-            'route' => route('admin.service.consumable.store'),
         ]);
     }
 
@@ -57,8 +56,6 @@ class ConsumableController extends Controller
 
         return Inertia::render('Service/Consumable/Show', [
                 'consumable' => $this->repository->ConsumableWithToArray($consumable),
-                //'edit' => route('admin.service.consumable.edit', $consumable),
-               // 'image' => $consumable->getImage(),
                 'out_services' => $out_services,
             ]
         );
@@ -68,7 +65,6 @@ class ConsumableController extends Controller
     {
         return Inertia::render('Service/Consumable/Edit', [
             'consumable' => $this->repository->ConsumableToArray($consumable),
-            'route' => route('admin.service.consumable.update', $consumable),
             'image' => $consumable->getImage(),
         ]);
     }

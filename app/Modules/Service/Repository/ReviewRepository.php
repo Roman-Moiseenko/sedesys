@@ -51,17 +51,11 @@ class ReviewRepository
             'rating' => $review->rating,
             'text' => $review->text,
             'image_count' => count($review->gallery),
-            //'images' => $review->gallery,
             'service' => is_null($review->service_id) ? '' : $review->service->name,
             'employee' => is_null($review->employee_id) ? '' : $review->employee->fullname->getFullName(),
             'created_at' => $review->created_at->translatedFormat('j F Y'),
             'active' => $review->isActive(),
             'is_edit' => is_null($review->user_id),
-            'url' => route('admin.service.review.show', $review),
-            'edit' => is_null($review->user_id) ? route('admin.service.review.edit', $review) : null,
-            'destroy' => is_null($review->user_id) ? route('admin.service.review.destroy', $review) : null,
-            'toggle' => route('admin.service.review.toggle', $review),
-
         ];
     }
 

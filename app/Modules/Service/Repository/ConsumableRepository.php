@@ -39,12 +39,6 @@ class ConsumableRepository
             'show' => $consumable->isShow(),
             'count_services' => $consumable->services()->count(),
             'image' => $consumable->getImage(),
-
-            'url' => route('admin.service.consumable.show', $consumable),
-            'edit' => route('admin.service.consumable.edit', $consumable),
-            'destroy' => route('admin.service.consumable.destroy', $consumable),
-            'toggle' => route('admin.service.consumable.toggle', $consumable),
-
         ];
     }
 
@@ -57,12 +51,9 @@ class ConsumableRepository
                     'name' => $service->name,
                     'count' => $service->pivot->count,
                     'price' => $service->price,
-                    'url' => route('admin.service.service.show', $service),
                     'consumables' => $service->consumables()->get()->map(fn($item) => $item->name)->toArray(),
                 ]
             )->toArray(),
-            'attach' => route('admin.service.consumable.attach', $consumable),
-            'detach' => route('admin.service.consumable.detach', $consumable),
         ];
 
         return array_merge($this->ConsumableToArray($consumable), $withData);

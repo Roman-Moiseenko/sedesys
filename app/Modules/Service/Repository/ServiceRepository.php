@@ -125,11 +125,6 @@ class ServiceRepository
             'icon' => $service->getIcon('mini'),
             'template' => $service->template,
             'consumable_amount' =>$service->getConsumableAmount(),
-
-            'url' => route('admin.service.service.show', $service),
-            'edit' => route('admin.service.service.edit', $service),
-            'destroy' => route('admin.service.service.destroy', $service),
-            'toggle' => route('admin.service.service.toggle', $service),
         ];
     }
 
@@ -160,6 +155,7 @@ class ServiceRepository
     public function getExtras(Service $service): array
     {
         return $service->extras()->get()->map(fn(Extra $extra) => [
+            'id' => $extra->id,
             'name' => $extra->name,
             'description' => $extra->description,
             'price' => $extra->price,
@@ -167,12 +163,6 @@ class ServiceRepository
             'awesome' => $extra->awesome,
             'icon' => $extra->getIcon(),
             'active' => $extra->isActive(),
-
-            'toggle' => route('admin.service.extra.toggle', $extra),
-            'up' => route('admin.service.extra.up', $extra),
-            'down' => route('admin.service.extra.down', $extra),
-            'update' => route('admin.service.extra.update', $extra),
-            'destroy' => route('admin.service.extra.destroy', $extra),
         ])->toArray();
     }
 

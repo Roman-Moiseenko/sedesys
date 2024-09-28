@@ -7,7 +7,8 @@
                 <div class="p-4">
                     <el-form-item label="Платформа отзывов" :rules="{required: true}">
                         <el-select v-model="form.external">
-                            <el-option v-for="item in externals" :value="item.value" :key="item.value" :label="item.label" />
+                            <el-option v-for="item in externals" :value="item.value" :key="item.value"
+                                       :label="item.label"/>
                         </el-select>
                         <div v-if="errors.external" class="text-red-700">{{ errors.external }}</div>
                     </el-form-item>
@@ -23,21 +24,22 @@
                 <div class="p-4">
                     <el-form-item label="Услуга" :rules="{required: true}">
                         <el-select v-model="form.service_id">
-                            <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name" />
+                            <el-option v-for="item in services" :value="item.id" :key="item.id" :label="item.name"/>
                         </el-select>
                         <div v-if="errors.service_id" class="text-red-700">{{ errors.service_id }}</div>
                     </el-form-item>
 
                     <el-form-item label="Персонал">
                         <el-select v-model="form.employee_id">
-                            <el-option v-for="item in employees" :value="item.id" :key="item.id" :label=" func.fullName(item.fullname)" />
+                            <el-option v-for="item in employees" :value="item.id" :key="item.id"
+                                       :label=" func.fullName(item.fullname)"/>
                         </el-select>
                         <div v-if="errors.employee_id" class="text-red-700">{{ errors.employee_id }}</div>
                     </el-form-item>
                 </div>
                 <div class="p-4">
                     <el-form-item label="Рейтинг" :rules="{required: true}">
-                        <el-rate v-model="form.rating" />
+                        <el-rate v-model="form.rating"/>
                         <div v-if="errors.rating" class="text-red-700">{{ errors.rating }}</div>
                     </el-form-item>
                     <el-form-item label="Отзыв" :rules="{required: true}">
@@ -54,50 +56,31 @@
 
 
 <script lang="ts" setup>
-    import {Head} from '@inertiajs/vue3'
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head} from '@inertiajs/vue3'
+import {reactive} from 'vue'
+import {router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Добавление отзыва',
-        },
-        externals: Array,
-        services: Array,
-        employees: Array,
-    });
-
-    const form = reactive({
-        external: null,
-        link_review: null,
-        user_name: null,
-        service_id: null,
-        employee_id: null,
-        rating: null,
-        text: null,
-    })
-
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
-
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-
-</script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
-
-    export default {
-        layout: Layout,
-    }
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Добавление отзыва',
+    },
+    externals: Array,
+    services: Array,
+    employees: Array,
+});
+const form = reactive({
+    external: null,
+    link_review: null,
+    user_name: null,
+    service_id: null,
+    employee_id: null,
+    rating: null,
+    text: null,
+})
+function onSubmit() {
+    router.post(route('admin.service.review.store'), form)
+}
 </script>

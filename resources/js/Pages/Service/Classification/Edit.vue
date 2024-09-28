@@ -13,7 +13,8 @@
                     <!-- Доп.поля в 1ю секцию 1й панели -->
                     <el-form-item label="Родительская категория" :rules="{required: true}">
                         <el-select v-model="form.parent_id" placeholder="Select" style="width: 240px">
-                            <el-option v-for="item in classifications" :key="item.value" :label="item.label" :value="item.value"/>
+                            <el-option v-for="item in classifications" :key="item.value" :label="item.label"
+                                       :value="item.value"/>
                         </el-select>
                         <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
@@ -36,7 +37,6 @@ import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
 const props = defineProps({
     errors: Object,
-    route: String,
     classification: Object,
     title: {
         type: String,
@@ -66,9 +66,10 @@ watch(
     },
     {deep: true}
 );
+
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.service.classification.update', {classification: props.classification.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -78,13 +79,7 @@ function onSubmit(val) {
         }
     });
 }
+
 ////<=
-
 </script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
 
-export default {
-    layout: Layout,
-}
-</script>

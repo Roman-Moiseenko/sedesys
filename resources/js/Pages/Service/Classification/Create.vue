@@ -13,7 +13,8 @@
                     <!-- Доп.поля в 1ю секцию 1й панели -->
                     <el-form-item label="Родительская категория" :rules="{required: true}">
                         <el-select v-model="form.parent_id" placeholder="Select" style="width: 240px">
-                            <el-option v-for="item in classifications" :key="item.value" :label="item.label" :value="item.value"/>
+                            <el-option v-for="item in classifications" :key="item.value" :label="item.label"
+                                       :value="item.value"/>
                         </el-select>
                         <div v-if="errors.parent_id" class="text-red-700">{{ errors.parent_id }}</div>
                     </el-form-item>
@@ -28,48 +29,40 @@
 
 
 <script lang="ts" setup>
-    import {Head, router} from '@inertiajs/vue3'
-    import {reactive, ref, watch} from 'vue'
-    import {func} from "/resources/js/func.js"
-    import {useStore} from '/resources/js/store.js'
-    import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
+import {Head, router} from '@inertiajs/vue3'
+import {reactive, ref, watch} from 'vue'
+import {func} from "/resources/js/func.js"
+import {useStore} from '/resources/js/store.js'
+import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
-    const store = useStore();
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание классификации',
-        },
-        classifications: Array,
-        templates: Array,
-        tiny_api: String,
-    });
-    const form = reactive({
-        displayed: func.displayedInfo(),
+const store = useStore();
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание классификации',
+    },
+    classifications: Array,
+    templates: Array,
+    tiny_api: String,
+});
+const form = reactive({
+    displayed: func.displayedInfo(),
 
-        parent_id: null,
-    })
+    parent_id: null,
+})
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
+function onSubmit() {
+    router.post(route('admin.service.classification.store'), form)
+}
 
-    ///Блок сохранения и обновления=>
-    const isUnSave = ref(false)
-    watch(
-        () => ({...form}),
-        function (newValue, oldValue) {
-            isUnSave.value = true
-        },
-        {deep: true}
-    );
-</script>
-<script lang="ts">
-    import Layout from '@/Components/Layout.vue'
-
-    export default {
-        layout: Layout,
-    }
+///Блок сохранения и обновления=>
+const isUnSave = ref(false)
+watch(
+    () => ({...form}),
+    function (newValue, oldValue) {
+        isUnSave.value = true
+    },
+    {deep: true}
+);
 </script>
