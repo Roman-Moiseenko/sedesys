@@ -53,47 +53,33 @@
 
 
 <script lang="ts" setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        schedule: Object,
-        title: {
-            type: String,
-            default: 'Настройки расписания',
-        }
-    });
-
-    const form = reactive({
-        slug: 'schedule',
-        begin_x_date:  props.schedule.begin_x_date,
-        begin_work: props.schedule.begin_work,
-        end_work: props.schedule.end_work,
-        holiday: props.schedule.holiday,
-
-
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    function onSubmit() {
-
-        form.begin_x_date = func.date(form.begin_x_date);
-        router.put(props.route, form)
+const props = defineProps({
+    errors: Object,
+    schedule: Object,
+    title: {
+        type: String,
+        default: 'Настройки расписания',
     }
+});
+
+const form = reactive({
+    slug: 'schedule',
+    begin_x_date: props.schedule.begin_x_date,
+    begin_work: props.schedule.begin_work,
+    end_work: props.schedule.end_work,
+    holiday: props.schedule.holiday,
+
+})
+
+function onSubmit() {
+
+    form.begin_x_date = func.date(form.begin_x_date);
+    router.put(route('admin.setting.update'), form)
+}
 
 </script>
-<script lang="ts">
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

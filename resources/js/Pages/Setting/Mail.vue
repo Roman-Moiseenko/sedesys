@@ -21,7 +21,7 @@
                         <div v-if="errors.inbox_password" class="text-red-700">{{ errors.inbox_password }}</div>
                     </el-form-item>
                     <el-form-item label="Удалять почту после получения">
-                        <el-checkbox v-model="form.inbox_delete"  />
+                        <el-checkbox v-model="form.inbox_delete"/>
                     </el-form-item>
 
                 </div>
@@ -67,52 +67,41 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        mail: Object,
-        title: {
-            type: String,
-            default: 'Настройки почты',
-        }
-    });
-
-    const form = reactive({
-        slug: 'mail',
-        mail_domain: props.mail.mail_domain,
-        inbox_name: props.mail.inbox_name,
-        inbox_password: props.mail.inbox_password,
-        inbox_delete: props.mail.inbox_delete,
-
-        outbox_name: props.mail.outbox_name,
-        outbox_password: props.mail.outbox_password,
-        outbox_from: props.mail.outbox_from,
-        system_name: props.mail.system_name,
-        system_password: props.mail.system_password,
-        system_from: props.mail.system_from,
-
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    function onSubmit() {
-        router.put(props.route, form)
+const props = defineProps({
+    errors: Object,
+    mail: Object,
+    title: {
+        type: String,
+        default: 'Настройки почты',
     }
+});
 
+const form = reactive({
+    slug: 'mail',
+    mail_domain: props.mail.mail_domain,
+    inbox_name: props.mail.inbox_name,
+    inbox_password: props.mail.inbox_password,
+    inbox_delete: props.mail.inbox_delete,
+
+    outbox_name: props.mail.outbox_name,
+    outbox_password: props.mail.outbox_password,
+    outbox_from: props.mail.outbox_from,
+    system_name: props.mail.system_name,
+    system_password: props.mail.system_password,
+    system_from: props.mail.system_from,
+
+    /**
+     * Добавить новые поля
+     */
+})
+
+function onSubmit() {
+    router.put(route('admin.setting.update'), form)
+}
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

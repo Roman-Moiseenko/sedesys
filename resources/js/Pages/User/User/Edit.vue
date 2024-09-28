@@ -39,49 +39,50 @@
 </template>
 
 
-<script setup>
+<script lang="ts" setup>
 import {reactive, ref, watch} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        user: Object,
-        title: {
-            type: String,
-            default: 'Редактирование данных клиента',
-        }
-    });
-
-    const form = reactive({
-        name: props.user.name,
-        phone: props.user.phone,
-        email: props.user.email,
-        password: null,
-        surname: props.user.fullname.surname,
-        firstname: props.user.fullname.firstname,
-        secondname: props.user.fullname.secondname,
-        address: props.user.address.address,
-        close: null,
-        _method: 'put',
-    })
-
-    function handleMaskPhone(val) {
-        form.phone = func.MaskPhone(val);
+const props = defineProps({
+    errors: Object,
+    user: Object,
+    title: {
+        type: String,
+        default: 'Редактирование данных клиента',
     }
+});
+
+const form = reactive({
+    name: props.user.name,
+    phone: props.user.phone,
+    email: props.user.email,
+    password: null,
+    surname: props.user.fullname.surname,
+    firstname: props.user.fullname.firstname,
+    secondname: props.user.fullname.secondname,
+    address: props.user.address.address,
+    close: null,
+    _method: 'put',
+})
+
+function handleMaskPhone(val) {
+    form.phone = func.MaskPhone(val);
+}
+
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)
 watch(
-    () => ({ ...form }),
+    () => ({...form}),
     function (newValue, oldValue) {
         isUnSave.value = true
     },
     {deep: true}
 );
+
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.user.user.update', {user: props.user.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -91,15 +92,6 @@ function onSubmit(val) {
         },
     });
 }
+
 ////<=
-</script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
 </script>

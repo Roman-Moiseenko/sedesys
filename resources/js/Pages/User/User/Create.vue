@@ -4,7 +4,7 @@
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto" style="max-width: 500px">
             <el-form-item label="Телефон" :rules="{required: true}">
-                <el-input v-model="form.phone" placeholder="80000000000" @input="handleMaskPhone"/>
+                <el-input v-model="form.phone" placeholder="80000000000" :formatter="(val) => func.MaskPhone(val)"/>
                 <div v-if="errors.phone" class="text-red-700">{{ errors.phone }}</div>
             </el-form-item>
             <el-form-item label="Email">
@@ -38,14 +38,13 @@
 </template>
 
 
-<script setup>
+<script lang="ts" setup>
     import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
+    import {Head, router} from "@inertiajs/vue3";
     import {func} from "/resources/js/func.js"
 
     const props = defineProps({
         errors: Object,
-        route: String,
         title: {
             type: String,
             default: 'Добавить клиента',
@@ -60,24 +59,8 @@
         secondname: null,
         address: null,
     })
-
-    function handleMaskPhone(val) {
-        form.phone = func.MaskPhone(val);
-    }
     function onSubmit() {
-        router.post(props.route, form)
+        router.post(route('admin.user.user.store'), form)
     }
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-        props: {
 
-        }
-    }
-</script>

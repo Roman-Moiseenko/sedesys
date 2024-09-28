@@ -54,7 +54,7 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     return ''
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.setting.' + row.slug))
 }
 </script>
 

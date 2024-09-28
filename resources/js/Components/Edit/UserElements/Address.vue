@@ -27,7 +27,6 @@ const showEdit = ref(false)
 const isSaving = ref(false)
 const props = defineProps({
     user: Object,
-    router: String,
 })
 
 const form = reactive({
@@ -38,7 +37,7 @@ const form = reactive({
 function saveElement() {
     isSaving.value = true;
 
-    router.visit(props.router, {
+    router.visit(route('admin.user.user.set', {user: props.user.id}), {
         method: "post",
         data: form,
         preserveScroll: true,

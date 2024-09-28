@@ -19,43 +19,33 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        discount: Object,
-        title: {
-            type: String,
-            default: 'Настройки скидок',
-        }
-    });
-
-    const form = reactive({
-        slug: 'discount',
-        coupon_length: props.discount.coupon_length,
-        coupon_full: props.discount.coupon_full,
-
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    function onSubmit() {
-        router.put(props.route, form)
+const props = defineProps({
+    errors: Object,
+    route: String,
+    discount: Object,
+    title: {
+        type: String,
+        default: 'Настройки скидок',
     }
+});
 
+const form = reactive({
+    slug: 'discount',
+    coupon_length: props.discount.coupon_length,
+    coupon_full: props.discount.coupon_full,
+
+    /**
+     * Добавить новые поля
+     */
+})
+
+function onSubmit() {
+    router.put(route('admin.setting.update'), form)
+}
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

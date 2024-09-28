@@ -62,7 +62,8 @@
                         <div v-if="errors.prices" class="text-red-700">{{ errors.prices }}</div>
                     </el-form-item>
                     <el-form-item label="Рейтинг">
-                        <el-input v-model="form.rating_value" placeholder="от 0 до 5, дробное число" @input="handleMaskRating"/>
+                        <el-input v-model="form.rating_value" placeholder="от 0 до 5, дробное число"
+                                  @input="handleMaskRating"/>
                         <div v-if="errors.rating_value" class="text-red-700">{{ errors.rating_value }}</div>
                     </el-form-item>
                     <el-form-item label="Кол-во голосов">
@@ -124,72 +125,59 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        office: Object,
-        title: {
-            type: String,
-            default: 'Настройки Офиса',
-        }
-    });
-
-    const form = reactive({
-        slug: 'office',
-        name: props.office.name,
-        longitude: props.office.longitude,
-        latitude: props.office.latitude,
-        open_hours: props.office.open_hours,
-
-        city: props.office.city,
-        address: props.office.address,
-        phones: props.office.phones,
-
-        payment: props.office.payment,
-        prices: props.office.prices,
-        rating_value: props.office.rating_value,
-        rating_count: props.office.rating_count,
-        rating_url: props.office.rating_url,
-
-        brand_name: props.office.brand_name,
-        brand_alternate: props.office.brand_alternate,
-        brand_sameas: props.office.brand_sameas,
-
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    function handleMaskLongitude(val) {
-        form.longitude = func.MaskFloat(val);
+const props = defineProps({
+    errors: Object,
+    office: Object,
+    title: {
+        type: String,
+        default: 'Настройки Офиса',
     }
-    function handleMaskLatitude(val) {
-        form.latitude = func.MaskFloat(val);
-    }
-    function handleMaskRating(val) {
-        form.rating_value = func.MaskFloat(val);
-    }
-    function handleMaskCount(val) {
-        form.rating_count = func.MaskInteger(val, 6);
-    }
+});
 
-    function onSubmit() {
-        router.put(props.route, form)
-    }
+const form = reactive({
+    slug: 'office',
+    name: props.office.name,
+    longitude: props.office.longitude,
+    latitude: props.office.latitude,
+    open_hours: props.office.open_hours,
 
-</script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
+    city: props.office.city,
+    address: props.office.address,
+    phones: props.office.phones,
+
+    payment: props.office.payment,
+    prices: props.office.prices,
+    rating_value: props.office.rating_value,
+    rating_count: props.office.rating_count,
+    rating_url: props.office.rating_url,
+
+    brand_name: props.office.brand_name,
+    brand_alternate: props.office.brand_alternate,
+    brand_sameas: props.office.brand_sameas,
+
+    /**
+     * Добавить новые поля
+     */
+})
+
+function handleMaskLongitude(val) {
+    form.longitude = func.MaskFloat(val);
+}
+function handleMaskLatitude(val) {
+    form.latitude = func.MaskFloat(val);
+}
+function handleMaskRating(val) {
+    form.rating_value = func.MaskFloat(val);
+}
+function handleMaskCount(val) {
+    form.rating_count = func.MaskInteger(val, 6);
+}
+function onSubmit() {
+    router.put(route('admin.setting.update'), form)
+}
 </script>

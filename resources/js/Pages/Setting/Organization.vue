@@ -75,71 +75,67 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        organization: Object,
-        title: {
-            type: String,
-            default: 'Настройки организации',
-        }
-    });
+const props = defineProps({
+    errors: Object,
+    organization: Object,
+    title: {
+        type: String,
+        default: 'Настройки организации',
+    }
+});
 
-    const form = reactive({
-        slug: 'organization',
-        name: props.organization.name,
-        inn: props.organization.inn,
-        kpp: props.organization.kpp,
-        ogrn: props.organization.ogrn,
-        bik: props.organization.bik,
-        bank: props.organization.bank,
-        bank_account: props.organization.bank_account,
-        account: props.organization.account,
-        post: props.organization.post,
-        city: props.organization.city,
-        address: props.organization.address,
+const form = reactive({
+    slug: 'organization',
+    name: props.organization.name,
+    inn: props.organization.inn,
+    kpp: props.organization.kpp,
+    ogrn: props.organization.ogrn,
+    bik: props.organization.bik,
+    bank: props.organization.bank,
+    bank_account: props.organization.bank_account,
+    account: props.organization.account,
+    post: props.organization.post,
+    city: props.organization.city,
+    address: props.organization.address,
 
-        phones: props.organization.phones,
-        /**
-         * Добавить новые поля
-         */
-    })
+    phones: props.organization.phones,
+    /**
+     * Добавить новые поля
+     */
+})
 
-    function handleMaskINN(val) {
-        form.inn = func.MaskInteger(val, 12);
-    }
-    function handleMaskKPP(val) {
-        form.kpp = func.MaskInteger(val, 9);
-    }
-    function handleMaskOGRN(val) {
-        form.ogrn = func.MaskInteger(val, 13);
-    }
-    function handleMaskBIK(val) {
-        form.bik = func.MaskInteger(val, 9);
-    }
-    function handleMaskBankAccount(val) {
-        form.bank_account = func.MaskInteger(val, 20);
-    }
-    function handleMaskAccount(val) {
-        form.account = func.MaskInteger(val, 20);
-    }
-    function onSubmit() {
-        router.put(props.route, form)
-    }
+function handleMaskINN(val) {
+    form.inn = func.MaskInteger(val, 12);
+}
+
+function handleMaskKPP(val) {
+    form.kpp = func.MaskInteger(val, 9);
+}
+
+function handleMaskOGRN(val) {
+    form.ogrn = func.MaskInteger(val, 13);
+}
+
+function handleMaskBIK(val) {
+    form.bik = func.MaskInteger(val, 9);
+}
+
+function handleMaskBankAccount(val) {
+    form.bank_account = func.MaskInteger(val, 20);
+}
+
+function handleMaskAccount(val) {
+    form.account = func.MaskInteger(val, 20);
+}
+
+function onSubmit() {
+    router.put(route('admin.setting.update'), form)
+}
 
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

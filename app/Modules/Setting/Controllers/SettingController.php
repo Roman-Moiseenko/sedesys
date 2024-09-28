@@ -39,7 +39,6 @@ class SettingController extends Controller
         $organization = $this->repository->getOrganization();
         return Inertia::render('Setting/Organization', [
                 'organization' => $organization,
-                'route' => route('admin.setting.update'),
             ]
         );
     }
@@ -50,7 +49,6 @@ class SettingController extends Controller
         $office = $this->repository->getOffice();
         return Inertia::render('Setting/Office', [
                 'office' => $office,
-                'route' => route('admin.setting.update'),
             ]
         );
     }
@@ -63,7 +61,6 @@ class SettingController extends Controller
         $web = $this->repository->getWeb();
         return Inertia::render('Setting/Web', [
                 'web' => $web,
-                'route' => route('admin.setting.update'),
                 'models' => $models,
             ]
         );
@@ -75,7 +72,6 @@ class SettingController extends Controller
         $notification = $this->repository->getNotification();
         return Inertia::render('Setting/Notification', [
                 'notification' => $notification,
-                'route' => route('admin.setting.update'),
             ]
         );
     }
@@ -86,7 +82,6 @@ class SettingController extends Controller
         $mail = $this->repository->getMail();
         return Inertia::render('Setting/Mail', [
                 'mail' => $mail,
-                'route' => route('admin.setting.update'),
             ]
         );
     }
@@ -97,7 +92,6 @@ class SettingController extends Controller
         $schedule = $this->repository->getSchedule();
         return Inertia::render('Setting/Schedule', [
                 'schedule' => $schedule,
-                'route' => route('admin.setting.update'),
             ]
         );
     }
@@ -108,7 +102,6 @@ class SettingController extends Controller
         $discount = $this->repository->getDiscount();
         return Inertia::render('Setting/Discount', [
                 'discount' => $discount,
-                'route' => route('admin.setting.update'),
             ]
         );
     }

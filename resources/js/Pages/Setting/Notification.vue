@@ -17,42 +17,31 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        notification: Object,
-        title: {
-            type: String,
-            default: 'Настройки уведомлений',
-        }
-    });
-
-    const form = reactive({
-        slug: 'notification',
-        telegram_api: props.notification.telegram_api,
-
-        /**
-         * Добавить новые поля
-         */
-    })
-
-    function onSubmit() {
-        router.put(props.route, form)
+const props = defineProps({
+    errors: Object,
+    notification: Object,
+    title: {
+        type: String,
+        default: 'Настройки уведомлений',
     }
+});
 
+const form = reactive({
+    slug: 'notification',
+    telegram_api: props.notification.telegram_api,
+
+    /**
+     * Добавить новые поля
+     */
+})
+
+function onSubmit() {
+    router.put(route('admin.setting.update'), form)
+}
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

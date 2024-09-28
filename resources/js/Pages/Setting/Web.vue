@@ -102,15 +102,14 @@
 </template>
 
 
-<script setup>
+<script lang="ts" setup>
 import {reactive} from 'vue'
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import {func} from "/resources/js/func.js"
 import DisplayedDefault from '@/Components/Displayed/Default.vue'
 
 const props = defineProps({
     errors: Object,
-    route: String,
     web: Object,
     title: {
         type: String,
@@ -150,18 +149,6 @@ const form = reactive({
 console.log(form)
 
 function onSubmit() {
-    router.put(props.route, form)
-}
-
-</script>
-<script>
-import {Head} from '@inertiajs/vue3'
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    components: {
-        Head,
-    },
-    layout: Layout,
+    router.put(route('admin.setting.update'), form)
 }
 </script>

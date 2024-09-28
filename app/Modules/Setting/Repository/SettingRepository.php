@@ -28,7 +28,6 @@ class SettingRepository
                 'slug' => $setting->slug,
                 'class' => $setting->class,
                 'description' => $setting->description,
-                'url' => route('admin.setting.' . $setting->slug),
             ]);
     }
 

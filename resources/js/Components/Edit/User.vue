@@ -5,10 +5,10 @@
         <el-button type="primary" plain @click="showHidden = !showHidden" class="ml-3"><i class="fa-light fa-user-pen"></i></el-button>
         <div v-show="showHidden" class="my-3 border rounded-md p-2">
             <!-- ФИО -->
-            <UserFullName :user="user" :router="user.set"/>
-            <UserPhone :user="user" :router="user.set"/>
-            <UserEmail :user="user" :router="user.set"/>
-            <UserAddress :user="user" :router="user.set"/>
+            <UserFullName :user="user"/>
+            <UserPhone :user="user"/>
+            <UserEmail :user="user"/>
+            <UserAddress :user="user"/>
         </div>
     </div>
     <!-- Гость -->

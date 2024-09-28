@@ -84,11 +84,7 @@ class UserRepository
             }, $user->oauths()->getModels()),
             'active' => $user->isActive(),
             'verify' => ($user->isWait()) ? route('admin.user.user.verify', $user) : '',
-            'url' => route('admin.user.user.show', $user),
-            'edit' => route('admin.user.user.edit', $user),
-            'destroy' => route('admin.user.user.destroy', $user),
 
-            'set' => route('admin.user.user.set', $user),
         ];
 
     }

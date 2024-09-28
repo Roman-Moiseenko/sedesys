@@ -9,7 +9,9 @@
                     <el-descriptions-item>
                         <template #label>
                             <div class="items-center flex">
-                                <el-icon><iphone  /></el-icon>&nbsp;Телефон
+                                <el-icon>
+                                    <iphone/>
+                                </el-icon>&nbsp;Телефон
                             </div>
                         </template>
                         {{ user.phone }}
@@ -17,7 +19,9 @@
                     <el-descriptions-item>
                         <template #label>
                             <div class="items-center flex">
-                                <el-icon><Message /></el-icon>&nbsp;Email
+                                <el-icon>
+                                    <Message/>
+                                </el-icon>&nbsp;Email
                             </div>
                         </template>
                         {{ user.email }}
@@ -25,7 +29,9 @@
                     <el-descriptions-item>
                         <template #label>
                             <div class="items-center flex">
-                                <el-icon><Location /></el-icon>&nbsp;Адрес
+                                <el-icon>
+                                    <Location/>
+                                </el-icon>&nbsp;Адрес
                             </div>
                         </template>
                         {{ user.address.address }}
@@ -33,10 +39,12 @@
                     <el-descriptions-item>
                         <template #label>
                             <div class="items-center flex">
-                                <el-icon><Key /></el-icon>&nbsp;OAuth
+                                <el-icon>
+                                    <Key/>
+                                </el-icon>&nbsp;OAuth
                             </div>
                         </template>
-                        <el-tag type="info" v-for="item in user.oauths">{{ item.network }} </el-tag>
+                        <el-tag type="info" v-for="item in user.oauths">{{ item.network }}</el-tag>
                     </el-descriptions-item>
                 </el-descriptions>
             </div>
@@ -56,36 +64,18 @@
     </div>
 </template>
 
-<script setup>
-import { func } from '/resources/js/func.js'
-</script>
-<script>
-    import {Head, Link, router} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
+<script lang="ts" setup>
+import {func} from '/resources/js/func.js'
+import {Head, router} from '@inertiajs/vue3'
 
-
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-        props: {
-            user: Object,
-            edit: String,
-            title: {
-                type: String,
-                default: 'Карточка Клиента',
-            }
-        },
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-        },
+const props = defineProps({
+    user: Object,
+    title: {
+        type: String,
+        default: 'Карточка Клиента',
     }
-
+})
+function goEdit() {
+    router.get(route('admin.user.user.edit', {user: props.user.id}));
+}
 </script>
-
-<style scoped>
-
-</style>

@@ -36,7 +36,6 @@ class UserController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('User/User/Create', [
-            'route' => route('admin.user.user.store'),
         ]);
     }
 
@@ -54,7 +53,6 @@ class UserController extends Controller
         $user = User::where('id', $user->id)->with('oauths')->first();
         return Inertia::render('User/User/Show', [
                 'user' => $user,
-                'edit' => route('admin.user.user.edit', $user),
             ]
         );
     }
@@ -63,7 +61,6 @@ class UserController extends Controller
     {
         return Inertia::render('User/User/Edit', [
             'user' => $user,
-            'route' => route('admin.user.user.update', $user),
         ]);
     }
 
