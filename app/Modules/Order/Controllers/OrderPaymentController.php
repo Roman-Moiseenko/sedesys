@@ -3,7 +3,9 @@
 namespace App\Modules\Order\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Order\Entity\Order;
 use App\Modules\Order\Entity\OrderPayment;
+use App\Modules\Order\Entity\OrderStatus;
 use App\Modules\Order\Requests\OrderPaymentRequest;
 use App\Modules\Order\Repository\OrderPaymentRepository;
 use App\Modules\Order\Service\OrderPaymentService;
@@ -36,7 +38,11 @@ class OrderPaymentController extends Controller
 
     public function create(Request $request)
     {
+        $orders = Order::orderByDesc('created_at')->whereHas('status', function ($query) {
+            $query->where('value', OrderStatus::AWAITING)->orWhere('value', OrderStatus::PREPAID);
+        })->getModels();
         return Inertia::render('Order/OrderPayment/Create', [
+            'orders' => $orders,
         ]);
     }
 

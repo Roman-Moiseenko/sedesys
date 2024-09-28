@@ -4,10 +4,12 @@ namespace App\Modules\Order\Service;
 
 use App\Modules\Admin\Entity\Admin;
 use App\Modules\Base\Helpers\RequestMessage;
+use App\Modules\Discount\Entity\Coupon;
 use App\Modules\Order\Entity\OrderConsumable;
 use App\Modules\Order\Entity\OrderExtra;
 use App\Modules\Order\Entity\OrderStatus;
 use App\Modules\Order\Events\OrderHasAwaiting;
+use App\Modules\Order\Events\OrderHasStatus;
 use App\Modules\Service\Entity\Consumable;
 use App\Modules\Service\Entity\Extra;
 use App\Modules\Service\Entity\Service;
@@ -220,6 +222,64 @@ class OrderService
         if ($order->getAmountSell() == 0)  throw new \DomainException('Сумма заказа не может быть равно нулю');
         $order->setNumber();
         $order->setStatus(OrderStatus::AWAITING);
-        event(new OrderHasAwaiting($order));
+        event(new OrderHasStatus($order));
+    }
+
+    /**
+     * Установить купон
+     * @param Order $order
+     * @param Request $request
+     * @return void
+     */
+    public function set_coupon(Order $order, Request $request)
+    {
+        $code = $request->string('coupon')->value();
+        /** @var Coupon $coupon */
+        $coupon = Coupon::where('code', $code)->first();
+        if ($coupon->user_id != $order->user_id) throw new \DomainException('Купон привязан к другому клиенту');
+        if (!$coupon->isNew()) throw new \DomainException('Купон привязан к другому заказу');
+
+        if (!is_null($coupon->finished_at) && $coupon->finished_at->lt(now()))
+            throw new \DomainException('Купон просрочен');
+        $order->coupon_id = $coupon->id;
+        $order->save();
+        $coupon->assigned();
+    }
+
+    /**
+     * Удалить купон
+     * @param Order $order
+     * @return void
+     */
+    public function del_coupon(Order $order)
+    {
+        if (!is_null($order->coupon_id)) return;
+        if (!$order->isManager()) throw new \DomainException('Купон используется в расчете, удалить нельзя!');
+        $order->coupon->status = Coupon::NEW;
+        $order->coupon->save();
+        $order->coupon_id = null;
+        $order->save();
+    }
+
+    /**
+     * Проверка Заказа после поступления оплаты, смена статуса, генерация события
+     * @param Order $order
+     * @return void
+     */
+    public function check_payment(Order $order)
+    {
+        if ($order->getAmountSell() <= $order->getAmountPayment()) {
+            $order->setPaid();
+
+        } else {
+            if ($order->status->value == OrderStatus::AWAITING) {
+                $order->setStatus(OrderStatus::PREPAID);
+            }
+        }
+        event(new OrderHasStatus($order));
+        //Если купон в заказе, то завершаем его использование
+        if (!is_null($order->coupon_id) && !$order->coupon->isUsed()) {
+            $order->coupon->used();
+        }
     }
 }

@@ -26,12 +26,13 @@ class Coupon extends Model
     use HasFactory;
 
     const NEW = 501;
-    const STARTED = 502; //Можно использовать, ??? Cron задача ?
+    const ASSIGNED = 502; //Можно использовать, ??? Cron задача ?
     const EXPIRED = 503; //Дата завершения прошла, купонном не воспользовались expired
     const USED = 505; //Использован
 
     const STATUSES = [
         self::NEW => 'Новый',
+        self::ASSIGNED=> 'Назначен',
         self::EXPIRED => 'Просрочен',
         self::USED => 'Использован',
     ];
@@ -87,6 +88,17 @@ class Coupon extends Model
         $this->save();
     }
 
+    public function used(): void
+    {
+        $this->status = self::USED;
+        $this->save();
+    }
+
+    public function assigned()
+    {
+        $this->status = self::ASSIGNED;
+        $this->save();
+    }
     /**
      * Гетеры
      */
@@ -105,6 +117,8 @@ class Coupon extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+
 
     /**
      * Хелперы и Интерфейсы

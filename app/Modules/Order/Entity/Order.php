@@ -6,12 +6,14 @@ use App\Modules\Admin\Entity\Admin;
 use App\Modules\Base\Entity\Photo;
 
 use App\Modules\Base\Traits\HtmlInfoData;
+use App\Modules\Discount\Entity\Coupon;
 use App\Modules\User\Entity\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use JetBrains\PhpStorm\ExpectedValues;
 
 /**
@@ -36,6 +38,7 @@ use JetBrains\PhpStorm\ExpectedValues;
  * @property OrderExtra[] $orderExtras
  * @property OrderConsumable[] $orderConsumables
  * @property OrderPayment[] $orderPayments
+ * @property Coupon $coupon
  */
 class Order extends Model
 {
@@ -227,12 +230,17 @@ class Order extends Model
     /**
      * Отношения
      */
-    public function status()
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
+    }
+
+    public function status(): HasOne
     {
         return $this->hasOne(OrderStatus::class, 'order_id', 'id')->latestOfMany();
     }
 
-    public function statuses()
+    public function statuses(): HasMany
     {
         return $this->hasMany(OrderStatus::class, 'order_id', 'id');
     }
@@ -306,6 +314,10 @@ class Order extends Model
         foreach ($this->getItems() as $item) {
             if (is_null($isService) || ($item->isService() == $isService))
                 $amount += $item->costSell() * $item->getQuantity();
+        }
+
+        if (!is_null($this->coupon_id) && $this->coupon->min > $amount) {
+            $amount -= $this->coupon->bonus;
         }
         return $amount;
     }

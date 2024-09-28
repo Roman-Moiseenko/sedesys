@@ -11,7 +11,10 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderHasAwaiting
+/**
+ * У заказа сменился статус, надо уведомить ....
+ */
+class OrderHasStatus
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
