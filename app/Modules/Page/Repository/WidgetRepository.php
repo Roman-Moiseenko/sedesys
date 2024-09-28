@@ -26,9 +26,6 @@ class WidgetRepository
                 'model' => $widget->model,
                 'template' => $widget->template,
                 'short' => '[widget="'. $widget->id . '"]',
-                'url' => route('admin.page.widget.show', $widget),
-                'edit' => route('admin.page.widget.edit', $widget),
-                'destroy' => route('admin.page.widget.destroy', $widget),
             ]);
     }
 
@@ -47,7 +44,6 @@ class WidgetRepository
                 'label' => $item['name'],
             ];
         }
-
         return $result;//array_select(Widget::WIDGET_TEMPLATES);
     }
 }

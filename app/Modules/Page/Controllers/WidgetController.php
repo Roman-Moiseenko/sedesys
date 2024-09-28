@@ -36,7 +36,6 @@ class WidgetController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Page/Widget/Create', [
-            'route' => route('admin.page.widget.store'),
             'templates' => $this->repository->getTemplates(),
             'models' => $this->repository->getModels(),
         ]);
@@ -55,7 +54,6 @@ class WidgetController extends Controller
     {
         return Inertia::render('Page/Widget/Show', [
                 'widget' => $widget,
-                'edit' => route('admin.page.widget.edit', $widget),
                 'view' => $widget->view()
             ]
         );
@@ -65,7 +63,6 @@ class WidgetController extends Controller
     {
         return Inertia::render('Page/Widget/Edit', [
             'widget' => $widget,
-            'route' => route('admin.page.widget.update', $widget),
             'templates' => $this->repository->getTemplates(),
             'models' => $this->repository->getModels(),
         ]);

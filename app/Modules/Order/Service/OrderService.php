@@ -208,8 +208,11 @@ class OrderService
 
     public function destroy(Order $order)
     {
-        if ($order->isNew() || $order->isManager()) $order->delete();
-        throw new \DomainException('Заказ в работе. Удалить нельзя');
+        if ($order->isNew() || $order->isManager()) {
+            $order->delete();
+        } else {
+            throw new \DomainException('Заказ в работе. Удалить нельзя');
+        }
     }
 
     public function setAwaiting(Order $order)

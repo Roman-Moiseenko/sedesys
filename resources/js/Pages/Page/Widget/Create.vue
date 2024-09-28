@@ -45,42 +45,29 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание виджета',
-        },
-        templates: Array,
-        models: Array
-    });
-
-    const form = reactive({
-        name: null,
-        model: null,
-        template: null,
-        data: null,
-        options: null
-    })
-
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание виджета',
+    },
+    templates: Array,
+    models: Array
+});
+const form = reactive({
+    name: null,
+    model: null,
+    template: null,
+    data: null,
+    options: null
+})
+function onSubmit() {
+    router.post(route('admin.page.widget.store'), form)
+}
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

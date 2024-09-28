@@ -1,8 +1,8 @@
 <template>
     <el-tabs type="border-card" class="mb-4">
-        <AddService :add_item="order.routers.add_item" />
-        <AddExtra :add_item="order.routers.add_item"/>
-        <AddConsumable :add_item="order.routers.add_item"/>
+        <AddService :order="order"/>
+        <AddExtra :order="order"/>
+        <AddConsumable :order="order"/>
     </el-tabs>
     <InfoEdit :order="order" />
     <InfoShow :order="order" />
@@ -22,6 +22,3 @@ const props = defineProps({
 })
 </script>
 
-<style scoped>
-
-</style>

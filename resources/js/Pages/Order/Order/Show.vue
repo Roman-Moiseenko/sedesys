@@ -7,27 +7,14 @@
             <div class="p-4">
                 <EditUser
                     :user="order.user"
-                    :find_user="order.find_user"
-                    :set_user="order.set_user"
+                    :set_user="route('admin.order.order.set-user', {order: order.id})"
                 />
             </div>
             <div class="p-4">
                 Менеджер + Инфа + Основание
             </div>
             <div class="p-4">
-                <el-tooltip effect="dark" v-if="order.status.manager"
-                    content="Убедитесь, что у клиента есть email"
-                    placement="top">
-                    <el-button type="warning" @click="router.post(order.routers.awaiting)">На оплату</el-button>
-                </el-tooltip>
-                <el-button type="success" plain @click="router.post(order.routers.paid)">Оплачен</el-button>
-                <el-tooltip effect="dark"
-                            content="Распечатать чек"
-                            placement="top">
-                    <el-button type="success" dark @click="router.post(order.routers.cheque)">Чек</el-button>
-                </el-tooltip>
-                <el-button type="info" plain @click="router.post(order.routers.cancel)">Отменить</el-button>
-
+                <OrderAction :order="order" />
             </div>
         </div>
     </div>
@@ -49,23 +36,6 @@
             <StatusPanelsAwaiting v-if="order.status.awaiting"
                                  :order="order"
             />
-            <!--el-tabs type="border-card" class="mb-4" v-if="order.status.manager">
-                <OrderService
-                    :services="services"
-                    :add_item="order.routers.add_item"
-                    :errors="errors"
-                />
-                <OrderExtra
-                    :extras="extras"
-                    :add_item="order.routers.add_item"
-                    :errors="errors"
-                />
-                <OrderConsumable
-                    :consumables="consumables"
-                    :add_item="order.routers.add_item"
-                    :errors="errors"
-                />
-            </el-tabs-->
 
         </div>
     </div>
@@ -77,11 +47,6 @@ import {Head, Link} from '@inertiajs/vue3'
 import {router} from '@inertiajs/vue3'
 import { func } from '/resources/js/func.js'
 
-//Добавление OrderItems
-import OrderService from './Items/OrderService.vue'
-import OrderExtra from './Items/OrderExtra.vue'
-import OrderConsumable from './Items/OrderConsumable.vue'
-
 //Таблицы OrderItems
 import TableOrderServices from './Tables/OrderServices.vue'
 import TableOrderExtras from './Tables/OrderExtras.vue'
@@ -92,8 +57,9 @@ import StatusPanelsNew from  './StatusPanels/New.vue'
 import StatusPanelsManager from  './StatusPanels/Manager.vue'
 import StatusPanelsAwaiting from  './StatusPanels/Awaiting.vue'
 
-
+//Дополнительные блоки
 import EditUser from '@/Components/Edit/User.vue'
+import OrderAction from './Blocks/OrderAction.vue'
 
 const props = defineProps({
     order: Object,
@@ -116,6 +82,7 @@ provide("prov_items", {
     services: computed(() => props.services),
     extras: computed(() => props.extras),
 })
+
 
 
 /**

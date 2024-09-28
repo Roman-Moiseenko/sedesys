@@ -36,7 +36,6 @@ import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
 const props = defineProps({
     errors: Object,
-    route: String,
     title: {
         type: String,
         default: 'Создание страницы',
@@ -50,9 +49,8 @@ const form = reactive({
     parent_id: null,
 })
 
-
 function onSubmit() {
-    router.post(props.route, form)
+    router.post(route('admin.page.page.store'), form)
 }
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)
@@ -63,11 +61,4 @@ watch(
     },
     {deep: true}
 );
-</script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    layout: Layout,
-}
 </script>

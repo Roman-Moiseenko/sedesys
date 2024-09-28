@@ -1,5 +1,5 @@
 <template>
-    <Head><title>{{ $props.title }}</title></Head>
+    <Head><title>{{ title }}</title></Head>
     <h1 class="font-medium text-xl">Добавить новый контакт</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto" style="max-width: 500px">
@@ -26,47 +26,36 @@
             </el-form-item>
 
             <el-button type="primary" @click="onSubmit">Сохранить</el-button>
-            <div v-if="form.isDirty">Изменения не сохранены</div>
+
         </el-form>
     </div>
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {router, Head} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание контакта',
-        }
-    });
-
-    const form = reactive({
-        name: null,
-        title: null,
-        icon: null,
-        color: null,
-        url: null,
-    })
-
-
-    function onSubmit() {
-        router.post(props.route, form)
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание контакта',
     }
+});
+
+const form = reactive({
+    name: null,
+    title: null,
+    icon: null,
+    color: null,
+    url: null,
+})
+
+function onSubmit() {
+    router.post(route('admin.page.contact.store'), form)
+}
 
 </script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>
+

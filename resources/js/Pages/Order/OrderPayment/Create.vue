@@ -32,7 +32,6 @@
 
     const props = defineProps({
         errors: Object,
-        route: String,
         title: {
             type: String,
             default: 'Создание orderPayment',
@@ -46,16 +45,10 @@
          */
     })
 
-    function handleMaskName(val)
-    {
-        /**
-         * Функции маски ввода
-         * Например, form.phone = func.MaskPhone(val);
-         */
-    }
+
 
     function onSubmit() {
-        router.post(props.route, form)
+        router.post(route('admin.order.payment.store'), form)
     }
     ///Блок сохранения и обновления=>
     const isUnSave = ref(false)

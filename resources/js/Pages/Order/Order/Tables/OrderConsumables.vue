@@ -58,7 +58,7 @@ const isEdit = computed<Boolean>(() => props.order.status.new || props.order.sta
 
 function setItem(row) {
     iSaving.value = true;
-    router.visit(props.order.routers.set_item, {
+    router.visit(route('admin.order.order.set-item', {order: props.order.id}), {
         method: "post",
         data: {
             item: 'consumable',
@@ -71,16 +71,13 @@ function setItem(row) {
             iSaving.value = false;
         }
     })
-
 }
 function delItem(row) {
-    router.post(props.order.routers.del_item, {
+    router.post(route('admin.order.order.del-item', {order: props.order.id}), {
         item: 'consumable',
         id: row.id,
     })
 }
-
-
 </script>
 
 <style>

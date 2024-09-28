@@ -36,7 +36,6 @@ import DisplayedFieldsPanel from '@/Components/Displayed/Fields.vue'
 
 const props = defineProps({
     errors: Object,
-    route: String,
     page: Object,
     title: {
         type: String,
@@ -66,7 +65,7 @@ watch(
 );
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.page.page.update', {page: props.page.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -77,12 +76,4 @@ function onSubmit(val) {
     });
 }
 ////<=
-
-</script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    layout: Layout,
-}
 </script>

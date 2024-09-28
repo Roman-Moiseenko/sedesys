@@ -43,7 +43,6 @@ class PageController extends Controller
         $pages = $this->repository->getPages();
 
         return Inertia::render('Page/Page/Create', [
-            'route' => route('admin.page.page.store'),
             'templates' => $this->templates->getTemplates('page'),
             'pages' => $pages,
             'tiny_api' => $this->tiny_api,
@@ -67,10 +66,8 @@ class PageController extends Controller
         return Inertia::render('Page/Page/Show', [
                 'page' => $page,
                 'parent' => $parent_name,
-                'edit' => route('admin.page.page.edit', $page),
                 'image' => $page->getImage(),
                 'icon' => $page->getIcon(),
-                'toggle' => route('admin.page.page.toggle', $page),
             ]
         );
     }
@@ -81,7 +78,6 @@ class PageController extends Controller
 
         return Inertia::render('Page/Page/Edit', [
             'page' => $page,
-            'route' => route('admin.page.page.update', $page),
             'templates' => $this->templates->getTemplates('page'),
             'pages' => $pages,
             'image' => $page->getImage(),

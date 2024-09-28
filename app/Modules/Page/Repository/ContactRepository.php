@@ -22,14 +22,6 @@ class ContactRepository
                 'icon' => $contact->icon,
                 'color' => $contact->color,
                 'link' => $contact->url,
-
-                'url' => route('admin.page.contact.show', $contact),
-                'edit' => route('admin.page.contact.edit', $contact),
-                'destroy' => route('admin.page.contact.destroy', $contact),
-                'toggle' => route('admin.page.contact.toggle', $contact),
-
-                'up' => route('admin.page.contact.up', $contact),
-                'down' => route('admin.page.contact.down', $contact),
             ]);
     }
 }

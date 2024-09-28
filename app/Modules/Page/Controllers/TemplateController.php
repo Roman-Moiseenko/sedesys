@@ -63,7 +63,6 @@ class TemplateController extends Controller
                 'title' => 'Шаблон ' . Template::TEMPLATES()[$type] . ' / ' . $template,
                 'type' => $type,
                 'template' => $template,
-                'route' => route('admin.page.template.update'),
             ]
         );
     }

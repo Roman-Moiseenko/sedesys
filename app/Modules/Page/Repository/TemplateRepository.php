@@ -39,16 +39,12 @@ class TemplateRepository
             preg_match('/^.+\/(.+)\.blade\.php$/', $file, $template);
             preg_match('/<!--template:(.+)-->/', file_get_contents($file), $name);
 
-            /**
-             * Другие данные, на будущее
-             */
             $result[] = [
                 'file' => $file,
                 'template' => $template[1],
                 'name' => empty($name) ? $template[1] : $name[1],
-                'type' => Template::TEMPLATES()[$type],
-                'url' => route('admin.page.template.show', ['type' => $type, 'template' => $template[1]]),
-                'destroy' => route('admin.page.template.destroy', ['type' => $type, 'template' => $template[1]]),
+                'type' => $type,
+                'type_name' => Template::TEMPLATES()[$type],
             ];
         }
         return $result;

@@ -52,12 +52,10 @@ class OrderRepository
             'created_at' => $order->htmlDate(),
             'name' => $order->htmlNumDate(),
             'user' => $order->user->fullname->getFullName(),
-          //  'status_code' => $order->status->value,
             'comment' => $order->comment,
             'amount' => $order->getAmountSell(),
             //'user' => is_null($order->user_id) ? 'Гость' : $order->user->fullname->getFullName(),
 
-            //'is_edit' => $order->isNew() || $order->isManager(),
 
             'status' => [
                 'text' => $order->status->value(),
@@ -82,13 +80,7 @@ class OrderRepository
 
                 'count_services' => 0, //услуги
                 'count_goods' => 0, //товары
-                //'qu' => $order->
             ],
-
-            'url' => route('admin.order.order.show', $order),
-            'destroy' => route('admin.order.order.destroy', $order),
-
-            'routers' => $this->routers($order),
         ];
     }
 
@@ -125,8 +117,6 @@ class OrderRepository
             ])->toArray(),
 
             'user' => is_null($order->user_id) ? null : $this->users->UserToArray($order->user),
-            'find_user' => route('admin.user.user.find'),
-            'set_user' => route('admin.order.order.set-user', $order),
 
             /**
              * Данные из relations
@@ -190,19 +180,5 @@ class OrderRepository
                 'price' => $extra->price,
             ])
             ->toArray();
-    }
-
-    private function routers(Order $order): array
-    {
-        return [
-            'add_item' => route('admin.order.order.add-item', $order),
-            'del_item' => route('admin.order.order.del-item', $order),
-            'set_item' => route('admin.order.order.set-item', $order),
-
-            'awaiting' => route('admin.order.order.awaiting', $order),
-            'cancel' => route('admin.order.order.cancel', $order),
-            'paid' => route('admin.order.order.paid', $order),
-            'cheque' => route('admin.order.order.cheque', $order),
-        ];
     }
 }

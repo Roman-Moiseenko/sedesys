@@ -33,41 +33,30 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        contact: Object,
-        title: {
-            type: String,
-            default: 'Редактирование контакта',
-        }
-    });
-
-    const form = reactive({
-        name: props.contact.name,
-        title: props.contact.title,
-        icon: props.contact.icon,
-        color: props.contact.color,
-        url: props.contact.url,
-    })
-
-    function onSubmit() {
-        router.put(props.route, form)
+const props = defineProps({
+    errors: Object,
+    contact: Object,
+    title: {
+        type: String,
+        default: 'Редактирование контакта',
     }
+});
 
-</script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
+const form = reactive({
+    name: props.contact.name,
+    title: props.contact.title,
+    icon: props.contact.icon,
+    color: props.contact.color,
+    url: props.contact.url,
+})
+
+function onSubmit() {
+    router.put(route('admin.page.contact.update', {contact: props.contact.id}), form)
+}
+
 </script>

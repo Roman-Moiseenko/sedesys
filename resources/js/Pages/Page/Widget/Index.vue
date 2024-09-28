@@ -22,7 +22,7 @@
                     <template #default="scope">
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -74,15 +74,17 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     }
     return ''
 }
-
+function handleEdit(row) {
+    router.get(route('admin.page.widget.edit', {widget: row.id}))
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.page.widget.destroy', {widget: row.id}));
 }
 function createButton() {
-    router.get('/admin/page/widget/create')
+    router.get(route('admin.page.widget.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.page.widget.show', {widget: row.id}))
 }
 </script>
 

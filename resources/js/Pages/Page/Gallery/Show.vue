@@ -33,7 +33,7 @@
     <div class="mt-5 p-5 bg-white rounded-lg">
         <el-upload
             v-model:file-list="fileList"
-            :action="add"
+            :action="route('admin.page.gallery.add', {gallery: props.gallery.id})"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
@@ -77,9 +77,8 @@
 <script lang="ts" setup>
 import {reactive, ref} from 'vue'
 import { Plus } from '@element-plus/icons-vue'
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import type { UploadProps, UploadUserFile, UploadRawFile  } from 'element-plus'
-
 
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
@@ -90,15 +89,11 @@ const imageId = ref('')
 
 const props = defineProps({
     gallery: Object,
-    edit: String,
     title: {
         type: String,
         default: 'Карточка Галереи',
     },
     photos: Array,
-    add: String,
-    del: String,
-    set: String,
 });
 
 const form = reactive({
@@ -109,11 +104,11 @@ const form = reactive({
 })
 
 const fileList = ref<UploadUserFile[]>(props.photos);
+const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
 const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
-    if (uploadFile.id !== undefined) router.post(props.del, {photo_id: uploadFile.id});
+    if (uploadFile.id !== undefined) router.post(route('admin.page.gallery.del', {gallery: props.gallery.id}), {photo_id: uploadFile.id});
 }
-
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
     dialogImageUrl.value = uploadFile.url!
     form.photo_id = uploadFile.id;
@@ -136,37 +131,10 @@ function onSubmit() {
     setTimeout(() => {
         dialogSave.value = false;
     }, 2000);
-    router.post(props.set, form);
+    router.post(route('admin.page.gallery.set', {gallery: props.gallery.id}), form);
 }
-
+function goEdit() {
+    router.get(route('admin.page.gallery.edit', {gallery: props.gallery.id}));
+}
 </script>
 
-<script lang="ts" >
-    import { Head, Link, router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    import {ref} from "vue";
-
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-
-        },
-        data() {
-            return {
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            }
-        },
-
-    }
-
-</script>
-
-<style scoped>
-
-</style>

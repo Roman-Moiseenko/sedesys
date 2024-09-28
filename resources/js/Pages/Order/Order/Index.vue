@@ -69,7 +69,6 @@ const props = defineProps({
         default: 'Список Заказов',
     },
     filters: Array,
-    create: String,
 })
 const store = useStore();
 const $delete_entity = inject("$delete_entity")
@@ -91,12 +90,12 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     return ''
 }
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.order.order.destroy', {order: row.id}));
 }
 function createButton() {
-    router.post(props.create)
+    router.post(route('admin.order.order.create-staff'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.order.order.show', {order: row.id}))
 }
 </script>

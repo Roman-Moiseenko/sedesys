@@ -50,7 +50,6 @@ class OrderController extends Controller
         return Inertia::render('Order/Order/Index', [
                 'orders' => $orders,
                 'filters' => $filters,
-                'create' => route('admin.order.order.create-staff'),
             ]
         );
     }
@@ -80,10 +79,6 @@ class OrderController extends Controller
                 'services' => $this->repository->ServicesOut($order),
                 'consumables' => $this->repository->ConsumablesOut($order),
                 'extras' => $this->repository->ExtrasOut($order),
-
-                'add_item' => route('admin.order.order.add-item', $order),
-                'del_item' => route('admin.order.order.del-item', $order),
-                'set_item' => route('admin.order.order.set-item', $order),
             ]
         );
     }

@@ -40,18 +40,17 @@ const errors = inject("prov_errors")
 const {extras} = inject("prov_items")
 
 const props = defineProps({
-    add_item: String,
+    order: Object,
 })
 
 const form = reactive({
     item: 'extra',
     extra_id: null,
-
     quantity: 1,
 })
 
 function sendForm() {
-    router.post(props.add_item, form)
+    router.post(route('admin.order.order.add-item', {order: props.order.id}), form)
     form.extra_id = null
 
 }

@@ -38,7 +38,6 @@ import {func} from '/resources/js/func.js'
 import {router} from "@inertiajs/vue3";
 import axios from "axios";
 
-
 //Элементы
 import UserFullName from './UserElements/FullName.vue'
 import UserPhone from './UserElements/Phone.vue'
@@ -51,18 +50,15 @@ const form = reactive({
     phone: null,
     firstname: null,
 })
-
 const showHidden = ref(false)
 const props = defineProps({
     user: Object,
-    find_user: String,
     create: String,
-    set_user: String,
+    set_user: String, //url для callback операции
 })
-
 function findUser() {
     isSaving.value = true;
-    axios.post(props.find_user, {phone: form.phone})
+    axios.post(route('admin.user.user.find'), {phone: form.phone})
         .then(response => {
             console.log(response.data);
             if (response.data === false) {
@@ -73,13 +69,7 @@ function findUser() {
             isSaving.value = false
         });
 }
-
 function saveData() {
     router.post(props.set_user, form)
 }
-
 </script>
-
-<style scoped>
-
-</style>

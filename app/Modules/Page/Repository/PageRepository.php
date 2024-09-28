@@ -28,7 +28,6 @@ class PageRepository
         return $result;
     }
 
-
     public function getParentName(Page $page): string
     {
         if (!is_null($page->parent_id)) return Page::find($page->parent_id)->name;
@@ -42,10 +41,8 @@ class PageRepository
         $pages = Page::orderBy('_lft')->where('parent_id', $parent_id)->getModels();
         /** @var Page $page */
         foreach ($pages as $page) {
-
             if (count($page->children) > 0)
                 $children = $this->tree($page->id);
-
             $result[] = [
                 'id' => $page->id,
                 'name' => $page->name,
@@ -53,11 +50,6 @@ class PageRepository
                 'active' => $page->isActive(),
                 'published' => $page->getActivatedAt(),
                 'template' => $page->template,
-                'url' => route('admin.page.page.show', $page),
-                'edit' => route('admin.page.page.edit', $page),
-                'destroy' => route('admin.page.page.destroy', $page),
-                'toggle' => route('admin.page.page.toggle', $page),
-
                 'children' => $children ?? null,
             ];
         }

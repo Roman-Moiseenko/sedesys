@@ -23,11 +23,9 @@ class OrderPaymentRepository
         }
 
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
-        $orderPayments = $query->paginate($request->input('size', 20))
+        return $query->paginate($request->input('size', 20))
             ->withQueryString()
             ->through(fn(OrderPayment $orderPayment) => $this->OrderPaymentToArray($orderPayment));
-
-        return $orderPayments;
     }
 
 
@@ -36,13 +34,6 @@ class OrderPaymentRepository
         return [
             'id' => $orderPayment->id,
             'name' => $orderPayment->name,
-            /**
-
-             */
-
-            'url' => route('admin.order.orderPayment.show', $orderPayment),
-            'edit' => route('admin.order.orderPayment.edit', $orderPayment),
-            'destroy' => route('admin.order.orderPayment.destroy', $orderPayment),
 
         ];
     }

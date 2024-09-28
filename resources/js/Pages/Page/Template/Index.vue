@@ -19,7 +19,7 @@
         >
             <el-table-column sortable prop="name" label="Название"/>
             <el-table-column sortable prop="template" label="Шаблон" width="150"/>
-            <el-table-column sortable prop="type" label="Вид" width="100"/>
+            <el-table-column sortable prop="type_name" label="Вид" width="100"/>
             <el-table-column prop="file" label="Путь"/>
 
             <el-table-column label="Действия" align="right">
@@ -76,7 +76,6 @@ const props = defineProps({
         type: String,
         default: 'Список Шаблонов',
     },
-    store: String,
     types: Array,
     filters: Array,
 })
@@ -93,15 +92,14 @@ const form = reactive({
     type: null,
 })
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.page.template.destroy', {type: row.type, template: row.template}));
 }
-
 function onSubmit() {
     dialogFormVisible.value = false;
-    router.post(props.store, form, { preserveState: true });
+    router.post(route('admin.page.template.store'), form, { preserveState: true });
 }
 function routeClick(row) {
-    router.get(row.url);
+    router.get(route('admin.page.template.show', {type: row.type, template: row.template}));
 }
 </script>
 

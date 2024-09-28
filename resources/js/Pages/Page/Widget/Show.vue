@@ -1,6 +1,6 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl">  {{ widget.name }}  </h1>
+    <h1 class="font-medium text-xl"> {{ widget.name }} </h1>
 
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <div class="grid lg:grid-cols-2 grid-cols-1 divide-x">
@@ -24,30 +24,22 @@
 
 </template>
 
-<script>
-    import { Head, Link, router } from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
+<script lang="ts" setup>
+import {Head, Link, router} from '@inertiajs/vue3'
 
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-        props: {
-            widget: Object,
-            view: String,
-            edit: String,
-            title: {
-                type: String,
-                default: 'Карточка виджета',
-            }
-        },
-        methods: {
-            goEdit() {
-                router.get(this.$props.edit);
-            },
-        },
+const props = defineProps({
+    widget: Object,
+    view: String,
+    title: {
+        type: String,
+        default: 'Карточка виджета',
     }
+})
+
+function goEdit() {
+    router.get(route('admin.page.widget.edit', {widget: props.widget.id}));
+}
+
 
 </script>
 

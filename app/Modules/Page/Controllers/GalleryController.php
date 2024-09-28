@@ -35,7 +35,6 @@ class GalleryController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Page/Gallery/Create', [
-            'route' => route('admin.page.gallery.store'),
         ]);
     }
 
@@ -52,10 +51,6 @@ class GalleryController extends Controller
     {
         return Inertia::render('Page/Gallery/Show', [
                 'gallery' => $gallery,
-                'edit' => route('admin.page.gallery.edit', $gallery),
-                'add' => route('admin.page.gallery.add', $gallery),
-                'del' => route('admin.page.gallery.del', $gallery),
-                'set' => route('admin.page.gallery.set', $gallery),
                 'photos' => $this->repository->getPhotos($gallery),
             ]
         );
@@ -65,7 +60,6 @@ class GalleryController extends Controller
     {
         return Inertia::render('Page/Gallery/Edit', [
             'gallery' => $gallery,
-            'route' => route('admin.page.gallery.update', $gallery),
         ]);
     }
 

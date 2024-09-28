@@ -1,6 +1,6 @@
 <template>
     <Head><title>{{ title }}</title></Head>
-    <h1 class="font-medium text-xl"> {{ title }} <span class="text-red-800" v-if="formChange">*</span> </h1>
+    <h1 class="font-medium text-xl"> {{ title }} <span class="text-red-800" v-if="formChange">*</span></h1>
 
     <div class="mt-3 p-3 bg-white rounded-lg ">
         <el-form :model="form">
@@ -23,59 +23,40 @@
 
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import Codemirror from "codemirror-editor-vue3";
 import {Head, router} from '@inertiajs/vue3'
-
+import {reactive, ref} from 'vue'
 import "codemirror/mode/htmlmixed/htmlmixed.js";
 import "codemirror/theme/bespin.css";
-import Layout from '@/Components/Layout.vue'
 
-
-export default {
-    components: {
-        Codemirror,
-        Head,
-    },
-    layout: Layout,
-    props: {
-        template: String,
-        content: String,
+const props = defineProps({
+    template: String,
+    content: String,
+    type: String,
+    title: {
         type: String,
-        route: String,
-        title: {
-            type: String,
-            default: 'Шаблон',
-        }
-    },
-
-    data() {
-        return {
-            cmOptions: {
-                mode: "htmlmixed", // Language mode
-                theme: "bespin", // Theme
-            },
-            form: {
-                content: this.content,
-                type: this.type,
-                template: this.template,
-                close: false,
-            },
-            formChange: false
-        }
-    },
-
-    methods: {
-        change() {
-            this.formChange = true;
-        },
-        onSubmit(val) {
-            this.form.close = val;
-            this.formChange = false;
-            router.put(this.route, this.form);
-        }
-    },
+        default: 'Шаблон',
+    }
+})
+const formChange = ref(false)
+const form = reactive({
+    content: props.content,
+    type: props.type,
+    template: props.template,
+    close: false,
+})
+const cmOptions = {
+    mode: "htmlmixed", // Language mode
+    theme: "bespin", // Theme
 }
-
+function change() {
+    formChange.value = true;
+}
+function onSubmit(val) {
+    form.close = val;
+    formChange.value = false;
+    router.put(route('admin.page.template.update'), form);
+}
 </script>
 

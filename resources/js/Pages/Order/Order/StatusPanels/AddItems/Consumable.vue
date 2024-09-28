@@ -39,7 +39,7 @@ import {router} from "@inertiajs/vue3";
 const errors = inject("prov_errors")
 const { consumables } = inject("prov_items")
 const props =defineProps({
-    add_item: String,
+    order: Object,
 })
 
 const form = reactive({
@@ -48,7 +48,7 @@ const form = reactive({
     quantity: 1,
 })
 function sendForm() {
-    router.post(props.add_item, form)
+    router.post(route('admin.order.order.add-item', {order: props.order.id}), form)
     form.consumable_id = null
 
 }

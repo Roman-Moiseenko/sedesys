@@ -5,7 +5,7 @@
         <!-- Фильтр -->
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить OrderPayment</el-button>
-            <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
+            <TableFilter :filter="filter" class="ml-auto" :count="filters.count">
                 <el-input v-model="filter.name" placeholder="Name"/>
             </TableFilter>
         </div>
@@ -25,7 +25,7 @@
                     <template #default="scope">
                         <el-button
                             size="small"
-                            @click.stop="router.get(scope.row.edit)">
+                            @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
@@ -76,9 +76,6 @@ const filter = reactive({
 })
 
 interface IRow {
-    /**
-     * Статусы
-    */
     active: number
 }
 const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
@@ -87,13 +84,16 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     }
     return ''
 }
+function handleEdit(row) {
+    router.get(route('admin.order.payment.update', {payment: row.id}))
+}
 function handleDeleteEntity(row) {
-    $delete_entity.show(row.destroy);
+    $delete_entity.show(route('admin.order.payment.destroy', {payment: row.id}));
 }
 function createButton() {
-    router.get('/admin/order/orderPayment/create')
+    router.get(route('admin.order.payment.create'))
 }
 function routeClick(row) {
-    router.get(row.url)
+    router.get(route('admin.order.payment.show', {payment: row.id}))
 }
 </script>

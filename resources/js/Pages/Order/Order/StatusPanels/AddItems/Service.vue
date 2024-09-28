@@ -51,8 +51,8 @@ import {router} from "@inertiajs/vue3";
 const errors = inject("prov_errors")
 const {services} = inject("prov_items")
 
-const props =defineProps({
-    add_item: String,
+const props = defineProps({
+    order: Object,
 })
 const employees = ref([]);
 const form = reactive({
@@ -62,7 +62,7 @@ const form = reactive({
     quantity: 1,
 })
 function sendForm() {
-    router.post(props.add_item, form)
+    router.post(route('admin.order.order.add-item', {order: props.order.id}), form)
     form.service_id = null
     form.employee_id = null
 }

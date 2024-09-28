@@ -49,34 +49,30 @@
 </template>
 
 
-<script setup>
+<script lang="ts" setup>
 import {reactive, ref, watch} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        widget: Object,
-        title: {
-            type: String,
-            default: 'Редактирование виджета',
-        },
-        templates: Array,
-        models: Array
-    });
-
-    const form = reactive({
-        name: props.widget.name,
-        model: props.widget.model,
-        template: props.widget.template,
-        data: props.widget.data,
-        options: props.widget.options,
-        close: null,
-        _method: 'put',
-    })
-
-
+const props = defineProps({
+    errors: Object,
+    widget: Object,
+    title: {
+        type: String,
+        default: 'Редактирование виджета',
+    },
+    templates: Array,
+    models: Array
+});
+const form = reactive({
+    name: props.widget.name,
+    model: props.widget.model,
+    template: props.widget.template,
+    data: props.widget.data,
+    options: props.widget.options,
+    close: null,
+    _method: 'put',
+})
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)
 watch(
@@ -88,7 +84,7 @@ watch(
 );
 function onSubmit(val) {
     form.close = val
-    router.visit(props.route, {
+    router.visit(route('admin.page.widget.update', {widget: props.widget.id}), {
         method: 'post',
         data: form,
         preserveScroll: true,
@@ -99,15 +95,5 @@ function onSubmit(val) {
     });
 }
 ////<=
+</script>
 
-</script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
-</script>

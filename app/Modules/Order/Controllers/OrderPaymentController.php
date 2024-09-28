@@ -37,7 +37,6 @@ class OrderPaymentController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Order/OrderPayment/Create', [
-            'route' => route('admin.order.orderPayment.store'),
         ]);
     }
 
@@ -46,8 +45,8 @@ class OrderPaymentController extends Controller
         $request->validated();
         $orderPayment = $this->service->create($request);
         return redirect()
-            ->route('admin.order.orderPayment.show', $orderPayment)
-            ->with('success', 'Новый orderPayment добавлен');
+            ->route('admin.order.payment.show', $orderPayment)
+            ->with('success', 'Новый платеж добавлен');
     }
 
     public function show(OrderPayment $orderPayment)
@@ -55,7 +54,6 @@ class OrderPaymentController extends Controller
 
         return Inertia::render('Order/OrderPayment/Show', [
                 'orderPayment' => $this->repository->OrderPaymentWithToArray($orderPayment),
-                'edit' => route('admin.order.orderPayment.edit', $orderPayment),
             ]
         );
     }
@@ -66,7 +64,6 @@ class OrderPaymentController extends Controller
 
         return Inertia::render('Order/OrderPayment/Edit', [
             'orderPayment' => $orderPayment,
-            'route' => route('admin.order.orderPayment.update', $orderPayment),
         ]);
     }
 
@@ -77,7 +74,7 @@ class OrderPaymentController extends Controller
 
         if ($request->boolean('close')) {
             return redirect()
-                ->route('admin.order.orderPayment.show', $orderPayment)
+                ->route('admin.order.payment.show', $orderPayment)
                 ->with('success', 'Сохранение прошло успешно');
         } else {
             return redirect()->back()->with('success', 'Сохранение прошло успешно');

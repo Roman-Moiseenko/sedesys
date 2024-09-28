@@ -34,7 +34,6 @@ class ContactController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Page/Contact/Create', [
-            'route' => route('admin.page.contact.store'),
         ]);
     }
 
@@ -51,8 +50,6 @@ class ContactController extends Controller
     {
         return Inertia::render('Page/Contact/Show', [
                 'contact' => $contact,
-                'edit' => route('admin.page.contact.edit', $contact),
-                'toggle' => route('admin.page.contact.toggle', $contact),
             ]
         );
     }
@@ -61,7 +58,6 @@ class ContactController extends Controller
     {
         return Inertia::render('Page/Contact/Edit', [
             'contact' => $contact,
-            'route' => route('admin.page.contact.update', $contact),
         ]);
     }
 

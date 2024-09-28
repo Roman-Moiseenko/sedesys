@@ -21,9 +21,6 @@ class GalleryRepository
                 'slug' => $gallery->slug,
                 'description' => $gallery->description,
                 'count' => $gallery->photos()->count(),
-                'url' => route('admin.page.gallery.show', $gallery),
-                'edit' => route('admin.page.gallery.edit', $gallery),
-                'destroy' => route('admin.page.gallery.destroy', $gallery),
             ]);
     }
 

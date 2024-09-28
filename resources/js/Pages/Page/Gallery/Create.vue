@@ -1,5 +1,5 @@
 <template>
-    <Head><title>{{ $props.title }}</title></Head>
+    <Head><title>{{ title }}</title></Head>
     <h1 class="font-medium text-xl">Добавить новую галерею</h1>
     <div class="mt-3 p-3 bg-white rounded-lg">
         <el-form :model="form" label-width="auto" style="max-width: 500px">
@@ -10,7 +10,7 @@
             </el-form-item>
 
             <el-form-item label="Ссылка">
-                <el-input v-model="form.slug" placeholder="Оставьте пустым для заполнения" @input="handleMaskSlug"/>
+                <el-input v-model="form.slug" placeholder="Оставьте пустым для заполнения" :formatter="(val) => func.MaskSlug(val)"/>
                 <div v-if="errors.slug" class="text-red-700">{{ errors.slug }}</div>
             </el-form-item>
 
@@ -26,42 +26,25 @@
 </template>
 
 
-<script setup>
-    import {reactive} from 'vue'
-    import {router} from "@inertiajs/vue3";
-    import {func} from "/resources/js/func.js"
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import {Head, router} from "@inertiajs/vue3";
+import {func} from "/resources/js/func.js"
 
-    const props = defineProps({
-        errors: Object,
-        route: String,
-        title: {
-            type: String,
-            default: 'Создание галереи',
-        }
-    });
-
-    const form = reactive({
-        name: null,
-        slug: null,
-        description: null,
-    })
-
-    function handleMaskSlug(val) {
-        form.slug = func.MaskSlug(val);
+const props = defineProps({
+    errors: Object,
+    title: {
+        type: String,
+        default: 'Создание галереи',
     }
+});
+const form = reactive({
+    name: null,
+    slug: null,
+    description: null,
+})
+function onSubmit() {
+    router.post(route('admin.page.gallery.store'), form)
+}
 
-    function onSubmit() {
-        router.post(props.route, form)
-    }
-
-</script>
-<script>
-    import {Head} from '@inertiajs/vue3'
-    import Layout from '@/Components/Layout.vue'
-    export default {
-        components: {
-            Head,
-        },
-        layout: Layout,
-    }
 </script>
