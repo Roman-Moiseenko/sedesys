@@ -14,7 +14,7 @@
                 Менеджер + Инфа + Основание
             </div>
             <div class="p-4">
-                <OrderAction :order="order" />
+                <OrderAction :order="order" :methods="methods"/>
             </div>
         </div>
     </div>
@@ -36,7 +36,18 @@
             <StatusPanelsAwaiting v-if="order.status.awaiting"
                                  :order="order"
             />
-
+            <StatusPanelsPrepaid v-if="order.status.prepaid"
+                                  :order="order"
+            />
+            <StatusPanelsPaid v-if="order.status.paid"
+                                 :order="order"
+            />
+            <StatusPanelsCompleted v-if="order.status.completed"
+                              :order="order"
+            />
+            <StatusPanelsCanceled v-if="order.status.canceled"
+                              :order="order"
+            />
         </div>
     </div>
 </template>
@@ -56,6 +67,10 @@ import TableOrderConsumables from './Tables/OrderConsumables.vue'
 import StatusPanelsNew from  './StatusPanels/New.vue'
 import StatusPanelsManager from  './StatusPanels/Manager.vue'
 import StatusPanelsAwaiting from  './StatusPanels/Awaiting.vue'
+import StatusPanelsPrepaid from  './StatusPanels/Prepaid.vue'
+import StatusPanelsPaid from  './StatusPanels/Paid.vue'
+import StatusPanelsCompleted from  './StatusPanels/Completed.vue'
+import StatusPanelsCanceled from  './StatusPanels/Canceled.vue'
 
 //Дополнительные блоки
 import EditUser from '@/Components/Edit/User.vue'
@@ -72,6 +87,7 @@ const props = defineProps({
     consumables: Array,
     services: Array,
     extras: Array,
+    methods: Array,
 });
 
 //Данные для дочерних элементов

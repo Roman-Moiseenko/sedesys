@@ -16,6 +16,8 @@ use App\Modules\Notification\Events\TelegramHasReceived;
 use App\Modules\Notification\Service\NotificationService;
 use App\Modules\Order\Events\OrderHasAwaiting;
 use App\Modules\Order\Events\OrderHasStatus;
+use App\Modules\Order\Notification\OrderMessageStaff;
+use App\Modules\Order\Notification\OrderMessageUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -72,6 +74,8 @@ class EventServiceProvider extends ServiceProvider
 
         //Модуль Order
         OrderHasStatus::class => [
+            OrderMessageStaff::class,
+            OrderMessageUser::class,
             /**
              * Смена статуса!
              * При необходимости добавить уведомления подписчикам и/или сотрудникам.

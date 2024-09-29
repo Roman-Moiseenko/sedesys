@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property boolean $active
  * @property string $awesome
  * @property Photo $icon
- * @property Service[] $services
+ * @property Service $service
  */
 class Extra extends Model implements SortModel
 {
@@ -88,7 +88,7 @@ class Extra extends Model implements SortModel
         return $this->morphOne(Photo::class, 'imageable')->withDefault();;
     }
 
-    public function services(): BelongsTo
+    public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class, 'service_id', 'id');
     }

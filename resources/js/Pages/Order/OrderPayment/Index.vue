@@ -1,12 +1,30 @@
 <template>
     <Head><title>{{ title }}</title></Head>
     <el-config-provider :locale="ru">
-        <h1 class="font-medium text-xl">OrderPayment</h1>
+        <h1 class="font-medium text-xl">Платежи</h1>
         <!-- Фильтр -->
         <div class="flex">
-            <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить OrderPayment</el-button>
+            <el-button type="primary" class="p-4 my-3" @click="createButton">Добавить платеж</el-button>
             <TableFilter :filter="filter" class="ml-auto" :count="filters.count">
-                <el-input v-model="filter.name" placeholder="Name"/>
+                <el-input v-model="filter.user" placeholder="ФИО, Телефон, Email"/>
+                <el-date-picker
+                    v-model="filter.date_from"
+                    type="date"
+                    class="mt-1"
+                    placeholder="Выберите дату с"
+                    value-format="YYYY-MM-DD"
+                />
+                <el-date-picker
+                    v-model="filter.date_to"
+                    type="date"
+                    class="mt-1"
+                    placeholder="Выберите дату по"
+                    value-format="YYYY-MM-DD"
+                />
+                <el-select v-model="filter.method" class="mt-1" placeholder="Способ">
+                    <el-option v-for="item in methods" :key="item.value" :value="item.value" :label="item.label" />
+                </el-select>
+                <el-input v-model="filter.order" class="mt-1" placeholder="Заказ №"/>
             </TableFilter>
         </div>
         <div class="mt-2 p-5 bg-white rounded-md">
@@ -19,16 +37,31 @@
                 v-loading="store.getLoading"
             >
                 <!-- Повторить поля -->
-                <el-table-column sortable prop="name" label="Name" width="100" />
-
+                <el-table-column sortable prop="created_at" label="Дата" width="180" />
+                <el-table-column prop="order" label="Заказ" width="240" />
+                <el-table-column label="Клиент" width="260" >
+                    <template #default="scope">
+                        <div>{{ func.fullName(scope.row.user.fullname)}}</div>
+                        <div style="size: 13px; color: var(--el-text-color-secondary);">{{ func.phone(scope.row.user.phone)}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="Платеж" width="100" >
+                    <template #default="scope">
+                        {{ func.price(scope.row.amount)}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="method_text" label="Способ" width="120" />
+                <el-table-column prop="document" label="Документ" show-overflow-tooltip />
                 <el-table-column label="Действия" align="right">
                     <template #default="scope">
                         <el-button
+                            v-if="scope.row.is_edit"
                             size="small"
                             @click.stop="handleEdit(scope.row)">
                             Edit
                         </el-button>
                         <el-button
+                            v-if="scope.row.is_edit"
                             size="small"
                             type="danger"
                             @click.stop="handleDeleteEntity(scope.row)"
@@ -62,17 +95,21 @@ const props = defineProps({
     orderPayments: Object,
     title: {
         type: String,
-        default: 'Список orderPayments',
+        default: 'Список платежей',
     },
     filters: Array,
+    methods: Array,
 })
 const store = useStore();
 const $delete_entity = inject("$delete_entity")
 const Loading = ref(false)
 const tableData = ref([...props.orderPayments.data])
 const filter = reactive({
-    name: props.filters.name,
-    //TODO Поиск по клиенту, менеджеру, статусу, № заказа, дате от-до
+    user: props.filters.user,
+    order: props.filters.order,
+    method: props.filters.method,
+    date_from: props.filters.date_from,
+    date_to: props.filters.date_to,
 })
 
 interface IRow {
@@ -85,7 +122,7 @@ const tableRowClassName = ({row, rowIndex}: {row: IRow }) => {
     return ''
 }
 function handleEdit(row) {
-    router.get(route('admin.order.payment.update', {payment: row.id}))
+    router.get(route('admin.order.payment.edit', {payment: row.id}))
 }
 function handleDeleteEntity(row) {
     $delete_entity.show(route('admin.order.payment.destroy', {payment: row.id}));

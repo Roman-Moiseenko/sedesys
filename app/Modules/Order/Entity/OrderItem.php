@@ -43,29 +43,38 @@ abstract class OrderItem extends Model
         return $this->quantity;
     }
 
-    public function setSellCost(int $sell): void
+    public function setSellCost(int $sell): bool
     {
+        $result = false;
         if ($sell > $this->base_cost) throw new \DomainException('Цена не может быть выше базовой');
-        if ($sell > 0) {
+        if ($sell > 0 && $sell != $this->sell_cost) {
             $this->sell_cost = $sell;
             $this->save();
+            $result = true;
         }
+        return $result;
     }
 
-    public function setQuantity(int $quantity): void
+    public function setQuantity(int $quantity): bool
     {
-        if ($quantity > 0) {
+        $result = false;
+        if ($quantity > 0 && $quantity != $this->quantity) {
             $this->quantity = $quantity;
             $this->save();
+            $result = true;
         }
+        return $result;
     }
 
-    public function setComment(string $comment): void
+    public function setComment(string $comment): bool
     {
-        if (!empty($comment)) {
+        $result = false;
+        if (!empty($comment) && $comment != $this->comment) {
             $this->comment = $comment;
             $this->save();
+            $result = true;
         }
+        return $result;
     }
 
     final public function order()

@@ -7,6 +7,9 @@ use App\Modules\Base\Helpers\RequestMessage;
 use App\Modules\Discount\Entity\Coupon;
 use App\Modules\Order\Entity\OrderConsumable;
 use App\Modules\Order\Entity\OrderExtra;
+use App\Modules\Order\Entity\OrderHistory;
+use App\Modules\Order\Entity\OrderItem;
+use App\Modules\Order\Entity\OrderPayment;
 use App\Modules\Order\Entity\OrderStatus;
 use App\Modules\Order\Events\OrderHasAwaiting;
 use App\Modules\Order\Events\OrderHasStatus;
@@ -17,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Modules\Order\Entity\Order;
 use Illuminate\Support\Facades\Auth;
 use App\Modules\Order\Entity\OrderService as OrderItemService;
+use JetBrains\PhpStorm\Pure;
 
 class OrderService
 {
@@ -32,16 +36,18 @@ class OrderService
             $order->user_id = $user_id;
             $order->save();
         }
-
+        $order->addHistory('Заказ создан менеджером');
         return $order;
     }
 
     public function create(Request $request): Order
     {
-        return Order::register(
+        $order = Order::register(
             $request->input('user_id'),
             $request->input('base'),
         );
+        $order->addHistory('Заказ создан клиентом');
+        return $order;
     }
 
     //OrderService
@@ -94,6 +100,13 @@ class OrderService
             $order_service->sell_cost = $order_service->base_cost;
         }
         $order->orderServices()->save($order_service);
+
+        $order->addHistory(
+            'Добавлена услуга',
+            $service->name,
+            $this->valueText($order_service),
+            route('admin.service.service.show', $service)
+        );
     }
 
     public function serviceSet(Order $order, Request $request): string
@@ -101,9 +114,27 @@ class OrderService
         try {
             $orderService = $order->getOrderService($request->integer('id'));
 
-            $orderService->setSellCost($request->integer('sell_cost'));
-            $orderService->setQuantity($request->integer('quantity'));
-            $orderService->setComment($request->string('comment'));
+            if ($orderService->setSellCost($request->integer('sell_cost'))) {
+                $order->addHistory(
+                    'Изменена цена на услугу',
+                    $orderService->service->name,
+                    $request->integer('sell_cost'),
+                    route('admin.service.service.show', $orderService->service));
+            }
+            if ($orderService->setQuantity($request->integer('quantity'))) {
+                $order->addHistory(
+                    'Изменено кол-во услуги',
+                    $orderService->service->name,
+                    $request->integer('quantity'),
+                    route('admin.service.service.show', $orderService->service));
+            }
+            if ($orderService->setComment($request->string('comment'))) {
+                $order->addHistory(
+                    'Изменен комментарий для услуги',
+                    $orderService->service->name,
+                    $request->integer('comment'),
+                    route('admin.service.service.show', $orderService->service));
+            }
 
             return 'Сохранено';
         } catch (\DomainException $e) {
@@ -113,6 +144,12 @@ class OrderService
 
     public function serviceDel(Order $order, Request $request): string
     {
+        $orderService = $order->getOrderService($request->integer('id'));
+        $order->addHistory(
+            action: 'Удалена услуга',
+            object: $orderService->service->name,
+            url: route('admin.service.service.show', $orderService->service));
+
         $order->orderServices()->where('id', $request->integer('id'))->delete();
         return 'Удалено';
     }
@@ -134,7 +171,12 @@ class OrderService
             $order_extra->base_cost = $extra->price;
             $order_extra->sell_cost = $extra->price;
             $order->orderExtras()->save($order_extra);
-
+            $order->addHistory(
+                'Добавлена доп.услуга',
+                $extra->name,
+                $this->valueText($order_extra),
+                route('admin.service.service.show', $extra->service->name)
+            );
             return 'Доп.услуга добавлена в заказ';
         } catch (\DomainException $e) {
             return $e->getMessage();
@@ -147,9 +189,27 @@ class OrderService
         try {
             $orderExtra = $order->getOrderExtra($request->integer('id'));
 
-            $orderExtra->setSellCost($request->integer('sell_cost'));
-            $orderExtra->setQuantity($request->integer('quantity'));
-            $orderExtra->setComment($request->string('comment'));
+            if ($orderExtra->setSellCost($request->integer('sell_cost'))) {
+                $order->addHistory(
+                    'Изменена цена на доп.услугу',
+                    $orderExtra->extra->name,
+                    $request->integer('sell_cost'),
+                    route('admin.service.service.show', $orderExtra->extra->service));
+            }
+            if ($orderExtra->setQuantity($request->integer('quantity'))) {
+                $order->addHistory(
+                    'Изменено кол-во на доп.услуг',
+                    $orderExtra->extra->name,
+                    $request->integer('quantity'),
+                    route('admin.service.service.show', $orderExtra->extra->service));
+            }
+            if ($orderExtra->setComment($request->string('comment'))) {
+                $order->addHistory(
+                    'Изменен комментарий доп.услуги',
+                    $orderExtra->extra->name,
+                    $request->integer('comment'),
+                    route('admin.service.service.show', $orderExtra->extra->service));
+            }
 
             return 'Сохранено';
         } catch (\DomainException $e) {
@@ -159,6 +219,11 @@ class OrderService
 
     public function extraDel(Order $order, Request $request): string
     {
+        $orderExtra = $order->getOrderExtra($request->integer('id'));
+        $order->addHistory(
+            action: 'Удалена доп.услуга',
+            object: $orderExtra->extra->name,
+            url: route('admin.service.service.show', $orderExtra->extra->service));
         $order->orderExtras()->where('id', $request->integer('id'))->delete();
         return 'Удалено';
     }
@@ -180,7 +245,12 @@ class OrderService
             $order_consumable->base_cost = $consumable->price;
             $order_consumable->sell_cost = $consumable->price;
             $order->orderConsumables()->save($order_consumable);
-
+            $order->addHistory(
+                'Материал добавлен',
+                $consumable->name,
+                $this->valueText($order_consumable),
+                route('admin.service.consumable.show', $consumable)
+            );
             return 'Материал добавлен в заказ';
         } catch (\DomainException $e) {
             return $e->getMessage();
@@ -192,9 +262,27 @@ class OrderService
         try {
             $orderConsumable = $order->getOrderConsumable($request->integer('id'));
 
-            $orderConsumable->setSellCost($request->integer('sell_cost'));
-            $orderConsumable->setQuantity($request->integer('quantity'));
-            $orderConsumable->setComment($request->string('comment'));
+            if ($orderConsumable->setSellCost($request->integer('sell_cost'))) {
+                $order->addHistory(
+                    'Изменена цена на материал',
+                    $orderConsumable->consumable->name,
+                    $request->integer('sell_cost'),
+                    route('admin.service.consumable.show', $orderConsumable->consumable));
+            }
+            if ($orderConsumable->setQuantity($request->integer('quantity'))) {
+                $order->addHistory(
+                    'Изменено кол-во материала',
+                    $orderConsumable->consumable->name,
+                    $request->integer('quantity'),
+                    route('admin.service.consumable.show', $orderConsumable->consumable));
+            }
+            if ($orderConsumable->setComment($request->string('comment'))) {
+                $order->addHistory(
+                    'Изменен комментарий материала',
+                    $orderConsumable->consumable->name,
+                    $request->integer('comment'),
+                    route('admin.service.consumable.show', $orderConsumable->consumable));
+            }
 
             return 'Сохранено';
         } catch (\DomainException $e) {
@@ -204,8 +292,21 @@ class OrderService
 
     public function consumableDel(Order $order, Request $request): string
     {
+        $orderConsumable = $order->getOrderConsumable($request->integer('id'));
+        $order->addHistory(
+            action: 'Удален материал',
+            object: $orderConsumable->consumable->name,
+            url: route('admin.service.consumable.show', $orderConsumable->consumable));
         $order->orderConsumables()->where('id', $request->integer('id'))->delete();
         return 'Удалено';
+    }
+
+    #[Pure]
+    private function valueText(OrderItem $item): string
+    {
+        return 'баз.цена ' . $item->costBase() .
+            ' прод.цена ' . $item->costSell() .
+            ' кол-во ' . $item->getQuantity();
     }
 
     public function destroy(Order $order)
@@ -219,9 +320,15 @@ class OrderService
 
     public function setAwaiting(Order $order)
     {
-        if ($order->getAmountSell() == 0)  throw new \DomainException('Сумма заказа не может быть равно нулю');
+        if ($order->getAmountSell() == 0) throw new \DomainException('Сумма заказа не может быть равно нулю');
         $order->setNumber();
         $order->setStatus(OrderStatus::AWAITING);
+        $order->addHistory(
+            action: 'Выставлен счет',
+            object: 'Счет',
+        //TODO
+        // url: route('admin.service.order.invoice', $order) Ссылка на счет
+        );
         event(new OrderHasStatus($order));
     }
 
@@ -244,6 +351,11 @@ class OrderService
         $order->coupon_id = $coupon->id;
         $order->save();
         $coupon->assigned();
+        $order->addHistory(
+            action: 'Назначен купон',
+            object: 'Код ' . $code,
+            value: $coupon->bonus . ' ₽',
+        );
     }
 
     /**
@@ -259,6 +371,9 @@ class OrderService
         $order->coupon->save();
         $order->coupon_id = null;
         $order->save();
+        $order->addHistory(
+            action: 'Удален купон',
+        );
     }
 
     /**
@@ -270,10 +385,20 @@ class OrderService
     {
         if ($order->getAmountSell() <= $order->getAmountPayment()) {
             $order->setPaid();
-
         } else {
-            if ($order->status->value == OrderStatus::AWAITING) {
+
+            if ($order->isAwaiting()) {
                 $order->setStatus(OrderStatus::PREPAID);
+            }
+            if ($order->getAmountPayment() == 0 && !$order->isAwaiting()) {
+
+                $order->addHistory(
+                    action: 'Удалены все платежи.',
+                );
+                //Для удаления ошибочных платежей
+                foreach ($order->statuses as $status) {
+                    if ($status->value > OrderStatus::AWAITING) $status->delete();
+                }
             }
         }
         event(new OrderHasStatus($order));
@@ -281,5 +406,72 @@ class OrderService
         if (!is_null($order->coupon_id) && !$order->coupon->isUsed()) {
             $order->coupon->used();
         }
+    }
+
+    public function paid(Order $order, Request $request)
+    {
+        if ($order->getAmountSell() == 0) throw new \DomainException('Сумма заказа не может быть равно нулю');
+
+        if ($order->isManager()) {
+            $order->setNumber();
+            $order->setStatus(OrderStatus::AWAITING);
+        }
+
+        /** @var Admin $staff */
+        $staff = Auth::guard('admin')->user();
+        $payment = OrderPayment::register(
+            $order->id,
+            $request->integer('amount'),
+            $request->integer('method'),
+        );
+        $payment->staff_id = $staff->id;
+        $payment->document = '';
+        $payment->save();
+
+        $order->addHistory(
+            action: 'Поступила оплата',
+            object: 'Внесена менеджером',
+            value: $payment->amount,
+            url: route('admin.order.payment.show', $payment)
+        );
+        $order->refresh();
+        $this->check_payment($order);
+    }
+
+    public function cheque(Order $order)
+    {
+
+        if ($order->getAmountSell() == 0) throw new \DomainException('Сумма заказа не может быть равно нулю');
+
+        if ($order->isManager()) {
+            $order->setNumber();
+            $order->setStatus(OrderStatus::AWAITING);
+        }
+        //TODO Пробитие чека, получаем №документа
+        $document = 'document';
+        $amount = $order->getAmountSell() - $order->getAmountPayment();
+
+
+
+        /** @var Admin $staff */
+        $staff = Auth::guard('admin')->user();
+        $payment = OrderPayment::register(
+            $order->id,
+            $amount,
+            OrderPayment::METHOD_CASH,
+        );
+        $payment->staff_id = $staff->id;
+        $payment->document = $document;
+        $payment->save();
+
+        $order->addHistory(
+            action: 'Пробит чек',
+            object: 'Чек',
+            value: $amount,
+            url: route('admin.order.payment.show', $payment)
+        );
+        $order->refresh();
+        $this->check_payment($order);
+
     }
 }

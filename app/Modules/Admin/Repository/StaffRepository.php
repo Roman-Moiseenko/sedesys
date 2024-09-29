@@ -21,7 +21,7 @@ class StaffRepository
             $user = $request->string('user')->trim()->value();
             $filters['user'] = $user;
             $query->where(function ($q) use ($user) {
-                $q->orWhere('fullname', 'LIKE', "%$user%")
+                $q->whereRaw("LOWER(fullname) like LOWER('%$user%')")
                     ->orWhere('phone', 'LIKE', "%$user%");
             });
         }

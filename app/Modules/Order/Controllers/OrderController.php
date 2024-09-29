@@ -3,8 +3,12 @@
 namespace App\Modules\Order\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Admin\Entity\Responsibility;
+use App\Modules\Admin\Repository\StaffRepository;
 use App\Modules\Employee\Entity\Employee;
 use App\Modules\Order\Entity\Order;
+use App\Modules\Order\Entity\OrderStatus;
+use App\Modules\Order\Repository\OrderPaymentRepository;
 use App\Modules\Order\Requests\OrderRequest;
 use App\Modules\Order\Repository\OrderRepository;
 use App\Modules\Order\Service\OrderService;
@@ -26,6 +30,8 @@ class OrderController extends Controller
     private ServiceRepository $services;
     private ConsumableRepository $consumables;
     private UserService $userService;
+    private StaffRepository $staffs;
+    private OrderPaymentRepository $payments;
 
     public function __construct(
         OrderService $service,
@@ -33,6 +39,8 @@ class OrderController extends Controller
         ServiceRepository $services,
         ConsumableRepository $consumables,
         UserService $userService,
+        StaffRepository $staffs,
+        OrderPaymentRepository $payments,
     )
     {
         $this->service = $service;
@@ -40,6 +48,8 @@ class OrderController extends Controller
         $this->services = $services;
         $this->consumables = $consumables;
         $this->userService = $userService;
+        $this->staffs = $staffs;
+        $this->payments = $payments;
     }
 
 
@@ -47,9 +57,12 @@ class OrderController extends Controller
     {
         $orders = $this->repository->getIndex($request, $filters);
 
+       // dd($this->staffs->forFilter(Responsibility::MANAGER_ORDER));
         return Inertia::render('Order/Order/Index', [
                 'orders' => $orders,
                 'filters' => $filters,
+                'statuses' => array_select(OrderStatus::STATUSES),
+                'staffs' => $this->staffs->forFilter(Responsibility::MANAGER_ORDER),
             ]
         );
     }
@@ -74,11 +87,14 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        $methods = $this->payments->getMethods();
+
         return Inertia::render('Order/Order/Show', [
                 'order' => $this->repository->OrderWithToArray($order),
                 'services' => $this->repository->ServicesOut($order),
                 'consumables' => $this->repository->ConsumablesOut($order),
                 'extras' => $this->repository->ExtrasOut($order),
+                'methods' => $methods,
             ]
         );
     }
@@ -127,14 +143,18 @@ class OrderController extends Controller
        //TODO
     }
 
-    public function paid(Order $order)
+    public function paid(Request $request, Order $order)
     {
-        //TODO
+        $this->service->paid($order, $request);
+        $order->refresh();
+        if ($order->isPrepaid()) return redirect()->back()->with('success', 'Предоплата внесена');
+        return redirect()->route('admin.order.order.index')->with('success', 'Заказ оплачен');
     }
 
     public function cheque(Order $order)
     {
-        //TODO
+        $this->service->cheque($order);
+        return redirect()->route('admin.order.order.index')->with('success', 'Заказ оплачен');
     }
 
     public function destroy(Order $order)

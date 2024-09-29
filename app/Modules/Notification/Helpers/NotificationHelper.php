@@ -20,6 +20,8 @@ class NotificationHelper
     const EVENT_ORDER_CANCEL = 1012;
     const EVENT_ORDER_CONFIRM = 1013;
 
+    const EVENT_PAYMENT = 1014;
+
     const EVENTS = [
         self::EVENT_TEST => 'Тестовое событие',
         self::EVENT_ERROR => 'Ошибка',
@@ -29,6 +31,7 @@ class NotificationHelper
         self::EVENT_ORDER_RECEIVED => 'Заказ получен',
         self::EVENT_ORDER_CANCEL => 'Заказ отменен',
         self::EVENT_ORDER_CONFIRM => 'Заказ подтвержден',
+        self::EVENT_PAYMENT => 'Поступил платеж'
     ];
 
     /**
@@ -44,6 +47,7 @@ class NotificationHelper
         self::EVENT_ORDER_RECEIVED => "\xE2\x9C\x85", //✅
         self::EVENT_ORDER_CANCEL => "\xE2\x9D\x8C", //❌
         self::EVENT_ORDER_CONFIRM => "\xF0\x9F\x86\x97", //✅🆗
+        self::EVENT_PAYMENT => "\xF0\x9F\x92\xB0" //💰
     ];
 
 

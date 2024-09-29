@@ -6,9 +6,35 @@
             <div class="grid lg:grid-cols-3 grid-cols-1 divide-x">
                 <div class="p-4">
                     <!-- Повторить поля -->
-                    <el-form-item label="Название" :rules="{required: true}">
-                        <el-input v-model="form.name" placeholder="Название" :formatter="(value) => func.MaskLogin(value)"/>
-                        <div v-if="errors.name" class="text-red-700">{{ errors.name }}</div>
+                    <el-form-item label="Заказ" :rules="{required: true}" >
+                        <el-select v-model="form.order_id" filterable clearable disabled>
+                            <el-option v-for="item in orders" :value="item.id" :key="item.id" :label="item.number">
+                                <span style="float: left; color: var(--el-text-color-secondary);font-size: 13px;">№ </span>
+                                <span style="margin-left: 6px; float: left">{{ item.number }}</span>
+                                <span style="float: right;color: var(--el-text-color-secondary);font-size: 13px;">
+                        {{ func.date(item.created_at) }}
+                      </span>
+                            </el-option>
+                        </el-select>
+                        <div v-if="errors.order_id" class="text-red-700">{{ errors.order_id }}</div>
+                    </el-form-item>
+                    <el-form-item label="Платеж" :rules="{required: true}">
+                        <el-input v-model="form.amount" placeholder="Сумма по документу"
+                                  :formatter="(value) => func.MaskInteger(value)" disabled>
+                            <template #append>₽</template>
+                        </el-input>
+                        <div v-if="errors.amount" class="text-red-700">{{ errors.amount }}</div>
+                    </el-form-item>
+                    <el-form-item label="Способ оплаты" :rules="{required: true}">
+                        <el-select v-model="form.method">
+                            <el-option v-for="item in methods" :value="item.value" :key="item.value"
+                                       :label="item.label"/>
+                        </el-select>
+                        <div v-if="errors.method" class="text-red-700">{{ errors.method }}</div>
+                    </el-form-item>
+                    <el-form-item label="Документ">
+                        <el-input v-model="form.document" placeholder="Документ или комментарий"/>
+                        <div v-if="errors.document" class="text-red-700">{{ errors.document }}</div>
                     </el-form-item>
 
                 </div>
@@ -34,6 +60,7 @@ import {func} from "/resources/js/func.js"
 const props = defineProps({
     errors: Object,
     orderPayment: Object,
+    methods: Array,
     title: {
         type: String,
         default: 'Редактирование orderPayment',
@@ -49,6 +76,7 @@ const form = reactive({
     _method: 'put',
     close: null,
 })
+console.log(form)
 
 ///Блок сохранения и обновления=>
 const isUnSave = ref(false)

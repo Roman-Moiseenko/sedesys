@@ -6,7 +6,27 @@
         <div class="flex">
             <el-button type="primary" class="p-4 my-3" @click="createButton">Новый Заказ</el-button>
             <TableFilter :filter="filter" class="ml-auto" :count="$props.filters.count">
-                <el-input v-model="filter.name" placeholder="Name"/>
+                <el-input v-model="filter.user" placeholder="ФИО, Телефон, Email"/>
+                <el-date-picker
+                    v-model="filter.date_from"
+                    type="date"
+                    class="mt-1"
+                    placeholder="Выберите дату с"
+                    value-format="YYYY-MM-DD"
+                />
+                <el-date-picker
+                    v-model="filter.date_to"
+                    type="date"
+                    class="mt-1"
+                    placeholder="Выберите дату по"
+                    value-format="YYYY-MM-DD"
+                />
+                <el-select v-model="filter.status" class="mt-1" placeholder="Статус">
+                    <el-option v-for="item in statuses" :key="item.value" :value="item.value" :label="item.label" />
+                </el-select>
+                <el-select v-model="filter.staff" class="mt-1" placeholder="Менеджер">
+                    <el-option v-for="item in staffs" :key="item.id" :value="item.id" :label="item.name" />
+                </el-select>
             </TableFilter>
         </div>
         <div class="mt-2 p-5 bg-white rounded-md">
@@ -21,7 +41,12 @@
                 <!-- Повторить поля -->
                 <el-table-column sortable prop="created_at" label="Дата" width="160" />
                 <el-table-column prop="number" label="№" width="100" />
-                <el-table-column prop="user" label="Клиент" width="180" />
+                <el-table-column label="Клиент" width="260" >
+                    <template #default="scope">
+                        <div>{{ func.fullName(scope.row.user.fullname)}}</div>
+                        <div style="size: 13px; color: var(--el-text-color-secondary);">{{ func.phone(scope.row.user.phone)}}</div>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="status.text" label="Статус" width="180" />
                 <el-table-column prop="amount" label="Сумма" width="120" >
                     <template #default="scope">
@@ -69,14 +94,20 @@ const props = defineProps({
         default: 'Список Заказов',
     },
     filters: Array,
+    staffs: Array,
+    statuses: Array,
+
 })
 const store = useStore();
 const $delete_entity = inject("$delete_entity")
 const Loading = ref(false)
 const tableData = ref([...props.orders.data])
 const filter = reactive({
-    name: props.filters.name,
-    //TODO Поиск по клиенту, менеджеру, статусу, дате от-до
+    user: props.filters.user,
+    staff: props.filters.staff,
+    status: props.filters.status,
+    date_from: props.filters.date_from,
+    date_to: props.filters.date_to,
 })
 
 

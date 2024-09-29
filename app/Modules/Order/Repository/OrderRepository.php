@@ -6,6 +6,7 @@ use App\Modules\Employee\Entity\Employee;
 use App\Modules\Order\Entity\OrderConsumable;
 use App\Modules\Order\Entity\OrderExtra;
 use App\Modules\Order\Entity\OrderService;
+use App\Modules\Order\Entity\OrderStatus;
 use App\Modules\Service\Entity\Consumable;
 use App\Modules\Service\Entity\Extra;
 use App\Modules\Service\Entity\Service;
@@ -27,14 +28,41 @@ class OrderRepository
     public function getIndex(Request $request, &$filters): Arrayable
     {
         $query = Order::orderByDesc('created_at');
-        /**
-         * Фильтр, для каждого параметра своя проверка
-         */
         $filters = [];
-        if ($request->has('name')) {
-            $name = $request->string('name')->trim()->value();
-            $filters['name'] = $name;
-            $query->where('name', 'LIKE', "%$name%");
+        if ($request->has('user')) {
+            $user = $request->string('user')->trim()->value();
+            $filters['user'] = $user;
+            $query->whereHas('order', function ($query) use ($user) {
+                $query->whereHas('user', function ($query) use ($user) {
+                    $query->whereRaw("LOWER(fullname) like LOWER('%$user%')")
+                        ->orWhere('phone', 'LIKE', "%$user%")
+                        ->orWhere('email', 'LIKE', "%$user%");
+                });
+            });
+        }
+        if ($request->has('staff')) {
+            $staff = $request->integer('staff');
+            $filters['staff'] = $staff;
+            $query->where('staff_id', $staff);
+        }
+
+        if ($request->input('status')) {
+            $status = $request->integer('status');
+            $filters['status'] = $status;
+            $query->whereHas('status', function ($query) use ($status) {
+                $query->where('value', $status);
+            });
+        }
+
+        if (!is_null($request->input('date_from'))) {
+            $date_from = $request->date('date_from');
+            $filters['date_from'] = $request->input('date_from');
+            $query->where('created_at', '>=', $date_from);
+        }
+        if (!is_null($request->input('date_to'))) {
+            $date_to = $request->date('date_to');
+            $filters['date_to'] = $request->input('date_to');
+            $query->where('created_at', '<=', $date_to);
         }
 
         if (count($filters) > 0) $filters['count'] = count($filters); //Кол-во выбранных элементов в поиске
@@ -51,12 +79,9 @@ class OrderRepository
             'number' => $order->htmlNum(),
             'created_at' => $order->htmlDate(),
             'name' => $order->htmlNumDate(),
-            'user' => $order->user->fullname->getFullName(),
+            'user' => $order->user,
             'comment' => $order->comment,
             'amount' => $order->getAmountSell(),
-            //'user' => is_null($order->user_id) ? 'Гость' : $order->user->fullname->getFullName(),
-
-
             'status' => [
                 'text' => $order->status->value(),
                 'new' => $order->isNew(),
@@ -78,6 +103,7 @@ class OrderRepository
                 'goods_base' => $order->getAmountBase(false),
                 'goods_sell' => $order->getAmountSell(false),
 
+                'amount_payment' => $order->getAmountPayment(),
                 'count_services' => 0, //услуги
                 'count_goods' => 0, //товары
             ],
@@ -169,7 +195,7 @@ class OrderRepository
         return Extra::orderBy('name')
             ->active()
             ->whereNotIn('id', $_ids)
-            ->whereHas('services', function ($query) use($order) {
+            ->whereHas('service', function ($query) use($order) {
                 $ids = $order->orderServices()->pluck('service_id')->toArray();
                 $query->whereIn('service_id', $ids);
             })
@@ -180,5 +206,12 @@ class OrderRepository
                 'price' => $extra->price,
             ])
             ->toArray();
+    }
+
+    public function OrderToPay()
+    {
+        return Order::orderByDesc('created_at')->whereHas('status', function ($query) {
+            $query->where('value', OrderStatus::AWAITING)->orWhere('value', OrderStatus::PREPAID);
+        })->getModels();
     }
 }

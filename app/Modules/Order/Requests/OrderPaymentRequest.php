@@ -25,7 +25,9 @@ class OrderPaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            'amount' => ['required', 'numeric'],
+            'method' => ['required', 'numeric'],
+            'order_id' => ['required', 'numeric'],
         ];
     }
 }

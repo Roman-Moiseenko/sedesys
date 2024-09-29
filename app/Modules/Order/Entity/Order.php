@@ -39,6 +39,7 @@ use JetBrains\PhpStorm\ExpectedValues;
  * @property OrderConsumable[] $orderConsumables
  * @property OrderPayment[] $orderPayments
  * @property Coupon $coupon
+ * @property OrderHistory $history
  */
 class Order extends Model
 {
@@ -195,6 +196,7 @@ class Order extends Model
         $this->save();
     }
 
+
     public function setUser(int $user_id)
     {
         $this->user_id = $user_id;
@@ -206,6 +208,13 @@ class Order extends Model
         $count = Order::where('number', '<>', null)->count();
         $this->number = $count + 1;
         $this->save();
+    }
+
+    public function addHistory(string $action = '', string $object = '', string $value = '', string $url = '')
+    {
+        $this->history()->save(OrderHistory::new(
+            $action, $object, $value, $url
+        ));
     }
     /**
      * Гетеры
@@ -230,6 +239,16 @@ class Order extends Model
     /**
      * Отношения
      */
+    public function staff(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'staff_id', 'id');
+    }
+
+    public function history(): HasMany
+    {
+        return $this->hasMany(OrderHistory::class, 'order_id', 'id');
+    }
+
     public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
@@ -322,7 +341,7 @@ class Order extends Model
         return $amount;
     }
 
-    public function getAmountPayment(): float|int
+    public function getAmountPayment(): int
     {
         $amount = 0;
         foreach ($this->orderPayments as $payment) {
