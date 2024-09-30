@@ -135,7 +135,7 @@
                 @foreach($service->examples as $example)
                     <div class="col-lg-4">
                         <div class="card">
-                            <img src="{{ $example->getImage(1) }}">
+                            <img src="{{ $example->getImageBySort(1) }}">
                             <div class="card-body">
                                 <h3>{{ $example->title }}</h3>
                                 <div class="fs-7">{{ $example->description  }}</div>
