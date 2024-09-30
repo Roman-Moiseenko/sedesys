@@ -71,7 +71,7 @@
 import {Head} from '@inertiajs/vue3'
 import {reactive, ref, watch} from 'vue'
 import {router} from "@inertiajs/vue3";
-import {func} from "/resources/js/func.js"
+import {func} from "@/func.js"
 
 const props = defineProps({
     errors: Object,
@@ -126,11 +126,4 @@ function onSubmit(val) {
 
 ////<=
 
-</script>
-<script lang="ts">
-import Layout from '@/Components/Layout.vue'
-
-export default {
-    layout: Layout,
-}
 </script>
