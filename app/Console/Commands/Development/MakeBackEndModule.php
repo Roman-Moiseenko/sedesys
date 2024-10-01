@@ -51,7 +51,7 @@ class MakeBackEndModule extends MakeModuleCommand
         }
     }
 
-    private function createService()
+    private function createService(): void
     {
         $path = $this->module_path."/Service/{$this->entity}Service.php";
 
@@ -67,7 +67,7 @@ class MakeBackEndModule extends MakeModuleCommand
     /**
      * @throws FileNotFoundException
      */
-    private function createController()
+    private function createController(): void
     {
         $path = $this->module_path."/Controllers/{$this->entity}Controller.php";
 
@@ -97,7 +97,8 @@ class MakeBackEndModule extends MakeModuleCommand
         }
     }
 
-    private function createMenus() {
+    private function createMenus(): void
+    {
         $path = $this->module_path.'/menus.php';
 
         if ($this->alreadyExists($path)) {

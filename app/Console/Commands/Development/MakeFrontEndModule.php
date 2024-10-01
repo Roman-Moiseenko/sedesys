@@ -21,7 +21,7 @@ class MakeFrontEndModule extends MakeModuleCommand
 
     /**
      * @param $module
-     * @throws FileNotFoundException
+     * @param $entity
      */
     protected function create($module, $entity) {
         $this->files = new Filesystem();
